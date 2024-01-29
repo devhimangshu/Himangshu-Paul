@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-section, .output-section {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label.file-label {
+            padding: 10px;
+            background-color: #3498db;
+            color: #fff;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        label.file-label:hover {
+            background-color: #2980b9;
+        }
+        label.file-label::after {
+            content: 'Choose a text file';
+            display: inline-block;
+            margin-left: 10px;
+        }
+        #output {
+            white-space: pre-wrap;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #ecf0f1;
+            color: #333;
+        }
+        #counts {
+            margin-top: 10px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>File Reader</h1>
+        
+        <div class="input-section">
+            <input type="file" id="fileInput" accept=".txt" />
+            <label for="fileInput" class="file-label"></label>
+        </div>
+
+        <div class="output-section">
+            <h2>File Content</h2>
+            <pre id="output"></pre>
+            <div id="counts"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            
+            if (file) {
+                // Check if the selected file is a text file
+                if (!file.type.match('text.*')) {
+                    alert('Please select a valid text file.');
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    displayFileContent(content);
+                };
+
+                reader.readAsText(file);
+            } else {
+                alert('No file selected.');
+            }
+        }
+
+        function displayFileContent(content) {
+            // Display the content with proper line breaks and spacing
+            document.getElementById('output').textContent = content;
+
+            // Count lines, characters, words, and spaces
+            const lines = content.split('\n');
+            const characters = content.length;
+            const words = content.split(/\s+/).filter(word => word !== '').length;
+            const spaces = content.split(' ').length - 1;
+
+            // Display counts
+            const countsOutput = `Lines: ${lines.length}\nCharacters: ${characters}\nWords: ${words}\nSpaces: ${spaces}`;
+            document.getElementById('counts').textContent = countsOutput;
+        }
+    </script>
+</body>
+</html>
