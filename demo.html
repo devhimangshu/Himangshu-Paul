@@ -63,7 +63,8 @@
 
 
   <!-- CSS FROM HERE -->
-<style>body {
+<style>
+    body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
@@ -90,11 +91,12 @@ nav {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
 }
 
 .logo {
     font-size: 32px; /* Bigger font size */
-    font-weight: bold;
+    font-weight: bold; /* More bold */
     color: black;
 }
 
@@ -107,6 +109,7 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex;
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
 }
 
 nav ul li {
@@ -118,7 +121,7 @@ nav ul li a {
     color: black;
     text-decoration: none;
     font-size: 18px;
-    font-weight: bold; /* Make the menu items bold */
+    font-weight: normal; /* Less bold than the logo */
     position: relative;
     padding-bottom: 5px; /* Space for the underline */
 }
@@ -152,4 +155,37 @@ footer {
     text-align: center;
     padding: 10px 0;
 }
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+    .logo {
+        font-size: 28px; /* Slightly smaller logo for smaller screens */
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack the menu items vertically */
+        text-align: center;
+        padding: 0;
+    }
+
+    nav ul li {
+        margin: 10px 0; /* Vertical spacing for menu items */
+    }
+
+    nav ul li a {
+        font-size: 16px; /* Slightly smaller font size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        font-size: 24px; /* Further decrease logo size for very small screens */
+    }
+
+    nav ul li a {
+        font-size: 14px; /* Smaller font size for very small screens */
+    }
+}
+
 </style>
