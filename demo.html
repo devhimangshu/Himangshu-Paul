@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Portfolio</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <nav>
-            <div class="logo">Himangshu<span class="dot">.</span></div>
+            <div class="logo">
+                Himangshu<span class="dot">.</span>
+            </div>
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -21,57 +22,53 @@
             </ul>
         </nav>
     </header>
-
-    <section id="home">
-        <h1>Welcome to My Portfolio</h1>
-        <p>This is the home section where you introduce yourself.</p>
-    </section>
-
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Information about you goes here.</p>
-    </section>
-
-    <section id="skills">
-        <h2>Skills</h2>
-        <p>Details of your skills go here.</p>
-    </section>
-
-    <section id="qualification">
-        <h2>Qualification</h2>
-        <p>Details of your qualifications go here.</p>
-    </section>
-
-    <section id="projects">
-        <h2>Projects</h2>
-        <p>Details of your projects go here.</p>
-    </section>
-
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p>Details of how to contact you go here.</p>
-    </section>
-
+    <section id="home" class="section">Home Section</section>
+    <section id="about" class="section">About Section</section>
+    <section id="skills" class="section">Skills Section</section>
+    <section id="qualification" class="section">Qualification Section</section>
+    <section id="projects" class="section">Projects Section</section>
+    <section id="contact" class="section">Contact Me Section</section>
     <footer>
         <p>&copy; 2024 Himangshu. All rights reserved.</p>
     </footer>
+    <script>
+        // JavaScript to handle the Intersection Observer
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.section');
 
-    <script src="scripts.js"></script>
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
 </body>
 </html>
 
 
-
-  <!-- CSS FROM HERE -->
 <style>
-    body {
-    font-family: 'Roboto', sans-serif;
+
+    /* Basic Reset */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
     background: white;
     background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-size: 40px 40px; /* Larger grid boxes */
     color: black;
 }
 
@@ -115,7 +112,17 @@ nav ul {
 nav ul li {
     margin: 0 15px;
     position: relative; /* Needed for the underline animation */
+    opacity: 0; /* Start with hidden */
+    transform: translateY(20px); /* Start position for animation */
+    animation: fadeInUp 0.6s forwards; /* Apply animation */
 }
+
+nav ul li:nth-child(1) { animation-delay: 0.1s; }
+nav ul li:nth-child(2) { animation-delay: 0.2s; }
+nav ul li:nth-child(3) { animation-delay: 0.3s; }
+nav ul li:nth-child(4) { animation-delay: 0.4s; }
+nav ul li:nth-child(5) { animation-delay: 0.5s; }
+nav ul li:nth-child(6) { animation-delay: 0.6s; }
 
 nav ul li a {
     color: black;
@@ -144,9 +151,18 @@ nav ul li a:hover::after {
     transform-origin: bottom left;
 }
 
-section {
+/* Section Styles */
+.section {
     padding: 100px 20px;
     text-align: center;
+    opacity: 0; /* Start with hidden */
+    transform: translateY(20px); /* Start position for animation */
+    transition: opacity 0.6s ease, transform 0.6s ease; /* Animation duration */
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 footer {
@@ -157,7 +173,6 @@ footer {
 }
 
 /* Responsive Styles */
-
 @media (max-width: 768px) {
     .logo {
         font-size: 28px; /* Slightly smaller logo for smaller screens */
@@ -185,6 +200,18 @@ footer {
 
     nav ul li a {
         font-size: 14px; /* Smaller font size for very small screens */
+    }
+}
+
+/* Animation Styles */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
