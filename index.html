@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himangshu Paul - Interactive Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #E5E7EB;
+            cursor: none; /* Hide default cursor */
+        }
+        /* Custom Cursor for non-touch devices */
+        @media (hover: hover) and (pointer: fine) {
+            .cursor {
+                position: fixed;
+                width: 20px;
+                height: 20px;
+                border: 2px solid #38bdf8;
+                border-radius: 50%;
+                left: 0;
+                top: 0;
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                transition: width 0.2s, height 0.2s, background-color 0.2s, opacity 0.2s;
+                z-index: 9999;
+            }
+            .cursor-dot {
+                position: fixed;
+                width: 6px;
+                height: 6px;
+                background-color: #38bdf8;
+                border-radius: 50%;
+                left: 0;
+                top: 0;
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                z-index: 9999;
+            }
+            .cursor.hovered {
+                width: 50px;
+                height: 50px;
+                opacity: 0.1;
+                background-color: #38bdf8;
+            }
+        }
+        /* Hide custom cursor on touch devices */
+        @media (hover: none) and (pointer: coarse) {
+            body {
+                cursor: auto;
+            }
+            .cursor, .cursor-dot {
+                display: none;
+            }
+        }
+
+        /* NEW: Lava Grid Background */
+        #grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            z-index: 0;
+        }
+        .grid-cell {
+            border: 1px solid rgba(55, 65, 81, 0.2);
+            transition: background-color 1s ease-out, box-shadow 1s ease-out;
+        }
+        .grid-cell.glow {
+            background-color: rgba(251, 146, 60, 0.2); /* Orange glow */
+            box-shadow: 0 0 15px rgba(251, 146, 60, 0.3);
+            transition-duration: 0.1s;
+        }
+
+        main, header, footer {
+            position: relative;
+            z-index: 2;
+        }
+
+        .glass-effect {
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #38bdf8;
+            border: 4px solid #1f2937;
+            z-index: 1;
+        }
+        .timeline-path {
+            position: absolute;
+            left: -21px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #374151;
+        }
+        [data-aos] {
+            opacity: 0;
+            transition-property: opacity, transform;
+        }
+        [data-aos="fade-up"] {
+            transform: translateY(20px);
+        }
+        [data-aos].aos-animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Draggable Skills */
+        .skill-icon {
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .skill-icon:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+        }
+
+        /* 3D Tilt Projects */
+        .project-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s, opacity 0.3s, width 0.3s, padding 0.3s, margin 0.3s;
+        }
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        .project-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4));
+        }
+
+        /* Client Scroller */
+        .scroller {
+            max-width: 900px;
+            overflow: hidden;
+            -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+            mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent);
+        }
+        .scroller__inner {
+            display: flex;
+            gap: 2rem;
+            width: max-content;
+            animation: scroll 30s linear infinite;
+        }
+        .scroller__inner img {
+            height: 40px;
+            filter: grayscale(1) opacity(0.6);
+            transition: filter 0.3s;
+        }
+        .scroller__inner img:hover {
+            filter: grayscale(0) opacity(1);
+        }
+        @keyframes scroll {
+            to {
+                transform: translate(calc(-50% - 1rem));
+            }
+        }
+        
+        /* Spotlight Effect */
+        #experience {
+            position: relative;
+            background-color: transparent;
+        }
+        .spotlight {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at 50% 50%, transparent 100px, rgba(17, 24, 39, 0.95) 250px);
+            pointer-events: none;
+            transition: all 0.1s ease-out;
+            z-index: 2;
+        }
+
+        /* Game Canvas */
+        #game-canvas {
+            background-color: #000;
+            border-radius: 0.5rem;
+            border: 2px solid #374151;
+        }
+        
+        /* Typing Animation */
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background-color: #38bdf8;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Creative Pinboard */
+        #pinboard {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background-color: #374151;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 4px solid #4b5563;
+        }
+        .pinboard-item {
+            position: absolute;
+            cursor: grab;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pinboard-item:active {
+            cursor: grabbing;
+            z-index: 100;
+        }
+        .pinboard-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body class="antialiased">
+    
+    <div id="grid-background"></div>
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-effect">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white tracking-wider">
+                Himangshu<span class="text-sky-400">.</span>
+            </a>
+            <nav class="hidden md:flex space-x-8 items-center">
+                <a href="#about" class="text-gray-300 hover:text-sky-400 transition duration-300">About</a>
+                <a href="#experience" class="text-gray-300 hover:text-sky-400 transition duration-300">Experience</a>
+                <a href="#skills" class="text-gray-300 hover:text-sky-400 transition duration-300">Skills</a>
+                <a href="#projects" class="text-gray-300 hover:text-sky-400 transition duration-300">Projects</a>
+                <a href="#contact" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-300">Contact</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <nav class="flex flex-col items-center space-y-4 py-4">
+                <a href="#about" class="text-gray-300 hover:text-sky-400 transition duration-300">About</a>
+                <a href="#experience" class="text-gray-300 hover:text-sky-400 transition duration-300">Experience</a>
+                <a href="#skills" class="text-gray-300 hover:text-sky-400 transition duration-300">Skills</a>
+                <a href="#projects" class="text-gray-300 hover:text-sky-400 transition duration-300">Projects</a>
+                <a href="#contact" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold px-4 py-2 rounded-lg transition duration-300 w-3/4 text-center">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="min-h-screen flex items-center relative overflow-hidden">
+            <div class="container mx-auto px-6 text-center hero-content">
+                <div class="max-w-3xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4" data-aos="fade-up">
+                        I Build <span id="typing-text" class="text-sky-400"></span><span class="typing-cursor"></span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-300 mb-8" data-aos="fade-up" data-aos-delay="200">
+                        I'm a developer and brand strategist who turns ideas into reality.
+                    </p>
+                    <div class="flex justify-center space-x-4" data-aos="fade-up" data-aos-delay="400">
+                        <a href="#projects" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">See My Work</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-16 md:py-20 bg-gray-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-white" data-aos="fade-up">I Bridge Code and Creativity</h2>
+                <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                    <div class="md:w-1/3" data-aos="fade-up">
+                        <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?q=80&w=1974&auto=format&fit=crop" alt="Creative Developer Workspace" class="rounded-lg shadow-lg aspect-square object-cover">
+                    </div>
+                    <div class="md:w-2/3" data-aos="fade-up" data-aos-delay="200">
+                        <p class="text-gray-300 mb-4 text-base md:text-lg">
+                            I believe the best products aren't just built, they're grown. My journey started with founding TopupWala, where I didn't just write code—I designed the experience, marketed the product, and scaled a community to over 10,000 users.
+                        </p>
+                        <p class="text-gray-300 text-base md:text-lg">
+                            This taught me to think like a developer and a business owner simultaneously. Today, I use that dual perspective to build products that are not only technically sound but also strategically positioned to succeed.
+                        </p>
+                    </div>
+                </div>
+                <div id="stats-bar" class="mt-12 grid grid-cols-3 gap-4 text-center" data-aos="fade-up">
+                    <div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-sky-400" data-count="12">0+</h3>
+                        <p class="text-gray-400">Happy Clients</p>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-sky-400" data-count="12">0+</h3>
+                        <p class="text-gray-400">Projects</p>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl md:text-4xl font-bold text-sky-400" data-count="2">0+</h3>
+                        <p class="text-gray-400">Years Experience</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="banner" class="py-16 md:py-20" data-aos="fade-up">
+             <div class="container mx-auto px-6">
+                <img src="https://html-generator.com/uploads/images/2025/07/19/81430_3NKWRLEG4.jpg" alt="Himangshu Paul Banner" class="w-full h-auto rounded-lg shadow-2xl">
+            </div>
+        </section>
+        
+        <section id="creative-designs" class="py-16 md:py-20 bg-gray-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4 text-white" data-aos="fade-up">Creative Designs & Directions</h2>
+                <p class="text-center text-gray-400 mb-12" data-aos="fade-up">A peek into my creative process. Feel free to move things around!</p>
+                <div id="pinboard" data-aos="fade-up">
+                </div>
+            </div>
+        </section>
+
+        <section id="process" class="py-16 md:py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 md:mb-16 text-white" data-aos="fade-up">How I Work</h2>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                    <div class="flex flex-col items-center text-center p-4" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fas fa-search text-3xl md:text-4xl text-sky-400 mb-4"></i>
+                        <h3 class="text-lg md:text-xl font-bold mb-2">Discover</h3>
+                        <p class="text-gray-400 text-sm">Understand the vision, goals, and audience.</p>
+                    </div>
+                    <div class="text-2xl text-gray-600 my-2 md:my-0" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-arrow-right hidden md:inline-block"></i>
+                        <i class="fas fa-arrow-down md:hidden"></i>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-4" data-aos="fade-up" data-aos-delay="300">
+                        <i class="fas fa-lightbulb text-3xl md:text-4xl text-sky-400 mb-4"></i>
+                        <h3 class="text-lg md:text-xl font-bold mb-2">Define</h3>
+                        <p class="text-gray-400 text-sm">Create wireframes, prototypes, and strategy.</p>
+                    </div>
+                    <div class="text-2xl text-gray-600 my-2 md:my-0" data-aos="fade-up" data-aos-delay="400">
+                        <i class="fas fa-arrow-right hidden md:inline-block"></i>
+                        <i class="fas fa-arrow-down md:hidden"></i>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-4" data-aos="fade-up" data-aos-delay="500">
+                        <i class="fas fa-code text-3xl md:text-4xl text-sky-400 mb-4"></i>
+                        <h3 class="text-lg md:text-xl font-bold mb-2">Develop</h3>
+                        <p class="text-gray-400 text-sm">Write clean code to bring designs to life.</p>
+                    </div>
+                    <div class="text-2xl text-gray-600 my-2 md:my-0" data-aos="fade-up" data-aos-delay="600">
+                        <i class="fas fa-arrow-right hidden md:inline-block"></i>
+                        <i class="fas fa-arrow-down md:hidden"></i>
+                    </div>
+                    <div class="flex flex-col items-center text-center p-4" data-aos="fade-up" data-aos-delay="700">
+                        <i class="fas fa-rocket text-3xl md:text-4xl text-sky-400 mb-4"></i>
+                        <h3 class="text-lg md:text-xl font-bold mb-2">Deploy</h3>
+                        <p class="text-gray-400 text-sm">Launch, monitor, and provide ongoing support.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="py-16 md:py-20 bg-gray-900/50">
+             <div class="spotlight"></div>
+            <div class="container mx-auto px-6 relative z-10">
+                <h2 class="text-3xl font-bold text-center mb-12 md:mb-16 text-white" data-aos="fade-up">My Professional Journey</h2>
+                <div class="relative max-w-2xl mx-auto">
+                    <div class="timeline-path"></div>
+                    <div class="timeline-item relative pl-8 mb-12" data-aos="fade-up">
+                        <div class="glass-effect p-6 rounded-lg">
+                            <p class="text-sky-400 font-semibold text-sm mb-1">Feb 2025 - Present</p>
+                            <h3 class="text-xl font-bold text-white mb-2">Brand Manager</h3>
+                            <p class="text-gray-400 mb-3">Blue Minch, India</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item relative pl-8 mb-12" data-aos="fade-up">
+                        <div class="glass-effect p-6 rounded-lg">
+                            <p class="text-sky-400 font-semibold text-sm mb-1">2021 - Present</p>
+                            <h3 class="text-xl font-bold text-white mb-2">Lead Developer (Freelance)</h3>
+                            <p class="text-gray-400 mb-3">Born2Earn GameShop, India</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item relative pl-8" data-aos="fade-up">
+                        <div class="glass-effect p-6 rounded-lg">
+                            <p class="text-sky-400 font-semibold text-sm mb-1">2023 - 2024</p>
+                            <h3 class="text-xl font-bold text-white mb-2">Founder & Lead Developer</h3>
+                            <p class="text-gray-400 mb-3">TopupWala, India</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-16 md:py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4 text-white" data-aos="fade-up">My Toolkit</h2>
+                <p class="text-center text-gray-400 mb-12" data-aos="fade-up">Go ahead, play with my skills. You can drag them around!</p>
+                <div id="skills-container" class="relative grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 md:gap-8 max-w-4xl mx-auto p-4 md:p-8 glass-effect rounded-lg" data-aos="fade-up">
+                    </div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-16 md:py-20 bg-gray-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4 text-white" data-aos="fade-up">Featured Projects</h2>
+                <div class="flex justify-center space-x-2 md:space-x-4 mb-8" data-aos="fade-up">
+                    <button class="filter-btn bg-sky-500 text-white py-2 px-4 rounded-lg text-sm md:text-base" data-filter="all">All</button>
+                    <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded-lg text-sm md:text-base" data-filter="app">Apps</button>
+                    <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded-lg text-sm md:text-base" data-filter="web">Web</button>
+                    <button class="filter-btn bg-gray-700 text-white py-2 px-4 rounded-lg text-sm md:text-base" data-filter="branding">Branding</button>
+                </div>
+                <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" style="perspective: 1000px;">
+                    <div class="project-card relative overflow-hidden rounded-lg shadow-lg" data-aos="fade-up" data-category="app web">
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="TopupWala Project">
+                        <div class="project-overlay absolute inset-0 flex flex-col justify-end items-start p-6">
+                            <h3 class="text-xl md:text-2xl font-bold text-white">TopupWala E-commerce</h3>
+                        </div>
+                    </div>
+                    <div class="project-card relative overflow-hidden rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100" data-category="app web branding">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Born2Earn Project">
+                        <div class="project-overlay absolute inset-0 flex flex-col justify-end items-start p-6">
+                            <h3 class="text-xl md:text-2xl font-bold text-white">Born2Earn GameShop</h3>
+                        </div>
+                    </div>
+                    <div class="project-card relative overflow-hidden rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200" data-category="web">
+                        <img src="https://images.unsplash.com/photo-1534488972433-e3d4a3713c24?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Face Recognition Project">
+                        <div class="project-overlay absolute inset-0 flex flex-col justify-end items-start p-6">
+                            <h3 class="text-xl md:text-2xl font-bold text-white">Face Recognition System</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="achievements" class="py-16 md:py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-white" data-aos="fade-up">Key Achievements</h2>
+                <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="flex items-center gap-4 p-4 glass-effect rounded-lg" data-aos="fade-up">
+                        <i class="fas fa-trophy text-3xl text-sky-400"></i>
+                        <div>
+                            <h3 class="font-bold text-white">Google Developers Recognition</h3>
+                            <p class="text-gray-400 text-sm">Featured in the official Google Developers Certification Alumni Directory.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 glass-effect rounded-lg" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fas fa-rocket text-3xl text-sky-400"></i>
+                        <div>
+                            <h3 class="font-bold text-white">Entrepreneurial Success</h3>
+                            <p class="text-gray-400 text-sm">Launched and scaled TopupWala to over 10,000 users from the ground up.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 glass-effect rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-award text-3xl text-sky-400"></i>
+                        <div>
+                            <h3 class="font-bold text-white">1st Place, AI-Art Bot</h3>
+                            <p class="text-gray-400 text-sm">Won a university-level competition for developing an innovative AI art bot.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 p-4 glass-effect rounded-lg" data-aos="fade-up" data-aos-delay="300">
+                        <i class="fab fa-shopify text-3xl text-sky-400"></i>
+                        <div>
+                            <h3 class="font-bold text-white">Shopify Certification</h3>
+                            <p class="text-gray-400 text-sm">Completed Shopify Store Creation course, enhancing e-commerce expertise.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-16 md:py-20 bg-gray-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-12 text-white" data-aos="fade-up">What My Clients Say</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-effect rounded-lg p-6" data-aos="fade-up">
+                        <p class="text-gray-300 mb-4">"Himangshu is a rare talent who understands both the technical and business sides of a project. He delivered beyond our expectations."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.pravatar.cc/40?u=a" class="w-10 h-10 rounded-full mr-4" alt="Client Avatar">
+                            <div>
+                                <h4 class="font-bold text-white">Client A</h4>
+                                <p class="text-sm text-gray-400">CEO, Tech Company</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-effect rounded-lg p-6" data-aos="fade-up" data-aos-delay="100">
+                        <p class="text-gray-300 mb-4">"Working with Himangshu was a breeze. His communication is excellent, and his work is top-notch. Highly recommended."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.pravatar.cc/40?u=b" class="w-10 h-10 rounded-full mr-4" alt="Client Avatar">
+                            <div>
+                                <h4 class="font-bold text-white">Client B</h4>
+                                <p class="text-sm text-gray-400">Marketing Director</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-effect rounded-lg p-6" data-aos="fade-up" data-aos-delay="200">
+                        <p class="text-gray-300 mb-4">"The creativity and dedication Himangshu brought to our project were instrumental in its success. We couldn't be happier."</p>
+                        <div class="flex items-center">
+                            <img src="https://i.pravatar.cc/40?u=c" class="w-10 h-10 rounded-full mr-4" alt="Client Avatar">
+                            <div>
+                                <h4 class="font-bold text-white">Client C</h4>
+                                <p class="text-sm text-gray-400">Startup Founder</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="game-section" class="py-16 md:py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-4 text-white" data-aos="fade-up">Let's Have Some Fun</h2>
+                <p class="text-gray-400 mb-8" data-aos="fade-up">Here's a little game I built. Use your mouse to control the paddle.</p>
+                <div class="flex justify-center" data-aos="fade-up">
+                    <canvas id="game-canvas" width="480" height="320" class="w-full max-w-md"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="clients" class="py-16 md:py-20 bg-gray-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-2xl font-bold text-center text-gray-400 mb-10" data-aos="fade-up">Trusted By The Best</h2>
+                <div class="scroller mx-auto" data-aos="fade-up">
+                    <div class="scroller__inner">
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Blue+Minch" alt="Blue Minch Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Born2Earn" alt="Born2Earn Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=TopupWala" alt="TopupWala Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Client+A" alt="Client A Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Client+B" alt="Client B Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Client+C" alt="Client C Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Blue+Minch" alt="Blue Minch Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Born2Earn" alt="Born2Earn Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=TopupWala" alt="TopupWala Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Client+A" alt="Client A Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Client+B" alt="Client B Logo"/>
+                        <img src="https://placehold.co/200x80/FFFFFF/111827?text=Client+C" alt="Client C Logo"/>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 md:py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-white" data-aos="fade-up">Let's Build Something Great</h2>
+                    <p class="text-gray-400 mt-4 mb-8 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">Have a project in mind or just want to connect? I'm always open to discussing new ideas and opportunities.</p>
+                </div>
+                <div class="max-w-3xl mx-auto glass-effect rounded-lg p-6 md:p-8" data-aos="fade-up" data-aos-delay="200">
+                    <form id="contact-form">
+                        <div class="flex flex-col md:flex-row gap-6 mb-6">
+                            <input type="text" id="name" name="name" placeholder="Your Name" class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                            <input type="email" id="email" name="email" placeholder="Your Email" class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                        </div>
+                        <textarea id="message" name="message" placeholder="Your Message" rows="5" class="w-full bg-gray-800 border border-gray-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-sky-500 mb-6" required></textarea>
+                        <div class="text-center">
+                            <button type="submit" class="bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-lg">Send Message</button>
+                        </div>
+                    </form>
+                    <div id="form-feedback" class="text-center mt-4"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 border-t border-gray-700 pt-12 pb-8">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-400">
+                <div class="mb-4 md:mb-0">
+                    <a href="#" class="text-2xl font-bold text-white tracking-wider">
+                        Himangshu<span class="text-sky-400">.</span>
+                    </a>
+                    <p class="text-sm mt-2">Developer & Brand Strategist</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-4">Links</h3>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#about" class="hover:text-sky-400 transition-colors">About</a>
+                        <a href="#projects" class="hover:text-sky-400 transition-colors">Projects</a>
+                        <a href="#contact" class="hover:text-sky-400 transition-colors">Contact</a>
+                    </nav>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-4">Get in Touch</h3>
+                     <div class="flex flex-col space-y-2">
+                        <a href="mailto:himangshu.inbox@gmail.com" class="hover:text-sky-400 transition-colors flex items-center gap-2">
+                            <i class="fas fa-envelope"></i> himangshu.inbox@gmail.com
+                        </a>
+                        <a href="tel:+919564604956" class="hover:text-sky-400 transition-colors flex items-center gap-2">
+                            <i class="fas fa-phone"></i> (+91) 9564604956
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold text-white mb-4">Follow Me</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://linkedin.com/in/himangshupaul/" target="_blank" class="text-2xl hover:text-sky-400 transition-colors"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" target="_blank" class="text-2xl hover:text-sky-400 transition-colors"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank" class="text-2xl hover:text-sky-400 transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank" class="text-2xl hover:text-sky-400 transition-colors"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-sm">
+                <p>&copy; 2025 Himangshu Paul. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        // --- INTERACTIVE FEATURES ---
+
+        // 1. Interactive Background
+        const gridBg = document.getElementById('grid-background');
+        const createGrid = () => {
+            if (!gridBg) return;
+            gridBg.innerHTML = '';
+            const size = 50;
+            const cols = Math.ceil(window.innerWidth / size);
+            const rows = Math.ceil(window.innerHeight / size);
+            gridBg.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            for (let i = 0; i < cols * rows; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('grid-cell');
+                cell.addEventListener('mouseover', () => {
+                    cell.classList.add('glow');
+                    setTimeout(() => cell.classList.remove('glow'), 1000);
+                });
+                gridBg.appendChild(cell);
+            }
+        };
+        createGrid();
+        window.addEventListener('resize', createGrid);
+
+        // 2. Draggable Skills
+        const skills = [
+            { name: 'Java', icon: 'fa-brands fa-java' }, { name: 'Python', icon: 'fa-brands fa-python' },
+            { name: 'PHP', icon: 'fa-brands fa-php' }, { name: 'JavaScript', icon: 'fa-brands fa-js-square' },
+            { name: 'HTML5', icon: 'fa-brands fa-html5' }, { name: 'CSS3', icon: 'fa-brands fa-css3-alt' },
+            { name: 'Android', icon: 'fa-brands fa-android' }, { name: 'Firebase', icon: 'fas fa-fire' },
+            { name: 'WordPress', icon: 'fa-brands fa-wordpress' }, { name: 'Linux', icon: 'fa-brands fa-linux' },
+            { name: 'SEO', icon: 'fas fa-search' }, { name: 'Shopify', icon: 'fa-brands fa-shopify' }
+        ];
+
+        const skillsContainer = document.getElementById('skills-container');
+        skills.forEach(skill => {
+            const skillEl = document.createElement('div');
+            skillEl.className = 'skill-icon flex flex-col items-center gap-2 p-4 rounded-lg glass-effect';
+            skillEl.innerHTML = `<i class="${skill.icon} text-4xl text-sky-400"></i><span class="text-sm">${skill.name}</span>`;
+            skillsContainer.appendChild(skillEl);
+
+            let isDragging = false, offsetX, offsetY;
+            skillEl.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - skillEl.getBoundingClientRect().left;
+                offsetY = e.clientY - skillEl.getBoundingClientRect().top;
+                skillEl.style.position = 'absolute';
+            });
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    const containerRect = skillsContainer.getBoundingClientRect();
+                    let newX = e.clientX - containerRect.left - offsetX;
+                    let newY = e.clientY - containerRect.top - offsetY;
+                    newX = Math.max(0, Math.min(newX, containerRect.width - skillEl.offsetWidth));
+                    newY = Math.max(0, Math.min(newY, containerRect.height - skillEl.offsetHeight));
+                    skillEl.style.left = `${newX}px`;
+                    skillEl.style.top = `${newY}px`;
+                }
+            });
+            document.addEventListener('mouseup', () => { isDragging = false; });
+        });
+
+        // 3. 3D Tilt Projects
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const { width, height } = rect;
+                const rotateX = (y / height - 0.5) * -20;
+                const rotateY = (x / width - 0.5) * 20;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // 4. Spotlight Effect
+        const spotlight = document.querySelector('.spotlight');
+        const experienceSection = document.getElementById('experience');
+        experienceSection.addEventListener('mousemove', (e) => {
+            const rect = experienceSection.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            spotlight.style.background = `radial-gradient(circle at ${x}px ${y}px, transparent 100px, rgba(17, 24, 39, 0.95) 250px)`;
+        });
+
+        // 5. Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        window.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, .skill-icon, .project-card, .filter-btn').forEach(link => {
+            link.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            link.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // 6. Project Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectGrid = document.getElementById('project-grid');
+        const allProjects = Array.from(projectGrid.children);
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.replace('bg-sky-500', 'bg-gray-700'));
+                btn.classList.replace('bg-gray-700', 'bg-sky-500');
+                const filter = btn.dataset.filter;
+                allProjects.forEach(project => {
+                    const categories = project.dataset.category.split(' ');
+                    project.style.display = (filter === 'all' || categories.includes(filter)) ? 'block' : 'none';
+                });
+            });
+        });
+        
+        // 7. Game Logic (FIXED)
+        const gameCanvas = document.getElementById('game-canvas');
+        const gameCtx = gameCanvas.getContext('2d');
+        let isGameOver = false, ballX = gameCanvas.width / 2, ballY = gameCanvas.height - 30, dx = 2, dy = -2, paddleX = (gameCanvas.width - 75) / 2, score = 0, lives = 3;
+        const ballRadius = 10, paddleHeight = 10, paddleWidth = 75, brickRowCount = 3, brickColumnCount = 5, brickWidth = 75, brickHeight = 20, brickPadding = 10, brickOffsetTop = 30, brickOffsetLeft = 30;
+        let bricks = Array(brickColumnCount).fill(0).map(() => Array(brickRowCount).fill(0).map(() => ({ x: 0, y: 0, status: 1 })));
+
+        gameCanvas.addEventListener("mousemove", (e) => {
+            let relativeX = e.clientX - gameCanvas.getBoundingClientRect().left;
+            if(relativeX > 0 && relativeX < gameCanvas.width) paddleX = relativeX - paddleWidth / 2;
+        });
+        gameCanvas.addEventListener("click", () => { if (isGameOver) restartGame(); });
+
+        function restartGame() {
+            score = 0; lives = 3; ballX = gameCanvas.width / 2; ballY = gameCanvas.height - 30; dx = 2; dy = -2; paddleX = (gameCanvas.width - paddleWidth) / 2;
+            bricks.forEach(col => col.forEach(brick => brick.status = 1));
+            isGameOver = false;
+            drawGame();
+        }
+        function drawGame() {
+            if (isGameOver) {
+                gameCtx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+                gameCtx.font = "32px Inter"; gameCtx.fillStyle = "#E5E7EB"; gameCtx.textAlign = "center";
+                gameCtx.fillText(score === brickRowCount * brickColumnCount ? "YOU WIN!" : "GAME OVER", gameCanvas.width / 2, gameCanvas.height / 2 - 20);
+                gameCtx.font = "16px Inter";
+                gameCtx.fillText("Click to Restart", gameCanvas.width / 2, gameCanvas.height / 2 + 20);
+                return;
+            }
+            gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+            bricks.forEach((col, c) => col.forEach((b, r) => {
+                if (b.status == 1) {
+                    b.x = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+                    b.y = (r*(brickHeight+brickPadding))+brickOffsetTop;
+                    gameCtx.beginPath(); gameCtx.rect(b.x, b.y, brickWidth, brickHeight); gameCtx.fillStyle = "#38bdf8"; gameCtx.fill(); gameCtx.closePath();
+                    if (ballX > b.x && ballX < b.x + brickWidth && ballY > b.y && ballY < b.y + brickHeight) {
+                        dy = -dy; b.status = 0; score++;
+                        if (score == brickRowCount * brickColumnCount) isGameOver = true;
+                    }
+                }
+            }));
+            gameCtx.beginPath(); gameCtx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2); gameCtx.fillStyle = "#38bdf8"; gameCtx.fill(); gameCtx.closePath();
+            gameCtx.beginPath(); gameCtx.rect(paddleX, gameCanvas.height - paddleHeight, paddleWidth, paddleHeight); gameCtx.fillStyle = "#E5E7EB"; gameCtx.fill(); gameCtx.closePath();
+            gameCtx.font = "16px Inter"; gameCtx.fillStyle = "#E5E7EB"; gameCtx.textAlign = "left";
+            gameCtx.fillText("Score: "+score, 8, 20);
+            gameCtx.fillText("Lives: "+lives, gameCanvas.width-65, 20);
+            if (ballX + dx > gameCanvas.width - ballRadius || ballX + dx < ballRadius) dx = -dx;
+            if (ballY + dy < ballRadius) dy = -dy;
+            else if (ballY + dy > gameCanvas.height - ballRadius) {
+                if (ballX > paddleX && ballX < paddleX + paddleWidth) dy = -dy;
+                else {
+                    lives--;
+                    if (!lives) isGameOver = true;
+                    else { ballX = gameCanvas.width / 2; ballY = gameCanvas.height - 30; dx = 2; dy = -2; paddleX = (gameCanvas.width - paddleWidth) / 2; }
+                }
+            }
+            ballX += dx; ballY += dy;
+            requestAnimationFrame(drawGame);
+        }
+        drawGame();
+        
+        // 8. Typing Animation
+        const typingTextElement = document.getElementById('typing-text');
+        const words = ["Digital Products.", "Brands.", "User Experiences."];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentWord = words[wordIndex];
+            if (isDeleting) {
+                typingTextElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingTextElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+            }
+
+            const typeSpeed = isDeleting ? 100 : 200;
+            setTimeout(type, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', type);
+
+        // 9. Animated Stats
+        const statsBar = document.getElementById('stats-bar');
+        const counters = statsBar.querySelectorAll('h3');
+        let animated = false;
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !animated) {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-count');
+                    let count = 0;
+                    const updateCount = () => {
+                        const increment = target / 100;
+                        if (count < target) {
+                            count += increment;
+                            counter.innerText = `${Math.ceil(count)}+`;
+                            requestAnimationFrame(updateCount);
+                        } else {
+                            counter.innerText = `${target}+`;
+                        }
+                    };
+                    updateCount();
+                });
+                animated = true;
+            }
+        }, { threshold: 0.5 });
+
+        observer.observe(statsBar);
+        
+        // 10. Draggable Pinboard
+        document.addEventListener('DOMContentLoaded', () => {
+            const pinboard = document.getElementById('pinboard');
+            if (pinboard) {
+                const posters = [
+                    'https://images.unsplash.com/photo-1541597254332-213554b3435e?q=80&w=1974&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=1974&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1585060544812-6b45792b4573?q=80&w=1934&auto=format&fit=crop',
+                    'https://images.unsplash.com/photo-1519414442722-e76425a84210?q=80&w=2070&auto=format&fit=crop'
+                ];
+
+                posters.forEach((src, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'pinboard-item';
+                    item.style.width = '150px';
+                    item.style.height = '200px';
+                    item.style.left = `${Math.random() * (pinboard.offsetWidth - 150)}px`;
+                    item.style.top = `${Math.random() * (pinboard.offsetHeight - 200)}px`;
+                    item.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                    item.innerHTML = `<img src="${src}" alt="Creative Poster ${i+1}">`;
+                    pinboard.appendChild(item);
+
+                    let isDragging = false, offsetX, offsetY;
+                    item.addEventListener('mousedown', (e) => {
+                        isDragging = true;
+                        offsetX = e.clientX - item.getBoundingClientRect().left;
+                        offsetY = e.clientY - item.getBoundingClientRect().top;
+                    });
+                    document.addEventListener('mousemove', (e) => {
+                        if (isDragging) {
+                            const boardRect = pinboard.getBoundingClientRect();
+                            let newX = e.clientX - boardRect.left - offsetX;
+                            let newY = e.clientY - boardRect.top - offsetY;
+                            newX = Math.max(0, Math.min(newX, boardRect.width - item.offsetWidth));
+                            newY = Math.max(0, Math.min(newY, boardRect.height - item.offsetHeight));
+                            item.style.left = `${newX}px`;
+                            item.style.top = `${newY}px`;
+                        }
+                    });
+                    document.addEventListener('mouseup', () => { isDragging = false; });
+                });
+            }
+        });
+
+        // --- STANDARD SCRIPT ---
+        AOS.init({ duration: 800, once: true, offset: 50 });
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('bg-gray-900/80', window.scrollY > 50);
+        });
+
+        const contactForm = document.getElementById('contact-form');
+        const formFeedback = document.getElementById('form-feedback');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            formFeedback.textContent = 'Sending...';
+            formFeedback.className = 'text-center mt-4 text-blue-400';
+            setTimeout(() => {
+                formFeedback.textContent = 'Thank you! I will be in touch soon.';
+                formFeedback.className = 'text-center mt-4 text-green-400';
+                contactForm.reset();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
