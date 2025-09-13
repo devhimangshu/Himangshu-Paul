@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --aurora-color-1: #34D399; /* Lighter Emerald */
@@ -16,379 +17,234 @@
         html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f9fafb; /* Light Gray BG */
-            color: #1f2937; /* Dark Gray Text */
-            background-image: 
-                linear-gradient(to right, rgba(29, 78, 216, 0.05) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(29, 78, 216, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background-color: #f9fafb;
+            color: #1f2937;
+            background-image:
+                linear-gradient(to right, rgba(29, 78, 216, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(29, 78, 216, 0.04) 1px, transparent 1px);
+            background-size: 30px 30px;
+            cursor: none; /* Hide default cursor */
         }
+        /* --- Custom Cursor --- */
+        .custom-cursor .cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 6px; height: 6px;
+            background-color: #10B981;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .custom-cursor .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            width: 30px; height: 30px;
+            border: 2px solid #10B981;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            opacity: 0.5;
+        }
+        .custom-cursor.hover .cursor-dot { transform: translate(-50%, -50%) scale(1.5); }
+        .custom-cursor.hover .cursor-outline { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+
+        /* --- Lens Flare Effect --- */
+        #lens-flare {
+            position: fixed;
+            top: 0; left: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(52, 211, 153, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: -1;
+            transition: transform 0.1s ease-out;
+        }
+
+
         /* --- General Custom Scrollbar --- */
-        body::-webkit-scrollbar { width: 8px; }
+        body::-webkit-scrollbar { width: 6px; }
         body::-webkit-scrollbar-track { background: #e5e7eb; }
-        body::-webkit-scrollbar-thumb { background: #34D399; border-radius: 4px; }
+        body::-webkit-scrollbar-thumb { background: #34D399; border-radius: 3px; }
         body::-webkit-scrollbar-thumb:hover { background: #10B981; }
 
-        /* --- Interactive Constellation Background --- */
         #constellation-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -4; pointer-events: none;
         }
-
-        /* --- Dynamic Aurora Background --- */
         .aurora-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; overflow: hidden;
         }
         .aurora-background::before, .aurora-background::after {
-            content: ''; position: absolute; width: 100vmax; height: 100vmax; border-radius: 50%;
-            filter: blur(250px); opacity: 0.3; animation: aurora-move 35s infinite linear;
+            content: ''; position: absolute; width: 80vmax; height: 80vmax; border-radius: 50%;
+            filter: blur(200px); opacity: 0.25; animation: aurora-move 35s infinite linear;
             transition: background 2s ease-in-out;
         }
-        .aurora-background::before {
-            background: radial-gradient(circle, var(--aurora-color-1), transparent 60%); top: -50%; left: -50%;
-        }
-        .aurora-background::after {
-            background: radial-gradient(circle, var(--aurora-color-2), transparent 60%); bottom: -50%; right: -50%;
-            animation-direction: reverse; animation-duration: 45s;
-        }
-        @keyframes aurora-move {
-            0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
-            100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
-        }
+        .aurora-background::before { background: radial-gradient(circle, var(--aurora-color-1), transparent 60%); top: -40%; left: -40%; }
+        .aurora-background::after { background: radial-gradient(circle, var(--aurora-color-2), transparent 60%); bottom: -40%; right: -40%; animation-direction: reverse; animation-duration: 45s; }
+        @keyframes aurora-move { 0% { transform: rotate(0deg) translateX(30px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); } }
 
-        /* --- Floating Particles --- */
         #particles-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2; pointer-events: none; overflow: hidden;
         }
         .particle {
-            position: absolute; bottom: -20px; border-radius: 50%; background: rgba(52, 211, 153, 0.6);
-            box-shadow: 0 0 8px rgba(52, 211, 153, 0.7); animation: float linear infinite; opacity: 0;
+            position: absolute; bottom: -20px; border-radius: 50%; background: rgba(52, 211, 153, 0.5);
+            box-shadow: 0 0 6px rgba(52, 211, 153, 0.6); animation: float linear infinite; opacity: 0;
         }
-        @keyframes float {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-105vh); opacity: 0; }
-        }
+        @keyframes float { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-105vh); opacity: 0; } }
 
-        /* --- Header & Nav --- */
         .header-scrolled {
-            background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            background-color: rgba(255, 255, 255, 0.75); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         .nav-link { position: relative; }
-        .nav-link::after {
-            content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px;
-            background-color: #10B981; transition: width 0.3s ease;
-        }
+        .nav-link::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px; background-color: #10B981; transition: width 0.3s ease; }
         .nav-link:hover::after { width: 100%; }
-        
+
         #mobile-menu-button .line { transition: all 0.3s ease-in-out; stroke: #1f2937; }
         #mobile-menu-button.open .line1 { transform: translateY(8px) rotate(45deg); }
         #mobile-menu-button.open .line2 { opacity: 0; }
         #mobile-menu-button.open .line3 { transform: translateY(-8px) rotate(-45deg); }
-        
+
         .card-border-gradient {
             position: relative; border: 1px solid transparent;
             background: linear-gradient(white, white) padding-box, linear-gradient(120deg, rgba(52, 211, 153, 0.3), rgba(16, 185, 129, 0.3), white, white) border-box;
             border-radius: 1rem; transition: all 0.3s ease; overflow: hidden;
         }
         .card-border-gradient:hover {
-            background: linear-gradient(white, white) padding-box, linear-gradient(120deg, var(--glow-color), rgba(16, 185, 129, 0.7), white) border-box;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.05);
-            transform: translateY(-5px);
+            box-shadow: 0 8px 15px -3px rgba(0,0,0,0.05);
+            transform: translateY(-4px);
         }
-        
-        /* --- Pixelated Text Reveal --- */
-        .pixel-reveal {
-            position: relative;
-            display: inline-block;
+        /* Spotlight effect for service cards */
+        .card-spotlight {
+             background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(52, 211, 153, 0.2), transparent 40%);
+             transition: background 0.2s ease;
         }
-        .pixel-reveal > .char {
-            display: inline-block;
-            opacity: 0;
-            transform: scale(0.8);
-            filter: blur(10px);
-            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-        .visible .pixel-reveal > .char {
-            opacity: 1;
-            transform: scale(1);
-            filter: blur(0);
-            transition-delay: calc(var(--char-index) * 40ms);
+        .card-border-gradient:not(:hover) .card-spotlight {
+            background: transparent;
         }
 
-        .scroll-animate { opacity: 0; transition: opacity 1s ease-out, transform 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
+        /* --- Text Scramble Effect --- */
+        .scramble-text { font-family: 'Space Mono', monospace; }
+
+        .scroll-animate { opacity: 0; transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .scroll-animate.visible { opacity: 1; }
-        .fade-in-up { transform: translateY(50px); }
+        .fade-in-up { transform: translateY(40px); }
         .fade-in-up.visible { transform: translateY(0); }
-        .zoom-in { transform: scale(0.9); }
+        .zoom-in { transform: scale(0.95); }
         .zoom-in.visible { transform: scale(1); }
-        
+
         .stagger-children > * {
-            opacity: 0; transform: translateY(30px);
-            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            opacity: 0; transform: translateY(25px);
+            transition: all 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .visible.stagger-children > * {
-            opacity: 1; transform: translateY(0);
-            transition-delay: calc(var(--i) * 100ms);
-        }
-        
-        .scroller {
-            -webkit-mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
-        }
-        .scroller-inner { 
-            animation: scroll 60s linear infinite; 
-            display: flex;
-            width: max-content;
-        }
+        .visible.stagger-children > * { opacity: 1; transform: translateY(0); transition-delay: calc(var(--i) * 100ms); }
+
+        .scroller { -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent); }
+        .scroller-inner { animation: scroll 60s linear infinite; display: flex; width: max-content; }
         .scroller:hover .scroller-inner { animation-play-state: paused; }
-        
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         .skill-card {
-            background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(120deg, rgba(52, 211, 153, 0.2), rgba(16, 185, 129, 0.2)) border-box;
+            background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(120deg, rgba(52, 211, 153, 0.15), rgba(16, 185, 129, 0.15)) border-box;
             border: 1px solid transparent;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .skill-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.05);
-        }
-        
-        .animated-word {
-            position: absolute; width: 100%; left: 0; top: 0; transform: translateY(120%);
-            transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
-        }
+        .skill-card:hover { transform: translateY(-5px); box-shadow: 0 8px 12px -3px rgba(0,0,0,0.04); }
+
+        .animated-word { position: absolute; width: 100%; left: 0; top: 0; transform: translateY(120%); transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1); }
         .animated-word.in { transform: translateY(0); }
         .animated-word.out { transform: translateY(-120%); }
+        #word-anim-container::after { content: 'Digital Marketing.'; font-weight: 900; visibility: hidden; }
 
-        #word-anim-container::after {
-            content: 'Digital Marketing.';
-            font-weight: 900;
-            visibility: hidden;
-        }
-
-        .typing-cursor {
-            display: inline-block; width: 8px; height: 1.2em; background-color: #10B981;
-            animation: blink 1s infinite; margin-left: 2px; vertical-align: middle;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-        
-        #kbar-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(249, 250, 251, 0.7); backdrop-filter: blur(8px);
-            z-index: 9998; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
+        #kbar-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249, 250, 251, 0.7); backdrop-filter: blur(8px); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         #kbar-overlay.visible { opacity: 1; pointer-events: all; }
-        #kbar-wrapper {
-            position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%) scale(0.95);
-            width: 90%; max-width: 600px; background: #ffffff;
-            border: 1px solid rgba(0,0,0,0.1); border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            z-index: 9999; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
+        #kbar-wrapper { position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%) scale(0.95); width: 90%; max-width: 550px; background: #ffffff; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; }
         #kbar-overlay.visible #kbar-wrapper { opacity: 1; pointer-events: all; transform: translate(-50%, -50%) scale(1); }
-        .kbar-item {
-            padding: 12px 16px; display: flex; align-items: center; color: #1f2937;
-            cursor: pointer; transition: background-color 0.2s ease;
-        }
+        .kbar-item { padding: 10px 14px; display: flex; align-items: center; color: #1f2937; cursor: none; transition: background-color 0.2s ease; }
         .kbar-item:hover, .kbar-item.active { background-color: rgba(52, 211, 153, 0.2); }
         .kbar-item + .kbar-item { border-top: 1px solid rgba(0,0,0,0.05); }
+
         .flicker-glow { animation: flicker 5s infinite alternate; }
-        @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% { box-shadow: 0 0 40px 10px rgba(52, 211, 153, 0.5); }
-            20%, 24%, 55% { box-shadow: 0 0 40px 10px rgba(52, 211, 153, 0.2); }
-        }
+        @keyframes flicker { 0%, 18%, 22%, 25%, 53%, 57%, 100% { box-shadow: 0 0 30px 8px rgba(52, 211, 153, 0.5); } 20%, 24%, 55% { box-shadow: 0 0 30px 8px rgba(52, 211, 153, 0.2); } }
+
+        .profile-image, .profile-gradient-ring { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .profile-image-container:hover .profile-image { transform: scale(1.03); }
+        .profile-image-container:hover .profile-gradient-ring { transform: scale(1.05) rotate(10deg); }
         
-        /* Shimmer Effect for Buttons */
-        .shimmer-btn {
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.3s ease;
-        }
-        .shimmer-btn:hover {
-            transform: scale(1.05);
-        }
-        .shimmer-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            transform: translateX(-100%);
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: shimmer 3.5s infinite;
-        }
-        @keyframes shimmer {
-            100% {
-                transform: translateX(100%);
-            }
-        }
+        .header-arrow { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .header-arrow:hover { transform: scale(1.2) rotate(5deg); }
+        .header-arrow.flipped:hover { transform: scale(1.2) rotate(-5deg) scaleX(-1); }
 
-        /* --- Dynamic Effects --- */
-        .profile-image, .profile-gradient-ring {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .profile-image-container:hover .profile-image {
-            transform: scale(1.03);
-        }
-        .profile-image-container:hover .profile-gradient-ring {
-            transform: scale(1.05) rotate(10deg);
-        }
-        .header-arrow {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .header-arrow:hover {
-            transform: scale(1.25) rotate(5deg);
-        }
-        .header-arrow.flipped:hover {
-            transform: scale(1.25) rotate(-5deg) scaleX(-1);
-        }
-        
-        .brand-logo {
-            filter: grayscale(100%);
-            transition: filter 0.3s ease;
-        }
-        .brand-logo:hover {
-            filter: grayscale(0%);
-        }
+        .brand-logo { filter: grayscale(100%); transition: filter 0.3s ease, transform 0.2s ease; }
+        .brand-logo:hover { filter: grayscale(0%); transform: scale(1.05); }
 
-        .enquiry-label {
-            position: absolute;
-            top: 50%;
-            right: -48px;
-            transform: translateY(-50%) rotate(-90deg);
-            transform-origin: center;
-            background-color: #10B981;
-            color: white;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 600;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
-            transition: right 0.3s ease;
-            z-index: 5;
-            white-space: nowrap;
-        }
+        .enquiry-label { position: absolute; top: 50%; right: -48px; transform: translateY(-50%) rotate(-90deg); transform-origin: center; background-color: #10B981; color: white; padding: 4px 10px; font-size: 11px; font-weight: 600; border-top-left-radius: 6px; border-top-right-radius: 6px; transition: right 0.3s ease; z-index: 5; white-space: nowrap; }
+        .card-border-gradient:hover .enquiry-label { right: -12px; }
 
-        .card-border-gradient:hover .enquiry-label {
-            right: -12px;
-        }
-        
-        /* Figma-style Flowchart */
-        .process-flow {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-        }
-        .process-step-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            width: 22%;
-            text-align: center;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .process-step-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-        .process-connector {
-            flex-grow: 1;
-            height: 2px;
-            background-image: linear-gradient(to right, #d1d5db 50%, transparent 50%);
-            background-size: 16px 2px;
-            margin: 0 -1rem;
-        }
-
-        @media (max-width: 767px) {
-            .process-flow {
-                flex-direction: column;
-            }
-            .process-step-card {
-                width: 100%;
-                margin-bottom: 2rem;
-            }
-            .process-connector {
-                display: none;
-            }
-        }
-
+        .process-flow { display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .process-step-card { background: white; border: 1px solid #e5e7eb; border-radius: 1rem; padding: 1.25rem; width: 23%; text-align: center; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .process-step-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
+        .process-connector { flex-grow: 1; height: 2px; background-image: linear-gradient(to right, #d1d5db 50%, transparent 50%); background-size: 14px 2px; margin: 0 -1rem; }
+        @media (max-width: 767px) { .process-flow { flex-direction: column; } .process-step-card { width: 100%; margin-bottom: 1.5rem; } .process-connector { display: none; } }
 
         /* Icon Colors */
-        .fa-linkedin { color: #0077B5; }
-        .fa-google { color: #4285F4; }
-        .fa-android { color: #3DDC84; }
-        .fa-java { color: #f89820; }
-        .fa-python { color: #3776AB; }
-        .fa-js-square { color: #F7DF1E; }
-        .fa-html5 { color: #E34F26; }
-        .fa-css3-alt { color: #1572B6; }
-        .fa-php { color: #777BB4; }
-        .fa-wordpress { color: #21759B; }
-        .fa-shopify { color: #7AB55C; }
-        .fa-linux { color: #FCC624; }
-        .fa-paper-plane, .fa-arrow-right { color: white; }
+        .fa-linkedin { color: #0077B5; } .fa-google { color: #4285F4; } .fa-android { color: #3DDC84; } .fa-java { color: #f89820; } .fa-python { color: #3776AB; } .fa-js-square { color: #F7DF1E; } .fa-html5 { color: #E34F26; } .fa-css3-alt { color: #1572B6; } .fa-php { color: #777BB4; } .fa-wordpress { color: #21759B; } .fa-shopify { color: #7AB55C; } .fa-linux { color: #FCC624; } .fa-paper-plane, .fa-arrow-right { color: white; }
 
-        @media (prefers-reduced-motion: reduce) {
-            *, ::before, ::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
+        @media (prefers-reduced-motion: reduce) { *, ::before, ::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
     </style>
 </head>
 <body class="antialiased">
-    
+    <!-- Advanced Effects -->
+    <div class="custom-cursor">
+        <div class="cursor-dot"></div>
+        <div class="cursor-outline"></div>
+    </div>
+    <div id="lens-flare"></div>
+
     <canvas id="constellation-canvas"></canvas>
     <div id="particles-container"></div>
     <div class="aurora-background"></div>
 
     <div id="kbar-overlay">
         <div id="kbar-wrapper">
-            <input id="kbar-search" type="text" placeholder="Type a command or search..." class="w-full bg-transparent p-4 text-gray-800 placeholder-gray-500 focus:outline-none">
+            <input id="kbar-search" type="text" placeholder="Type a command or search..." class="w-full bg-transparent p-3 text-gray-800 placeholder-gray-500 focus:outline-none text-sm">
             <div id="kbar-results">
-                <a href="#services-section" class="kbar-item"><i class="fas fa-concierge-bell w-6 text-center mr-3 text-emerald-500"></i> Go to Services</a>
-                <a href="#my-works-section" class="kbar-item"><i class="fas fa-project-diagram w-6 text-center mr-3 text-emerald-500"></i> Go to Portfolio</a>
-                <a href="#contact-section" class="kbar-item"><i class="fas fa-address-book w-6 text-center mr-3 text-emerald-500"></i> Go to Contact</a>
-                <button id="theme-toggle-btn" class="kbar-item w-full"><i class="fas fa-palette w-6 text-center mr-3 text-emerald-500"></i> Toggle Theme Hue</button>
+                <a href="#services-section" class="kbar-item text-sm"><i class="fas fa-concierge-bell w-5 text-center mr-3 text-emerald-500"></i> Go to Services</a>
+                <a href="#my-works-section" class="kbar-item text-sm"><i class="fas fa-project-diagram w-5 text-center mr-3 text-emerald-500"></i> Go to Portfolio</a>
+                <a href="#contact-section" class="kbar-item text-sm"><i class="fas fa-address-book w-5 text-center mr-3 text-emerald-500"></i> Go to Contact</a>
+                <button id="theme-toggle-btn" class="kbar-item w-full text-sm"><i class="fas fa-palette w-5 text-center mr-3 text-emerald-500"></i> Toggle Theme Hue</button>
             </div>
         </div>
     </div>
     
     <header id="main-header" class="sticky top-0 z-50 transition-all duration-300">
-        <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 py-3 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3 z-10">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg">
+        <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 py-2.5 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-2 z-10 magnetic-item">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg">
                     <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="url(#paint0_linear_404_2)"/>
-                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="bold" fill="white">HP</text>
+                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="bold" fill="white">HP</text>
                     <defs><linearGradient id="paint0_linear_404_2" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#10B981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs>
                 </svg>
-                <span class="text-2xl font-bold text-gray-900">Himangshu Paul</span>
+                <span class="text-xl font-bold text-gray-900">Himangshu Paul</span>
             </a>
-            <nav id="desktop-menu" class="hidden md:flex items-center space-x-8">
-                <a href="#services-section" class="text-gray-600 hover:text-gray-900 transition nav-link">Services</a>
-                <a href="#my-works-section" class="text-gray-600 hover:text-gray-900 transition nav-link">Portfolio</a>
-                <a href="#skills-section" class="text-gray-600 hover:text-gray-900 transition nav-link">Skills</a>
-                <a href="#contact-section" class="text-gray-600 hover:text-gray-900 transition nav-link">Contact</a>
+            <nav id="desktop-menu" class="hidden md:flex items-center space-x-6">
+                <a href="#services-section" class="text-gray-600 hover:text-gray-900 transition nav-link text-sm magnetic-item">Services</a>
+                <a href="#my-works-section" class="text-gray-600 hover:text-gray-900 transition nav-link text-sm magnetic-item">Portfolio</a>
+                <a href="#skills-section" class="text-gray-600 hover:text-gray-900 transition nav-link text-sm magnetic-item">Skills</a>
+                <a href="#contact-section" class="text-gray-600 hover:text-gray-900 transition nav-link text-sm magnetic-item">Contact</a>
             </nav>
-            <div class="hidden md:flex items-center space-x-4">
-                <a href="https://www.linkedin.com/in/himangshu-paul/" target="_blank" class="items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-800 transition px-4 py-2 rounded-lg shimmer-btn"><span><i class="fab fa-linkedin mr-2"></i>LinkedIn</span></a>
-                 <a href="mailto:himangshu.inbox@gmail.com" class="items-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-4 py-2 rounded-lg shimmer-btn"><span>Get In Touch <i class="fas fa-paper-plane ml-2"></i></span></a>
+            <div class="hidden md:flex items-center space-x-3">
+                 <a href="mailto:himangshu.inbox@gmail.com" class="magnetic-item items-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-4 py-2 rounded-lg text-sm"><span>Get In Touch <i class="fas fa-paper-plane ml-1"></i></span></a>
             </div>
-            <button id="mobile-menu-button" class="md:hidden z-50">
-                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" xmlns="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg">
+            <button id="mobile-menu-button" class="md:hidden z-50 magnetic-item">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg">
                     <path class="line line1" d="M4 6H20" stroke-width="2" stroke-linecap="round"/>
                     <path class="line line2" d="M4 12H20" stroke-width="2" stroke-linecap="round"/>
                     <path class="line line3" d="M4 18H20" stroke-width="2" stroke-linecap="round"/>
@@ -396,311 +252,295 @@
             </button>
         </div>
     </header>
-        
+    
     <div class="relative z-10">
         <div id="mobile-menu" class="hidden md:hidden fixed top-0 left-0 right-0 bottom-0 bg-white/80 backdrop-blur-lg pt-24 z-40">
-            <div class="flex flex-col items-center justify-center h-full space-y-8">
-                <a href="#services-section" class="text-gray-700 hover:text-gray-900 transition text-2xl">Services</a>
-                <a href="#my-works-section" class="text-gray-700 hover:text-gray-900 transition text-2xl">Portfolio</a>
-                <a href="#skills-section" class="text-gray-700 hover:text-gray-900 transition text-2xl">Skills</a>
-                <a href="#contact-section" class="text-gray-700 hover:text-gray-900 transition text-2xl">Contact</a>
-                <a href="mailto:himangshu.inbox@gmail.com" class="mt-8 flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-6 py-3 rounded-lg text-xl shimmer-btn">
+            <div class="flex flex-col items-center justify-center h-full space-y-6">
+                <a href="#services-section" class="text-gray-700 hover:text-gray-900 transition text-xl">Services</a>
+                <a href="#my-works-section" class="text-gray-700 hover:text-gray-900 transition text-xl">Portfolio</a>
+                <a href="#skills-section" class="text-gray-700 hover:text-gray-900 transition text-xl">Skills</a>
+                <a href="#contact-section" class="text-gray-700 hover:text-gray-900 transition text-xl">Contact</a>
+                <a href="mailto:himangshu.inbox@gmail.com" class="mt-6 flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-5 py-2.5 rounded-lg text-lg">
                     <span>Get In Touch</span>
                 </a>
             </div>
         </div>
 
-        <main class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 pt-12 pb-16 text-center lg:text-left min-h-screen flex items-center">
-            <div class="grid lg:grid-cols-2 gap-6 lg:gap-12 items-center w-full">
-                <div class="space-y-6 scroll-animate stagger-children">
-                    <span style="--i: 1" class="inline-block bg-emerald-100 text-emerald-800 text-sm px-4 py-1 rounded-full"><i class="fas fa-user-tie mr-2"></i>Developer & Brand Strategist</span>
-                    <h1 style="--i: 2" class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter leading-tight text-gray-900">
-                        <span class="pixel-reveal">Building & Scaling</span>
-                        <span class="block pixel-reveal">Digital Products.</span>
+        <main class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 pt-10 pb-12 text-center lg:text-left min-h-screen flex items-center">
+            <div class="grid lg:grid-cols-2 gap-6 lg:gap-10 items-center w-full">
+                <div class="space-y-5 scroll-animate stagger-children">
+                    <span style="--i: 1" class="inline-block bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-2"></i>Developer & Brand Strategist</span>
+                    <h1 style="--i: 2" class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-tight text-gray-900">
+                        <span class="scramble-text" data-text="Building & Scaling"></span>
+                        <span class="block scramble-text" data-text="Digital Products."></span>
                         <span id="word-anim-container" class="inline-block relative h-[1.3em] overflow-hidden align-bottom text-emerald-600">
                             <span class="animated-word">Web & Android</span>
                             <span class="animated-word">Brand Strategy.</span>
                             <span class="animated-word">Digital Marketing.</span>
                         </span>
                     </h1>
-                    <p style="--i: 3" class="text-sm sm:text-lg text-gray-600 max-w-lg mx-auto lg:mx-0">Partnering with businesses to build high-performance applications, backed by data-driven brand strategies that deliver measurable results.</p>
-                    <div style="--i: 4" class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                        <a href="#my-works-section" class="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-5 py-2.5 sm:px-8 sm:py-4 rounded-lg shimmer-btn shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30">
+                    <p style="--i: 3" class="text-sm sm:text-base text-gray-600 max-w-md mx-auto lg:mx-0">Partnering with businesses to build high-performance applications, backed by data-driven brand strategies that deliver measurable results.</p>
+                    <div style="--i: 4" class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                        <a href="#my-works-section" class="magnetic-item w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-lg shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 text-sm">
                             <span>View My Work</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
                 <div class="scroll-animate zoom-in flex justify-center items-center profile-image-container" style="transition-delay: 200ms;">
-                     <div class="relative w-80 h-80 sm:w-96 sm:h-96">
+                     <div class="relative w-72 h-72 sm:w-80 sm:h-80">
                         <div class="relative w-full h-full rounded-full shadow-xl">
                             <div class="absolute inset-0 bg-gradient-to-br from-emerald-200 to-green-300 transform -rotate-45 profile-gradient-ring rounded-full"></div>
-                            <img src="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg" alt="Himangshu Paul" class="relative w-full h-full object-cover rounded-full border-8 border-white profile-image">
+                            <img src="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg" alt="Himangshu Paul" class="relative w-full h-full object-cover rounded-full border-6 border-white profile-image">
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-    
-        <section id="services-section" class="py-16 bg-white">
-            <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 text-center">
+            
+        <section id="services-section" class="py-14 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                 <div class="scroll-animate fade-in-up">
                     <div class="flex justify-center items-center">
-                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold text-emerald-600"><span class="pixel-reveal">My Core Services</span></h2>
-                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
+                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="My Core Services"></span></h2>
+                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
-                    <p class="text-gray-600 mt-4 mb-12 max-w-2xl mx-auto">A comprehensive suite of services to build, launch, and grow your digital presence effectively.</p>
+                    <p class="text-gray-600 text-sm mt-3 mb-10 max-w-xl mx-auto">A comprehensive suite of services to build, launch, and grow your digital presence effectively.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-                    <div class="card-border-gradient p-6">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-laptop-code text-3xl text-emerald-500 mr-4"></i>
-                            <h3 class="text-xl font-bold text-gray-900">Web Application Development</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                    <div class="card-border-gradient p-5 relative">
+                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-laptop-code text-2xl text-emerald-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900">Web Application Development</h3>
                         </div>
-                        <p class="text-gray-600 mb-4">Custom web applications engineered to solve complex business challenges.</p>
-                        <ul class="space-y-2 text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Custom Web Software & SaaS</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Responsive, Mobile-First Design</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Backend & API Integration</li>
+                        <p class="text-sm text-gray-600 mb-3">Custom web applications engineered to solve complex business challenges.</p>
+                        <ul class="space-y-1.5 text-sm text-gray-700">
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Custom Web Software & SaaS</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Responsive, Mobile-First Design</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Backend & API Integration</li>
                         </ul>
-                        <a href="#contact-section" class="enquiry-label">
-                            <i class="fas fa-envelope-open-text mr-2"></i> Enquiry
-                        </a>
+                        <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                     <div class="card-border-gradient p-6">
-                        <div class="flex items-center mb-4">
-                            <i class="fab fa-android text-3xl text-emerald-500 mr-4"></i>
-                            <h3 class="text-xl font-bold text-gray-900">Mobile App Development</h3>
+                    <div class="card-border-gradient p-5 relative">
+                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                        <div class="flex items-center mb-3">
+                            <i class="fab fa-android text-2xl text-emerald-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900">Mobile App Development</h3>
                         </div>
-                        <p class="text-gray-600 mb-4">High-performance, user-centric native Android applications for the Google Play Store.</p>
-                        <ul class="space-y-2 text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Native Android (Java)</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Performance Optimization</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Firebase Backend Integration</li>
+                        <p class="text-sm text-gray-600 mb-3">High-performance, user-centric native Android applications for the Google Play Store.</p>
+                        <ul class="space-y-1.5 text-sm text-gray-700">
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Native Android (Java)</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Performance Optimization</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Firebase Backend Integration</li>
                         </ul>
-                         <a href="#contact-section" class="enquiry-label">
-                            <i class="fas fa-envelope-open-text mr-2"></i> Enquiry
-                        </a>
+                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                     <div class="card-border-gradient p-6">
-                        <div class="flex items-center mb-4">
-                            <i class="fab fa-google-play text-3xl text-emerald-500 mr-4"></i>
-                            <h3 class="text-xl font-bold text-gray-900">App Store Publishing</h3>
+                    <div class="card-border-gradient p-5 relative">
+                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                        <div class="flex items-center mb-3">
+                            <i class="fab fa-google-play text-2xl text-emerald-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900">App Store Publishing</h3>
                         </div>
-                        <p class="text-gray-600 mb-4">Full app lifecycle management on the Google Play Console for maximum visibility.</p>
-                        <ul class="space-y-2 text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Google Play Console Management</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Store Listing Optimization</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Release & Version Management</li>
+                        <p class="text-sm text-gray-600 mb-3">Full app lifecycle management on the Google Play Console for maximum visibility.</p>
+                        <ul class="space-y-1.5 text-sm text-gray-700">
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Google Play Console Management</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Store Listing Optimization</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Release & Version Management</li>
                         </ul>
-                         <a href="#contact-section" class="enquiry-label">
-                            <i class="fas fa-envelope-open-text mr-2"></i> Enquiry
-                        </a>
+                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                    <div class="card-border-gradient p-6">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-chart-line text-3xl text-emerald-500 mr-4"></i>
-                            <h3 class="text-xl font-bold text-gray-900">Search Engine Optimization</h3>
+                    <div class="card-border-gradient p-5 relative">
+                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-chart-line text-2xl text-emerald-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900">Search Engine Optimization</h3>
                         </div>
-                        <p class="text-gray-600 mb-4">Driving qualified organic traffic and improving online visibility with proven SEO strategies.</p>
-                        <ul class="space-y-2 text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>On-Page & Off-Page SEO</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Keyword Analysis & Tracking</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Technical SEO Audits</li>
+                        <p class="text-sm text-gray-600 mb-3">Driving qualified organic traffic and improving online visibility with proven SEO strategies.</p>
+                        <ul class="space-y-1.5 text-sm text-gray-700">
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>On-Page & Off-Page SEO</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Keyword Analysis & Tracking</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Technical SEO Audits</li>
                         </ul>
-                         <a href="#contact-section" class="enquiry-label">
-                            <i class="fas fa-envelope-open-text mr-2"></i> Enquiry
-                        </a>
+                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                     <div class="card-border-gradient p-6">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-palette text-3xl text-emerald-500 mr-4"></i>
-                            <h3 class="text-xl font-bold text-gray-900">UI/UX & Graphic Design</h3>
+                    <div class="card-border-gradient p-5 relative">
+                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-palette text-2xl text-emerald-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900">UI/UX & Graphic Design</h3>
                         </div>
-                        <p class="text-gray-600 mb-4">Designing intuitive interfaces, engaging experiences, and memorable brand assets.</p>
-                        <ul class="space-y-2 text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>User Interface (UI) Design</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>User Experience (UX) Flows</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Logo & Brand Identity Graphics</li>
+                        <p class="text-sm text-gray-600 mb-3">Designing intuitive interfaces, engaging experiences, and memorable brand assets.</p>
+                        <ul class="space-y-1.5 text-sm text-gray-700">
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>User Interface (UI) Design</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>User Experience (UX) Flows</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Logo & Brand Identity Graphics</li>
                         </ul>
-                         <a href="#contact-section" class="enquiry-label">
-                            <i class="fas fa-envelope-open-text mr-2"></i> Enquiry
-                        </a>
+                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                     <div class="card-border-gradient p-6">
-                        <div class="flex items-center mb-4">
-                            <i class="fas fa-headset text-3xl text-emerald-500 mr-4"></i>
-                            <h3 class="text-xl font-bold text-gray-900">Technical Consultation</h3>
+                    <div class="card-border-gradient p-5 relative">
+                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                        <div class="flex items-center mb-3">
+                            <i class="fas fa-headset text-2xl text-emerald-500 mr-3"></i>
+                            <h3 class="text-lg font-bold text-gray-900">Technical Consultation</h3>
                         </div>
-                        <p class="text-gray-600 mb-4">Providing expert technical guidance and support to ensure your project's long-term success.</p>
-                        <ul class="space-y-2 text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Tech Stack & Architecture Advice</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Troubleshooting & Support</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i>Ongoing Maintenance Plans</li>
+                        <p class="text-sm text-gray-600 mb-3">Providing expert technical guidance and support to ensure your project's long-term success.</p>
+                        <ul class="space-y-1.5 text-sm text-gray-700">
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Tech Stack & Architecture Advice</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Troubleshooting & Support</li>
+                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Ongoing Maintenance Plans</li>
                         </ul>
-                         <a href="#contact-section" class="enquiry-label">
-                            <i class="fas fa-envelope-open-text mr-2"></i> Enquiry
-                        </a>
+                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="stats-section" class="py-16">
-            <div class="container mx-auto px-4 sm:px-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <section id="stats-section" class="py-14">
+            <div class="container mx-auto px-4 sm:px-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                     <div class="p-4">
-                        <i class="fas fa-briefcase text-4xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-4xl font-bold text-gray-900">
-                            <span class="stat-counter" data-target="4">0</span>+
-                        </h3>
-                        <p class="text-gray-600">Years of Experience</p>
+                        <i class="fas fa-briefcase text-3xl text-emerald-500 mb-2"></i>
+                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="4">0</span>+</h3>
+                        <p class="text-sm text-gray-600">Years of Experience</p>
                     </div>
                     <div class="p-4">
-                        <i class="fas fa-check-double text-4xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-4xl font-bold text-gray-900">
-                            <span class="stat-counter" data-target="15">0</span>+
-                        </h3>
-                        <p class="text-gray-600">Projects Completed</p>
+                        <i class="fas fa-check-double text-3xl text-emerald-500 mb-2"></i>
+                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="15">0</span>+</h3>
+                        <p class="text-sm text-gray-600">Projects Completed</p>
                     </div>
                     <div class="p-4">
-                        <i class="fas fa-smile text-4xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-4xl font-bold text-gray-900">
-                            <span class="stat-counter" data-target="10000">0</span>+
-                        </h3>
-                        <p class="text-gray-600">Happy Clients</p>
+                        <i class="fas fa-smile text-3xl text-emerald-500 mb-2"></i>
+                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="10000">0</span>+</h3>
+                        <p class="text-sm text-gray-600">Happy Clients</p>
                     </div>
                     <div class="p-4">
-                        <i class="fas fa-award text-4xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-4xl font-bold text-gray-900">
-                            <span class="stat-counter" data-target="20">0</span>+
-                        </h3>
-                        <p class="text-gray-600">Technologies Mastered</p>
+                        <i class="fas fa-award text-3xl text-emerald-500 mb-2"></i>
+                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="20">0</span>+</h3>
+                        <p class="text-sm text-gray-600">Technologies Mastered</p>
                     </div>
                 </div>
             </div>
         </section>
         
-        <section id="skills-section" class="py-16 scroll-animate fade-in-up">
-            <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 text-center">
+        <section id="skills-section" class="py-14 scroll-animate fade-in-up">
+            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                 <div class="flex justify-center items-center mb-4">
-                    <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block header-arrow">
-                    <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold text-emerald-600"><span class="pixel-reveal">My Tech Stack</span></h2>
-                    <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
+                    <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="My Tech Stack"></span></h2>
+                    <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                 </div>
-                <p class="text-gray-600 mb-10 px-4 max-w-2xl mx-auto">Leveraging a modern and versatile technology stack to build efficient, scalable, and secure digital products.</p>
+                <p class="text-gray-600 text-sm mb-8 px-4 max-w-xl mx-auto">Leveraging a modern and versatile technology stack to build efficient, scalable, and secure digital products.</p>
                 <div class="relative scroller overflow-hidden">
-                    <div class="scroller-inner flex gap-x-8">
-                        <div class="flex gap-8">
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-java text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">Java (Android)</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-python text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">Python</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fas fa-database text-3xl text-emerald-500 mb-2"></i><p class="font-semibold text-base text-gray-800">Firebase</p><p class="text-xs text-emerald-600">Development</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-js-square text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">JavaScript</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fas fa-search-dollar text-3xl text-emerald-500 mb-2"></i><p class="font-semibold text-base text-gray-800">SEO</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fas fa-bullhorn text-3xl text-emerald-500 mb-2"></i><p class="font-semibold text-base text-gray-800">Google & Meta Ads</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                             <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-linux text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">Linux Administration</p><p class="text-xs text-emerald-600">Cloud & Security</p></div></div>
-                             <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-wordpress text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">WordPress</p><p class="text-xs text-emerald-600">Development</p></div></div>
+                    <div class="scroller-inner flex gap-x-6">
+                        <div class="flex gap-6">
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-java text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Java (Android)</p><p class="text-xs text-emerald-600">Programming</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-python text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Python</p><p class="text-xs text-emerald-600">Programming</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-database text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Firebase</p><p class="text-xs text-emerald-600">Development</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-js-square text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">JavaScript</p><p class="text-xs text-emerald-600">Programming</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-search-dollar text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">SEO</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-bullhorn text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Google & Meta Ads</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
+                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-linux text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Linux Administration</p><p class="text-xs text-emerald-600">Cloud & Security</p></div></div>
+                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-wordpress text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">WordPress</p><p class="text-xs text-emerald-600">Development</p></div></div>
                         </div>
-                        <div class="flex gap-8" aria-hidden="true">
-                           <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-java text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">Java (Android)</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-python text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">Python</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fas fa-database text-3xl text-emerald-500 mb-2"></i><p class="font-semibold text-base text-gray-800">Firebase</p><p class="text-xs text-emerald-600">Development</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-js-square text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">JavaScript</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fas fa-search-dollar text-3xl text-emerald-500 mb-2"></i><p class="font-semibold text-base text-gray-800">SEO</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                            <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fas fa-bullhorn text-3xl text-emerald-500 mb-2"></i><p class="font-semibold text-base text-gray-800">Google & Meta Ads</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                             <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-linux text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">Linux Administration</p><p class="text-xs text-emerald-600">Cloud & Security</p></div></div>
-                             <div class="skill-card rounded-xl p-4 w-48 text-center space-y-3 shrink-0"><div><i class="fab fa-wordpress text-3xl mb-2"></i><p class="font-semibold text-base text-gray-800">WordPress</p><p class="text-xs text-emerald-600">Development</p></div></div>
+                        <div class="flex gap-6" aria-hidden="true">
+                           <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-java text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Java (Android)</p><p class="text-xs text-emerald-600">Programming</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-python text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Python</p><p class="text-xs text-emerald-600">Programming</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-database text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Firebase</p><p class="text-xs text-emerald-600">Development</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-js-square text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">JavaScript</p><p class="text-xs text-emerald-600">Programming</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-search-dollar text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">SEO</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
+                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-bullhorn text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Google & Meta Ads</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
+                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-linux text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Linux Administration</p><p class="text-xs text-emerald-600">Cloud & Security</p></div></div>
+                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-wordpress text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">WordPress</p><p class="text-xs text-emerald-600">Development</p></div></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="my-works-section" class="py-16 overflow-hidden">
-            <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 text-center">
+        <section id="my-works-section" class="py-14 overflow-hidden">
+            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                 <div class="scroll-animate fade-in-up">
-                    <div class="flex justify-center items-center mb-12">
-                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold text-emerald-600">
-                            <span class="pixel-reveal">Portfolio Showcase</span>
-                        </h2>
-                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
+                    <div class="flex justify-center items-center mb-10">
+                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="Portfolio Showcase"></span></h2>
+                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
                  <div class="relative scroller overflow-hidden">
-                    <div class="scroller-inner flex gap-x-8">
-                        <div class="flex gap-8">
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/34d399/ffffff?text=TopupWala" alt="Topup Wala App" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Topup Wala E-commerce App</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Founder & Developer</p>
+                    <div class="scroller-inner flex gap-x-6">
+                        <div class="flex gap-6">
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/34d399/ffffff?text=TopupWala" alt="Topup Wala App" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Topup Wala E-commerce App</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Founder & Developer</p>
                                 </div>
                             </div>
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/10b981/ffffff?text=Born2Earn" alt="Born2Earn App" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Born2Earn Android App</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Lead Developer</p>
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/10b981/ffffff?text=Born2Earn" alt="Born2Earn App" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Born2Earn Android App</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Lead Developer</p>
                                 </div>
                             </div>
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/065f46/ffffff?text=Face+ID" alt="Face Recognition Project" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Face Recognition Attendance</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Personal Project</p>
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/065f46/ffffff?text=Face+ID" alt="Face Recognition Project" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Face Recognition Attendance</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Personal Project</p>
                                 </div>
                             </div>
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/d1fae5/1f2937?text=Google" alt="Google Developers" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Featured by Google</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Achievement</p>
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/d1fae5/1f2937?text=Google" alt="Google Developers" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Featured by Google</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Achievement</p>
                                 </div>
                             </div>
-                            <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/a7f3d0/ffffff?text=E-Comm" alt="E-commerce Web App" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">E-Commerce Web App</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Personal Project</p>
+                            <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/a7f3d0/ffffff?text=E-Comm" alt="E-commerce Web App" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">E-Commerce Web App</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Personal Project</p>
                                 </div>
                             </div>
                         </div>
-                         <div class="flex gap-8" aria-hidden="true">
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/34d399/ffffff?text=TopupWala" alt="Topup Wala App" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Topup Wala E-commerce App</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Founder & Developer</p>
+                         <div class="flex gap-6" aria-hidden="true">
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/34d399/ffffff?text=TopupWala" alt="Topup Wala App" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Topup Wala E-commerce App</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Founder & Developer</p>
                                 </div>
                             </div>
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/10b981/ffffff?text=Born2Earn" alt="Born2Earn App" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Born2Earn Android App</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Lead Developer</p>
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/10b981/ffffff?text=Born2Earn" alt="Born2Earn App" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Born2Earn Android App</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Lead Developer</p>
                                 </div>
                             </div>
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/065f46/ffffff?text=Face+ID" alt="Face Recognition Project" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Face Recognition Attendance</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Personal Project</p>
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/065f46/ffffff?text=Face+ID" alt="Face Recognition Project" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Face Recognition Attendance</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Personal Project</p>
                                 </div>
                             </div>
-                           <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/d1fae5/1f2937?text=Google" alt="Google Developers" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">Featured by Google</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Achievement</p>
+                           <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/d1fae5/1f2937?text=Google" alt="Google Developers" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">Featured by Google</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Achievement</p>
                                 </div>
                             </div>
-                            <div class="card-border-gradient group w-80 shrink-0">
-                                <img src="https://placehold.co/600x400/a7f3d0/ffffff?text=E-Comm" alt="E-commerce Web App" class="w-full h-48 object-cover group-hover:opacity-80 transition-opacity">
-                                <div class="p-4 text-left">
-                                    <h3 class="font-bold text-lg mb-1 text-gray-900">E-Commerce Web App</h3>
-                                    <p class="text-emerald-600 text-sm mb-2">Personal Project</p>
+                            <div class="card-border-gradient group w-72 shrink-0">
+                                <img src="https://placehold.co/600x400/a7f3d0/ffffff?text=E-Comm" alt="E-commerce Web App" class="w-full h-40 object-cover group-hover:opacity-80 transition-opacity">
+                                <div class="p-3 text-left">
+                                    <h3 class="font-bold text-base mb-0.5 text-gray-900">E-Commerce Web App</h3>
+                                    <p class="text-emerald-600 text-xs mb-1">Personal Project</p>
                                 </div>
                             </div>
                         </div>
@@ -709,79 +549,79 @@
             </div>
         </section>
 
-        <section id="worked-with-section" class="py-16">
-            <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 text-center">
+        <section id="worked-with-section" class="py-14">
+            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                 <div class="scroll-animate fade-in-up">
-                    <div class="flex justify-center items-center mb-12">
-                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold text-emerald-600"><span class="pixel-reveal">Trusted By</span></h2>
-                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
+                    <div class="flex justify-center items-center mb-10">
+                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="Trusted By"></span></h2>
+                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
                  <div class="relative scroller overflow-hidden">
-                    <div class="scroller-inner flex gap-x-16">
-                        <div class="flex items-center gap-16 px-8">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Google" alt="Google Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Android" alt="Android Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Firebase" alt="Firebase Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Shopify" alt="Shopify Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=WordPress" alt="WordPress Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Meta" alt="Meta Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Python" alt="Python Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Java" alt="Java Logo" class="h-12 brand-logo">
+                    <div class="scroller-inner flex gap-x-12">
+                        <div class="flex items-center gap-12 px-6">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Google" alt="Google Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Android" alt="Android Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Firebase" alt="Firebase Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Shopify" alt="Shopify Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=WordPress" alt="WordPress Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Meta" alt="Meta Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Python" alt="Python Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Java" alt="Java Logo" class="h-10 brand-logo">
                         </div>
-                        <div class="flex items-center gap-16 px-8" aria-hidden="true">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Google" alt="Google Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Android" alt="Android Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Firebase" alt="Firebase Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Shopify" alt="Shopify Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=WordPress" alt="WordPress Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Meta" alt="Meta Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Python" alt="Python Logo" class="h-12 brand-logo">
-                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Java" alt="Java Logo" class="h-12 brand-logo">
+                        <div class="flex items-center gap-12 px-6" aria-hidden="true">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Google" alt="Google Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Android" alt="Android Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Firebase" alt="Firebase Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Shopify" alt="Shopify Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=WordPress" alt="WordPress Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Meta" alt="Meta Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Python" alt="Python Logo" class="h-10 brand-logo">
+                            <img src="https://placehold.co/150x80/f9fafb/9ca3af?text=Java" alt="Java Logo" class="h-10 brand-logo">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="testimonials-section" class="py-16 bg-white">
-            <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 text-center">
+        <section id="testimonials-section" class="py-14 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                  <div class="scroll-animate fade-in-up">
-                    <div class="flex justify-center items-center mb-12">
-                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold text-emerald-600"><span class="pixel-reveal">Client Testimonials</span></h2>
-                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
+                    <div class="flex justify-center items-center mb-10">
+                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="Client Testimonials"></span></h2>
+                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-                    <div class="card-border-gradient p-6">
-                        <p class="text-gray-600 mb-4">"Himangshu's expertise in both development and marketing was a game-changer for our e-commerce platform. He delivered a high-quality app and a strategy that grew our user base to over 10,000."</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                    <div class="card-border-gradient p-5">
+                        <p class="text-sm text-gray-600 mb-3">"Himangshu's expertise was a game-changer for our platform. He delivered a high-quality app and a strategy that grew our user base to over 10,000."</p>
                         <div class="flex items-center">
-                            <img src="https://placehold.co/40x40/e5e7eb/1f2937?text=A" alt="Client Avatar" class="w-10 h-10 rounded-full mr-4">
+                            <img src="https://placehold.co/36x36/e5e7eb/1f2937?text=A" alt="Client Avatar" class="w-9 h-9 rounded-full mr-3">
                             <div>
-                                <p class="font-bold text-gray-900">A. Sharma</p>
-                                <p class="text-sm text-emerald-600">Founder, Topup Wala</p>
+                                <p class="font-bold text-sm text-gray-900">A. Sharma</p>
+                                <p class="text-xs text-emerald-600">Founder, Topup Wala</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-border-gradient p-6">
-                        <p class="text-gray-600 mb-4">"The technical leadership Himangshu provided was exceptional. He managed the entire development lifecycle of our Android app and his optimizations on the Play Store were invaluable."</p>
+                    <div class="card-border-gradient p-5">
+                        <p class="text-sm text-gray-600 mb-3">"The technical leadership was exceptional. He managed the entire development lifecycle and his optimizations on the Play Store were invaluable."</p>
                         <div class="flex items-center">
-                            <img src="https://placehold.co/40x40/e5e7eb/1f2937?text=R" alt="Client Avatar" class="w-10 h-10 rounded-full mr-4">
+                            <img src="https://placehold.co/36x36/e5e7eb/1f2937?text=R" alt="Client Avatar" class="w-9 h-9 rounded-full mr-3">
                             <div>
-                                <p class="font-bold text-gray-900">R. Kumar</p>
-                                <p class="text-sm text-emerald-600">Project Manager, Born2Earn</p>
+                                <p class="font-bold text-sm text-gray-900">R. Kumar</p>
+                                <p class="text-xs text-emerald-600">Project Manager, Born2Earn</p>
                             </div>
                         </div>
                     </div>
-                    <div class="card-border-gradient p-6">
-                        <p class="text-gray-600 mb-4">"Working with Himangshu is a pleasure. His ability to translate complex technical requirements into a seamless user experience is top-notch. Highly recommended for any web or app project."</p>
+                    <div class="card-border-gradient p-5">
+                        <p class="text-sm text-gray-600 mb-3">"His ability to translate complex requirements into a seamless user experience is top-notch. Highly recommended for any web or app project."</p>
                         <div class="flex items-center">
-                             <img src="https://placehold.co/40x40/e5e7eb/1f2937?text=S" alt="Client Avatar" class="w-10 h-10 rounded-full mr-4">
+                             <img src="https://placehold.co/36x36/e5e7eb/1f2937?text=S" alt="Client Avatar" class="w-9 h-9 rounded-full mr-3">
                             <div>
-                                <p class="font-bold text-gray-900">S. Gupta</p>
-                                <p class="text-sm text-emerald-600">Startup Founder</p>
+                                <p class="font-bold text-sm text-gray-900">S. Gupta</p>
+                                <p class="text-xs text-emerald-600">Startup Founder</p>
                             </div>
                         </div>
                     </div>
@@ -789,103 +629,213 @@
             </div>
         </section>
 
-        <section id="process-section" class="py-16">
-            <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 text-center">
+        <section id="process-section" class="py-14">
+            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                 <div class="scroll-animate fade-in-up">
-                    <div class="flex justify-center items-center mb-12">
-                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold text-emerald-600"><span class="pixel-reveal">My Process</span></h2>
-                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
+                    <div class="flex justify-center items-center mb-10">
+                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="My Process"></span></h2>
+                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
                 <div class="process-flow">
                     <div class="process-step-card">
-                        <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center text-2xl font-bold border-4 border-white shadow-md z-10 mx-auto">1</div>
-                        <h3 class="mt-4 font-bold text-lg text-gray-900">Discovery & Strategy</h3>
-                        <p class="mt-2 text-sm text-gray-600">Defining project goals, target audience, and a comprehensive strategy.</p>
+                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">1</div>
+                        <h3 class="mt-3 font-bold text-base text-gray-900">Discovery & Strategy</h3>
+                        <p class="mt-1 text-xs text-gray-600">Defining project goals, target audience, and a comprehensive strategy.</p>
                     </div>
                     <div class="process-connector hidden md:block"></div>
                      <div class="process-step-card">
-                        <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center text-2xl font-bold border-4 border-white shadow-md z-10 mx-auto">2</div>
-                        <h3 class="mt-4 font-bold text-lg text-gray-900">Design & Development</h3>
-                        <p class="mt-2 text-sm text-gray-600">Crafting intuitive designs and writing clean, efficient code.</p>
+                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">2</div>
+                        <h3 class="mt-3 font-bold text-base text-gray-900">Design & Development</h3>
+                        <p class="mt-1 text-xs text-gray-600">Crafting intuitive designs and writing clean, efficient code.</p>
                     </div>
                     <div class="process-connector hidden md:block"></div>
                      <div class="process-step-card">
-                        <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center text-2xl font-bold border-4 border-white shadow-md z-10 mx-auto">3</div>
-                        <h3 class="mt-4 font-bold text-lg text-gray-900">Testing & Launch</h3>
-                        <p class="mt-2 text-sm text-gray-600">Rigorous testing to ensure a flawless product before a strategic launch.</p>
+                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">3</div>
+                        <h3 class="mt-3 font-bold text-base text-gray-900">Testing & Launch</h3>
+                        <p class="mt-1 text-xs text-gray-600">Rigorous testing to ensure a flawless product before a strategic launch.</p>
                     </div>
                     <div class="process-connector hidden md:block"></div>
                      <div class="process-step-card">
-                        <div class="w-16 h-16 rounded-full bg-emerald-500 text-white flex items-center justify-center text-2xl font-bold border-4 border-white shadow-md z-10 mx-auto">4</div>
-                        <h3 class="mt-4 font-bold text-lg text-gray-900">Support & Growth</h3>
-                        <p class="mt-2 text-sm text-gray-600">Providing ongoing support and data-driven marketing for continued success.</p>
+                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">4</div>
+                        <h3 class="mt-3 font-bold text-base text-gray-900">Support & Growth</h3>
+                        <p class="mt-1 text-xs text-gray-600">Providing ongoing support and data-driven marketing for continued success.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact-section" class="py-16 text-center">
-                <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 relative scroll-animate fade-in-up">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-1/2 h-48 bg-emerald-200 rounded-full flicker-glow" style="filter: blur(120px); opacity: 0.5;"></div>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="flex justify-center items-center mb-4">
-                            <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block header-arrow">
-                            <h2 class="text-2xl sm:text-4xl md:text-5xl font-bold text-emerald-600">
-                                <span class="pixel-reveal">Have a Project in Mind?</span>
-                                <span class="block pixel-reveal">Let's Talk.</span>
-                            </h2>
-                            <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-10 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
-                        </div>
-                        <p class="text-gray-600 max-w-xl mx-auto mb-6 text-sm">Available for freelance opportunities and consulting. If you have a project in mind, let's connect and build something great together.</p>
-                        <a href="mailto:himangshu.inbox@gmail.com" class="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-8 py-4 rounded-lg shimmer-btn shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30">
-                            <span>himangshu.inbox@gmail.com</span>
-                            <i class="fas fa-paper-plane ml-2"></i>
-                        </a>
-                    </div>
+        <section id="contact-section" class="py-14 text-center">
+            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 relative scroll-animate fade-in-up">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-1/2 h-40 bg-emerald-200 rounded-full flicker-glow" style="filter: blur(100px); opacity: 0.5;"></div>
                 </div>
-        </section>
-
-
-        <footer class="py-10 border-t border-gray-200/50">
-            <div class="container mx-auto px-4 sm:px-8 md:px-12 lg:px-24 text-center text-gray-500">
-                <div class="flex flex-col items-center space-y-4 mb-8">
-                        <div class="flex items-center space-x-3">
-                             <svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="url(#paint3_linear_404_2)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="bold" fill="white">HP</text><defs><linearGradient id="paint3_linear_404_2" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#10B981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs></svg>
-                            <span class="text-xl font-bold text-gray-800">Himangshu Paul</span>
-                        </div>
-                        <div class="flex space-x-4 text-2xl">
-                            <a href="https://www.linkedin.com/in/himangshu-paul/" target="_blank" class="hover:scale-110 transition-transform"><i class="fab fa-linkedin"></i></a>
-                             <a href="mailto:himangshu.inbox@gmail.com" class="hover:scale-110 transition-transform"><i class="fas fa-envelope text-emerald-600 hover:text-emerald-500"></i></a>
-                             <a href="tel:+919564604956" class="hover:scale-110 transition-transform"><i class="fas fa-phone text-emerald-600 hover:text-emerald-500"></i></a>
-                        </div>
-                </div>
-                <div class="flex flex-col md:flex-row justify-between items-center text-sm">
-                    <p class="order-2 md:order-1 mt-4 md:mt-0">&copy; 2025 Himangshu Paul. All rights reserved.</p>
-                    <div class="order-1 md:order-2 flex space-x-6 mb-4 md:mb-0">
-                        <a href="#" class="hover:text-gray-900 transition">Siliguri, West Bengal</a>
+                <div class="relative z-10">
+                    <div class="flex justify-center items-center mb-4">
+                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600">
+                            <span class="scramble-text" data-text="Have a Project in Mind?"></span>
+                            <span class="block scramble-text" data-text="Let's Talk."></span>
+                        </h2>
+                        <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
-                </div>
-                <div class="mt-8 text-xs flex items-center justify-center space-x-2 text-gray-500 hover:text-gray-800 transition cursor-pointer" onclick="document.getElementById('kbar-overlay').classList.add('visible')">
-                    <span class="border border-gray-300 rounded px-1.5 py-0.5">Ctrl</span>
-                    <span class="border border-gray-300 rounded px-1.5 py-0.5">K</span>
-                    <span>to open command bar</span>
+                    <p class="text-gray-600 max-w-lg mx-auto mb-5 text-sm">Available for freelance opportunities and consulting. If you have a project in mind, let's connect and build something great together.</p>
+                    <a href="mailto:himangshu.inbox@gmail.com" class="magnetic-item inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 text-sm">
+                        <span>himangshu.inbox@gmail.com</span>
+                        <i class="fas fa-paper-plane ml-2"></i>
+                    </a>
                 </div>
             </div>
-        </footer>
+        </section>
+
     </div>
+
+    <footer class="py-8 border-t border-gray-200/50">
+        <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center text-gray-500">
+            <div class="flex flex-col items-center space-y-3 mb-6">
+                <div class="flex items-center space-x-2">
+                    <svg width="22" height="22" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="url(#paint_footer)"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="bold" fill="white">HP</text><defs><linearGradient id="paint_footer" x1="16" y1="0" x2="16" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#10B981"/><stop offset="1" stop-color="#059669"/></linearGradient></defs></svg>
+                    <span class="text-lg font-bold text-gray-800">Himangshu Paul</span>
+                </div>
+                <div class="flex space-x-4 text-xl">
+                    <a href="https://www.linkedin.com/in/himangshu-paul/" target="_blank" class="hover:scale-110 transition-transform magnetic-item"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:himangshu.inbox@gmail.com" class="hover:scale-110 transition-transform magnetic-item"><i class="fas fa-envelope text-emerald-600 hover:text-emerald-500"></i></a>
+                    <a href="tel:+919564604956" class="hover:scale-110 transition-transform magnetic-item"><i class="fas fa-phone text-emerald-600 hover:text-emerald-500"></i></a>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center text-xs">
+                <p class="order-2 md:order-1 mt-3 md:mt-0">&copy; 2025 Himangshu Paul. All rights reserved.</p>
+                <div class="order-1 md:order-2 flex space-x-4 mb-3 md:mb-0">
+                    <a href="#" class="hover:text-gray-900 transition">Siliguri, West Bengal</a>
+                </div>
+            </div>
+            <div class="mt-6 text-xs flex items-center justify-center space-x-2 text-gray-500 hover:text-gray-800 transition cursor-none" onclick="document.getElementById('kbar-overlay').classList.add('visible')">
+                <span class="border border-gray-300 rounded px-1 py-0.5">Ctrl</span>
+                <span class="border border-gray-300 rounded px-1 py-0.5">K</span>
+                <span>to open command bar</span>
+            </div>
+        </div>
+    </footer>
     
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Advanced: Custom Cursor ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const cursorContainer = document.querySelector('.custom-cursor');
+
+        window.addEventListener('mousemove', (e) => {
+            const { clientX: x, clientY: y } = e;
+            cursorDot.style.left = `${x}px`;
+            cursorDot.style.top = `${y}px`;
+            cursorOutline.style.left = `${x}px`;
+            cursorOutline.style.top = `${y}px`;
+        });
+
+        document.querySelectorAll('a, button, .magnetic-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorContainer.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursorContainer.classList.remove('hover'));
+        });
+
+        // --- Advanced: Lens Flare Effect ---
+        const lensFlare = document.getElementById('lens-flare');
+        if (lensFlare) {
+            window.addEventListener('mousemove', (e) => {
+                const { clientX: x, clientY: y } = e;
+                lensFlare.style.transform = `translate(${x - 200}px, ${y - 200}px)`;
+            });
+        }
+        
+        // --- Advanced: Magnetic Elements ---
+        const magneticElements = document.querySelectorAll('.magnetic-item');
+        const magneticStrength = 0.4; // 40% strength
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', function(e) {
+                const pos = this.getBoundingClientRect();
+                const x = e.clientX - pos.left - pos.width / 2;
+                const y = e.clientY - pos.top - pos.height / 2;
+                this.style.transition = 'transform 0.1s ease';
+                this.style.transform = `translate(${x * magneticStrength}px, ${y * magneticStrength}px)`;
+            });
+            el.addEventListener('mouseleave', function() {
+                this.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                this.style.transform = 'translate(0,0)';
+            });
+        });
+
+        // --- Advanced: Text Scramble Effect ---
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>-_\\/[]{}—=+*^?#________';
+                this.update = this.update.bind(this);
+            }
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise((resolve) => this.resolve = resolve);
+                this.queue = [];
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+            update() {
+                let output = '';
+                let complete = 0;
+                for (let i = 0, n = this.queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    if (this.frame >= end) {
+                        complete++;
+                        output += to;
+                    } else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) {
+                            char = this.randomChar();
+                            this.queue[i].char = char;
+                        }
+                        output += `<span class="opacity-50">${char}</span>`;
+                    } else {
+                        output += from;
+                    }
+                }
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) {
+                    this.resolve();
+                } else {
+                    this.frameRequest = requestAnimationFrame(this.update);
+                    this.frame++;
+                }
+            }
+            randomChar() {
+                return this.chars[Math.floor(Math.random() * this.chars.length)];
+            }
+        }
+        
+        // --- Advanced: Card Spotlight Effect ---
+        const spotlightCards = document.querySelectorAll('.card-border-gradient');
+        spotlightCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
 
         // --- Interactive Constellation Background ---
         const canvas = document.getElementById('constellation-canvas');
         const ctx = canvas.getContext('2d');
         let points = [];
-        let mouse = { x: null, y: null, maxDistance: 150 };
 
         function setCanvasSize() {
             canvas.width = window.innerWidth;
@@ -894,14 +844,14 @@
 
         function initConstellation() {
             points = [];
-            const pointCount = (canvas.width * canvas.height) / 12000;
+            const pointCount = (canvas.width * canvas.height) / 10000;
             for (let i = 0; i < pointCount; i++) {
                 points.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    vx: Math.random() * 0.4 - 0.2,
-                    vy: Math.random() * 0.4 - 0.2,
-                    radius: Math.random() * 1.5 + 1
+                    vx: Math.random() * 0.3 - 0.15,
+                    vy: Math.random() * 0.3 - 0.15,
+                    radius: Math.random() * 1.2 + 0.8
                 });
             }
         }
@@ -910,51 +860,17 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < points.length; i++) {
                 let p = points[i];
-                p.x += p.vx;
-                p.y += p.vy;
-
+                p.x += p.vx; p.y += p.vy;
                 if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
                 if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(29, 78, 216, 0.3)';
+                ctx.fillStyle = 'rgba(29, 78, 216, 0.25)';
                 ctx.fill();
-
-                if (mouse.x !== null) {
-                    let dx = mouse.x - p.x;
-                    let dy = mouse.y - p.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < mouse.maxDistance) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(mouse.x, mouse.y);
-                        ctx.strokeStyle = `rgba(16, 185, 129, ${1 - distance / mouse.maxDistance})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-
-                for (let j = i + 1; j < points.length; j++) {
-                    let p2 = points[j];
-                    let dx = p.x - p2.x;
-                    let dy = p.y - p2.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(29, 78, 216, ${0.2 - distance / 100 * 0.2})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
             }
             requestAnimationFrame(animateConstellation);
         }
-
-        window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-        window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
+        
         window.addEventListener('resize', () => { setCanvasSize(); initConstellation(); });
         setCanvasSize();
         initConstellation();
@@ -963,79 +879,51 @@
         // --- Floating Particles ---
         const particlesContainer = document.getElementById('particles-container');
         if (particlesContainer) {
-            const particleCount = 40;
+            const particleCount = 25;
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
-                const size = Math.random() * 3 + 1;
+                const size = Math.random() * 2.5 + 1;
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${Math.random() * 100}%`;
-                const duration = Math.random() * 15 + 10;
+                const duration = Math.random() * 15 + 12;
                 particle.style.animationDuration = `${duration}s`;
-                particle.style.animationDelay = `-${Math.random() * 25}s`;
+                particle.style.animationDelay = `-${Math.random() * 27}s`;
                 particlesContainer.appendChild(particle);
             }
         }
-
-        // --- Pixelated Text Reveal ---
-        document.querySelectorAll('.pixel-reveal').forEach(el => {
-            const text = el.textContent.trim();
-            el.innerHTML = '';
-            for (let i = 0; i < text.length; i++) {
-                const charSpan = document.createElement('span');
-                charSpan.className = 'char';
-                charSpan.style.setProperty('--char-index', i);
-                charSpan.textContent = text[i] === ' ' ? '\u00A0' : text[i];
-                el.appendChild(charSpan);
-            }
-        });
         
+        // --- Intersection Observer for animations ---
         const scrollObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+
+                    // Trigger scramble for visible text
+                    const scrambleElements = entry.target.querySelectorAll('.scramble-text');
+                    if(scrambleElements.length > 0) {
+                        scrambleElements.forEach(el => {
+                            if (el.dataset.text) {
+                                const fx = new TextScramble(el);
+                                fx.setText(el.dataset.text);
+                            }
+                        });
+                    }
+                    // We can unobserve the h2, but h1 should re-animate if scrolled back to
+                    if(entry.target.tagName === 'H2') {
+                        observer.unobserve(entry.target);
+                    }
                 }
             });
-        }, { threshold: 0.1 });
-        
-        document.querySelectorAll('.scroll-animate').forEach(el => scrollObserver.observe(el));
-        
-        // --- STICKY HEADER ---
-        const header = document.getElementById('main-header');
-        window.addEventListener('scroll', () => header.classList.toggle('header-scrolled', window.scrollY > 10));
+        }, { threshold: 0.2 });
 
-        // --- ANIMATED MOBILE MENU ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenuButton.classList.toggle('open');
-        });
-        
-        // --- HEADING SLIDE ANIMATION ---
-        const wordsContainer = document.querySelector('h1 span.relative');
-        if(wordsContainer) {
-            const words = wordsContainer.querySelectorAll('.animated-word');
-            let currentIndex = 0;
-            if (words.length > 0) {
-                words[currentIndex].classList.add('in');
-                setInterval(() => {
-                    if (document.hidden) return;
-                    const nextIndex = (currentIndex + 1) % words.length;
-                    words[currentIndex].classList.remove('in'); words[currentIndex].classList.add('out');
-                    words[nextIndex].classList.remove('out'); words[nextIndex].classList.add('in');
-                    setTimeout(() => words[currentIndex].classList.remove('out'), 700);
-                    currentIndex = nextIndex;
-                }, 3000);
-            }
-        }
+        document.querySelectorAll('.scroll-animate, h1, h2').forEach(el => scrollObserver.observe(el));
         
         // --- STATS COUNTER ---
         const statsSection = document.getElementById('stats-section');
         const counters = document.querySelectorAll('.stat-counter');
-        const speed = 200; // The lower the slower
+        const speed = 200; 
 
         const countObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -1059,46 +947,60 @@
                 }
             });
         }, { threshold: 0.5 });
-        
+
         if (statsSection) {
             countObserver.observe(statsSection);
         }
 
+        // --- Sticky Header ---
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => header.classList.toggle('header-scrolled', window.scrollY > 10));
 
-        // --- Gallery Logic ---
-        window.changeImage = function(thumbElement) {
-            const mainImage = document.getElementById('main-gallery-image');
-            mainImage.src = thumbElement.src;
-            
-            document.querySelectorAll('.gallery-thumb').forEach(thumb => {
-                thumb.classList.remove('border-emerald-500');
-                thumb.classList.add('border-transparent');
-            });
-            
-            thumbElement.classList.remove('border-transparent');
-            thumbElement.classList.add('border-emerald-500');
+        // --- Mobile Menu ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.classList.toggle('open');
+        });
+
+        // --- Heading Word Animation ---
+        const wordsContainer = document.querySelector('#word-anim-container');
+        if (wordsContainer) {
+            const words = wordsContainer.querySelectorAll('.animated-word');
+            let currentIndex = 0;
+            if (words.length > 0) {
+                words[currentIndex].classList.add('in');
+                setInterval(() => {
+                    if (document.hidden) return;
+                    const nextIndex = (currentIndex + 1) % words.length;
+                    words[currentIndex].classList.remove('in'); words[currentIndex].classList.add('out');
+                    words[nextIndex].classList.remove('out'); words[nextIndex].classList.add('in');
+                    setTimeout(() => words[currentIndex].classList.remove('out'), 700);
+                    currentIndex = nextIndex;
+                }, 2500);
+            }
         }
 
-        // --- Command Bar (K-Bar) Logic ---
+        // --- K-Bar Logic ---
         const kbarOverlay = document.getElementById('kbar-overlay');
-        const kbarItems = document.querySelectorAll('.kbar-item');
         function toggleKbar(visible) { kbarOverlay.classList.toggle('visible', visible); }
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); toggleKbar(true); }
+            if (e.key === 'k' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); toggleKbar(true); document.getElementById('kbar-search').focus();}
             if (e.key === 'Escape') { toggleKbar(false); }
         });
         kbarOverlay.addEventListener('click', (e) => { if (e.target === kbarOverlay) toggleKbar(false); });
-        kbarItems.forEach(item => { item.addEventListener('click', () => toggleKbar(false)); });
+        document.querySelectorAll('.kbar-item').forEach(item => item.addEventListener('click', () => toggleKbar(false)));
+        
         document.getElementById('theme-toggle-btn').addEventListener('click', () => {
-            const currentHue = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--aurora-color-1').match(/hsl\(([\d.]+)/)?.[1] || 158);
+             const currentHue = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--aurora-color-1').match(/#[0-9a-f]{6}/i) ? 158 : getComputedStyle(document.documentElement).getPropertyValue('--aurora-color-1').match(/hsl\(([\d.]+)/)?.[1] || 158);
             const newHue = (currentHue + 90) % 360;
-            document.documentElement.style.setProperty('--aurora-color-1', `hsl(${newHue}, 70%, 50%)`);
-            document.documentElement.style.setProperty('--aurora-color-2', `hsl(${newHue + 30}, 90%, 30%)`);
-            document.documentElement.style.setProperty('--glow-color', `rgba(from hsl(${newHue}, 70%, 50%) r g b / 0.7)`);
+            document.documentElement.style.setProperty('--aurora-color-1', `hsl(${newHue}, 70%, 60%)`);
+            document.documentElement.style.setProperty('--aurora-color-2', `hsl(${newHue + 30}, 80%, 40%)`);
         });
+
     });
     </script>
 </body>
 </html>
-
 
