@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Himangshu Paul - Full-Stack Developer & Brand Strategist</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
@@ -73,10 +74,6 @@
         body::-webkit-scrollbar-thumb { background: #34D399; border-radius: 3px; }
         body::-webkit-scrollbar-thumb:hover { background: #10B981; }
 
-        #constellation-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -4; pointer-events: none;
-        }
         .aurora-background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; overflow: hidden;
         }
@@ -115,12 +112,44 @@
         .card-border-gradient {
             position: relative; border: 1px solid transparent;
             background: linear-gradient(white, white) padding-box, linear-gradient(120deg, rgba(52, 211, 153, 0.3), rgba(16, 185, 129, 0.3), white, white) border-box;
-            border-radius: 1rem; transition: all 0.3s ease; overflow: hidden;
+            border-radius: 1rem; transition: all 0.3s ease;
         }
         .card-border-gradient:hover {
             box-shadow: 0 8px 15px -3px rgba(0,0,0,0.05);
             transform: translateY(-4px);
         }
+        
+        /* --- Service Card Flip Styles --- */
+        .services-grid {
+            perspective: 1500px;
+        }
+        .card-3d-effect {
+            min-height: 240px; /* Set a consistent height for the flip effect */
+        }
+        .card-3d-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform;
+        }
+        .card-3d-effect:hover .card-3d-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.9rem; /* Match parent's border radius */
+        }
+        .card-back {
+            background-color: #f9fafb;
+            transform: rotateY(180deg);
+        }
+
         /* Spotlight effect for service cards */
         .card-spotlight {
              background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(52, 211, 153, 0.2), transparent 40%);
@@ -130,8 +159,18 @@
             background: transparent;
         }
 
-        /* --- Text Scramble Effect --- */
-        .scramble-text { font-family: 'Space Mono', monospace; }
+        /* --- Cinematic Text Reveal Effect --- */
+        .cinematic-text .char {
+            opacity: 0;
+            transform: translateY(100%) rotate(15deg);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            display: inline-block;
+        }
+        .visible .cinematic-text .char {
+            opacity: 1;
+            transform: translateY(0) rotate(0);
+            transition-delay: calc(var(--char-index) * 30ms);
+        }
 
         .scroll-animate { opacity: 0; transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .scroll-animate.visible { opacity: 1; }
@@ -151,17 +190,58 @@
         .scroller:hover .scroller-inner { animation-play-state: paused; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .skill-card {
-            background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(120deg, rgba(52, 211, 153, 0.15), rgba(16, 185, 129, 0.15)) border-box;
-            border: 1px solid transparent;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .skill-card:hover { transform: translateY(-5px); box-shadow: 0 8px 12px -3px rgba(0,0,0,0.04); }
-
         .animated-word { position: absolute; width: 100%; left: 0; top: 0; transform: translateY(120%); transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1); }
         .animated-word.in { transform: translateY(0); }
         .animated-word.out { transform: translateY(-120%); }
         #word-anim-container::after { content: 'Digital Marketing.'; font-weight: 900; visibility: hidden; }
+        
+        /* --- Floating Tech Icons in Hero --- */
+        #floating-icons-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible; /* Allow icons to be outside the bounds */
+            pointer-events: none;
+        }
+        .floating-icon {
+            position: absolute;
+            font-size: 2rem; /* ~32px */
+            color: var(--aurora-color-2);
+            opacity: 0.7;
+            animation: float-icon-anim 8s ease-in-out infinite;
+            will-change: transform;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes float-icon-anim {
+            0% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) translateY(-20px) rotate(10deg); }
+            100% { transform: translate(-50%, -50%) translateY(0px) rotate(0deg); }
+        }
+
+        #hero-3d-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+        }
+
+        .profile-image-container::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 105%; height: 105%;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--aurora-color-1);
+            border-right-color: var(--aurora-color-1);
+            transform: translate(-50%, -50%);
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
 
         #kbar-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(249, 250, 251, 0.7); backdrop-filter: blur(8px); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         #kbar-overlay.visible { opacity: 1; pointer-events: all; }
@@ -188,11 +268,42 @@
         .enquiry-label { position: absolute; top: 50%; right: -48px; transform: translateY(-50%) rotate(-90deg); transform-origin: center; background-color: #10B981; color: white; padding: 4px 10px; font-size: 11px; font-weight: 600; border-top-left-radius: 6px; border-top-right-radius: 6px; transition: right 0.3s ease; z-index: 5; white-space: nowrap; }
         .card-border-gradient:hover .enquiry-label { right: -12px; }
 
-        .process-flow { display: flex; align-items: center; justify-content: space-between; position: relative; }
-        .process-step-card { background: white; border: 1px solid #e5e7eb; border-radius: 1rem; padding: 1.25rem; width: 23%; text-align: center; position: relative; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        /* --- Interactive Process SVG --- */
+        .process-svg-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+        }
+        .visible .process-svg-path {
+            stroke-dashoffset: 0;
+        }
         .process-step-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
-        .process-connector { flex-grow: 1; height: 2px; background-image: linear-gradient(to right, #d1d5db 50%, transparent 50%); background-size: 14px 2px; margin: 0 -1rem; }
-        @media (max-width: 767px) { .process-flow { flex-direction: column; } .process-step-card { width: 100%; margin-bottom: 1.5rem; } .process-connector { display: none; } }
+
+        /* --- Testimonial Glassmorphism --- */
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+        .testimonial-spotlight {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgba(52, 211, 153, 0.25), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .testimonial-card:hover .testimonial-spotlight {
+            opacity: 1;
+        }
 
         /* Icon Colors */
         .fa-linkedin { color: #0077B5; } .fa-google { color: #4285F4; } .fa-android { color: #3DDC84; } .fa-java { color: #f89820; } .fa-python { color: #3776AB; } .fa-js-square { color: #F7DF1E; } .fa-html5 { color: #E34F26; } .fa-css3-alt { color: #1572B6; } .fa-php { color: #777BB4; } .fa-wordpress { color: #21759B; } .fa-shopify { color: #7AB55C; } .fa-linux { color: #FCC624; } .fa-paper-plane, .fa-arrow-right { color: white; }
@@ -208,7 +319,6 @@
     </div>
     <div id="lens-flare"></div>
 
-    <canvas id="constellation-canvas"></canvas>
     <div id="particles-container"></div>
     <div class="aurora-background"></div>
 
@@ -266,32 +376,44 @@
             </div>
         </div>
 
-        <main class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 pt-10 pb-12 text-center lg:text-left min-h-screen flex items-center">
-            <div class="grid lg:grid-cols-2 gap-6 lg:gap-10 items-center w-full">
-                <div class="space-y-5 scroll-animate stagger-children">
-                    <span style="--i: 1" class="inline-block bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-2"></i>Developer & Brand Strategist</span>
-                    <h1 style="--i: 2" class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-tight text-gray-900">
-                        <span class="scramble-text" data-text="Building & Scaling"></span>
-                        <span class="block scramble-text" data-text="Digital Products."></span>
-                        <span id="word-anim-container" class="inline-block relative h-[1.3em] overflow-hidden align-bottom text-emerald-600">
-                            <span class="animated-word">Web & Android</span>
-                            <span class="animated-word">Brand Strategy.</span>
-                            <span class="animated-word">Digital Marketing.</span>
-                        </span>
-                    </h1>
-                    <p style="--i: 3" class="text-sm sm:text-base text-gray-600 max-w-md mx-auto lg:mx-0">Partnering with businesses to build high-performance applications, backed by data-driven brand strategies that deliver measurable results.</p>
-                    <div style="--i: 4" class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
-                        <a href="#my-works-section" class="magnetic-item w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-lg shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 text-sm">
-                            <span>View My Work</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
+        <main class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 pt-10 pb-12 text-center lg:text-left min-h-screen flex items-center justify-center relative">
+            <div id="hero-3d-container"></div>
+            <div class="w-full bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 shadow-lg relative z-10 overflow-hidden">
+                <div class="grid lg:grid-cols-2 gap-6 lg:gap-10 items-center w-full relative">
+                    <div class="space-y-5 scroll-animate stagger-children">
+                        <span style="--i: 1" class="inline-block bg-emerald-100 text-emerald-800 text-xs px-3 py-1 rounded-full"><i class="fas fa-user-tie mr-2"></i>Developer & Brand Strategist</span>
+                        <h1 style="--i: 2" class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter leading-tight text-gray-900">
+                            <span class="cinematic-text"></span>
+                            <span class="block cinematic-text"></span>
+                            <span id="word-anim-container" class="inline-block relative h-[1.3em] overflow-hidden align-bottom text-emerald-600">
+                                <span class="animated-word">Web & Android</span>
+                                <span class="animated-word">Brand Strategy.</span>
+                                <span class="animated-word">Digital Marketing.</span>
+                            </span>
+                        </h1>
+                        <p style="--i: 3" class="text-sm sm:text-base text-gray-600 max-w-md mx-auto lg:mx-0">Partnering with businesses to build high-performance applications, backed by data-driven brand strategies that deliver measurable results.</p>
+                        <div style="--i: 4" class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                            <a href="#my-works-section" class="magnetic-item w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold px-4 py-2 sm:px-6 sm:py-3 rounded-lg shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 text-sm">
+                                <span>View My Work</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="scroll-animate zoom-in flex justify-center items-center profile-image-container" style="transition-delay: 200ms;">
-                     <div class="relative w-72 h-72 sm:w-80 sm:h-80">
-                        <div class="relative w-full h-full rounded-full shadow-xl">
-                            <div class="absolute inset-0 bg-gradient-to-br from-emerald-200 to-green-300 transform -rotate-45 profile-gradient-ring rounded-full"></div>
-                            <img src="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg" alt="Himangshu Paul" class="relative w-full h-full object-cover rounded-full border-6 border-white profile-image">
+                    <div class="scroll-animate zoom-in flex justify-center items-center" style="transition-delay: 200ms;">
+                         <div class="relative w-72 h-72 sm:w-80 sm:h-80 profile-image-container">
+                            <div id="floating-icons-container">
+                                <i class="fab fa-java floating-icon" style="top: -5%; left: 50%; animation-delay: -1s;"></i>
+                                <i class="fab fa-python floating-icon" style="top: 25%; left: 100%; animation-delay: -3s;"></i>
+                                <i class="fas fa-database floating-icon" style="top: 75%; left: 105%; animation-delay: -5s;"></i>
+                                <i class="fab fa-js-square floating-icon" style="top: 105%; left: 60%; animation-delay: -7s;"></i>
+                                <i class="fab fa-android floating-icon" style="top: 75%; left: -5%; animation-delay: -9s;"></i>
+                                <i class="fab fa-linux floating-icon" style="top: 25%; left: 0%; animation-delay: -11s;"></i>
+                                <i class="fab fa-wordpress floating-icon" style="top: 100%; left: 20%; animation-delay: -13s;"></i>
+                            </div>
+                            <div class="relative w-full h-full rounded-full shadow-xl">
+                                <div class="absolute inset-0 bg-gradient-to-br from-emerald-200 to-green-300 transform -rotate-45 profile-gradient-ring rounded-full"></div>
+                                <img src="https://html-generator.com/uploads/images/2023/12/21/33636LKI1L0SNSL.jpg" alt="Himangshu Paul" class="relative w-full h-full object-cover rounded-full border-6 border-white profile-image">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -303,156 +425,163 @@
                 <div class="scroll-animate fade-in-up">
                     <div class="flex justify-center items-center">
                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="My Core Services"></span></h2>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="cinematic-text"></span></h2>
                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                     <p class="text-gray-600 text-sm mt-3 mb-10 max-w-xl mx-auto">A comprehensive suite of services to build, launch, and grow your digital presence effectively.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-                    <div class="card-border-gradient p-5 relative">
-                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-laptop-code text-2xl text-emerald-500 mr-3"></i>
-                            <h3 class="text-lg font-bold text-gray-900">Web Application Development</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-left services-grid">
+                    
+                    <div class="card-border-gradient p-0 relative card-3d-effect">
+                        <div class="card-3d-inner">
+                            <div class="card-front absolute inset-0 p-5 flex flex-col justify-center items-center text-center">
+                                <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                                <i class="fas fa-laptop-code text-3xl text-emerald-500 mb-3"></i>
+                                <h3 class="text-lg font-bold text-gray-900">Web Application Development</h3>
+                                <p class="text-xs text-gray-500 mt-2 opacity-70">Hover for details</p>
+                            </div>
+                            <div class="card-back absolute inset-0 p-5 rounded-xl flex flex-col justify-center text-left">
+                                <h4 class="font-bold text-md text-gray-900 mb-2">Key Features</h4>
+                                <ul class="space-y-1.5 text-sm text-gray-700">
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Custom Web Software & SaaS</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Responsive, Mobile-First Design</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Backend & API Integration</li>
+                                </ul>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-3">Custom web applications engineered to solve complex business challenges.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Custom Web Software & SaaS</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Responsive, Mobile-First Design</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Backend & API Integration</li>
-                        </ul>
                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                    <div class="card-border-gradient p-5 relative">
-                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
-                        <div class="flex items-center mb-3">
-                            <i class="fab fa-android text-2xl text-emerald-500 mr-3"></i>
-                            <h3 class="text-lg font-bold text-gray-900">Mobile App Development</h3>
+                    
+                    <div class="card-border-gradient p-0 relative card-3d-effect">
+                        <div class="card-3d-inner">
+                            <div class="card-front absolute inset-0 p-5 flex flex-col justify-center items-center text-center">
+                                <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                                <i class="fab fa-android text-3xl text-emerald-500 mb-3"></i>
+                                <h3 class="text-lg font-bold text-gray-900">Mobile App Development</h3>
+                                <p class="text-xs text-gray-500 mt-2 opacity-70">Hover for details</p>
+                            </div>
+                            <div class="card-back absolute inset-0 p-5 rounded-xl flex flex-col justify-center text-left">
+                                <h4 class="font-bold text-md text-gray-900 mb-2">Key Features</h4>
+                                <ul class="space-y-1.5 text-sm text-gray-700">
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Native Android (Java)</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Performance Optimization</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Firebase Backend Integration</li>
+                                </ul>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-3">High-performance, user-centric native Android applications for the Google Play Store.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Native Android (Java)</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Performance Optimization</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Firebase Backend Integration</li>
-                        </ul>
-                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
+                        <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                    <div class="card-border-gradient p-5 relative">
-                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
-                        <div class="flex items-center mb-3">
-                            <i class="fab fa-google-play text-2xl text-emerald-500 mr-3"></i>
-                            <h3 class="text-lg font-bold text-gray-900">App Store Publishing</h3>
+
+                    <div class="card-border-gradient p-0 relative card-3d-effect">
+                        <div class="card-3d-inner">
+                            <div class="card-front absolute inset-0 p-5 flex flex-col justify-center items-center text-center">
+                                <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                                <i class="fab fa-google-play text-3xl text-emerald-500 mb-3"></i>
+                                <h3 class="text-lg font-bold text-gray-900">App Store Publishing</h3>
+                                <p class="text-xs text-gray-500 mt-2 opacity-70">Hover for details</p>
+                            </div>
+                            <div class="card-back absolute inset-0 p-5 rounded-xl flex flex-col justify-center text-left">
+                                <h4 class="font-bold text-md text-gray-900 mb-2">Key Features</h4>
+                                <ul class="space-y-1.5 text-sm text-gray-700">
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Google Play Console Management</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Store Listing Optimization</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Release & Version Management</li>
+                                </ul>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-3">Full app lifecycle management on the Google Play Console for maximum visibility.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Google Play Console Management</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Store Listing Optimization</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Release & Version Management</li>
-                        </ul>
-                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
+                        <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                    <div class="card-border-gradient p-5 relative">
-                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-chart-line text-2xl text-emerald-500 mr-3"></i>
-                            <h3 class="text-lg font-bold text-gray-900">Search Engine Optimization</h3>
+
+                    <div class="card-border-gradient p-0 relative card-3d-effect">
+                        <div class="card-3d-inner">
+                            <div class="card-front absolute inset-0 p-5 flex flex-col justify-center items-center text-center">
+                                <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                                <i class="fas fa-chart-line text-3xl text-emerald-500 mb-3"></i>
+                                <h3 class="text-lg font-bold text-gray-900">Search Engine Optimization</h3>
+                                <p class="text-xs text-gray-500 mt-2 opacity-70">Hover for details</p>
+                            </div>
+                            <div class="card-back absolute inset-0 p-5 rounded-xl flex flex-col justify-center text-left">
+                                <h4 class="font-bold text-md text-gray-900 mb-2">Key Features</h4>
+                                <ul class="space-y-1.5 text-sm text-gray-700">
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>On-Page & Off-Page SEO</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Keyword Analysis & Tracking</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Technical SEO Audits</li>
+                                </ul>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-3">Driving qualified organic traffic and improving online visibility with proven SEO strategies.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>On-Page & Off-Page SEO</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Keyword Analysis & Tracking</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Technical SEO Audits</li>
-                        </ul>
-                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
+                        <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                    <div class="card-border-gradient p-5 relative">
-                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-palette text-2xl text-emerald-500 mr-3"></i>
-                            <h3 class="text-lg font-bold text-gray-900">UI/UX & Graphic Design</h3>
+                    
+                    <div class="card-border-gradient p-0 relative card-3d-effect">
+                        <div class="card-3d-inner">
+                            <div class="card-front absolute inset-0 p-5 flex flex-col justify-center items-center text-center">
+                                <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                                <i class="fas fa-palette text-3xl text-emerald-500 mb-3"></i>
+                                <h3 class="text-lg font-bold text-gray-900">UI/UX & Graphic Design</h3>
+                                <p class="text-xs text-gray-500 mt-2 opacity-70">Hover for details</p>
+                            </div>
+                            <div class="card-back absolute inset-0 p-5 rounded-xl flex flex-col justify-center text-left">
+                                <h4 class="font-bold text-md text-gray-900 mb-2">Key Features</h4>
+                                <ul class="space-y-1.5 text-sm text-gray-700">
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>User Interface (UI) Design</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>User Experience (UX) Flows</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Logo & Brand Identity Graphics</li>
+                                </ul>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-3">Designing intuitive interfaces, engaging experiences, and memorable brand assets.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>User Interface (UI) Design</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>User Experience (UX) Flows</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Logo & Brand Identity Graphics</li>
-                        </ul>
-                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
+                        <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
-                    <div class="card-border-gradient p-5 relative">
-                        <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
-                        <div class="flex items-center mb-3">
-                            <i class="fas fa-headset text-2xl text-emerald-500 mr-3"></i>
-                            <h3 class="text-lg font-bold text-gray-900">Technical Consultation</h3>
+
+                    <div class="card-border-gradient p-0 relative card-3d-effect">
+                        <div class="card-3d-inner">
+                            <div class="card-front absolute inset-0 p-5 flex flex-col justify-center items-center text-center">
+                                <div class="card-spotlight absolute inset-0 rounded-xl pointer-events-none"></div>
+                                <i class="fas fa-headset text-3xl text-emerald-500 mb-3"></i>
+                                <h3 class="text-lg font-bold text-gray-900">Technical Consultation</h3>
+                                <p class="text-xs text-gray-500 mt-2 opacity-70">Hover for details</p>
+                            </div>
+                            <div class="card-back absolute inset-0 p-5 rounded-xl flex flex-col justify-center text-left">
+                                <h4 class="font-bold text-md text-gray-900 mb-2">Key Features</h4>
+                                <ul class="space-y-1.5 text-sm text-gray-700">
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Tech Stack & Architecture Advice</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Troubleshooting & Support</li>
+                                    <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Ongoing Maintenance Plans</li>
+                                </ul>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-3">Providing expert technical guidance and support to ensure your project's long-term success.</p>
-                        <ul class="space-y-1.5 text-sm text-gray-700">
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Tech Stack & Architecture Advice</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Troubleshooting & Support</li>
-                            <li><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i>Ongoing Maintenance Plans</li>
-                        </ul>
-                         <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
+                        <a href="#contact-section" class="enquiry-label magnetic-item"><i class="fas fa-envelope-open-text mr-1.5"></i> Enquiry</a>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <section id="stats-section" class="py-14">
-            <div class="container mx-auto px-4 sm:px-6">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                    <div class="p-4">
-                        <i class="fas fa-briefcase text-3xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="4">0</span>+</h3>
-                        <p class="text-sm text-gray-600">Years of Experience</p>
-                    </div>
-                    <div class="p-4">
-                        <i class="fas fa-check-double text-3xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="15">0</span>+</h3>
-                        <p class="text-sm text-gray-600">Projects Completed</p>
-                    </div>
-                    <div class="p-4">
-                        <i class="fas fa-smile text-3xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="10000">0</span>+</h3>
-                        <p class="text-sm text-gray-600">Happy Clients</p>
-                    </div>
-                    <div class="p-4">
-                        <i class="fas fa-award text-3xl text-emerald-500 mb-2"></i>
-                        <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="20">0</span>+</h3>
-                        <p class="text-sm text-gray-600">Technologies Mastered</p>
-                    </div>
-                </div>
+        <section id="stats-section" class="py-14 relative">
+            <div class="absolute inset-0 flex items-center justify-center opacity-30">
+                <div class="w-2/3 h-full bg-emerald-200 rounded-full" style="filter: blur(140px);"></div>
             </div>
-        </section>
-        
-        <section id="skills-section" class="py-14 scroll-animate fade-in-up">
-            <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
-                <div class="flex justify-center items-center mb-4">
-                    <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
-                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="My Tech Stack"></span></h2>
-                    <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
-                </div>
-                <p class="text-gray-600 text-sm mb-8 px-4 max-w-xl mx-auto">Leveraging a modern and versatile technology stack to build efficient, scalable, and secure digital products.</p>
-                <div class="relative scroller overflow-hidden">
-                    <div class="scroller-inner flex gap-x-6">
-                        <div class="flex gap-6">
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-java text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Java (Android)</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-python text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Python</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-database text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Firebase</p><p class="text-xs text-emerald-600">Development</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-js-square text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">JavaScript</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-search-dollar text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">SEO</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-bullhorn text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Google & Meta Ads</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-linux text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Linux Administration</p><p class="text-xs text-emerald-600">Cloud & Security</p></div></div>
-                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-wordpress text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">WordPress</p><p class="text-xs text-emerald-600">Development</p></div></div>
+            <div class="container mx-auto px-4 sm:px-6 relative">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 shadow-lg">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div class="p-2">
+                            <i class="fas fa-briefcase text-3xl text-emerald-600 mb-2"></i>
+                            <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="4">0</span>+</h3>
+                            <p class="text-sm text-gray-700">Years of Experience</p>
                         </div>
-                        <div class="flex gap-6" aria-hidden="true">
-                           <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-java text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Java (Android)</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-python text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Python</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-database text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Firebase</p><p class="text-xs text-emerald-600">Development</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-js-square text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">JavaScript</p><p class="text-xs text-emerald-600">Programming</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-search-dollar text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">SEO</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                            <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fas fa-bullhorn text-2xl text-emerald-500 mb-1"></i><p class="font-semibold text-sm text-gray-800">Google & Meta Ads</p><p class="text-xs text-emerald-600">Marketing</p></div></div>
-                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-linux text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">Linux Administration</p><p class="text-xs text-emerald-600">Cloud & Security</p></div></div>
-                             <div class="skill-card rounded-xl p-3 w-40 text-center space-y-2 shrink-0"><div><i class="fab fa-wordpress text-2xl mb-1"></i><p class="font-semibold text-sm text-gray-800">WordPress</p><p class="text-xs text-emerald-600">Development</p></div></div>
+                        <div class="p-2">
+                            <i class="fas fa-check-double text-3xl text-emerald-600 mb-2"></i>
+                            <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="99">0</span>+</h3>
+                            <p class="text-sm text-gray-700">Projects Completed</p>
+                        </div>
+                        <div class="p-2">
+                            <i class="fas fa-smile text-3xl text-emerald-600 mb-2"></i>
+                            <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="28">0</span>+</h3>
+                            <p class="text-sm text-gray-700">Happy Clients</p>
+                        </div>
+                        <div class="p-2">
+                            <i class="fas fa-award text-3xl text-emerald-600 mb-2"></i>
+                            <h3 class="text-3xl font-bold text-gray-900"><span class="stat-counter" data-target="22">0</span>+</h3>
+                            <p class="text-sm text-gray-700">Technologies Mastered</p>
                         </div>
                     </div>
                 </div>
@@ -464,7 +593,7 @@
                 <div class="scroll-animate fade-in-up">
                     <div class="flex justify-center items-center mb-10">
                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="Portfolio Showcase"></span></h2>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="cinematic-text"></span></h2>
                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
@@ -554,7 +683,7 @@
                 <div class="scroll-animate fade-in-up">
                     <div class="flex justify-center items-center mb-10">
                          <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="Trusted By"></span></h2>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="cinematic-text"></span></h2>
                          <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
@@ -585,19 +714,20 @@
             </div>
         </section>
 
-        <section id="testimonials-section" class="py-14 bg-white">
+        <section id="testimonials-section" class="py-14 bg-white/50">
             <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                  <div class="scroll-animate fade-in-up">
                     <div class="flex justify-center items-center mb-10">
                          <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="Client Testimonials"></span></h2>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="cinematic-text"></span></h2>
                          <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-                    <div class="card-border-gradient p-5">
-                        <p class="text-sm text-gray-600 mb-3">"Himangshu's expertise was a game-changer for our platform. He delivered a high-quality app and a strategy that grew our user base to over 10,000."</p>
-                        <div class="flex items-center">
+                    <div class="testimonial-card rounded-xl p-5">
+                        <div class="testimonial-spotlight"></div>
+                        <p class="relative text-sm text-gray-700 mb-3">"Himangshu's expertise was a game-changer for our platform. He delivered a high-quality app and a strategy that grew our user base to over 10,000."</p>
+                        <div class="relative flex items-center">
                             <img src="https://placehold.co/36x36/e5e7eb/1f2937?text=A" alt="Client Avatar" class="w-9 h-9 rounded-full mr-3">
                             <div>
                                 <p class="font-bold text-sm text-gray-900">A. Sharma</p>
@@ -605,9 +735,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-border-gradient p-5">
-                        <p class="text-sm text-gray-600 mb-3">"The technical leadership was exceptional. He managed the entire development lifecycle and his optimizations on the Play Store were invaluable."</p>
-                        <div class="flex items-center">
+                    <div class="testimonial-card rounded-xl p-5">
+                         <div class="testimonial-spotlight"></div>
+                        <p class="relative text-sm text-gray-700 mb-3">"The technical leadership was exceptional. He managed the entire development lifecycle and his optimizations on the Play Store were invaluable."</p>
+                        <div class="relative flex items-center">
                             <img src="https://placehold.co/36x36/e5e7eb/1f2937?text=R" alt="Client Avatar" class="w-9 h-9 rounded-full mr-3">
                             <div>
                                 <p class="font-bold text-sm text-gray-900">R. Kumar</p>
@@ -615,9 +746,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-border-gradient p-5">
-                        <p class="text-sm text-gray-600 mb-3">"His ability to translate complex requirements into a seamless user experience is top-notch. Highly recommended for any web or app project."</p>
-                        <div class="flex items-center">
+                    <div class="testimonial-card rounded-xl p-5">
+                         <div class="testimonial-spotlight"></div>
+                        <p class="relative text-sm text-gray-700 mb-3">"His ability to translate complex requirements into a seamless user experience is top-notch. Highly recommended for any web or app project."</p>
+                        <div class="relative flex items-center">
                              <img src="https://placehold.co/36x36/e5e7eb/1f2937?text=S" alt="Client Avatar" class="w-9 h-9 rounded-full mr-3">
                             <div>
                                 <p class="font-bold text-sm text-gray-900">S. Gupta</p>
@@ -629,38 +761,40 @@
             </div>
         </section>
 
-        <section id="process-section" class="py-14">
+        <section id="process-section" class="py-20">
             <div class="container mx-auto px-4 sm:px-6 md:px-10 lg:px-20 text-center">
                 <div class="scroll-animate fade-in-up">
-                    <div class="flex justify-center items-center mb-10">
+                    <div class="flex justify-center items-center mb-12">
                          <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
-                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="scramble-text" data-text="My Process"></span></h2>
+                        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600"><span class="cinematic-text"></span></h2>
                          <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
                 </div>
-                <div class="process-flow">
-                    <div class="process-step-card">
-                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">1</div>
-                        <h3 class="mt-3 font-bold text-base text-gray-900">Discovery & Strategy</h3>
-                        <p class="mt-1 text-xs text-gray-600">Defining project goals, target audience, and a comprehensive strategy.</p>
-                    </div>
-                    <div class="process-connector hidden md:block"></div>
-                     <div class="process-step-card">
-                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">2</div>
-                        <h3 class="mt-3 font-bold text-base text-gray-900">Design & Development</h3>
-                        <p class="mt-1 text-xs text-gray-600">Crafting intuitive designs and writing clean, efficient code.</p>
-                    </div>
-                    <div class="process-connector hidden md:block"></div>
-                     <div class="process-step-card">
-                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">3</div>
-                        <h3 class="mt-3 font-bold text-base text-gray-900">Testing & Launch</h3>
-                        <p class="mt-1 text-xs text-gray-600">Rigorous testing to ensure a flawless product before a strategic launch.</p>
-                    </div>
-                    <div class="process-connector hidden md:block"></div>
-                     <div class="process-step-card">
-                        <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">4</div>
-                        <h3 class="mt-3 font-bold text-base text-gray-900">Support & Growth</h3>
-                        <p class="mt-1 text-xs text-gray-600">Providing ongoing support and data-driven marketing for continued success.</p>
+                <div class="relative">
+                    <svg class="absolute top-1/2 left-0 w-full h-auto -translate-y-1/2 hidden md:block" width="944" height="114" viewBox="0 0 944 114" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="process-svg-path" d="M112 57C188.667 57 323.2 57 325 57C326.8 57 416.333 57 493 57M611 57C687.667 57 822.2 57 824 57C825.8 57 944 57 944 57" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="relative flex flex-col md:flex-row justify-between items-start md:items-center space-y-8 md:space-y-0">
+                        <div class="process-step-card text-center w-full md:w-1/5">
+                            <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">1</div>
+                            <h3 class="mt-3 font-bold text-base text-gray-900">Discovery & Strategy</h3>
+                            <p class="mt-1 text-xs text-gray-600">Defining project goals, target audience, and a comprehensive strategy.</p>
+                        </div>
+                         <div class="process-step-card text-center w-full md:w-1/5">
+                            <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">2</div>
+                            <h3 class="mt-3 font-bold text-base text-gray-900">Design & Development</h3>
+                            <p class="mt-1 text-xs text-gray-600">Crafting intuitive designs and writing clean, efficient code.</p>
+                        </div>
+                        <div class="process-step-card text-center w-full md:w-1/5">
+                            <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">3</div>
+                            <h3 class="mt-3 font-bold text-base text-gray-900">Testing & Launch</h3>
+                            <p class="mt-1 text-xs text-gray-600">Rigorous testing to ensure a flawless product before a strategic launch.</p>
+                        </div>
+                        <div class="process-step-card text-center w-full md:w-1/5">
+                            <div class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xl font-bold border-4 border-white shadow-md z-10 mx-auto">4</div>
+                            <h3 class="mt-3 font-bold text-base text-gray-900">Support & Growth</h3>
+                            <p class="mt-1 text-xs text-gray-600">Providing ongoing support and data-driven marketing for continued success.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -675,8 +809,8 @@
                     <div class="flex justify-center items-center mb-4">
                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block header-arrow">
                         <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-emerald-600">
-                            <span class="scramble-text" data-text="Have a Project in Mind?"></span>
-                            <span class="block scramble-text" data-text="Let's Talk."></span>
+                            <span class="cinematic-text"></span>
+                            <span class="block cinematic-text"></span>
                         </h2>
                         <img src="https://golpomedia.in/wp-content/uploads/2025/07/Arrow3.png" alt="arrow" class="h-8 mx-4 hidden md:inline-block transform scale-x-[-1] header-arrow flipped">
                     </div>
@@ -765,60 +899,47 @@
             });
         });
 
-        // --- Advanced: Text Scramble Effect ---
-        class TextScramble {
-            constructor(el) {
-                this.el = el;
-                this.chars = '!<>-_\\/[]{}—=+*^?#________';
-                this.update = this.update.bind(this);
-            }
-            setText(newText) {
-                const oldText = this.el.innerText;
-                const length = Math.max(oldText.length, newText.length);
-                const promise = new Promise((resolve) => this.resolve = resolve);
-                this.queue = [];
-                for (let i = 0; i < length; i++) {
-                    const from = oldText[i] || '';
-                    const to = newText[i] || '';
-                    const start = Math.floor(Math.random() * 40);
-                    const end = start + Math.floor(Math.random() * 40);
-                    this.queue.push({ from, to, start, end });
-                }
-                cancelAnimationFrame(this.frameRequest);
-                this.frame = 0;
-                this.update();
-                return promise;
-            }
-            update() {
-                let output = '';
-                let complete = 0;
-                for (let i = 0, n = this.queue.length; i < n; i++) {
-                    let { from, to, start, end, char } = this.queue[i];
-                    if (this.frame >= end) {
-                        complete++;
-                        output += to;
-                    } else if (this.frame >= start) {
-                        if (!char || Math.random() < 0.28) {
-                            char = this.randomChar();
-                            this.queue[i].char = char;
+        // --- Advanced: Cinematic Text Reveal ---
+        function setupCinematicText() {
+            const cinematicTexts = [
+                { selector: 'main h1 span.cinematic-text', texts: ["Building & Scaling", "Digital Products."] },
+                { selector: '#services-section h2 span.cinematic-text', texts: ["My Core Services"] },
+                { selector: '#my-works-section h2 span.cinematic-text', texts: ["Portfolio Showcase"] },
+                { selector: '#worked-with-section h2 span.cinematic-text', texts: ["Trusted By"] },
+                { selector: '#testimonials-section h2 span.cinematic-text', texts: ["Client Testimonials"] },
+                { selector: '#process-section h2 span.cinematic-text', texts: ["My Process"] },
+                { selector: '#contact-section h2 span.cinematic-text', texts: ["Have a Project in Mind?", "Let's Talk."] }
+            ];
+
+            cinematicTexts.forEach(group => {
+                document.querySelectorAll(group.selector).forEach((el, index) => {
+                    if (group.texts[index]) {
+                        const text = group.texts[index];
+                        el.innerHTML = '';
+                        for (let i = 0; i < text.length; i++) {
+                            const charSpan = document.createElement('span');
+                            charSpan.className = 'char';
+                            charSpan.style.setProperty('--char-index', i);
+                            charSpan.textContent = text[i] === ' ' ? '\u00A0' : text[i];
+                            el.appendChild(charSpan);
                         }
-                        output += `<span class="opacity-50">${char}</span>`;
-                    } else {
-                        output += from;
                     }
-                }
-                this.el.innerHTML = output;
-                if (complete === this.queue.length) {
-                    this.resolve();
-                } else {
-                    this.frameRequest = requestAnimationFrame(this.update);
-                    this.frame++;
-                }
-            }
-            randomChar() {
-                return this.chars[Math.floor(Math.random() * this.chars.length)];
-            }
+                });
+            });
         }
+        setupCinematicText();
+        
+        // --- Advanced: Testimonial Card Spotlight ---
+        const testimonialCards = document.querySelectorAll('.testimonial-card');
+        testimonialCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
         
         // --- Advanced: Card Spotlight Effect ---
         const spotlightCards = document.querySelectorAll('.card-border-gradient');
@@ -832,49 +953,86 @@
             });
         });
 
-        // --- Interactive Constellation Background ---
-        const canvas = document.getElementById('constellation-canvas');
-        const ctx = canvas.getContext('2d');
-        let points = [];
+        // --- Advanced: Interactive 3D Hero Background ---
+        let scene, camera, renderer, particles;
+        let mouseX = 0, mouseY = 0;
+        let windowHalfX = window.innerWidth / 2;
+        let windowHalfY = window.innerHeight / 2;
 
-        function setCanvasSize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function init3D() {
+            const container = document.getElementById('hero-3d-container');
+            if (!container) return;
 
-        function initConstellation() {
-            points = [];
-            const pointCount = (canvas.width * canvas.height) / 10000;
-            for (let i = 0; i < pointCount; i++) {
-                points.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    vx: Math.random() * 0.3 - 0.15,
-                    vy: Math.random() * 0.3 - 0.15,
-                    radius: Math.random() * 1.2 + 0.8
-                });
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 1, 1000);
+            camera.position.z = 300;
+
+            const particleCount = 5000;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const color = new THREE.Color("#10B981");
+
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] = Math.random() * 2000 - 1000;
+                positions[i * 3 + 1] = Math.random() * 2000 - 1000;
+                positions[i * 3 + 2] = Math.random() * 2000 - 1000;
             }
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+           
+            const material = new THREE.PointsMaterial({
+                size: 1.5,
+                color: color,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                opacity: 0.7
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            document.body.addEventListener('pointermove', onPointerMove);
+            window.addEventListener('resize', onWindowResize);
         }
 
-        function animateConstellation() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < points.length; i++) {
-                let p = points[i];
-                p.x += p.vx; p.y += p.vy;
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(29, 78, 216, 0.25)';
-                ctx.fill();
-            }
-            requestAnimationFrame(animateConstellation);
+        function onWindowResize() {
+            const container = document.getElementById('hero-3d-container');
+             if (!container) return;
+            windowHalfX = container.clientWidth / 2;
+            windowHalfY = container.clientHeight / 2;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
         }
-        
-        window.addEventListener('resize', () => { setCanvasSize(); initConstellation(); });
-        setCanvasSize();
-        initConstellation();
-        animateConstellation();
+
+        function onPointerMove(event) {
+            if (event.isPrimary === false) return;
+            mouseX = event.clientX - windowHalfX;
+            mouseY = event.clientY - windowHalfY;
+        }
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            render3D();
+        }
+
+        function render3D() {
+            if (!scene || !camera || !renderer) return;
+            camera.position.x += (mouseX - camera.position.x) * 0.01;
+            camera.position.y += (-mouseY - camera.position.y) * 0.01;
+            camera.lookAt(scene.position);
+            particles.rotation.x = Date.now() * 0.00005;
+            particles.rotation.y = Date.now() * 0.0001;
+            renderer.render(scene, camera);
+        }
+
+        init3D();
+        animate3D();
+
 
         // --- Floating Particles ---
         const particlesContainer = document.getElementById('particles-container');
@@ -899,26 +1057,11 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-
-                    // Trigger scramble for visible text
-                    const scrambleElements = entry.target.querySelectorAll('.scramble-text');
-                    if(scrambleElements.length > 0) {
-                        scrambleElements.forEach(el => {
-                            if (el.dataset.text) {
-                                const fx = new TextScramble(el);
-                                fx.setText(el.dataset.text);
-                            }
-                        });
-                    }
-                    // We can unobserve the h2, but h1 should re-animate if scrolled back to
-                    if(entry.target.tagName === 'H2') {
-                        observer.unobserve(entry.target);
-                    }
                 }
             });
         }, { threshold: 0.2 });
 
-        document.querySelectorAll('.scroll-animate, h1, h2').forEach(el => scrollObserver.observe(el));
+        document.querySelectorAll('.scroll-animate, h1, h2, #process-section').forEach(el => scrollObserver.observe(el));
         
         // --- STATS COUNTER ---
         const statsSection = document.getElementById('stats-section');
@@ -931,7 +1074,7 @@
                     counters.forEach(counter => {
                         const animate = () => {
                             const target = +counter.getAttribute('data-target');
-                            const count = +counter.innerText;
+                            const count = +counter.innerText.replace(/,/g, '');
                             const inc = target / speed;
 
                             if (count < target) {
