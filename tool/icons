@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Customizer Dashboard</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Font Awesome CSS ONLY (no .js) -->
+    <!-- This provides the "Font Awesome 6 Free" and "Font Awesome 6 Brands" font families -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    
+    <style>
+        /* Custom font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9CA3AF; /* gray-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6B7280; /* gray-500 */
+        }
+
+        /* Ensure preview icon scales correctly */
+        #previewIconContainer {
+            width: 16rem; /* w-64 */
+            height: 16rem; /* h-64 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #D1D5DB; /* border-2 border-dashed border-gray-300 */
+            transition: all 0.2s;
+            overflow: hidden; /* Ensure icon doesn't bleed out */
+        }
+        
+        /* This is the <i> tag, we scale it with font-size */
+        #previewIcon {
+            line-height: 1; /* Helps with centering */
+            transition: all 0.2s;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #FFF;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* NEW: Style for the icon buttons in the search grid */
+        .icon-grid-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border: 1px solid #D1D5DB; /* border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            transition: all 0.15s;
+        }
+        .icon-grid-btn:hover {
+            background-color: #F3F4F6; /* hover:bg-gray-100 */
+        }
+        .icon-grid-btn.selected {
+            outline: 2px solid #2563EB;
+            outline-offset: 2px;
+            background-color: #EFF6FF; /* bg-blue-50 */
+        }
+        .icon-grid-btn .fa-solid,
+        .icon-grid-btn .fa-brands,
+        .icon-grid-btn .fa-regular { /* ADDED .fa-regular */
+            font-size: 1.5rem; /* 24px */
+            color: #374151; /* text-gray-700 */
+            pointer-events: none; /* Prevent <i> from stealing click */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Dashboard Layout Container -->
+    <!-- Removed overflow-hidden from this container -->
+    <div class="flex h-screen">
+        
+        <!-- Left Sidebar: Controls -->
+        <!-- CHANGED: w-80 to w-72 and added max-w-full for better mobile fit -->
+        <aside id="sidebar" class="w-72 max-w-full h-full bg-white shadow-lg p-6 overflow-y-auto transition-transform duration-300 ease-in-out z-20 absolute md:relative md:translate-x-0 -translate-x-full">
+            <!-- NEW: Close button for mobile, hidden on desktop -->
+            <button id="sidebarCloseBtn" class="md:hidden absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <i class="fa-solid fa-xmark fa-lg"></i>
+            </button>
+            
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Controls</h1>
+
+            <!-- Controls -->
+            <div class="space-y-6">
+                
+                <!-- Icon Selector (Gemini Powered) -->
+                <div>
+                    <label for="iconApiSearch" class="block text-sm font-medium text-gray-700 mb-2">Search Icon</label>
+                    <div class="flex gap-2">
+                        <input type="search" id="iconApiSearch" placeholder="e.g., 'user', 'github'" class="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                        <button id="iconApiSearchBtn" class="flex items-center justify-center bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-all w-20">
+                            <span class="btn-text">Find</span>
+                            <span class="loader btn-loader hidden"></span>
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">
+                        Current: <span id="currentIconName" class="font-medium text-gray-700">...</span>
+                    </p>
+                    
+                    <!-- NEW: Icon Grid for Gemini Results -->
+                    <div id="geminiIconGrid" class="grid grid-cols-6 gap-2 max-h-48 overflow-y-auto p-2 border border-gray-200 rounded-md mt-4 hidden">
+                        <!-- Icon buttons will be generated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Icon Color -->
+                <div>
+                    <label for="iconColor" class="block text-sm font-medium text-gray-700 mb-2">Icon Color</label>
+                    <div class="flex items-center gap-3">
+                        <input type="color" id="iconColor" value="#2563EB" class="w-12 h-10 p-1 border-0 rounded-md cursor-pointer">
+                        <input type="text" id="iconColorHex" value="#2563EB" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    </div>
+                </div>
+
+                <!-- Size & Padding Controls -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="iconSize" class="block text-sm font-medium text-gray-700 mb-2">Size (px)</label>
+                        <input type="number" id="iconSize" value="64" min="16" max="512" step="8" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    </div>
+                    <div>
+                        <label for="iconPadding" class="block text-sm font-medium text-gray-700 mb-2">Padding (px)</label>
+                        <input type="number" id="iconPadding" value="12" min="0" max="256" step="1" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    </div>
+                </div>
+
+                <!-- Background Controls -->
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="block text-sm font-medium text-gray-700">Background</label>
+                        <div class="flex items-center">
+                            <label for="bgToggle" class="text-sm text-gray-600 mr-2">Enable</label>
+                            <input type="checkbox" id="bgToggle" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        </div>
+                    </div>
+                    
+                    <div id="bgColorContainer" class="space-y-4 hidden">
+                        <!-- Background Color -->
+                        <div>
+                            <label for="bgColor" class="block text-sm font-medium text-gray-700 mb-2">Background Color</label>
+                            <div class="flex items-center gap-3">
+                                <input type="color" id="bgColor" value="#FFFFFF" class="w-12 h-10 p-1 border-0 rounded-md cursor-pointer">
+                                <input type="text" id="bgColorHex" value="#FFFFFF" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            </div>
+                        </div>
+                        <!-- Background Shape -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Background Shape</label>
+                            <div class="flex justify-around text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="bgShape" value="circle" checked class="text-blue-600 focus:ring-blue-500">
+                                    Circle
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="bgShape" value="rounded" class="text-blue-600 focus:ring-blue-500">
+                                    Rounded
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="bgShape" value="square" class="text-blue-600 focus:ring-blue-500">
+                                    Square
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- NEW: Sidebar Overlay for mobile -->
+        <div id="sidebarOverlay" class="hidden md:hidden fixed inset-0 bg-black bg-opacity-50 z-10"></div>
+
+        <!-- Right Panel: Preview & Export -->
+        <!-- Added min-w-0 to this container to fix flexbox overflow -->
+        <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+            <!-- Top Navbar -->
+            <header class="w-full bg-white shadow-md h-16 flex-shrink-0 z-10">
+                <div class="flex items-center justify-between h-full px-6">
+                    <!-- Sidebar Toggle (MOVED to the left and hidden on desktop) -->
+                    <button id="sidebarToggle" class="p-2 -ml-2 rounded-full hover:bg-gray-100 text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 md:hidden">
+                        <i class="fa-solid fa-bars fa-lg"></i>
+                    </button>
+                    
+                    <!-- Title (MOVED) -->
+                    <h1 class="text-xl font-bold text-gray-800 hidden md:block">
+                        Icon Customizer Dashboard
+                    </h1>
+
+                    <!-- Spacer -->
+                    <div class="flex-1"></div>
+                    
+                    <!-- Export Buttons -->
+                    <div class="flex gap-4">
+                        <button id="exportJpg" class="flex items-center bg-blue-600 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-all">
+                            <i class="fa-solid fa-file-image fa-fw mr-0 sm:mr-2"></i>
+                            <span class="hidden sm:inline">Export JPG</span>
+                        </button>
+                        <button id="exportPng" class="flex items-center bg-gray-700 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 transition-all">
+                            <i class="fa-solid fa-file-image fa-fw mr-0 sm:mr-2"></i>
+                            <span class="hidden sm:inline">Export PNG</span>
+                        </button>
+                    </div>
+                    
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-8 lg:p-12">
+                <h2 class="text-xl font-semibold text-gray-700 mb-6">Preview</h2>
+                
+                <!-- Preview Area -->
+                <div class="flex-grow flex items-center justify-center bg-gray-50 rounded-xl border border-gray-200 p-4 min-h-[300px] mb-8">
+                    <!-- Preview Icon Container -->
+                    <div id="previewIconContainer">
+                        <!-- This is an <i> tag, not an <svg> tag. It's styled with CSS. -->
+                        <i id="previewIcon" class="fa-solid fa-envelope"></i>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Hidden elements for export processing -->
+    <a id="downloadLink" style="display: none;"></a>
+    <canvas id="exportCanvas" style="display: none;"></canvas>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+            <h3 id="errorTitle" class="text-lg font-medium text-red-700 mb-2">Error</h3>
+            <p id="errorMessage" class="text-sm text-gray-600 mb-4">An error occurred.</p>
+            <button id="closeErrorModal" class="w-full bg-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-red-700 transition-all">
+                Close
+            </button>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay for API calls -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-40">
+        <div class="loader" style="width: 50px; height: 50px; border-width: 5px;"></div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- State Variables ---
+            let currentIcon = { 
+                name: 'Envelope', 
+                class: 'fa-solid fa-envelope', 
+                unicode: 'f0e0' // Default icon
+            };
+            let currentIconColor = '#2563EB'; // Icon fill color
+            let currentSize = 64;
+            let currentPadding = 12;
+            let currentBgColor = '#FFFFFF';
+            let isBgEnabled = false;
+            let currentBgShape = 'circle'; // 'circle', 'rounded', 'square'
+            let isSidebarOpen = false;
+
+            // --- DOM Elements ---
+            const previewIconContainer = document.getElementById('previewIconContainer');
+            const previewIcon = document.getElementById('previewIcon'); // This is the <i> tag
+            const currentIconName = document.getElementById('currentIconName');
+            
+            const iconColorInput = document.getElementById('iconColor');
+            const iconColorHex = document.getElementById('iconColorHex');
+            
+            const iconApiSearch = document.getElementById('iconApiSearch');
+            const iconApiSearchBtn = document.getElementById('iconApiSearchBtn');
+            const geminiIconGrid = document.getElementById('geminiIconGrid'); // NEW
+
+            const exportJpgBtn = document.getElementById('exportJpg');
+            const exportPngBtn = document.getElementById('exportPng');
+            
+            const downloadLink = document.getElementById('downloadLink');
+            const canvas = document.getElementById('exportCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const errorModal = document.getElementById('errorModal');
+            const errorTitle = document.getElementById('errorTitle');
+            const errorMessage = document.getElementById('errorMessage');
+            const closeErrorModal = document.getElementById('closeErrorModal');
+            
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            // Size & Padding
+            const iconSizeInput = document.getElementById('iconSize');
+            const iconPaddingInput = document.getElementById('iconPadding');
+            
+            // Background
+            const bgToggle = document.getElementById('bgToggle');
+            const bgColorContainer = document.getElementById('bgColorContainer');
+            const bgColorInput = document.getElementById('bgColor');
+            const bgColorHex = document.getElementById('bgColorHex');
+            const bgShapeRadios = document.querySelectorAll('input[name="bgShape"]');
+            
+            // Layout
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const sidebarCloseBtn = document.getElementById('sidebarCloseBtn'); // NEW
+
+
+            // --- Error Modal Logic ---
+            function showErrorMessage(title, message) {
+                errorTitle.textContent = title;
+                errorMessage.textContent = message;
+                errorModal.classList.remove('hidden');
+            }
+
+            closeErrorModal.addEventListener('click', () => {
+                errorModal.classList.add('hidden');
+            });
+            
+            // --- Loading State Logic ---
+            function setApiLoading(isLoading) {
+                const btnText = iconApiSearchBtn.querySelector('.btn-text');
+                const loader = iconApiSearchBtn.querySelector('.btn-loader');
+                
+                if (isLoading) {
+                    btnText.classList.add('hidden');
+                    loader.classList.remove('hidden');
+                    iconApiSearchBtn.disabled = true;
+                    iconApiSearch.disabled = true;
+                } else {
+                    btnText.classList.remove('hidden');
+                    loader.classList.add('hidden');
+                    iconApiSearchBtn.disabled = false;
+                    iconApiSearch.disabled = false;
+                }
+            }
+
+            // --- Main Preview Update Function ---
+            function updatePreview() {
+                // Update Background
+                previewIconContainer.style.backgroundColor = isBgEnabled ? currentBgColor : 'transparent';
+                previewIconContainer.style.borderStyle = isBgEnabled ? 'solid' : 'dashed';
+                previewIconContainer.style.borderColor = isBgEnabled ? currentBgColor : '#D1D5DB'; 
+
+                if (isBgEnabled) {
+                    if (currentBgShape === 'circle') {
+                        previewIconContainer.style.borderRadius = '9999px';
+                    } else if (currentBgShape === 'rounded') {
+                        previewIconContainer.style.borderRadius = '0.75rem'; // 12px
+                    } else {
+                        previewIconContainer.style.borderRadius = '0px';
+                    }
+                } else {
+                    previewIconContainer.style.borderRadius = '0.5rem'; // default rounded-lg
+                }
+
+                // Update Icon Size (Padding)
+                const previewContainerSize = 256; // 16rem
+                
+                // Calculate the icon's font-size based on padding
+                let scaledPadding = (currentPadding / currentSize) * previewContainerSize;
+                if (scaledPadding * 2 >= previewContainerSize) {
+                    scaledPadding = (previewContainerSize / 2) - 2; // Prevent negative size
+                }
+                const previewIconSize = previewContainerSize - (scaledPadding * 2);
+
+                // Style the <i> tag directly
+                previewIcon.style.fontSize = `${previewIconSize}px`;
+                previewIcon.style.color = currentIconColor;
+            }
+
+            /**
+             * NEW: Renders the list of icon options from Gemini
+             */
+            function renderIconOptions(icons) {
+                geminiIconGrid.innerHTML = ''; // Clear old results
+                if (!icons || icons.length === 0) {
+                    geminiIconGrid.classList.add('hidden');
+                    showErrorMessage("Icon Search Error", "No icons were found for that term.");
+                    return;
+                }
+
+                icons.forEach(icon => {
+                    if (!icon.name || !icon.class || !icon.unicode) return; // Skip invalid entries
+                    
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'icon-grid-btn';
+                    btn.dataset.class = icon.class;
+                    btn.dataset.name = icon.name;
+                    btn.dataset.unicode = icon.unicode;
+                    btn.setAttribute('aria-label', icon.name);
+
+                    if (icon.class === currentIcon.class) {
+                        btn.classList.add('selected');
+                    }
+
+                    const i = document.createElement('i');
+                    i.className = icon.class;
+                    
+                    btn.appendChild(i);
+                    geminiIconGrid.appendChild(btn);
+                });
+
+                geminiIconGrid.classList.remove('hidden');
+            }
+
+
+            // --- Icon Selection Logic ---
+            function updateIcon(icon) {
+                if (!icon || !icon.class || !icon.unicode || !icon.name) {
+                    console.error("Invalid icon data received:", icon);
+                    showErrorMessage("Icon Search Error", "Received invalid data from the API. Please try a different search term.");
+                    return;
+                }
+                
+                currentIcon = icon;
+
+                // Set the <i> tag's class
+                previewIcon.className = icon.class;
+                currentIconName.textContent = icon.name;
+                
+                // Update the preview
+                updatePreview();
+            }
+
+            // --- Sidebar Toggle Logic ---
+            function toggleSidebar() {
+                isSidebarOpen = !isSidebarOpen;
+                if (isSidebarOpen) {
+                    sidebar.classList.remove('-translate-x-full');
+                    sidebarOverlay.classList.remove('hidden'); // Show overlay
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebarOverlay.classList.add('hidden'); // Hide overlay
+                }
+            }
+
+
+            // --- Initial Setup ---
+            updateIcon(currentIcon); // Set initial icon
+            updatePreview();
+
+            // --- Event Listeners ---
+
+            // Layout
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+            sidebarCloseBtn.addEventListener('click', toggleSidebar); // NEW
+
+            // Color Pickers
+            iconColorInput.addEventListener('input', (e) => {
+                currentIconColor = e.target.value;
+                iconColorHex.value = e.target.value;
+                updatePreview();
+            });
+            iconColorHex.addEventListener('input', (e) => {
+                if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                    currentIconColor = e.target.value;
+                    iconColorInput.value = e.target.value;
+                    updatePreview();
+                }
+            });
+
+            // Size & Padding
+            iconSizeInput.addEventListener('input', (e) => {
+                let size = parseInt(e.target.value, 10);
+                if (size < 16) size = 16;
+                if (size > 512) size = 512;
+                currentSize = size;
+                updatePreview();
+            });
+            iconPaddingInput.addEventListener('input', (e) => {
+                let padding = parseInt(e.target.value, 10);
+                if (padding < 0) padding = 0;
+                if (padding * 2 >= currentSize) {
+                    padding = Math.floor(currentSize / 2) - 1;
+                    e.target.value = padding;
+                }
+                currentPadding = padding;
+                updatePreview();
+            });
+
+            // Background
+            bgToggle.addEventListener('input', (e) => {
+                isBgEnabled = e.target.checked;
+                bgColorContainer.classList.toggle('hidden', !isBgEnabled);
+                updatePreview();
+            });
+            bgColorInput.addEventListener('input', (e) => {
+                currentBgColor = e.target.value;
+                bgColorHex.value = e.target.value;
+                updatePreview();
+            });
+            bgColorHex.addEventListener('input', (e) => {
+                if (/^#[0-9A-F]{6}$/i.test(e.target.value)) {
+                    currentBgColor = e.target.value;
+                    bgColorInput.value = e.target.value;
+                    updatePreview();
+                }
+            });
+            bgShapeRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    currentBgShape = e.target.value;
+                    updatePreview();
+                });
+            });
+
+            /**
+             * NEW: Event listener for the Gemini icon grid
+             */
+            geminiIconGrid.addEventListener('click', (e) => {
+                const btn = e.target.closest('.icon-grid-btn');
+                if (!btn) return;
+
+                // Update selected visual
+                geminiIconGrid.querySelector('.icon-grid-btn.selected')?.classList.remove('selected');
+                btn.classList.add('selected');
+
+                // Get data and update the main preview
+                const iconData = {
+                    name: btn.dataset.name,
+                    class: btn.dataset.class,
+                    unicode: btn.dataset.unicode
+                };
+                updateIcon(iconData);
+            });
+
+
+            // --- Gemini API Logic ---
+            iconApiSearchBtn.addEventListener('click', async () => {
+                const searchTerm = iconApiSearch.value.trim();
+                if (!searchTerm) {
+                    showErrorMessage("Icon Search", "Please enter a search term.");
+                    return;
+                }
+                
+                setApiLoading(true);
+
+                // MODIFIED: System prompt to ask for a list
+                const systemPrompt = "You are a Font Awesome 6 expert. A user is searching for an icon. Based on their query, return a JSON array of up to 24 related icons. Each object in the array must have: 'name' (e.g., 'User'), 'class' (e.g., 'fa-solid fa-user', 'fa-regular fa-user', or 'fa-brands fa-github'), and 'unicode' (e.g., 'f007' or 'f09b'). Do not include 'fa-' in the name. Prioritize solid, regular, and brands styles.";
+
+                const payload = {
+                    contents: [{ parts: [{ text: `Search query: "${searchTerm}"` }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        // MODIFIED: Schema to expect an array of objects
+                        responseSchema: {
+                            type: "ARRAY",
+                            items: {
+                                type: "OBJECT",
+                                properties: {
+                                    "name": { "type": "STRING" },
+                                    "class": { "type": "STRING" },
+                                    "unicode": { "type": "STRING" }
+                                },
+                                required: ["name", "class", "unicode"]
+                            }
+                        }
+                    }
+                };
+
+                try {
+                    const result = await callGeminiApi(payload);
+                    
+                    if (result.candidates && result.candidates.length > 0) {
+                        const part = result.candidates[0].content.parts[0];
+                        if (part && part.text) {
+                            const iconData = JSON.parse(part.text); // This is now an array
+                            
+                            // MODIFIED: Call renderIconOptions and select the first icon
+                            if (Array.isArray(iconData) && iconData.length > 0) {
+                                renderIconOptions(iconData);
+                                // Automatically select the first icon from the list
+                                updateIcon(iconData[0]); 
+                            } else {
+                                // This handles if Gemini returns an empty array []
+                                renderIconOptions([]); // This will show the "No icons found" error
+                            }
+                        } else {
+                            throw new Error("Invalid response structure from API.");
+                        }
+                    } else {
+                        throw new Error("No candidates returned from API.");
+                    }
+                } catch (error) {
+                    console.error('Gemini API Error:', error);
+                    showErrorMessage("Icon Search Error", "Could not find an icon for that term. Please try being more specific (e.g., 'user solid', 'github brands').");
+                } finally {
+                    setApiLoading(false);
+                }
+            });
+
+            async function callGeminiApi(payload, retryCount = 0) {
+                const MAX_RETRIES = 3;
+                const apiKey = ""; // Leave empty, will be populated by the environment
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        if (response.status === 429 && retryCount < MAX_RETRIES) {
+                            const delay = Math.pow(2, retryCount) * 1000 + Math.random() * 1000;
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            return callGeminiApi(payload, retryCount + 1);
+                        }
+                        throw new Error(`API request failed with status ${response.status}: ${await response.text()}`);
+                    }
+                    return await response.json();
+                    
+                } catch (error) {
+                    console.error("Fetch error:", error);
+                    throw error;
+                }
+            }
+
+
+            // --- Export Logic ---
+
+            function triggerDownload(href, filename) {
+                downloadLink.href = href;
+                downloadLink.download = filename;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
+
+            /**
+             * Pre-loads the required Font Awesome font file before drawing on canvas.
+             * This prevents drawing blank squares if the font isn't ready.
+             */
+            async function loadIconFont() {
+                let fontFamily = '"Font Awesome 6 Free"'; // Default for solid and regular
+                let fontWeight = '900'; // Default for solid
+                
+                if (currentIcon.class.includes('fa-brands')) {
+                    fontFamily = '"Font Awesome 6 Brands"';
+                    fontWeight = '400';
+                } else if (currentIcon.class.includes('fa-regular')) {
+                    // Regular icons use the "Free" font but a different weight
+                    fontWeight = '400';
+                }
+                
+                try {
+                    await document.fonts.load(`${fontWeight} 1em ${fontFamily}`);
+                } catch (err) {
+                    console.error("Font loading error: ", err);
+                    throw new Error("Could not load the required icon font for export.");
+                }
+            }
+
+            /**
+             * Draws the current icon settings onto the hidden canvas.
+             */
+            function generateIconCanvas(exportType = 'png') {
+                canvas.width = currentSize;
+                canvas.height = currentSize;
+                ctx.clearRect(0, 0, currentSize, currentSize);
+
+                // JPGs don't support transparency, so we must fill a background.
+                // We'll use white unless a background is enabled.
+                if (exportType === 'jpg') {
+                    ctx.fillStyle = isBgEnabled ? currentBgColor : '#FFFFFF';
+                    ctx.fillRect(0, 0, currentSize, currentSize);
+                }
+
+                // Draw the user-defined background (if enabled)
+                if (isBgEnabled) {
+                    ctx.fillStyle = currentBgColor;
+                    
+                    if (currentBgShape === 'circle') {
+                        ctx.beginPath();
+                        ctx.arc(currentSize / 2, currentSize / 2, currentSize / 2, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (currentBgShape === 'rounded') {
+                        const cornerRadius = currentSize * 0.125;
+                        // Use fillRoundRect if available, fallback to rect
+                        if (ctx.fillRoundRect) {
+                            ctx.beginPath();
+                            ctx.roundRect(0, 0, currentSize, currentSize, cornerRadius);
+                            ctx.fill();
+                        } else {
+                            // Fallback for older browsers
+                            ctx.beginPath();
+                            ctx.moveTo(cornerRadius, 0);
+                            ctx.lineTo(currentSize - cornerRadius, 0);
+                            ctx.quadraticCurveTo(currentSize, 0, currentSize, cornerRadius);
+                            ctx.lineTo(currentSize, currentSize - cornerRadius);
+                            ctx.quadraticCurveTo(currentSize, currentSize, currentSize - cornerRadius, currentSize);
+                            ctx.lineTo(cornerRadius, currentSize);
+                            ctx.quadraticCurveTo(0, currentSize, 0, currentSize - cornerRadius);
+                            ctx.lineTo(0, cornerRadius);
+                            ctx.quadraticCurveTo(0, 0, cornerRadius, 0);
+                            ctx.closePath();
+                            ctx.fill();
+                        }
+                    } else { // 'square'
+                        ctx.fillRect(0, 0, currentSize, currentSize);
+                    }
+                }
+
+                // Draw the Icon on top
+                const iconSize = currentSize - (currentPadding * 2);
+                if (iconSize <= 0) {
+                    throw new Error("Padding is too large for the current size.");
+                }
+
+                let fontFamily = '"Font Awesome 6 Free"'; // Default for solid and regular
+                let fontWeight = '900'; // Default for solid
+                
+                if (currentIcon.class.includes('fa-brands')) {
+                    fontFamily = '"Font Awesome 6 Brands"';
+                    fontWeight = '400';
+                } else if (currentIcon.class.includes('fa-regular')) {
+                    // Regular icons use the "Free" font but a different weight
+                    fontWeight = '400';
+                }
+                
+                ctx.font = `${fontWeight} ${iconSize}px ${fontFamily}`;
+                ctx.fillStyle = currentIconColor;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                // Convert unicode hex string (e.g., "f0e0") to an actual character
+                const char = String.fromCodePoint(parseInt(currentIcon.unicode, 16));
+                
+                // Draw the character in the center
+                ctx.fillText(char, currentSize / 2, currentSize / 2);
+            }
+
+            // Export as PNG
+            exportPngBtn.addEventListener('click', async () => {
+                loadingOverlay.classList.remove('hidden');
+                try {
+                    await loadIconFont(); // Ensure font is ready
+                    generateIconCanvas('png');
+                    const dataUri = canvas.toDataURL('image/png');
+                    triggerDownload(dataUri, `${currentIcon.name.toLowerCase().replace(/ /g, '-')}-icon.png`);
+                } catch (error) {
+                    console.error("PNG Export Error:", error);
+                    showErrorMessage("Export Error", error.message);
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+            
+            // Export as JPG
+            exportJpgBtn.addEventListener('click', async () => {
+                loadingOverlay.classList.remove('hidden');
+                try {
+                    await loadIconFont(); // Ensure font is ready
+                    generateIconCanvas('jpg');
+                    const dataUri = canvas.toDataURL('image/jpeg', 0.9); // 0.9 = 90% quality
+                    triggerDownload(dataUri, `${currentIcon.name.toLowerCase().replace(/ /g, '-')}-icon.jpg`);
+                } catch (error) {
+                    console.error("JPG Export Error:", error);
+                    showErrorMessage("Export Error", error.message);
+                } finally {
+                    loadingOverlay.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+
+
