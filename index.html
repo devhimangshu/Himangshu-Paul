@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himangshu Paul - Full Stack & Android Developer</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === CHANGED: CSS Variables for NEW Dark Theme === */
+        :root {
+            --bg-color: #121212; /* Dark background */
+            --bg-secondary: #1E1E1E; /* Slightly lighter dark */
+            --text-color: #F5F5F5; /* Off-white text */
+            --text-color-light: #A0A0A0; /* Light gray */
+            --accent-color: #7C3AED; /* Vibrant Purple (Stays the same) */
+            --border-color: #333333; /* Dark border */
+            --bg-contact: #2C2A4A; /* Dark purple */
+            --btn-dark: #FFFFFF; /* Was dark, now light */
+        }
+
+        /* Apply custom fonts */
+        body {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 400;
+            background-color: var(--bg-color);
+            color: var(--text-color); /* Default text color is now light */
+            letter-spacing: 0.025em;
+        }
+
+        /* === NEW: Filmy Grain Overlay === */
+        /* This overlay sits on top of all content (z-49) */
+        /* but below the header and footer (which are z-50) */
+        body::after {
+          content: '';
+          position: fixed;
+          inset: 0; /* Cover top, left, bottom, right */
+          
+          /* Use a repeating noise texture (Base64 encoded PNG) */
+          background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAANUlEQVR42mP4//8/AyUYgQDGEAhmYDBNXYMGFwYkNv//RwYkRhMmJoaJMQVj0kQyGjFoNAMA3k8In/y+zC0AAAAASUVORK5CYII=');
+          background-repeat: repeat;
+
+          /* Adjust opacity for subtlety. 0.05 to 0.1 is usually good. */
+          opacity: 0.07;
+          
+          /* Make sure it doesn't block mouse events */
+          pointer-events: none; 
+          
+          /* Z-index: Below header (z-50) */
+          z-index: 49; 
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--text-color); /* Headings are light */
+        }
+
+        /* Hero heading font weights (like reference) */
+        .hero-heading-light {
+            font-weight: 300;
+        }
+        .hero-heading-heavy {
+            font-weight: 900;
+            color: var(--text-color);
+        }
+        
+        /* === REMOVED ===
+            .hero-gradient class
+        */
+
+        /* Accent Text Effect */
+        .accent-text {
+            color: var(--accent-color);
+        }
+        
+        /* Custom project card hover */
+        .project-card {
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            background-color: var(--bg-secondary);
+        }
+        .project-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* === REVERTED: Bouncing Chevron Scroll Indicator === */
+        .scroll-down-chevron {
+            color: var(--text-color-light);
+            transition: color 0.3s ease, transform 0.3s ease;
+            animation: bounce-chevron 2.5s infinite ease-in-out;
+        }
+        .scroll-down-chevron:hover {
+            color: var(--accent-color);
+            transform: translateY(5px);
+            animation-play-state: paused; /* Stop bouncing on hover */
+        }
+
+        @keyframes bounce-chevron {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(10px);
+            }
+            60% {
+                transform: translateY(5px);
+            }
+        }
+        
+        /* Marquee Animation */
+        .marquee-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee-scroll 40s linear infinite;
+        }
+        .marquee-content > span {
+            display: inline-block;
+            padding: 0 0.5rem;
+        }
+        
+        @keyframes marquee-scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                /* Translate by half the width (since content is duplicated) */
+                transform: translateX(-50%); 
+            }
+        }
+        
+        /* === UPDATED SECTION GLOW (More Visible, Left & Right) === */
+        .section-glow {
+            position: relative;
+            overflow: hidden; /* Contain the glows */
+        }
+        
+        /* Left-side glow */
+        .section-glow::before {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            left: 0;
+            top: 50%;
+            transform: translate(-50%, -50%); /* Adjusted position */
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%, /* Increased opacity */
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        /* Right-side glow */
+        .section-glow::after {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%); /* Positioned to the right */
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%, /* Increased opacity */
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+
+        /* Ensure section content stays above the glows */
+        .section-glow > div:not(.hero-watermark) { /* <-- MODIFIED SELECTOR */
+            position: relative;
+            z-index: 2; /* <-- INCREASED Z-INDEX */
+        }
+
+        /* === NEW: Stats Bar Styling === */
+        .palette-color {
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
+            border-radius: 9999px; /* rounded-full */
+            border: 1px solid var(--border-color);
+        }
+
+        /* === NEW: Shimmer Effect for Stats === */
+        .shimmer-text {
+          background: linear-gradient(
+            90deg, 
+            var(--accent-color) 30%, 
+            #F5F5F5 50%, /* Using --text-color for shine */
+            var(--accent-color) 70%
+          );
+          background-size: 200% 100%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          animation: shimmer-animation 4s linear infinite;
+        }
+
+        @keyframes shimmer-animation {
+          0% {
+            background-position: 200% 0;
+          }
+          100% {
+            background-position: -200% 0;
+          }
+        }
+        /* === End Shimmer Effect === */
+
+        /* === NEW: Hero Watermark === */
+        .hero-watermark {
+            position: absolute;
+            bottom: 2rem; /* MODIFIED: Stick to bottom (with 2rem padding) */
+            left: -3rem; /* MODIFIED: Stick to left */
+            transform: rotate(-90deg); /* Just rotate */
+            transform-origin: bottom left; /* Rotate from the bottom left corner */
+            font-size: 6rem; /* MODIFIED: Smaller font size */
+            font-weight: 900;
+            letter-spacing: 0.25em; 
+            color: rgba(255, 255, 255, 0.12); /* MODIFIED: Increased opacity to be visible */
+            text-transform: uppercase;
+            pointer-events: none; 
+            user-select: none; 
+            z-index: 1; 
+            white-space: nowrap; 
+        }
+
+        @media (max-width: 768px) {
+            .hero-watermark {
+                display: none; /* Hide on mobile */
+            }
+        }
+        /* === End Hero Watermark === */
+
+
+        /* * ===========================================
+         * "Multi-Layer" Animation Fix
+         * ===========================================
+         */
+        
+        /* Hero Items: Initial State */
+        #hero-status {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+        }
+        /* === NEW: Initial State for Badge === */
+        #hero-badge {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+        }
+        .hero-line-1 .inline-block,
+        .hero-line-2 .inline-block {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        #hero-p {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+        }
+        
+        /* Scroll-Triggered Sections: Initial State */
+        #about-text {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-100px);
+        }
+        #about-image {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100px);
+        }
+        /* === NEW: Initial State for Stats === */
+        #stats-1, #stats-2, #stats-3 {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        #experience-h2 {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        .experience-item .experience-number {
+             opacity: 0;
+            visibility: hidden;
+            transform: translateX(-50px);
+        }
+         .experience-item .experience-content {
+             opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+         }
+        #testimonials-h2,
+        #testimonial-card {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+
+        /* NEW: Social icon styles */
+        .social-icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white for contrast */
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .social-icon-circle:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- === CHANGED: Updated header bg and text colors === -->
+    <!-- The header has z-50, so it will be ON TOP of the grain (z-49) -->
+    <header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0">
+                    <a href="#home" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
+                </div>
+                
+                <!-- Desktop Nav. Uses --accent-color on hover -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="#about" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">About</a>
+                    <a href="#experience" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Experience</a>
+                    <a href="#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
+                    <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
+                        Contact Me
+                    </a>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="menu-btn" type="button" class="text-[var(--text-color-light)] hover:text-[var(--text-color)] focus:outline-none focus:text-[var(--text-color)]" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="h-6 w-6" id="menu-icon-open"></i>
+                        <i data-lucide="x" class="h-6 w-6 hidden" id="menu-icon-close"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- === CHANGED: Mobile Menu bg and text colors === -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
+                <a href="#about" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">About</a>
+                <a href="#experience" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Experience</a>
+                <a href="#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
+                <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- The <main> content will be UNDER the grain overlay (z-49) -->
+    <main>
+
+        <!-- === MODIFIED: Changed to flex-col layout to push stats bar to bottom === -->
+        <section id="home" class="min-h-[calc(100vh-5rem)] flex flex-col justify-between relative section-glow">
+            
+            <!-- === NEW: Vertical Watermark === -->
+            <div class="hero-watermark">Portfolio</div>
+            <!-- === End Vertical Watermark === -->
+
+            <!-- Main content, wrapped to grow and center -->
+            <!-- This div gets z-index: 1 from the .section-glow > div rule -->
+            <div class="flex-grow flex items-center py-24 md:py-32">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- === MODIFIED: Removed pb-32 === -->
+                    <div class="max-w-3xl">
+                        <!-- === NEW: Wrapper for status and badge === -->
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <a href="#contact" id="hero-status" class="inline-flex items-center space-x-2 bg-[var(--accent-color)] text-white rounded-full px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">
+                                <span class="flex h-2.5 w-2.5">
+                                    <span class="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-white opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+                                </span>
+                                <span>Available for projects</span>
+                            </a>
+
+                            <!-- === UPDATED: Wrapped badge in an anchor tag & added hover effect === -->
+                            <a href="https://www.credential.net/12a9bceb-fea0-4fbc-9502-011f6bfeaaf0#acc.2PC8H4IR" target="_blank" rel="noopener noreferrer" id="hero-badge" class="inline-flex items-center space-x-2 bg-[var(--bg-secondary)] text-[var(--text-color-light)] rounded-full px-5 py-2.5 text-sm font-medium border border-[var(--border-color)] transition-all hover:border-[var(--accent-color)] hover:text-[var(--text-color)]">
+                                <!-- === CHANGED: Replaced lucide icon with real badge image === -->
+                                <img src="https://developers-dot-devsite-v2-prod.appspot.com/certification/directory/images/badges/play_academy_certificate.png" alt="Google Certified Developer Badge" class="w-5 h-5">
+                                <span>Google Certified Developer</span>
+                            </a>
+                        </div>
+                        
+                        <!-- === CHANGED: Hero text colors === -->
+                        <h1 id="hero-h1" class="text-5xl md:text-7xl text-gray-500 mt-6 mb-8">
+                            <span class="hero-line-1 block overflow-hidden">
+                                <!-- Changed to py-3 for more padding -->
+                                <span class="hero-heading-light inline-block py-3">Hi, I’m </span><br class="md:hidden">
+                            </span>
+                            <span class="hero-line-2 block overflow-hidden">
+                                <!-- Changed to py-3 for more padding -->
+                                <span class="hero-heading-heavy inline-block py-3 shimmer-text">Himangshu Paul.</span>
+                            </span>
+                        </h1>
+                        <p id="hero-p" class="text-xl md:text-2xl font-light text-[var(--text-color-light)] mb-0">
+                            A Full Stack & Android Developer who builds efficient, smart, and scalable digital solutions from concept to launch.
+                        </p>
+
+                        <!-- NEW: Social Icons in Hero Section -->
+                        <div class="flex space-x-4 mt-8">
+                            <a href="https://linkedin.com/in/himangshupaul" target="_blank" aria-label="LinkedIn" class="social-icon-circle">
+                                <i data-lucide="linkedin" class="w-5 h-5"></i>
+                            </a>
+                            <a href="https://github.com/himangshupaul" target="_blank" aria-label="GitHub" class="social-icon-circle">
+                                <i data-lucide="github" class="w-5 h-5"></i>
+                            </a>
+                            <a href="https://twitter.com/himangshupaul" target="_blank" aria-label="Twitter" class="social-icon-circle">
+                                <i data-lucide="twitter" class="w-5 h-5"></i>
+                            </a>
+                            <a href="https://instagram.com/himangshupaul" target="_blank" aria-label="Instagram" class="social-icon-circle">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- === REMOVED: Scroll-down indicator div (moved below) === -->
+
+            <!-- === NEW: Stats Bar (Moved from section) === -->
+            <!-- This div also gets z-index: 1 from the .section-glow > div rule -->
+            <div id="stats-bar" class="w-full bg-[var(--bg-secondary)] border-t border-[var(--border-color)]">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- === MODIFIED: Changed to flex layout for better alignment === -->
+                    <div class="flex flex-col md:flex-row md:justify-around items-center gap-8 py-8 md:py-6">
+                        
+                        <!-- Stat 1 -->
+                        <!-- === MODIFIED: Changed to text-center md:text-left === -->
+                        <div id="stats-1" class="text-center md:text-left">
+                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === -->
+                            <span class="text-4xl lg:text-5xl font-bold shimmer-text">3+</span>
+                            <p class="text-base lg:text-lg text-[var(--text-color-light)] mt-1">Years of Experience</p>
+                        </div>
+
+                        <!-- Stat 2 -->
+                        <!-- === MODIFIED: Changed to text-center md:text-left === -->
+                        <div id="stats-2" class="text-center md:text-left">
+                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === -->
+                            <span class="text-4xl lg:text-5xl font-bold shimmer-text">12+</span>
+                            <p class="text-base lg:text-lg text-[var(--text-color-light)] mt-1">Projects Completed</p>
+                        </div>
+
+                        <!-- Palette -->
+                        <!-- === REMOVED: Palette section moved to footer === -->
+
+                        <!-- === NEW: Stat 3 === -->
+                        <div id="stats-3" class="text-center md:text-left">
+                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === -->
+                            <span class="text-4xl lg:text-5xl font-bold shimmer-text">4+</span>
+                            <p class="text-base lg:text-lg text-[var(--text-color-light)] mt-1">Apps Published</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- === End Stats Bar === -->
+        </section>
+
+        <!-- === REPLACED: Scroll-Down Arrow Section (Animated Chevron) === -->
+        <section class="w-full bg-[var(--bg-color)] pt-8 pb-12 flex justify-center items-center">
+            <a href="#about" class="scroll-down-chevron" aria-label="Scroll down to about section">
+                <i data-lucide="chevron-down" class="w-10 h-10"></i>
+            </a>
+        </section>
+
+        <!-- === CHANGED: Added section-glow === -->
+        <section id="about" class="py-20 md:py-32 overflow-hidden section-glow">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+                    <!-- === CHANGED: About text colors === -->
+                    <div id="about-text" class="md:col-span-3">
+                        <h2 class="text-4xl font-semibold text-[var(--text-color)] mb-8 shimmer-text">About Me</h2>
+                        <div class="space-y-6 text-lg text-[var(--text-color-light)]">
+                            <p>
+                                I'm a developer based in Jalpaiguri, West Bengal, currently balancing my final year of Computer Science with a dynamic role as a Web Developer. My passion is building clean, efficient solutions—from native Android apps in <span class="text-[var(--accent-color)] font-medium">Kotlin</span> to smart business automation with <span class="text-[var(--accent-color)] font-medium">GoHighLevel</span>.
+                            </p>
+                            <p>
+                                I have a strong foundation in <span class="text-[var(--text-color)]">JavaScript, HTML, CSS, PHP,</span> and <span class="text-[var(--text-color)]">Firebase</span>, and I'm adept at using tools like Zapier, WordPress, and the Google Play Console to bring ideas to life.
+                            </p>
+                            <p>
+                                Beyond the code, my background in <span class="text-[var(--text-color)]">SEO</span> and <span class="text-[var(--text-color)]">Brand Management</span> allows me to see the full picture. I don't just build products; I build products that are user-friendly, high-performing, and discoverable.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- === CHANGED: About image placeholder & border === -->
+                    <div id="about-image" class="md:col-span-2 rounded-lg shadow-xl overflow-hidden border-2 border-[var(--border-color)]">
+                        <img src="https://placehold.co/500x500/2C2A4A/F5F5F5?text=HP" alt="Himangshu Paul" class="w-full h-auto aspect-square object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x500/2C2A4A/F5F5F5?text=HP';">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- === CHANGED: Skills Marquee bg and border === -->
+        <section id="skills-marquee" class="py-12 md:py-16 bg-[var(--bg-color)] overflow-hidden border-y border-[var(--border-color)]">
+            <div class="marquee-wrapper">
+                <div class="marquee-content text-2xl md:text-4xl font-light text-gray-400">
+                    <span>Kotlin</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>Android</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>GoHighLevel</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>JavaScript</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>Firebase</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>PHP</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>WordPress</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <!-- Duplicate for seamless scroll -->
+                    <span>Kotlin</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>Android</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>GoHighLevel</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>JavaScript</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>Firebase</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>PHP</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                    <span>WordPress</span>
+                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- === REMOVED: Stats & Palette Section (Moved to Hero) === -->
+
+        <!-- === CHANGED: Added section-glow === -->
+        <section id="experience" class="py-20 md:py-32 bg-[var(--bg-color)] overflow-hidden section-glow">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- === CHANGED: Experience text colors === -->
+                <h2 id="experience-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Work Experience</h2>
+                <div class="max-w-3xl space-y-8">
+                    
+                    <div class="flex items-start space-x-6 experience-item">
+                        <span class="experience-number text-[var(--accent-color)] font-semibold mt-1 text-xl">01</span>
+                        <div class="experience-content flex-1 border-b border-[var(--border-color)] pb-8">
+                            <p class="text-sm text-gray-500">Feb 2025 - Present</p>
+                            <h3 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Web Developer</h3>
+                            <p class="text-lg text-[var(--text-color-light)]">@ Blue Minch</p>
+                            <p class="text-[var(--text-color-light)] mt-3">
+                                Building web solutions and automation systems using GHL & WordPress. Developed an internal AI tool to simplify workflows.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-6 experience-item">
+                        <span class="experience-number text-[var(--accent-color)] font-semibold mt-1 text-xl">02</span>
+                        <div class="experience-content flex-1 border-b border-[var(--border-color)] pb-8">
+                            <p class="text-sm text-gray-500">June 2021 - Present</p>
+                            <h3 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Lead Developer (Android & Web)</h3>
+                            <p class="text-lg text-[var(--text-color-light)]">@ Born2Earn</p>
+                            <p class="text-[var(--text-color-light)] mt-3">
+                                Led full-stack development of the app and website. Manage Google Play Console, brand design, and performance marketing.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-6 experience-item">
+                        <span class="experience-number text-[var(--accent-color)] font-semibold mt-1 text-xl">03</span>
+                        <div class="experience-content flex-1">
+                            <p class="text-sm text-gray-500">2020 - 2022</p>
+                            <h3 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Affiliate Marketing Partner</h3>
+                            <p class="text-lg text-[var(--text-color-light)]">@ Amazon</p>
+                            <p class="text-[var(--text-color-light)] mt-3">
+                                Executed product marketing and SEO-driven promotional campaigns to reach and engage a wider user base.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- REMOVED Featured Projects Section -->
+
+        <!-- === CHANGED: Added section-glow === -->
+        <section id="testimonials" class="py-20 md:py-32 bg-[var(--bg-secondary)] overflow-hidden section-glow">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- === CHANGED: Testimonial text colors === -->
+                <h2 id="testimonials-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 text-center shimmer-text">What My Clients Say</h2>
+                
+                <div id="testimonial-card" class="max-w-5xl mx-auto bg-[var(--bg-color)] rounded-lg shadow-xl overflow-hidden md:flex">
+                    <div class="md:w-1/3">
+                        <!-- === CHANGED: Placeholder === -->
+                        <img src="https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo" alt="Testimonial Client" class="w-full h-64 md:h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo';">
+                    </div>
+                    <div class="md:w-2/3 p-10 md:p-16 flex flex-col justify-center">
+                        <svg class="w-16 h-16 text-[var(--accent-color)] mb-6" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 32H12L16 16V0H0V32ZM28 32H40L44 16V0H28V32Z" fill="currentColor"/>
+                        </svg>
+                        
+                        <p class="text-2xl font-light text-[var(--text-color-light)] mb-8">
+                            "Working with Himangshu has been transformative for our business. He took the time to understand our goals and delivered measurable results. He is genuinely invested in our success and is a pleasure to work with."
+                        </p>
+                        
+                        <div class="flex items-center">
+                            <!-- === CHANGED: Placeholder === -->
+                            <img src="https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo" alt="Client Logo" class="h-8 mr-4" onerror="this.onerror=null;this.src='https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo';">
+                            <div>
+                                <p class="font-bold text-[var(--text-color)] text-lg">Mike Gore</p>
+                                <p class="text-gray-500">CEO - Charitabl</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REMOVED Contact Form Section -->
+    </main>
+
+    <!-- === REMOVED: Social FABs === -->
+
+    <!-- === CHANGED: Footer bg and border === -->
+    <!-- Added `relative z-50` so it sits ON TOP of the grain (z-49) -->
+    <footer class="bg-[var(--bg-color)] text-white relative z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold">Himangshu Paul</h3>
+                    <p class="text-gray-400 mt-2">Full Stack & Android Developer</p>
+                </div>
+                
+                <!-- === NEW: Palette moved to footer === -->
+                <div>
+                    <h4 class="font-semibold text-lg mb-4 shimmer-text">Palette</h4>
+                    <div class="flex flex-wrap justify-start gap-x-4 gap-y-2">
+                        <div class="flex items-center space-x-2">
+                            <div class="palette-color" style="background-color: #7C3AED;"></div>
+                            <span class="text-sm text-gray-400 font-mono">#7C3AED</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="palette-color" style="background-color: #F5F5F5;"></div>
+                            <span class="text-sm text-gray-400 font-mono">#F5F5F5</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="palette-color" style="background-color: #1E1E1E;"></div>
+                            <span class="text-sm text-gray-400 font-mono">#1E1E1E</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <div class="palette-color" style="background-color: #121212;"></div>
+                            <span class="text-sm text-gray-400 font-mono">#121212</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-start-3">
+                    <h4 class="font-semibold text-lg mb-4 shimmer-text">Contact</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="mailto:himangshu.inbox@gmail.com" class="hover:text-[var(--accent-color)] transition-colors">himangshu.inbox@gmail.com</a></li>
+                        <li><a href="tel:+919564604956" class="hover:text-[var(--accent-color)] transition-colors">+91 9564604956</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4 shimmer-text">Follow</h4>
+                    <div class="flex space-x-6">
+                        <a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        </a>
+                        <a href="mailto:himangshu.inbox@gmail.com" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Email">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                        </a>
+                        <a href="tel:+919564604956" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Phone">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-[var(--border-color)] mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
+                <p class="text-gray-400 text-sm">
+                    &copy; <span id="current-year"></span> Himangshu Paul
+                </P>
+                <p class="text-gray-500 text-sm mt-2 sm:mt-0">
+                    Design inspired by lightfielddigital.com.au
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        // JS remains the same, as it's just for animations and logic
+        window.addEventListener("load", () => {
+        
+            // Initialize Lucide Icons
+            lucide.createIcons();
+            
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+            
+            /* * ===========================================
+             * NEW "Multi-Layer" Animation Fix
+             * ===========================================
+             */
+
+            // --- Hero Section Animations (On Load) ---
+            gsap.to("#hero-status", { duration: 0.7, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out" });
+            
+            // === NEW: Badge Animation (ID is now on the anchor tag) ===
+            gsap.to("#hero-badge", { duration: 0.7, y: 0, autoAlpha: 1, delay: 0.3, ease: "power3.out" });
+            
+            gsap.to(".hero-line-1 .inline-block", { duration: 0.8, y: 0, autoAlpha: 1, delay: 0.4, ease: "power3.out" });
+            gsap.to(".hero-line-2 .inline-block", { duration: 0.8, y: 0, autoAlpha: 1, delay: 0.6, ease: "power3.out" });
+            gsap.to("#hero-p", { duration: 0.7, y: 0, autoAlpha: 1, delay: 0.8, ease: "power3.out" });
+
+            /* === MODIFIED: Added Stats Bar to Hero Load-in Animation === */
+            gsap.to("#stats-1", { duration: 0.7, y: 0, autoAlpha: 1, delay: 1.0, ease: "power3.out" });
+            gsap.to("#stats-2", { duration: 0.7, y: 0, autoAlpha: 1, delay: 1.1, ease: "power3.out" });
+            gsap.to("#stats-3", { duration: 0.7, y: 0, autoAlpha: 1, delay: 1.2, ease: "power3.out" });
+
+            // NEW: Hero social icon animation (delayed after other hero elements)
+            gsap.utils.toArray(".social-icon-circle").forEach((icon, i) => {
+                gsap.fromTo(icon, 
+                    { opacity: 0, scale: 0.5 }, 
+                    { opacity: 1, scale: 1, duration: 0.5, delay: 1.4 + (i * 0.1), ease: "back.out(1.7)" }
+                );
+            });
+
+
+            // --- Section "Slide Up" Animations (On Scroll) ---
+            
+            // About Section
+            gsap.to("#about-text", {
+                scrollTrigger: { trigger: "#about", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, x: 0, autoAlpha: 1, ease: "power3.out"
+            });
+            gsap.to("#about-image", {
+                scrollTrigger: { trigger: "#about", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, x: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out"
+            });
+            
+            // Parallax for About Image (This remains the same)
+            gsap.to("#about-image img", {
+                yPercent: -20, // Move 20% of its own height
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#about",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+
+            // === REMOVED: Stats Section Animation ===
+
+
+            // Experience Section
+            gsap.to("#experience-h2", {
+                scrollTrigger: { trigger: "#experience", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
+            });
+            
+            // UPDATED: More dynamic experience item animation
+            gsap.utils.toArray(".experience-item").forEach(item => {
+                gsap.to(item.querySelector(".experience-number"), {
+                    scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" },
+                    duration: 0.8, x: 0, autoAlpha: 1, ease: "power3.out",
+                });
+                gsap.to(item.querySelector(".experience-content"), {
+                    scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" },
+                    duration: 0.8, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out",
+                });
+            });
+
+            /* REMOVED Projects Section Animations */
+
+            // NEW: Testimonials Section Animation
+            gsap.to("#testimonials-h2", {
+                scrollTrigger: { trigger: "#testimonials", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
+            });
+            gsap.to("#testimonial-card", {
+                scrollTrigger: { trigger: "#testimonial-card", start: "top 85%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out"
+            });
+
+            /* REMOVED Contact Section Animations */
+
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+
+            menuBtn.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                mobileMenu.classList.toggle('hidden', !isHidden);
+                menuIconOpen.classList.toggle('hidden', !isHidden);
+                menuIconClose.classList.add('hidden', isHidden); // Add 'hidden' if closing
+                menuIconClose.classList.toggle('hidden', isHidden);
+            });
+            
+            // Close mobile menu when a link is clicked
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        }); // <-- This closes the "load" event listener
+    </script>
+
+</body>
+</html>
