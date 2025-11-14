@@ -7,7 +7,7 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- lucide-react is for React, we just need lucide for HTML --><script src="https://unpkg.com/lucide@latest"></script>
     
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
     
@@ -31,29 +31,27 @@
             background-color: var(--bg-color);
             color: var(--text-color); /* Default text color is now light */
             letter-spacing: 0.025em;
+
+            /* === CHANGED: Grain image applied directly to body with full opacity === */
+            background-image: url('https://born2earn.in/himanghu/grain.png');
+            background-repeat: repeat;
+            /* Removed opacity property as it's now full visible */
+            /* z-index is not needed here as it's the body's background */
         }
 
-        /* === NEW: Filmy Grain Overlay === */
-        /* This overlay sits on top of all content (z-49) */
-        /* but below the header and footer (which are z-50) */
+        /* === REMOVED: body::after pseudo-element for grain === */
+        /*
         body::after {
           content: '';
           position: fixed;
-          inset: 0; /* Cover top, left, bottom, right */
-          
-          /* Use a repeating noise texture (Base64 encoded PNG) */
-          background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAANUlEQVR42mP4//8/AyUYgQDGEAhmYDBNXYMGFwYkNv//RwYkRhMmJoaJMQVj0kQyGjFoNAMA3k8In/y+zC0AAAAASUVORK5CYII=');
+          inset: 0;
+          background-image: url('https://born2earn.in/himanghu/grain.png');
           background-repeat: repeat;
-
-          /* Adjust opacity for subtlety. 0.05 to 0.1 is usually good. */
           opacity: 0.07;
-          
-          /* Make sure it doesn't block mouse events */
-          pointer-events: none; 
-          
-          /* Z-index: Below header (z-50) */
-          z-index: 49; 
+          pointer-events: none;
+          z-index: 0; 
         }
+        */
         
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Satoshi', sans-serif;
@@ -183,9 +181,9 @@
 
 
         /* Ensure section content stays above the glows */
-        .section-glow > div:not(.hero-watermark) { /* <-- MODIFIED SELECTOR */
+        .section-glow > div { /* <-- MODIFIED SELECTOR (removed :not) */
             position: relative;
-            z-index: 2; /* <-- INCREASED Z-INDEX */
+            z-index: 2; /* Stays above glows and new pattern */
         }
 
         /* === NEW: Stats Bar Styling === */
@@ -198,53 +196,57 @@
 
         /* === NEW: Shimmer Effect for Stats === */
         .shimmer-text {
-          background: linear-gradient(
-            90deg, 
-            var(--accent-color) 30%, 
-            #F5F5F5 50%, /* Using --text-color for shine */
-            var(--accent-color) 70%
-          );
-          background-size: 200% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-          animation: shimmer-animation 4s linear infinite;
+            background: linear-gradient(
+                90deg, 
+                var(--accent-color) 30%, 
+                #F5F5F5 50%, /* Using --text-color for shine */
+                var(--accent-color) 70%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer-animation 4s linear infinite;
         }
 
         @keyframes shimmer-animation {
-          0% {
-            background-position: 200% 0;
-          }
-          100% {
-            background-position: -200% 0;
-          }
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
         }
         /* === End Shimmer Effect === */
 
-        /* === NEW: Hero Watermark === */
-        .hero-watermark {
+        /* === REMOVED: .hero-watermark CSS === */
+
+        /* === CHANGED: Vertical Watermark (BEHIND CONTENT), 50px, and lower position === */
+        .section-glow > .hero-pattern {
             position: absolute;
-            bottom: 2rem; /* MODIFIED: Stick to bottom (with 2rem padding) */
-            left: -3rem; /* MODIFIED: Stick to left */
-            transform: rotate(-90deg); /* Just rotate */
-            transform-origin: bottom left; /* Rotate from the bottom left corner */
-            font-size: 6rem; /* MODIFIED: Smaller font size */
-            font-weight: 900;
-            letter-spacing: 0.25em; 
-            color: rgba(255, 255, 255, 0.12); /* MODIFIED: Increased opacity to be visible */
-            text-transform: uppercase;
-            pointer-events: none; 
-            user-select: none; 
-            z-index: 1; 
-            white-space: nowrap; 
+            bottom: 0px; /* NEW: Pushing it right to the bottom */
+            right: -200px; /* NEW: Pushed it further to the right */
+            transform-origin: 0% 0%; /* Rotate around the top-left corner */
+            transform: translateY(-100%) rotate(-90deg); /* UPDATED: Move up by 100% of its height, then rotate */
+            
+            font-size: 50px; /* NEW: Fixed font size to 50px */
+            font-weight: 900; /* Extra bold */
+            color: var(--text-color); /* Light text color */
+            
+            opacity: 0.05; /* Very low opacity, as it's on top */
+            z-index: 1;     /* This will now apply correctly */
+            pointer-events: none; /* Allows clicking through it */
+            
+            white-space: nowrap; /* Prevent text from wrapping */
+            user-select: none;
         }
 
         @media (max-width: 768px) {
-            .hero-watermark {
-                display: none; /* Hide on mobile */
+            .hero-pattern {
+                display: none; /* Hide pattern on mobile */
             }
         }
-        /* === End Hero Watermark === */
+        /* === End Hero Background Pattern === */
 
 
         /* * ===========================================
@@ -337,17 +339,14 @@
 </head>
 <body class="antialiased">
 
-    <!-- === CHANGED: Updated header bg and text colors === -->
-    <!-- The header has z-50, so it will be ON TOP of the grain (z-49) -->
-    <header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
+    <!-- === CHANGED: Updated header bg and text colors === --><!-- The header has z-50, so it will be ON TOP of the grain (z-0) --><header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0">
                     <a href="#home" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
                 </div>
                 
-                <!-- Desktop Nav. Uses --accent-color on hover -->
-                <div class="hidden md:flex md:items-center md:space-x-8">
+                <!-- Desktop Nav. Uses --accent-color on hover --><div class="hidden md:flex md:items-center md:space-x-8">
                     <a href="#about" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">About</a>
                     <a href="#experience" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Experience</a>
                     <a href="#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
@@ -366,8 +365,7 @@
             </div>
         </nav>
 
-        <!-- === CHANGED: Mobile Menu bg and text colors === -->
-        <div class="md:hidden hidden" id="mobile-menu">
+        <!-- === CHANGED: Mobile Menu bg and text colors === --><div class="md:hidden hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
                 <a href="#about" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">About</a>
                 <a href="#experience" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Experience</a>
@@ -377,24 +375,15 @@
         </div>
     </header>
 
-    <!-- The <main> content will be UNDER the grain overlay (z-49) -->
-    <main>
+    <!-- The <main> content will be UNDER the grain overlay (z-0) --><main>
 
-        <!-- === MODIFIED: Changed to flex-col layout to push stats bar to bottom === -->
-        <section id="home" class="min-h-[calc(100vh-5rem)] flex flex-col justify-between relative section-glow">
+        <!-- === MODIFIED: Changed to flex-col layout to push stats bar to bottom === --><section id="home" class="min-h-[calc(100vh-5rem)] flex flex-col justify-between relative section-glow">
             
-            <!-- === NEW: Vertical Watermark === -->
-            <div class="hero-watermark">Portfolio</div>
-            <!-- === End Vertical Watermark === -->
-
-            <!-- Main content, wrapped to grow and center -->
-            <!-- This div gets z-index: 1 from the .section-glow > div rule -->
-            <div class="flex-grow flex items-center py-24 md:py-32">
+            <!-- === REMOVED: Vertical Watermark div === --><!-- === NEW: Background Pattern (like reference image) === --><!-- This now has z-index: 1 --><div class="hero-pattern">PORTFOLIO</div>
+            <!-- === End Background Pattern === --><!-- Main content, wrapped to grow and center --><!-- This div gets z-index: 2 from the .section-glow > div rule --><div class="flex-grow flex items-center py-24 md:py-32">
                 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- === MODIFIED: Removed pb-32 === -->
-                    <div class="max-w-3xl">
-                        <!-- === NEW: Wrapper for status and badge === -->
-                        <div class="flex flex-wrap gap-4 items-center">
+                    <!-- === MODIFIED: Removed pb-32 === --><div class="max-w-3xl">
+                        <!-- === NEW: Wrapper for status and badge === --><div class="flex flex-wrap gap-4 items-center">
                             <a href="#contact" id="hero-status" class="inline-flex items-center space-x-2 bg-[var(--accent-color)] text-white rounded-full px-5 py-2.5 text-sm font-medium hover:opacity-90 transition-opacity">
                                 <span class="flex h-2.5 w-2.5">
                                     <span class="animate-ping absolute inline-flex h-2.5 w-2.5 rounded-full bg-white opacity-75"></span>
@@ -403,31 +392,25 @@
                                 <span>Available for projects</span>
                             </a>
 
-                            <!-- === UPDATED: Wrapped badge in an anchor tag & added hover effect === -->
-                            <a href="https://www.credential.net/12a9bceb-fea0-4fbc-9502-011f6bfeaaf0#acc.2PC8H4IR" target="_blank" rel="noopener noreferrer" id="hero-badge" class="inline-flex items-center space-x-2 bg-[var(--bg-secondary)] text-[var(--text-color-light)] rounded-full px-5 py-2.5 text-sm font-medium border border-[var(--border-color)] transition-all hover:border-[var(--accent-color)] hover:text-[var(--text-color)]">
-                                <!-- === CHANGED: Replaced lucide icon with real badge image === -->
-                                <img src="https://developers-dot-devsite-v2-prod.appspot.com/certification/directory/images/badges/play_academy_certificate.png" alt="Google Certified Developer Badge" class="w-5 h-5">
+                            <!-- === UPDATED: Wrapped badge in an anchor tag & added hover effect === --><a href="https://www.credential.net/12a9bceb-fea0-4fbc-9502-011f6bfeaaf0#acc.2PC8H4IR" target="_blank" rel="noopener noreferrer" id="hero-badge" class="inline-flex items-center space-x-2 bg-[var(--bg-secondary)] text-[var(--text-color-light)] rounded-full px-5 py-2.5 text-sm font-medium border border-[var(--border-color)] transition-all hover:border-[var(--accent-color)] hover:text-[var(--text-color)]">
+                                <!-- === CHANGED: Replaced lucide icon with real badge image === --><img src="https://developers-dot-devsite-v2-prod.appspot.com/certification/directory/images/badges/play_academy_certificate.png" alt="Google Certified Developer Badge" class="w-5 h-5">
                                 <span>Google Certified Developer</span>
                             </a>
                         </div>
                         
-                        <!-- === CHANGED: Hero text colors === -->
-                        <h1 id="hero-h1" class="text-5xl md:text-7xl text-gray-500 mt-6 mb-8">
+                        <!-- === CHANGED: Hero text colors === --><h1 id="hero-h1" class="text-5xl md:text-7xl text-gray-500 mt-6 mb-8">
                             <span class="hero-line-1 block overflow-hidden">
-                                <!-- Changed to py-3 for more padding -->
-                                <span class="hero-heading-light inline-block py-3">Hi, I’m </span><br class="md:hidden">
+                                <!-- Changed to py-3 for more padding --><span class="hero-heading-light inline-block py-3">Hi, I’m </span><br class="md:hidden">
                             </span>
                             <span class="hero-line-2 block overflow-hidden">
-                                <!-- Changed to py-3 for more padding -->
-                                <span class="hero-heading-heavy inline-block py-3 shimmer-text">Himangshu Paul.</span>
+                                <!-- Changed to py-3 for more padding --><span class="hero-heading-heavy inline-block py-3 shimmer-text">Himangshu Paul.</span>
                             </span>
                         </h1>
                         <p id="hero-p" class="text-xl md:text-2xl font-light text-[var(--text-color-light)] mb-0">
                             A Full Stack & Android Developer who builds efficient, smart, and scalable digital solutions from concept to launch.
                         </p>
 
-                        <!-- NEW: Social Icons in Hero Section -->
-                        <div class="flex space-x-4 mt-8">
+                        <!-- NEW: Social Icons in Hero Section --><div class="flex space-x-4 mt-8">
                             <a href="https://linkedin.com/in/himangshupaul" target="_blank" aria-label="LinkedIn" class="social-icon-circle">
                                 <i data-lucide="linkedin" class="w-5 h-5"></i>
                             </a>
@@ -445,60 +428,40 @@
                 </div>
             </div>
             
-            <!-- === REMOVED: Scroll-down indicator div (moved below) === -->
-
-            <!-- === NEW: Stats Bar (Moved from section) === -->
-            <!-- This div also gets z-index: 1 from the .section-glow > div rule -->
-            <div id="stats-bar" class="w-full bg-[var(--bg-secondary)] border-t border-[var(--border-color)]">
+            <!-- === REMOVED: Scroll-down indicator div (moved below) === --><!-- === NEW: Stats Bar (Moved from section) === --><!-- This div also gets z-index: 2 from the .section-glow > div rule --><div id="stats-bar" class="w-full bg-[var(--bg-secondary)] border-t border-[var(--border-color)]">
                 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <!-- === MODIFIED: Changed to flex layout for better alignment === -->
-                    <div class="flex flex-col md:flex-row md:justify-around items-center gap-8 py-8 md:py-6">
+                    <!-- === MODIFIED: Changed to flex layout for better alignment === --><div class="flex flex-col md:flex-row md:justify-around items-center gap-8 py-8 md:py-6">
                         
-                        <!-- Stat 1 -->
-                        <!-- === MODIFIED: Changed to text-center md:text-left === -->
-                        <div id="stats-1" class="text-center md:text-left">
-                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === -->
-                            <span class="text-4xl lg:text-5xl font-bold shimmer-text">3+</span>
+                        <!-- Stat 1 --><!-- === MODIFIED: Changed to text-center md:text-left === --><div id="stats-1" class="text-center md:text-left">
+                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === --><span class="text-4xl lg:text-5xl font-bold shimmer-text">3+</span>
                             <p class="text-base lg:text-lg text-[var(--text-color-light)] mt-1">Years of Experience</p>
                         </div>
 
-                        <!-- Stat 2 -->
-                        <!-- === MODIFIED: Changed to text-center md:text-left === -->
-                        <div id="stats-2" class="text-center md:text-left">
-                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === -->
-                            <span class="text-4xl lg:text-5xl font-bold shimmer-text">12+</span>
+                        <!-- Stat 2 --><!-- === MODIFIED: Changed to text-center md:text-left === --><div id="stats-2" class="text-center md:text-left">
+                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === --><span class="text-4xl lg:text-5xl font-bold shimmer-text">12+</span>
                             <p class="text-base lg:text-lg text-[var(--text-color-light)] mt-1">Projects Completed</p>
                         </div>
 
-                        <!-- Palette -->
-                        <!-- === REMOVED: Palette section moved to footer === -->
-
-                        <!-- === NEW: Stat 3 === -->
-                        <div id="stats-3" class="text-center md:text-left">
-                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === -->
-                            <span class="text-4xl lg:text-5xl font-bold shimmer-text">4+</span>
+                        <!-- Palette --><!-- === REMOVED: Palette section moved to footer === --><!-- === NEW: Stat 3 === --><div id="stats-3" class="text-center md:text-left">
+                            <!-- === MODIFIED: Removed text-[var(--accent-color)] and added shimmer-text class === --><span class="text-4xl lg:text-5xl font-bold shimmer-text">4+</span>
                             <p class="text-base lg:text-lg text-[var(--text-color-light)] mt-1">Apps Published</p>
                         </div>
 
                     </div>
                 </div>
             </div>
-            <!-- === End Stats Bar === -->
-        </section>
+            <!-- === End Stats Bar === --></section>
 
-        <!-- === REPLACED: Scroll-Down Arrow Section (Animated Chevron) === -->
-        <section class="w-full bg-[var(--bg-color)] pt-8 pb-12 flex justify-center items-center">
+        <!-- === REPLACED: Scroll-Down Arrow Section (Animated Chevron) === --><section class="w-full bg-[var(--bg-color)] pt-8 pb-12 flex justify-center items-center">
             <a href="#about" class="scroll-down-chevron" aria-label="Scroll down to about section">
                 <i data-lucide="chevron-down" class="w-10 h-10"></i>
             </a>
         </section>
 
-        <!-- === CHANGED: Added section-glow === -->
-        <section id="about" class="py-20 md:py-32 overflow-hidden section-glow">
+        <!-- === CHANGED: Added section-glow === --><section id="about" class="py-20 md:py-32 overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
-                    <!-- === CHANGED: About text colors === -->
-                    <div id="about-text" class="md:col-span-3">
+                    <!-- === CHANGED: About text colors === --><div id="about-text" class="md:col-span-3">
                         <h2 class="text-4xl font-semibold text-[var(--text-color)] mb-8 shimmer-text">About Me</h2>
                         <div class="space-y-6 text-lg text-[var(--text-color-light)]">
                             <p>
@@ -512,16 +475,14 @@
                             </p>
                         </div>
                     </div>
-                    <!-- === CHANGED: About image placeholder & border === -->
-                    <div id="about-image" class="md:col-span-2 rounded-lg shadow-xl overflow-hidden border-2 border-[var(--border-color)]">
+                    <!-- === CHANGED: About image placeholder & border === --><div id="about-image" class="md:col-span-2 rounded-lg shadow-xl overflow-hidden border-2 border-[var(--border-color)]">
                         <img src="https://placehold.co/500x500/2C2A4A/F5F5F5?text=HP" alt="Himangshu Paul" class="w-full h-auto aspect-square object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x500/2C2A4A/F5F5F5?text=HP';">
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- === CHANGED: Skills Marquee bg and border === -->
-        <section id="skills-marquee" class="py-12 md:py-16 bg-[var(--bg-color)] overflow-hidden border-y border-[var(--border-color)]">
+        <!-- === CHANGED: Skills Marquee bg and border === --><section id="skills-marquee" class="py-12 md:py-16 bg-[var(--bg-color)] overflow-hidden border-y border-[var(--border-color)]">
             <div class="marquee-wrapper">
                 <div class="marquee-content text-2xl md:text-4xl font-light text-gray-400">
                     <span>Kotlin</span>
@@ -538,8 +499,7 @@
                     <span class="text-[var(--accent-color)] mx-4">&bull;</span>
                     <span>WordPress</span>
                     <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <!-- Duplicate for seamless scroll -->
-                    <span>Kotlin</span>
+                    <!-- Duplicate for seamless scroll --><span>Kotlin</span>
                     <span class="text-[var(--accent-color)] mx-4">&bull;</span>
                     <span>Android</span>
                     <span class="text-[var(--accent-color)] mx-4">&bull;</span>
@@ -557,13 +517,9 @@
             </div>
         </section>
 
-        <!-- === REMOVED: Stats & Palette Section (Moved to Hero) === -->
-
-        <!-- === CHANGED: Added section-glow === -->
-        <section id="experience" class="py-20 md:py-32 bg-[var(--bg-color)] overflow-hidden section-glow">
+        <!-- REMOVED Stats & Palette Section (Moved to Hero) --><!-- === CHANGED: Added section-glow === --><section id="experience" class="py-20 md:py-32 bg-[var(--bg-color)] overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- === CHANGED: Experience text colors === -->
-                <h2 id="experience-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Work Experience</h2>
+                <!-- === CHANGED: Experience text colors === --><h2 id="experience-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Work Experience</h2>
                 <div class="max-w-3xl space-y-8">
                     
                     <div class="flex items-start space-x-6 experience-item">
@@ -606,18 +562,13 @@
             </div>
         </section>
 
-        <!-- REMOVED Featured Projects Section -->
-
-        <!-- === CHANGED: Added section-glow === -->
-        <section id="testimonials" class="py-20 md:py-32 bg-[var(--bg-secondary)] overflow-hidden section-glow">
+        <!-- REMOVED Featured Projects Section --><!-- === CHANGED: Added section-glow === --><section id="testimonials" class="py-20 md:py-32 bg-[var(--bg-secondary)] overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- === CHANGED: Testimonial text colors === -->
-                <h2 id="testimonials-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 text-center shimmer-text">What My Clients Say</h2>
+                <!-- === CHANGED: Testimonial text colors === --><h2 id="testimonials-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 text-center shimmer-text">What My Clients Say</h2>
                 
                 <div id="testimonial-card" class="max-w-5xl mx-auto bg-[var(--bg-color)] rounded-lg shadow-xl overflow-hidden md:flex">
                     <div class="md:w-1/3">
-                        <!-- === CHANGED: Placeholder === -->
-                        <img src="https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo" alt="Testimonial Client" class="w-full h-64 md:h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo';">
+                        <!-- === CHANGED: Placeholder === --><img src="https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo" alt="Testimonial Client" class="w-full h-64 md:h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo';">
                     </div>
                     <div class="md:w-2/3 p-10 md:p-16 flex flex-col justify-center">
                         <svg class="w-16 h-16 text-[var(--accent-color)] mb-6" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -629,8 +580,7 @@
                         </p>
                         
                         <div class="flex items-center">
-                            <!-- === CHANGED: Placeholder === -->
-                            <img src="https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo" alt="Client Logo" class="h-8 mr-4" onerror="this.onerror=null;this.src='https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo';">
+                            <!-- === CHANGED: Placeholder === --><img src="https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo" alt="Client Logo" class="h-8 mr-4" onerror="this.onerror=null;this.src='https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo';">
                             <div>
                                 <p class="font-bold text-[var(--text-color)] text-lg">Mike Gore</p>
                                 <p class="text-gray-500">CEO - Charitabl</p>
@@ -641,14 +591,9 @@
             </div>
         </section>
 
-        <!-- REMOVED Contact Form Section -->
-    </main>
+        <!-- REMOVED Contact Form Section --></main>
 
-    <!-- === REMOVED: Social FABs === -->
-
-    <!-- === CHANGED: Footer bg and border === -->
-    <!-- Added `relative z-50` so it sits ON TOP of the grain (z-49) -->
-    <footer class="bg-[var(--bg-color)] text-white relative z-50">
+    <!-- === REMOVED: Social FABs === --><!-- === CHANGED: Footer bg and border === --><!-- Added `relative z-50` so it sits ON TOP of the grain (z-0) --><footer class="bg-[var(--bg-color)] text-white relative z-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
@@ -656,8 +601,7 @@
                     <p class="text-gray-400 mt-2">Full Stack & Android Developer</p>
                 </div>
                 
-                <!-- === NEW: Palette moved to footer === -->
-                <div>
+                <!-- === NEW: Palette moved to footer === --><div>
                     <h4 class="font-semibold text-lg mb-4 shimmer-text">Palette</h4>
                     <div class="flex flex-wrap justify-start gap-x-4 gap-y-2">
                         <div class="flex items-center space-x-2">
@@ -690,14 +634,14 @@
                 <div>
                     <h4 class="font-semibold text-lg mb-4 shimmer-text">Follow</h4>
                     <div class="flex space-x-6">
-                        <a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        <!-- === FIXED: Replaced inline SVGs with lucide icons === --><a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
                         </a>
                         <a href="mailto:himangshu.inbox@gmail.com" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Email">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <i data-lucide="mail" class="w-6 h-6"></i>
                         </a>
-                        <a href="tel:+919564604956" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Phone">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <a href="tel:+919564604956" class="text-gray-400 hover:text-[var(--accent-colof)] transition-colors" title="Phone">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
                         </a>
                     </div>
                 </div>
@@ -727,7 +671,7 @@
             gsap.registerPlugin(ScrollTrigger);
             
             /* * ===========================================
-             * NEW "Multi-Layer" Animation Fix
+             * "Multi-Layer" Animation Fix
              * ===========================================
              */
 
@@ -821,11 +765,10 @@
             const menuIconOpen = document.getElementById('menu-icon-open');
             const menuIconClose = document.getElementById('menu-icon-close');
 
+            /* === FIXED: Simplified menu toggle logic === */
             menuBtn.addEventListener('click', () => {
-                const isHidden = mobileMenu.classList.contains('hidden');
-                mobileMenu.classList.toggle('hidden', !isHidden);
+                const isHidden = mobileMenu.classList.toggle('hidden');
                 menuIconOpen.classList.toggle('hidden', !isHidden);
-                menuIconClose.classList.add('hidden', isHidden); // Add 'hidden' if closing
                 menuIconClose.classList.toggle('hidden', isHidden);
             });
             
