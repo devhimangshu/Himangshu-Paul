@@ -11,6 +11,9 @@
     
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
     
+    <!-- === REMOVED: Devicon CDN (no longer using font icons) === -->
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" /> -->
+
     <style>
         /* === CHANGED: CSS Variables for NEW Dark Theme === */
         :root {
@@ -32,15 +35,10 @@
             color: var(--text-color); /* Default text color is now light */
             letter-spacing: 0.025em;
 
-            /* === CHANGED: Grain image applied directly to body with full opacity === */
-            background-image: url('https://born2earn.in/himanghu/grain.png');
-            background-repeat: repeat;
-            /* Removed opacity property as it's now full visible */
-            /* z-index is not needed here as it's the body's background */
+            /* === REVERTED: Removed background-image for grain from body === */
         }
 
-        /* === REMOVED: body::after pseudo-element for grain === */
-        /*
+        /* === REVERTED: Added back body::after pseudo-element for grain with reduced opacity === */
         body::after {
           content: '';
           position: fixed;
@@ -51,7 +49,6 @@
           pointer-events: none;
           z-index: 0; 
         }
-        */
         
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Satoshi', sans-serif;
@@ -70,14 +67,15 @@
         
         /* === REMOVED ===
             .hero-gradient class
-        */
+         */
 
         /* Accent Text Effect */
         .accent-text {
             color: var(--accent-color);
         }
         
-        /* Custom project card hover */
+        /* === REMOVED: Old .project-card styling === */
+        /*
         .project-card {
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
@@ -88,28 +86,53 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+        */
         
-        /* === REVERTED: Bouncing Chevron Scroll Indicator === */
-        .scroll-down-chevron {
-            color: var(--text-color-light);
-            transition: color 0.3s ease, transform 0.3s ease;
-            animation: bounce-chevron 2.5s infinite ease-in-out;
+        /* === REMOVED: Bouncing Chevron === */
+        /* .scroll-down-chevron ... */
+        /* @keyframes bounce-chevron ... */
+
+        /* === NEW: Animated Scroll Mouse Indicator === */
+        .scroll-mouse {
+            width: 30px;
+            height: 50px;
+            border: 2px solid var(--text-color-light);
+            border-radius: 60px;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
         }
-        .scroll-down-chevron:hover {
-            color: var(--accent-color);
-            transform: translateY(5px);
-            animation-play-state: paused; /* Stop bouncing on hover */
+        .scroll-mouse:hover {
+            border-color: var(--accent-color);
+        }
+        .scroll-wheel {
+            width: 4px;
+            height: 10px;
+            background: var(--text-color-light);
+            border-radius: 2px;
+            position: absolute;
+            left: 50%;
+            top: 10px;
+            transform: translateX(-50%);
+            animation: scroll-animation 2s infinite ease-in-out;
+            transition: background-color 0.3s ease;
+        }
+        .scroll-mouse:hover .scroll-wheel {
+            background-color: var(--accent-color);
         }
 
-        @keyframes bounce-chevron {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
+        @keyframes scroll-animation {
+            0% {
+                transform: translate(-50%, 0);
+                opacity: 1;
             }
-            40% {
-                transform: translateY(10px);
+            50% {
+                transform: translate(-50%, 15px);
+                opacity: 0.5;
             }
-            60% {
-                transform: translateY(5px);
+            100% {
+                transform: translate(-50%, 0);
+                opacity: 1;
             }
         }
         
@@ -124,11 +147,40 @@
             display: inline-block;
             animation: marquee-scroll 40s linear infinite;
         }
-        .marquee-content > span {
-            display: inline-block;
-            padding: 0 0.5rem;
-        }
+        /* === REMOVED: Old marquee span styling === */
+        /* .marquee-content > span { ... } */
         
+        /* === NEW: Skill Marquee Item Styling === */
+        .skill-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem; /* 12px */
+            margin: 0 1.5rem; /* Replaces the bullet margin */
+            font-size: 1.5rem; /* 2xl */
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        .skill-item:hover {
+            color: var(--text-color);
+        }
+        /* === REMOVED: Devicon font-icon style === */
+        /* .skill-item i { ... } */
+        
+        /* === NEW: Skill image styling === */
+        .skill-img {
+            width: 2rem; /* 32px */
+            height: 2rem; /* 32px */
+        }
+
+        .skill-item .ghl-icon { /* GHL SVG */
+            width: 2rem; /* 32px */
+            height: 2rem; /* 32px */
+            /* === CHANGED: Set a specific color instead of inheriting === */
+            fill: var(--accent-color);
+        }
+        /* === End Skill Marquee Styling === */
+
         @keyframes marquee-scroll {
             0% {
                 transform: translateX(0);
@@ -234,7 +286,7 @@
             color: var(--text-color); /* Light text color */
             
             opacity: 0.05; /* Very low opacity, as it's on top */
-            z-index: 1;     /* This will now apply correctly */
+            z-index: 1;      /* This will now apply correctly */
             pointer-events: none; /* Allows clicking through it */
             
             white-space: nowrap; /* Prevent text from wrapping */
@@ -244,6 +296,26 @@
         @media (max-width: 768px) {
             .hero-pattern {
                 display: none; /* Hide pattern on mobile */
+            }
+        }
+        /* === NEW: Responsive Skill Marquee Icons === */
+        @media (min-width: 768px) {
+            .skill-item {
+                font-size: 2.25rem; /* 4xl */
+                gap: 1rem; /* 16px */
+            }
+            /* === REMOVED: Responsive icon font style === */
+            /* .skill-item i { ... } */
+
+            /* === NEW: Responsive image styling === */
+            .skill-img {
+                width: 2.5rem; /* 40px */
+                height: 2.5rem; /* 40px */
+            }
+            
+            .skill-item .ghl-icon {
+                width: 2.5rem; /* 40px */
+                height: 2.5rem; /* 40px */
             }
         }
         /* === End Hero Background Pattern === */
@@ -279,43 +351,60 @@
         }
         
         /* Scroll-Triggered Sections: Initial State */
-        #about-text {
+        
+        /* === NEW: Initial State for Intro Section === */
+        #intro-text {
             opacity: 0;
             visibility: hidden;
             transform: translateX(-100px);
         }
-        #about-image {
+        #intro-image {
             opacity: 0;
             visibility: hidden;
-            transform: translateX(100px);
+            transform: translateX(50px) scale(0.9); /* Start slightly smaller and from the right */
+            filter: blur(8px); /* Start blurred */
         }
+
+
         /* === NEW: Initial State for Stats === */
         #stats-1, #stats-2, #stats-3 {
             opacity: 0;
             visibility: hidden;
             transform: translateY(100px);
         }
-        #experience-h2 {
+        
+        /* === NEW: Experience Initial States === */
+        #experience-h3 {
             opacity: 0;
             visibility: hidden;
             transform: translateY(100px);
         }
-        .experience-item .experience-number {
-             opacity: 0;
+        /* === REMOVED old experience/education initial states === */
+
+        /* === NEW: Education Initial States === */
+        #education-h3 {
+            opacity: 0;
             visibility: hidden;
-            transform: translateX(-50px);
+            transform: translateY(100px);
         }
-         .experience-item .experience-content {
-             opacity: 0;
-            visibility: hidden;
-            transform: translateY(50px);
-         }
+        /* === REMOVED old experience/education initial states === */
+        
         #testimonials-h2,
         #testimonial-card {
             opacity: 0;
             visibility: hidden;
             transform: translateY(100px);
         }
+
+        /* === UPDATED: "What I Did" Section Initial States === */
+        #what-i-did-h2,
+        #what-i-did-p {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        /* === REMOVED: #websites-box, #apps-box initial state === */
+
 
         /* NEW: Social icon styles */
         .social-icon-circle {
@@ -335,6 +424,204 @@
             color: white;
         }
         
+        /* === REVERTED: Removed grain from testimonials section and added back its default background === */
+        #testimonials {
+            background-color: var(--bg-secondary);
+            /* Removed background-image for grain */
+        }
+
+        /* === REMOVED: Pixel Art DP styles (no longer needed) === */
+        
+        /* === NEW: Timeline Styling === */
+        .timeline-container {
+            position: relative;
+            max-width: 100%; /* Was max-w-3xl on the wrapper */
+        }
+
+        /* The vertical line */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--border-color);
+            top: 10px; /* Start below the heading */
+            bottom: 10px;
+            left: 1.25rem; /* Aligns with the center of the 2.5rem node */
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 4rem; /* Space for the node + line */
+            padding-bottom: 2.5rem; /* 40px */
+            z-index: 2;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        /* The circle node */
+        .timeline-node {
+            position: absolute;
+            left: 1.25rem; /* Center align with the line */
+            top: 4px; /* Align with the top of the text */
+            transform: translateX(-50%) scale(0.5); /* Initial state for animation */
+            width: 2.5rem; /* 40px */
+            height: 2.5rem; /* 40px */
+            background-color: var(--accent-color);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1rem;
+            z-index: 3;
+            border: 4px solid var(--bg-color); /* Creates cutout effect */
+            
+            /* Animation initial state */
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .timeline-content {
+            position: relative;
+            background-color: var(--bg-secondary);
+            border-radius: 0.5rem; /* 8px */
+            padding: 1.5rem; /* 24px */
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+
+            /* Animation initial state */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(50px);
+        }
+
+        .timeline-content:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-3px) translateX(0px); /* Maintain X transform on hover */
+        }
+
+        /* Small triangle pointing to the timeline */
+        .timeline-content::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 18px; /* Aligns with the node's center roughly */
+            width: 0;
+            z-index: 1;
+            left: -10px; /* Points left */
+            border: medium solid transparent;
+            border-width: 10px 10px 10px 0;
+            border-right-color: var(--border-color);
+        }
+        .timeline-content::after {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 19px;
+            width: 0;
+            z-index: 2;
+            left: -9px;
+            border: medium solid transparent;
+            border-width: 9px 9px 9px 0;
+            border-right-color: var(--bg-secondary);
+        }
+
+        /* Link styling for @ mentions */
+        .timeline-content-link {
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+            text-decoration: none; /* remove underline */
+        }
+        .timeline-content-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        /* === REMOVED: Project Video Box Styling === */
+        /* .project-video-box { ... } */
+        /* .project-video-box:hover { ... } */
+        /* .project-video-box video { ... } */
+        /* .project-video-box:hover video { ... } */
+        /* @media (min-width: 768px) { .project-video-box { ... } } */
+        
+        /* === REMOVED: Old Project Video Wrapper Styling === */
+        /* .project-video-wrapper { ... } */
+        /* .project-video-wrapper:hover { ... } */
+        /* .project-video-wrapper video { ... } */
+        /* .project-video-wrapper:hover video { ... } */
+
+        /* === REMOVED: Old Project Content Styling === */
+        /* .project-content { ... } */
+        /* .project-content:hover { ... } */
+
+        /* === NEW: Project Poster Card Styling === */
+        .project-poster-card {
+            display: block; /* Make the anchor a block */
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem; /* rounded-xl */
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+            text-decoration: none; /* No underline on the card */
+
+            /* Initial animation state */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px) scale(0.95);
+        }
+        .project-poster-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.2), 0 8px 10px -6px rgba(124, 58, 237, 0.2);
+        }
+        .project-poster-card .video-container {
+            overflow: hidden; /* Clips the video zoom */
+            aspect-ratio: 16 / 9; /* Ensure video has a consistent shape */
+        }
+        .project-poster-card video {
+            width: 100%;
+            height: 100%;
+            object-cover: cover;
+            transition: transform 0.4s ease-out;
+        }
+        .project-poster-card:hover video {
+            transform: scale(1.05);
+        }
+        /* Style the content inside */
+        .project-poster-card .content {
+            padding: 2rem;
+        }
+        .project-poster-card .content h3 {
+            /* Use the shimmer text, but also a hover effect */
+            transition: color 0.3s ease;
+        }
+        .project-poster-card:hover .content h3 {
+            color: var(--accent-color); /* On hover, make the text accent (shimmer will be overridden) */
+        }
+        .project-poster-card .content p {
+            color: var(--text-color-light); /* Ensure p tags get the light text color */
+        }
+         /* Style the "View" link */
+         .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem; /* 8px */
+            color: var(--accent-color);
+            font-weight: 500; /* medium */
+            margin-top: 1rem;
+        }
+        .project-link .link-arrow {
+            transition: transform 0.3s ease;
+        }
+        .project-poster-card:hover .project-link .link-arrow {
+            transform: translateX(4px);
+        }
+
     </style>
 </head>
 <body class="antialiased">
@@ -347,8 +634,8 @@
                 </div>
                 
                 <!-- Desktop Nav. Uses --accent-color on hover --><div class="hidden md:flex md:items-center md:space-x-8">
-                    <a href="#about" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">About</a>
-                    <a href="#experience" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Experience</a>
+                    <!-- === NEW: Introduction Link === -->
+                    <a href="#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
                     <a href="#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
                     <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
                         Contact Me
@@ -367,8 +654,8 @@
 
         <!-- === CHANGED: Mobile Menu bg and text colors === --><div class="md:hidden hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
-                <a href="#about" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">About</a>
-                <a href="#experience" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Experience</a>
+                <!-- === NEW: Introduction Link === -->
+                <a href="#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
                 <a href="#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
                 <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
             </div>
@@ -452,117 +739,287 @@
             </div>
             <!-- === End Stats Bar === --></section>
 
-        <!-- === REPLACED: Scroll-Down Arrow Section (Animated Chevron) === --><section class="w-full bg-[var(--bg-color)] pt-8 pb-12 flex justify-center items-center">
-            <a href="#about" class="scroll-down-chevron" aria-label="Scroll down to about section">
-                <i data-lucide="chevron-down" class="w-10 h-10"></i>
+        <!-- === REMOVED: Scroll-Down Arrow Section (Moved) === -->
+
+        <!-- === NEW/MOVED: Skills Marquee Section === -->
+        <section id="skills-marquee" class="py-12 md:py-16 bg-[var(--bg-color)] overflow-hidden border-y border-[var(--border-color)]">
+            <div class="marquee-wrapper">
+                <!-- === MODIFIED: Replaced font-icons with colorful SVG images === -->
+                <div class="marquee-content">
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" alt="Kotlin" class="skill-img">
+                        <span>Kotlin</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg" alt="Android" class="skill-img">
+                        <span>Android</span>
+                    </span>
+                    <span class="skill-item">
+                        <!-- Inline SVG for GoHighLevel (now filled with accent color via CSS) -->
+                        <svg class="ghl-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GoHighLevel</title><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 18.216c-3.43 0-6.216-2.786-6.216-6.216S8.57 5.784 12 5.784s6.216 2.786 6.216 6.216-2.786 6.216-6.216 6.216zm0-4.043c1.198 0 2.173-0.975 2.173-2.173s-0.975-2.173-2.173-2.173-2.173 0.975-2.173 2.173 0.975 2.173 2.173 2.173zM18.82 13.62l-2.008-1.16c.307-.528.487-1.137.487-1.796 0-.66-.18-1.268-.487-1.796l2.008-1.16c.19-.11.26-.358.15-.548l-1.026-1.778c-.11-.19-.358-.26-.548-.15l-2.16.82c-.44-.33-.93-.604-1.458-.803L13.62 3.18c-.037-.208-.22-.358-.425-.358h-2.39c-.204 0-.388.15-.425.358l-.16 2.07c-.528.198-1.018-.472-1.458.803l-2.16-.82c-.19-.072-.438 0-.548.15L5.023 7.04c-.11.19-.04.438.15.548l2.008 1.16c-.307.528-.487-1.137-.487-1.796 0 .66.18 1.268.487 1.796l-2.008 1.16c-.19.11-.26-.358-.15.548l1.026 1.778c.11.19.358.26.548.15l2.16-.82c.44.33.93.604 1.458.803l.16 2.07c.037.208.22.358.425.358h2.39c.204 0 .388-.15-.425.358l.16-2.07c.528-.198 1.018-.472 1.458.803l2.16.82c.19.072.438 0 .548-.15l1.026-1.778c.11-.19.04-.438-.15-.548z"/></svg>
+                        <span>GoHighLevel</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" class="skill-img">
+                        <span>JavaScript</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase" class="skill-img">
+                        <span>Firebase</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="PHP" class="skill-img">
+                        <span>PHP</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg" alt="WordPress" class="skill-img">
+                        <span>WordPress</span>
+                    </span>
+                    <!-- Duplicate for seamless scroll -->
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" alt="Kotlin" class="skill-img">
+                        <span>Kotlin</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg" alt="Android" class="skill-img">
+                        <span>Android</span>
+                    </span>
+                    <span class="skill-item">
+                        <!-- Inline SVG for GoHighLevel (now filled with accent color via CSS) -->
+                        <svg class="ghl-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GoHighLevel</title><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 18.216c-3.43 0-6.216-2.786-6.216-6.216S8.57 5.784 12 5.784s6.216 2.786 6.216 6.216-2.786 6.216-6.216 6.216zm0-4.043c1.198 0 2.173-0.975 2.173-2.173s-0.975-2.173-2.173-2.173-2.173 0.975-2.173 2.173 0.975 2.173 2.173 2.173zM18.82 13.62l-2.008-1.16c.307-.528.487-1.137.487-1.796 0-.66-.18-1.268-.487-1.796l2.008-1.16c.19-.11.26-.358.15-.548l-1.026-1.778c-.11-.19-.358-.26-.548-.15l-2.16.82c-.44-.33-.93-.604-1.458-.803L13.62 3.18c-.037-.208-.22-.358-.425-.358h-2.39c-.204 0-.388.15-.425.358l-.16 2.07c-.528.198-1.018-.472-1.458.803l-2.16-.82c-.19-.072-.438 0-.548.15L5.023 7.04c-.11.19-.04.438.15.548l2.008 1.16c-.307.528-.487-1.137-.487-1.796 0 .66.18 1.268.487 1.796l-2.008 1.16c-.19.11-.26-.358-.15.548l1.026 1.778c.11.19.358.26.548.15l2.16-.82c.44.33.93.604 1.458.803l.16 2.07c.037.208.22.358.425.358h2.39c.204 0 .388-.15-.425.358l.16-2.07c.528-.198 1.018-.472 1.458.803l2.16.82c.19.072.438 0 .548-.15l1.026-1.778c.11-.19.04-.438-.15-.548z"/></svg>
+                        <span>GoHighLevel</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" class="skill-img">
+                        <span>JavaScript</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" alt="Firebase" class="skill-img">
+                        <span>Firebase</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="PHP" class="skill-img">
+                        <span>PHP</span>
+                    </span>
+                    <span class="skill-item">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg" alt="WordPress" class="skill-img">
+                        <span>WordPress</span>
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- === NEW/MOVED: Scroll-Down Arrow Section === -->
+        <section class="w-full bg-[var(--bg-color)] pt-8 pb-12 flex justify-center items-center">
+            <a href="#introduction" class="scroll-mouse" aria-label="Scroll down to introduction section">
+                <div class="scroll-wheel"></div>
             </a>
         </section>
+        <!-- === END Moved Section === -->
 
-        <!-- === CHANGED: Added section-glow === --><section id="about" class="py-20 md:py-32 overflow-hidden section-glow">
+        <!-- === NEW: Introduction & Experience Section === -->
+        <section id="introduction" class="pt-20 md:pt-32 overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Introduction Part -->
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
-                    <!-- === CHANGED: About text colors === --><div id="about-text" class="md:col-span-3">
-                        <h2 class="text-4xl font-semibold text-[var(--text-color)] mb-8 shimmer-text">About Me</h2>
+                    <!-- Left: Image -->
+                    <div id="intro-image" class="md:col-span-2">
+                        <img src="https://born2earn.in/himanghu/dp1.png" alt="Himangshu Paul" class="w-full h-auto aspect-square object-cover rounded-lg shadow-xl border-2 border-[var(--border-color)]" onerror="this.onerror=null;this.src='https://placehold.co/600x600/1E1E1E/F5F5F5?text=Himangshu+Paul';">
+                    </div>
+                    
+                    <!-- Right: Text -->
+                    <div id="intro-text" class="md:col-span-3">
+                        <h2 class="text-4xl font-semibold text-[var(--text-color)] mb-8 shimmer-text">Introduction</h2>
                         <div class="space-y-6 text-lg text-[var(--text-color-light)]">
                             <p>
-                                I'm a developer based in Jalpaiguri, West Bengal, currently balancing my final year of Computer Science with a dynamic role as a Web Developer. My passion is building clean, efficient solutions—from native Android apps in <span class="text-[var(--accent-color)] font-medium">Kotlin</span> to smart business automation with <span class="text-[var(--accent-color)] font-medium">GoHighLevel</span>.
+                                I'm a developer based in West Bengal, passionate about building clean, efficient solutions—from native Android apps in <span class="text-[var(--accent-color)] font-medium">Kotlin</span> to smart web automation.
                             </p>
                             <p>
-                                I have a strong foundation in <span class="text-[var(--text-color)]">JavaScript, HTML, CSS, PHP,</span> and <span class="text-[var(--text-color)]">Firebase</span>, and I'm adept at using tools like Zapier, WordPress, and the Google Play Console to bring ideas to life.
-                            </p>
-                            <p>
-                                Beyond the code, my background in <span class="text-[var(--text-color)]">SEO</span> and <span class="text-[var(--text-color)]">Brand Management</span> allows me to see the full picture. I don't just build products; I build products that are user-friendly, high-performing, and discoverable.
+                                I see the full picture, building products that are user-friendly, high-performing, and discoverable.
                             </p>
                         </div>
-                    </div>
-                    <!-- === CHANGED: About image placeholder & border === --><div id="about-image" class="md:col-span-2 rounded-lg shadow-xl overflow-hidden border-2 border-[var(--border-color)]">
-                        <img src="https://placehold.co/500x500/2C2A4A/F5F5F5?text=HP" alt="Himangshu Paul" class="w-full h-auto aspect-square object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x500/2C2A4A/F5F5F5?text=HP';">
+                        <a href="mailto:himangshu.inbox@gmail.com" class="inline-block text-white bg-[var(--accent-color)] hover:opacity-90 px-6 py-3 rounded-full text-base font-medium transition-colors mt-8">
+                            Hire Me
+                        </a>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- === CHANGED: Skills Marquee bg and border === --><section id="skills-marquee" class="py-12 md:py-16 bg-[var(--bg-color)] overflow-hidden border-y border-[var(--border-color)]">
-            <div class="marquee-wrapper">
-                <div class="marquee-content text-2xl md:text-4xl font-light text-gray-400">
-                    <span>Kotlin</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>Android</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>GoHighLevel</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>JavaScript</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>Firebase</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>PHP</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>WordPress</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <!-- Duplicate for seamless scroll --><span>Kotlin</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>Android</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>GoHighLevel</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>JavaScript</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>Firebase</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>PHP</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
-                    <span>WordPress</span>
-                    <span class="text-[var(--accent-color)] mx-4">&bull;</span>
+                <!-- === UPDATED: Experience & Education Grid === -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mt-24 md:mt-32">
+
+                    <!-- Left: Experience Part -->
+                    <div>
+                        <h3 id="experience-h3" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Experience</h3>
+                        <div class="timeline-container">
+                            
+                            <!-- Item 1 -->
+                            <div class="timeline-item">
+                                <div class="timeline-node">01</div>
+                                <div class="timeline-content">
+                                    <p class="text-sm text-gray-500">Feb 2025 - Present</p>
+                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Web Developer (Full-time)</h4>
+                                    <a href="#" title="Visit Blue Minch (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
+                                        @ Blue Minch
+                                    </a>
+                                    <p class="text-[var(--text-color-light)] mt-3">
+                                        Building web solutions and automation systems using GHL & WordPress. Developed an internal AI tool to simplify workflows.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div class="timeline-item">
+                                <div class="timeline-node">02</div>
+                                <div class="timeline-content">
+                                    <p class="text-sm text-gray-500">June 2021 - Present</p>
+                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Lead Developer (Freelance)</h4>
+                                    <a href="#" title="Visit Born2Earn (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
+                                        @ Born2Earn
+                                    </a>
+                                    <p class="text-[var(--text-color-light)] mt-3">
+                                        Led full-stack development of the app and website. Manage Google Play Console, brand design, and performance marketing.
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- === END: Experience Part === -->
+
+                    <!-- Right: Education Part === -->
+                    <div>
+                        <h3 id="education-h3" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Education</h3>
+                        <div class="timeline-container">
+                            
+                            <!-- Item 1 -->
+                            <div class="timeline-item">
+                                <div class="timeline-node">01</div>
+                                <div class="timeline-content">
+                                    <p class="text-sm text-gray-500">2022 - 2025</p>
+                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">BCA (Bachelor of Computer Applications)</h4>
+                                    <a href="#" title="Visit Inspiria Knowledge Campus (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
+                                        @ Inspiria Knowledge Campus (Makaut)
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div class="timeline-item">
+                                <div class="timeline-node">02</div>
+                                <div class="timeline-content">
+                                    <p class="text-sm text-gray-500">2022</p>
+                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">12th, Arts</h4>
+                                    <a href="#" title="Visit Trinity High School (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
+                                        @ Trinity High School (ISC)
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Item 3 -->
+                            <div class="timeline-item">
+                                <div class="timeline-node">03</div>
+                                <div class="timeline-content">
+                                    <p class="text-sm text-gray-500">2020</p>
+                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">10th</h4>
+                                    <a href="#" title="Visit New Light Academy (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
+                                        @ New Light Academy
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- === END: Education Part === -->
+                
                 </div>
+                <!-- === END: Experience & Education Grid === -->
+
             </div>
         </section>
+        <!-- === END: Introduction & Experience Section === -->
 
-        <!-- REMOVED Stats & Palette Section (Moved to Hero) --><!-- === CHANGED: Added section-glow === --><section id="experience" class="py-20 md:py-32 bg-[var(--bg-color)] overflow-hidden section-glow">
+
+        <!-- === NEW: Video Divider Section === -->
+        <section class="w-full overflow-hidden mt-10">
+            <video 
+                src="https://born2earn.in/himanghu/divider-explore.mp4" 
+                class="w-full h-auto" 
+                autoplay 
+                loop 
+                muted 
+                playsinline
+                aria-label="Decorative video divider showing animated text related to exploration and creativity">
+            </video>
+        </section>
+        <!-- === END: Video Divider Section === -->
+
+        <!-- === REBUILT: Recent Projects Section === -->
+        <section id="what-i-did" class="py-20 md:py-32 overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- === CHANGED: Experience text colors === --><h2 id="experience-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Work Experience</h2>
-                <div class="max-w-3xl space-y-8">
+                <h2 id="what-i-did-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-4 text-center shimmer-text">What I do</h2>
+                <p id="what-i-did-p" class="text-lg text-[var(--text-color-light)] text-center max-w-2xl mx-auto mb-12">
+                    I build efficient, smart, and scalable digital solutions from concept to launch.
+                </p>
+                
+                <!-- === UPDATED: Creative Layout (Poster Cards) === -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     
-                    <div class="flex items-start space-x-6 experience-item">
-                        <span class="experience-number text-[var(--accent-color)] font-semibold mt-1 text-xl">01</span>
-                        <div class="experience-content flex-1 border-b border-[var(--border-color)] pb-8">
-                            <p class="text-sm text-gray-500">Feb 2025 - Present</p>
-                            <h3 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Web Developer</h3>
-                            <p class="text-lg text-[var(--text-color-light)]">@ Blue Minch</p>
-                            <p class="text-[var(--text-color-light)] mt-3">
-                                Building web solutions and automation systems using GHL & WordPress. Developed an internal AI tool to simplify workflows.
-                            </p>
+                    <!-- Project 1: Websites -->
+                    <a href="#" id="websites-box" class="project-poster-card">
+                        <!-- Video Container -->
+                        <div class="video-container bg-[var(--bg-secondary)]">
+                            <video src="https://born2earn.in/himanghu/webbg.mp4" class="w-full h-full object-cover" autoplay loop muted playsinline preload="auto">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
-                    </div>
+                        <!-- Content -->
+                        <div class="content">
+                            <h3 class="text-3xl font-bold text-[var(--text-color)] mb-3 shimmer-text">Websites</h3>
+                            <p class="text-lg text-[var(--text-color-light)] mb-4">
+                                I specialize in building custom web solutions and automation systems using GoHighLevel (GHL) and WordPress. I also develop internal AI tools to simplify and accelerate workflows.
+                            </p>
+                            <div class="project-link">
+                                <span>View Projects</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 link-arrow"></i>
+                            </div>
+                        </div>
+                    </a>
 
-                    <div class="flex items-start space-x-6 experience-item">
-                        <span class="experience-number text-[var(--accent-color)] font-semibold mt-1 text-xl">02</span>
-                        <div class="experience-content flex-1 border-b border-[var(--border-color)] pb-8">
-                            <p class="text-sm text-gray-500">June 2021 - Present</p>
-                            <h3 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Lead Developer (Android & Web)</h3>
-                            <p class="text-lg text-[var(--text-color-light)]">@ Born2Earn</p>
-                            <p class="text-[var(--text-color-light)] mt-3">
-                                Led full-stack development of the app and website. Manage Google Play Console, brand design, and performance marketing.
-                            </p>
+                    <!-- Project 2: Mobile Apps -->
+                    <a href="#" id="apps-box" class="project-poster-card">
+                        <!-- Video Container -->
+                        <div class="video-container bg-[var(--bg-secondary)]">
+                            <video src="https://born2earn.in/himanghu/appbg.mp4" class="w-full h-full object-cover" autoplay loop muted playsinline preload="auto">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
-                    </div>
-
-                    <div class="flex items-start space-x-6 experience-item">
-                        <span class="experience-number text-[var(--accent-color)] font-semibold mt-1 text-xl">03</span>
-                        <div class="experience-content flex-1">
-                            <p class="text-sm text-gray-500">2020 - 2022</p>
-                            <h3 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Affiliate Marketing Partner</h3>
-                            <p class="text-lg text-[var(--text-color-light)]">@ Amazon</p>
-                            <p class="text-[var(--text-color-light)] mt-3">
-                                Executed product marketing and SEO-driven promotional campaigns to reach and engage a wider user base.
+                        <!-- Content -->
+                        <div class="content">
+                            <h3 class="text-3xl font-bold text-[var(--text-color)] mb-3 shimmer-text">Mobile Apps</h3>
+                            <p class="text-lg text-[var(--text-color-light)] mb-4">
+                                I create full-stack, native Android applications using Kotlin. My focus is on building apps with clean, intuitive user interfaces and efficient, high-performing backend logic.
                             </p>
+                            <div class="project-link">
+                                <span>View Apps</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 link-arrow"></i>
+                            </div>
                         </div>
-                    </div>
+                    </a>
 
                 </div>
             </div>
         </section>
+        <!-- === END: Recent Projects Section === -->
 
-        <!-- REMOVED Featured Projects Section --><!-- === CHANGED: Added section-glow === --><section id="testimonials" class="py-20 md:py-32 bg-[var(--bg-secondary)] overflow-hidden section-glow">
+
+        <!-- === REMOVED: Duplicated Skills Marquee Section === -->
+
+        <!-- === REMOVED: Duplicated Scroll-Down Arrow Section === -->
+
+        <!-- === REMOVED: Work Experience Section === -->
+
+        <!-- REMOVED Featured Projects Section --><!-- === CHANGED: Added section-glow === --><section id="testimonials" class="pb-20 md:pb-32 overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <!-- === CHANGED: Testimonial text colors === --><h2 id="testimonials-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 text-center shimmer-text">What My Clients Say</h2>
                 
@@ -701,51 +1158,109 @@
 
             // --- Section "Slide Up" Animations (On Scroll) ---
             
-            // About Section
-            gsap.to("#about-text", {
-                scrollTrigger: { trigger: "#about", start: "top 80%", toggleActions: "play none none none" },
-                duration: 1, x: 0, autoAlpha: 1, ease: "power3.out"
+            // === NEW: Introduction Section ===
+            gsap.to("#intro-image", { // Image animates first
+                scrollTrigger: { trigger: "#introduction", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1.2, // A bit longer for the effect
+                x: 0,
+                scale: 1,
+                filter: "blur(0px)",
+                autoAlpha: 1,
+                delay: 0,
+                ease: "power3.out"
             });
-            gsap.to("#about-image", {
-                scrollTrigger: { trigger: "#about", start: "top 80%", toggleActions: "play none none none" },
+            gsap.to("#intro-text", { // Text animates second
+                scrollTrigger: { trigger: "#introduction", start: "top 80%", toggleActions: "play none none none" },
                 duration: 1, x: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out"
             });
             
-            // Parallax for About Image (This remains the same)
-            gsap.to("#about-image img", {
-                yPercent: -20, // Move 20% of its own height
-                ease: "none",
-                scrollTrigger: {
-                    trigger: "#about",
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-
-
+            // === REMOVED: Parallax for Pixel Grid ===
+            
             // === REMOVED: Stats Section Animation ===
 
-
-            // Experience Section
-            gsap.to("#experience-h2", {
-                scrollTrigger: { trigger: "#experience", start: "top 80%", toggleActions: "play none none none" },
+            // === NEW: Experience Section (inside Introduction) ===
+            gsap.to("#experience-h3", {
+                scrollTrigger: { trigger: "#experience-h3", start: "top 80%", toggleActions: "play none none none" },
                 duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
             });
             
             // UPDATED: More dynamic experience item animation
-            gsap.utils.toArray(".experience-item").forEach(item => {
-                gsap.to(item.querySelector(".experience-number"), {
+            // Target timeline items within the experience section
+            gsap.utils.toArray("#experience-h3 + .timeline-container .timeline-item").forEach((item, i) => {
+                gsap.to(item.querySelector(".timeline-node"), {
                     scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" },
-                    duration: 0.8, x: 0, autoAlpha: 1, ease: "power3.out",
+                    duration: 0.6, 
+                    opacity: 1, 
+                    visibility: 'visible',
+                    scale: 1,
+                    transform: "translateX(-50%) scale(1)", // Ensure final transform is correct
+                    ease: "back.out(1.7)",
+                    delay: i * 0.1 // Stagger items
                 });
-                gsap.to(item.querySelector(".experience-content"), {
+                gsap.to(item.querySelector(".timeline-content"), {
                     scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" },
-                    duration: 0.8, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out",
+                    duration: 0.8, 
+                    opacity: 1, 
+                    visibility: 'visible',
+                    x: 0, 
+                    ease: "power3.out",
+                    delay: (i * 0.1) + 0.15 // Stagger items slightly after node
+                });
+            });
+
+            // === NEW: Education Section ===
+            gsap.to("#education-h3", {
+                scrollTrigger: { trigger: "#education-h3", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
+            });
+            
+            // UPDATED: More dynamic education item animation
+            // Target timeline items within the education section
+            gsap.utils.toArray("#education-h3 + .timeline-container .timeline-item").forEach((item, i) => {
+                gsap.to(item.querySelector(".timeline-node"), {
+                    scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" },
+                    duration: 0.6, 
+                    opacity: 1, 
+                    visibility: 'visible',
+                    scale: 1,
+                    transform: "translateX(-50%) scale(1)",
+                    ease: "back.out(1.7)",
+                    delay: i * 0.1
+                });
+                gsap.to(item.querySelector(".timeline-content"), {
+                    scrollTrigger: { trigger: item, start: "top 85%", toggleActions: "play none none none" },
+                    duration: 0.8, 
+                    opacity: 1, 
+                    visibility: 'visible',
+                    x: 0, 
+                    ease: "power3.out",
+                    delay: (i * 0.1) + 0.15
                 });
             });
 
             /* REMOVED Projects Section Animations */
+
+            // NEW: "What I Did" Section Animation
+            gsap.to("#what-i-did-h2", {
+                scrollTrigger: { trigger: "#what-i-did", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
+            });
+            gsap.to("#what-i-did-p", {
+                scrollTrigger: { trigger: "#what-i-did", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, delay: 0.1, ease: "power3.out"
+            });
+            
+            <!-- === UPDATED: Animate Project 1 (Websites) === -->
+            gsap.to("#websites-box", {
+                scrollTrigger: { trigger: "#websites-box", start: "top 85%", toggleActions: "play none none none" },
+                duration: 0.8, y: 0, scale: 1, autoAlpha: 1, delay: 0.2, ease: "power3.out"
+            });
+
+            <!-- === UPDATED: Animate Project 2 (Apps) === -->
+            gsap.to("#apps-box", {
+                scrollTrigger: { trigger: "#apps-box", start: "top 85%", toggleActions: "play none none none" },
+                duration: 0.8, y: 0, scale: 1, autoAlpha: 1, delay: 0.3, ease: "power3.out"
+            });
 
             // NEW: Testimonials Section Animation
             gsap.to("#testimonials-h2", {
@@ -759,6 +1274,8 @@
 
             /* REMOVED Contact Section Animations */
 
+            // === REMOVED: Generate Pixel Grid ===
+            
             // Mobile Menu Toggle
             const menuBtn = document.getElementById('menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
