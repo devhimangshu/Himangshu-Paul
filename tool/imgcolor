@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#1E1E1E]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>In-Browser Image Editor</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for range sliders */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #4a5568; /* gray-700 */
+            border-radius: 5px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+        input[type="range"]:hover {
+            opacity: 1;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #7C3AED; /* New Purple */
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #121212; /* New Dark BG */
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #7C3AED; /* New Purple */
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #121212; /* New Dark BG */
+        }
+        
+        /* Custom file input button */
+        .file-input-button {
+            background-color: #7C3AED; /* New Purple */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .file-input-button:hover {
+            background-color: #6d28d9; /* Darker Purple */
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col items-center justify-center text-[#F5F5F5] p-4 font-sans">
+
+    <div class="w-full max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-center text-[#7C3AED] mb-8">Local Image Editor</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Controls Panel -->
+            <div class="md:col-span-1 bg-[#121212] p-6 rounded-lg shadow-2xl h-max">
+                <div class="space-y-6">
+                    
+                    <!-- File Input -->
+                    <div>
+                        <label for="imageInput" class="file-input-button text-center block">
+                            1. Select Image
+                        </label>
+                        <input type="file" id="imageInput" accept="image/*" class="hidden">
+                        <p id="fileName" class="text-sm text-gray-400 mt-2 truncate">No image selected.</p>
+                    </div>
+
+                    <!-- Filters -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-[#7C3AED] mb-4">2. Edit Filters</h3>
+                        <div class="space-y-4">
+                            <!-- Opacity -->
+                            <div class="filter-control">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <label for="opacity" class="font-medium">Opacity</label>
+                                    <span id="opacityValue" class="text-violet-300">100%</span>
+                                </div>
+                                <input type="range" id="opacity" min="0" max="1" step="0.01" value="1">
+                            </div>
+                            
+                            <!-- Colorize -->
+                            <div class="filter-control">
+                                <div class="flex justify-between items-center text-sm mb-1">
+                                    <label for="colorizeColor" class="font-medium">Color Tint</label>
+                                    <div class="flex items-center gap-2">
+                                        <input type="color" id="colorizeColor" value="#7C3AED" class="w-10 h-6 p-0 border-none rounded cursor-pointer bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#7C3AED]">
+                                        <input type="text" id="colorizeHex" value="#7C3AED" class="w-24 bg-[#1E1E1E] border border-gray-700 rounded-md py-1 px-2 text-sm text-[#F5F5F5] focus:outline-none focus:ring-2 focus:ring-[#7C3AED] focus:border-[#7C3AED]">
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm mb-1 mt-2">
+                                    <label for="colorize" class="font-medium">Tint Amount</label>
+                                    <span id="colorizeValue" class="text-violet-300">0%</span>
+                                </div>
+                                <input type="range" id="colorize" min="0" max="1" step="0.01" value="0">
+                            </div>
+
+                            <!-- Blur -->
+                            <div class="filter-control">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <label for="blur" class="font-medium">Blur</label>
+                                    <span id="blurValue" class="text-violet-300">0px</span>
+                                </div>
+                                <input type="range" id="blur" min="0" max="20" step="0.1" value="0">
+                            </div>
+                            
+                            <!-- Invert -->
+                            <div class="filter-control">
+                                <div class="flex justify-between text-sm mb-1">
+                                    <label for="invert" class="font-medium">Invert</label>
+                                    <span id="invertValue" class="text-violet-300">0%</span>
+                                </div>
+                                <input type="range" id="invert" min="0" max="1" step="0.01" value="0">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- New Transform Section -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-[#7C3AED] mb-4">3. Transform</h3>
+                        <div class="flex gap-4">
+                            <button id="flipHorizontalButton" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                                Flip Horizontal
+                            </button>
+                            <button id="flipVerticalButton" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                                Flip Vertical
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-[#7C3AED] mb-4">4. Actions</h3>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button id="resetButton" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                                Reset
+                            </button>
+                            <button id="exportButton" class="flex-1 bg-[#7C3AED] hover:bg-[#6d28d9] text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                                Export PNG
+                            </button>
+                        </div>
+                        <p id="exportMessage" class="text-sm text-red-500 mt-2 h-4"></p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Canvas Display -->
+            <div class="md:col-span-2 bg-[#121212] p-6 rounded-lg shadow-2xl flex items-center justify-center min-h-[400px] md:min-h-[600px] overflow-hidden">
+                <div id="canvas-container" class="relative w-full h-full flex items-center justify-center">
+                    <canvas id="imageCanvas" class="max-w-full max-h-full rounded-md shadow-inner"></canvas>
+                    <div id="canvas-placeholder" class="absolute inset-0 flex items-center justify-center text-gray-500 text-lg">
+                        <p>Select an image to begin editing</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const imageInput = document.getElementById('imageInput');
+        const fileNameEl = document.getElementById('fileName');
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvasPlaceholder = document.getElementById('canvas-placeholder');
+        
+        // Create an offscreen canvas for compositing
+        const offscreenCanvas = document.createElement('canvas');
+        const offscreenCtx = offscreenCanvas.getContext('2d');
+
+        const exportButton = document.getElementById('exportButton');
+        const resetButton = document.getElementById('resetButton');
+        const exportMessage = document.getElementById('exportMessage');
+
+        // Filter sliders and value displays
+        const filterControls = [
+            { id: 'opacity', unit: '%' },
+            { id: 'colorize', unit: '%' },
+            { id: 'blur', unit: 'px' },
+            { id: 'invert', unit: '%' }
+        ];
+
+        const sliders = {};
+        const valueDisplays = {};
+        
+        filterControls.forEach(filter => {
+            sliders[filter.id] = document.getElementById(filter.id);
+            valueDisplays[filter.id] = document.getElementById(`${filter.id}Value`);
+        });
+
+        // Get the new color input
+        const colorizeColorInput = document.getElementById('colorizeColor');
+        const colorizeHexInput = document.getElementById('colorizeHex');
+
+        // Get new transform buttons
+        const flipHorizontalButton = document.getElementById('flipHorizontalButton');
+        const flipVerticalButton = document.getElementById('flipVerticalButton');
+
+        // Store the original loaded image
+        let originalImage = null;
+        
+        // Store default filter values
+        const defaultFilters = {
+            'opacity': 1,
+            'colorize': 0,
+            'colorizeColor': '#7C3AED',
+            'blur': 0,
+            'invert': 0
+        };
+        
+        // Store flip state
+        const defaultFlip = {
+            horizontal: false,
+            vertical: false
+        };
+
+        // Store current filter values
+        let currentFilters = { ...defaultFilters };
+        // Store current flip state
+        let currentFlip = { ...defaultFlip };
+
+        // --- Image Loading ---
+
+        imageInput.addEventListener('change', handleImageUpload);
+
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Use FileReader to read file as a Data URL
+                const reader = new FileReader();
+                
+                reader.onload = (event) => {
+                    originalImage = new Image();
+                    originalImage.onload = () => {
+                        // Image is loaded, set up canvas sizes
+                        canvas.width = originalImage.width;
+                        canvas.height = originalImage.height;
+                        offscreenCanvas.width = originalImage.width;
+                        offscreenCanvas.height = originalImage.height;
+                        
+                        // Hide placeholder
+                        canvasPlaceholder.style.display = 'none';
+                        canvas.style.display = 'block';
+
+                        // Reset filters and draw image
+                        resetAllFilters();
+                    };
+                    originalImage.src = event.target.result;
+                };
+                
+                reader.readAsDataURL(file);
+                fileNameEl.textContent = file.name;
+                exportMessage.textContent = '';
+            }
+        }
+
+        // --- Filter Application ---
+
+        // Add event listeners to all sliders
+        filterControls.forEach(filter => {
+            sliders[filter.id].addEventListener('input', (e) => {
+                updateFilter(filter.id, e.target.value);
+            });
+        });
+
+        // Add event listener for color input
+        colorizeColorInput.addEventListener('input', (e) => handleColorInput(e.target.value));
+        
+        // **FIX**: Add event listener for hex text input
+        colorizeHexInput.addEventListener('input', (e) => handleHexInput(e.target.value));
+        
+        // Add event listeners for new flip buttons
+        flipHorizontalButton.addEventListener('click', () => {
+            currentFlip.horizontal = !currentFlip.horizontal;
+            applyFiltersToCanvas();
+        });
+        
+        flipVerticalButton.addEventListener('click', () => {
+            currentFlip.vertical = !currentFlip.vertical;
+            applyFiltersToCanvas();
+        });
+
+        function handleColorInput(color) {
+            // Update the hex text field
+            colorizeHexInput.value = color;
+            // Apply the filter
+            updateFilter('colorizeColor', color);
+            // Remove error state from hex input
+            colorizeHexInput.classList.remove('border-red-500');
+            colorizeHexInput.classList.add('border-gray-600');
+        }
+
+        function handleHexInput(hex) {
+            // Basic validation for hex code
+            const isValidHex = /^#[0-9A-F]{6}$/i.test(hex) || /^#[0-9A-F]{3}$/i.test(hex);
+            
+            if (isValidHex) {
+                // Update the color picker
+                colorizeColorInput.value = hex;
+                // Apply the filter
+                updateFilter('colorizeColor', hex);
+                // Remove error state
+                colorizeHexInput.classList.remove('border-red-500');
+                colorizeHexInput.classList.add('border-gray-600');
+            } else {
+                // Add error state
+                colorizeHexInput.classList.remove('border-gray-600');
+                colorizeHexInput.classList.add('border-red-500');
+            }
+        }
+
+
+        function updateFilter(filterId, value) {
+            if (!originalImage) return;
+
+            currentFilters[filterId] = value;
+            
+            // Only update text display if one exists (i.e., for sliders)
+            if (valueDisplays[filterId]) {
+                updateFilterValueDisplay(filterId, value);
+            }
+
+            applyFiltersToCanvas();
+        }
+
+        function updateFilterValueDisplay(filterId, value) {
+            const display = valueDisplays[filterId];
+            const filter = filterControls.find(f => f.id === filterId);
+            
+            if (filter.unit === '%') {
+                 display.textContent = `${Math.round(value * 100)}%`;
+            } else if (filter.unit === 'px') {
+                display.textContent = `${Number(value).toFixed(1)}px`;
+            }
+        }
+
+        function applyFiltersToCanvas() {
+            if (!originalImage) return;
+
+            const opacity = currentFilters.opacity;
+            const colorizeAmount = currentFilters.colorize;
+            const colorizeColor = currentFilters.colorizeColor;
+            const blur = currentFilters.blur;
+            const invert = currentFilters.invert;
+
+            // Build the filter string for the canvas context
+            const filterString = `
+                blur(${blur}px)
+                invert(${invert})
+            `.trim();
+
+            // 1. Clear offscreen canvas
+            offscreenCtx.clearRect(0, 0, offscreenCanvas.width, offscreenCanvas.height);
+
+            // 2. Save the clean context state
+            offscreenCtx.save();
+
+            // 3. Apply transformations (Flip)
+            const scaleH = currentFlip.horizontal ? -1 : 1;
+            const scaleV = currentFlip.vertical ? -1 : 1;
+            const translateX = currentFlip.horizontal ? offscreenCanvas.width : 0;
+            const translateY = currentFlip.vertical ? offscreenCanvas.height : 0;
+            
+            offscreenCtx.translate(translateX, translateY);
+            offscreenCtx.scale(scaleH, scaleV);
+
+            // 4. Apply filters (Blur, Invert)
+            offscreenCtx.filter = filterString;
+            
+            // 5. Draw original image to offscreen canvas
+            offscreenCtx.globalAlpha = 1;
+            offscreenCtx.globalCompositeOperation = 'source-over';
+            offscreenCtx.drawImage(originalImage, 0, 0);
+
+            // 6. Restore the context to remove transforms and filters
+            offscreenCtx.restore();
+            // Ensure filter is reset for next operations
+            offscreenCtx.filter = 'none';
+
+            // 7. Apply color tint to offscreen canvas
+            if (colorizeAmount > 0) {
+                // 'source-atop' will only draw the color where the image has pixels.
+                // We use the 'colorizeAmount' as the alpha for this color layer.
+                offscreenCtx.globalCompositeOperation = 'source-atop';
+                offscreenCtx.globalAlpha = colorizeAmount;
+                offscreenCtx.fillStyle = colorizeColor;
+                offscreenCtx.fillRect(0, 0, offscreenCanvas.width, offscreenCanvas.height);
+            }
+
+            // 8. Reset offscreen context state
+            offscreenCtx.globalAlpha = 1;
+            offscreenCtx.globalCompositeOperation = 'source-over';
+
+            // 9. Now, clear the *visible* canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 10. Draw the offscreen canvas to the visible canvas, applying the *final opacity*
+            ctx.globalAlpha = opacity;
+            ctx.drawImage(offscreenCanvas, 0, 0);
+            
+            // 11. Reset visible context state
+            ctx.globalAlpha = 1;
+        }
+
+        // --- Action Buttons ---
+
+        resetButton.addEventListener('click', resetAllFilters);
+
+        function resetAllFilters() {
+            currentFilters = { ...defaultFilters };
+            currentFlip = { ...defaultFlip };
+            
+            // Update slider positions and text values
+            filterControls.forEach(filter => {
+                const id = filter.id;
+                const value = defaultFilters[id];
+                sliders[id].value = value;
+                updateFilterValueDisplay(id, value);
+            });
+
+            // Reset the color input
+            colorizeColorInput.value = defaultFilters.colorizeColor;
+            // Reset the hex input
+            colorizeHexInput.value = defaultFilters.colorizeColor;
+            colorizeHexInput.classList.remove('border-red-500');
+            colorizeHexInput.classList.add('border-gray-700');
+
+            // Re-draw the image with default filters
+            if (originalImage) {
+                applyFiltersToCanvas();
+            }
+        }
+
+        exportButton.addEventListener('click', exportImage);
+
+        function exportImage() {
+            if (!originalImage) {
+                exportMessage.textContent = 'Please load an image first.';
+                return;
+            }
+
+            exportMessage.textContent = '';
+
+            // Get the canvas data as a PNG Data URL
+            const dataURL = canvas.toDataURL('image/png');
+
+            // Create a temporary link to trigger the download
+            const link = document.createElement('a');
+            link.href = dataURL;
+            link.download = `edited-${fileNameEl.textContent || 'image'}.png`;
+            
+            // Simulate a click to download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- Initial State ---
+        function setInitialState() {
+            canvas.style.display = 'none';
+            canvasPlaceholder.style.display = 'flex';
+            resetAllFilters(); // Set sliders to default positions
+        }
+
+        window.onload = setInitialState;
+
+    </script>
+</body>
+</html>
