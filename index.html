@@ -785,7 +785,8 @@
                     <!-- === UPDATED: "Work" to "Projects" === -->
                     <a href="/projects" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
                     
-                    <!-- === NEW: Services Dropdown === -->
+                    <!-- === UPDATED: Services link (was dropdown) === -->
+                    <!-- === REVERTED: Back to Services Dropdown === -->
                     <div class="relative group">
                         <button class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors flex items-center gap-1 focus:outline-none">
                             <span>Services</span>
@@ -793,11 +794,12 @@
                         </button>
                         <!-- Dropdown Menu -->
                         <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">Web Development</a>
+                            <!-- === NEW: All Services Link === -->
+                            <a href="/services" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">All Services</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Web Development</a>
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">App Development</a>
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">SEO</a>
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Ads</a>
-                            <!-- === UPDATED: Changed "Others" to be specific === -->
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Google Play Console</a>
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-b-lg">Performance Marketing</a>
                         </div>
@@ -826,20 +828,22 @@
                 <!-- === NEW: Introduction Link === -->
                 <a href="#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
                 <!-- === UPDATED: "Work" to "Projects" === -->
-                <a href="#what-i-did" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                <a href="/projects" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
                 
-                <!-- === UPDATED: Services Links for Mobile (now a toggle) === -->
+                <!-- === UPDATED: Services link (was dropdown) === -->
+                <!-- === REVERTED: Back to Services Dropdown === -->
                 <div class="px-3 py-2">
                     <button id="services-toggle-mobile" class="w-full flex justify-between items-center text-[var(--text-color-light)] text-base font-medium focus:outline-none">
                         <span>Services</span>
                         <i data-lucide="chevron-down" id="services-chevron-mobile" class="w-5 h-5 transition-transform duration-200"></i>
                     </button>
                     <div id="services-submenu-mobile" class="pl-4 mt-2 space-y-1 hidden">
+                         <!-- === NEW: All Services Link === -->
+                         <a href="/services" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">All Services</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Web Development</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">App Development</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">SEO</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Ads</a>
-                         <!-- === UPDATED: Changed "Others" to be specific === -->
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Google Play Console</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Performance Marketing</a>
                     </div>
@@ -1173,7 +1177,7 @@
                     <!-- Project 1: Websites -->
                     <!-- === CHANGED: class="expanding-card" to "project-card-3d" === -->
                     <!-- === REMOVED: .content-hidden wrapper === -->
-                    <a href="/projrets" id="websites-box" class="project-card-3d">
+                    <a href="/projects" id="websites-box" class="project-card-3d">
                         <!-- Video Background -->
                         <video src="https://born2earn.in/himanghu/webbg.mp4" class="absolute inset-0 w-full h-full object-cover z-0" autoplay loop muted playsinline preload="auto"></video>
                         <!-- Overlay -->
@@ -1195,7 +1199,7 @@
                     <!-- Project 2: Mobile Apps -->
                     <!-- === CHANGED: class="expanding-card" to "project-card-3d" === -->
                     <!-- === REMOVED: .content-hidden wrapper === -->
-                    <a href="/projrets" id="apps-box" class="project-card-3d">
+                    <a href="/projects" id="apps-box" class="project-card-3d">
                         <!-- Video Background -->
                         <video src="https://born2earn.in/himanghu/appbg.mp4" class="absolute inset-0 w-full h-full object-cover z-0" autoplay loop muted playsinline preload="auto"></video>
                         <!-- Overlay -->
@@ -1678,7 +1682,8 @@
                 menuIconClose.classList.toggle('hidden', isHidden);
             });
             
-            // === NEW: Mobile Submenu Toggle for Services ===
+            // === REMOVED: Mobile Submenu Toggle for Services ===
+            // === REVERTED: Mobile Submenu Toggle for Services ===
             const servicesToggleMobile = document.getElementById('services-toggle-mobile');
             const servicesSubmenuMobile = document.getElementById('services-submenu-mobile');
             const servicesChevronMobile = document.getElementById('services-chevron-mobile');
