@@ -1825,3 +1825,731 @@
 
 </body>
 </html>
+
+
+
+
+
+<!--
+  ============================================================================
+  == HIMANGSHU'S AI PORTFOLIO CHATBOT (ADVANCED UI)
+  ==
+  == INSTRUCTIONS:
+  == 1. Copy this ENTIRE <script>...</script> block.
+  == 2. Paste it right before the closing </body> tag on EACH of your
+  ==    HTML pages (index.html, projects.html, services.html, etc.).
+  ==
+  == That's it! The bot will automatically appear.
+  ============================================================================
+-->
+<script id="gemini-chat-widget">
+(function() {
+    // --- 1. YOUR PORTFOLIO'S KNOWLEDGE BASE ---
+    const PORTFOLIO_CONTEXT = `
+      Himangshu Paul is a Full Stack & Android Developer from West Bengal, India.
+      He has 3+ years of experience, completed 12+ projects, and published 4+ apps.
+      He is a Google Certified Developer.
+      
+      Contact: himangshu.inbox@gmail.com
+
+      --- ABOUT HIM ---
+      He builds clean, efficient, and user-friendly digital solutions, from native Kotlin apps to smart web automations (like for GoHighLevel). He handles the full process from concept to launch.
+
+      --- EXPERIENCE ---
+      1. Web Developer (Full-time) at Blue Minch (Feb 2025 - Present):
+         - Builds GHL & WordPress solutions and automations.
+         - Developed an internal AI tool for workflows.
+      2. Lead Developer (Freelance) at Born2Earn (June 2021 - Present):
+         - Leads full-stack app/web development.
+         - Manages Google Play Console, branding, and performance marketing.
+
+      --- EDUCATION ---
+      - BCA (Bachelor of Computer Applications) from Inspiria Knowledge Campus (Makaut) (2022 - 2025)
+      - 12th, Arts from Trinity High School (ISC) (2022)
+      - 10th from New Light Academy (2020)
+
+      --- SERVICES (Page: /services) ---
+      He offers the following services, with project-based, hourly, and retainer pricing models:
+      1. Web Development:
+         - Description: Responsive sites using GoHighLevel, WordPress, and custom PHP.
+         - Add-ons: CMS Integration, E-commerce Setup, GHL Automations.
+      2. App Development:
+         - Description: Native Android apps with Kotlin, focusing on clean UI and fast performance.
+         - Add-ons: Firebase Backend, Push Notifications, In-App Purchases.
+      3. SEO:
+         - Description: Technical and on-page optimization to improve search rankings.
+         - Add-ons: Technical SEO Audit, Content Strategy, Local SEO.
+      4. Ads:
+         - Description: Managing paid ad campaigns (Google, Social Media) to maximize ROI.
+         - Add-ons: Ad Copywriting, A/B Testing, Landing Page Design.
+      5. Google Play Console:
+         - Description: Full app publishing lifecycle management, including store listing and compliance.
+         - Add-ons: App Store Optimization (ASO), Release Management, Replying to Reviews.
+      6. Performance Marketing:
+         - Description: Data-driven strategies to grow user base and increase conversions.
+         - Add-ons: Funnel Building, Email Marketing, Analytics & Reporting.
+      
+      --- PROJECTS (Page: /projects) ---
+      He has worked on many projects, including:
+      - Internal AI Workflow Tool: An AI tool for GoHighLevel to automate client workflows. (Tech: GHL, JavaScript, AI API)
+      - Born2Earn Android App: A native Android app. (Tech: Kotlin, Android, Firebase, Google Play)
+      - Charitabl Website: A full WordPress site build for a non-profit. (Tech: WordPress, PHP, Elementor, SEO)
+      - SaaS Client Dashboard: A custom PHP dashboard for a marketing agency. (Tech: PHP, MySQL, JavaScript)
+      - Simple Notes (Android): A lightweight, open-source note app. (Tech: Kotlin, Android, RoomDB)
+      - Agency Landing Page: A high-converting landing page for a marketing client. (Tech: GHL, WordPress, Marketing)
+
+      --- LINKS ---
+      - Home Page: /
+      - Projects Page: /projects
+      - Services Page: /services
+    `;
+
+    // --- 2. THE AI'S PERSONALITY AND RULES ---
+    const SYSTEM_PROMPT = `
+      You are "Himangshu's AI Assistant", a helpful and friendly chatbot for his personal portfolio website.
+      Your goal is to answer questions about Himangshu Paul, his skills, his projects, and his services.
+      
+      RULES:
+      1.  Base your answers ONLY on the provided context:
+      --- CONTEXT START ---
+      ${PORTFOLIO_CONTEXT}
+      --- CONTEXT END ---
+      
+      2.  Be concise, conversational, and friendly.
+      3.  When asked about services, mention they can find more at the "/services" page.
+      4.  When asked about projects, mention they can see more at the "/projects" page.
+      5.  For contact info, provide his email: himangshu.inbox@gmail.com.
+      6.  If the user asks something NOT in the context (e.g., "what is the weather?" or "who is the president?"), politely respond with: "I only have information about Himangshu's portfolio. Can I help you with his services or projects?"
+      7.  Format links like this: [text](/link). For example: "You can see his projects on the [projects page](/projects)."
+      8.  Use newlines (\n) for short lists or paragraphs.
+      9.  You can use markdown for formatting: **bold**, *italic*, ~~strikethrough~~, and \`inline code\`.
+    `;
+
+    // --- 3. API & WIDGET CONFIGURATION ---
+    const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=";
+    const API_KEY = ""; // Kept empty as per instructions
+    let chatHistory = [];
+    let isChatOpen = false;
+    let isLoading = false;
+
+    // --- 4. CREATE AND INJECT WIDGET CSS ---
+    function createWidgetCSS() {
+        const style = document.createElement('style');
+        style.textContent = `
+            :root {
+                --chat-accent: #7C3AED;
+                --chat-accent-light: #a78bfa;
+                --chat-bg: rgba(30, 30, 30, 0.85); /* UPDATED: Semi-transparent for glass effect */
+                --chat-text: #F5F5F5;
+                --chat-text-light: #A0A0A0; /* NEW: Added portfolio light text color */
+                --chat-border: #333333;
+                --chat-font: 'Satoshi', sans-serif; /* NEW: Font variable */
+            }
+            #chat-open-button {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                /* UPDATED: Gradient background */
+                background-image: linear-gradient(135deg, var(--chat-accent), #9333ea);
+                color: white;
+                width: 4rem;
+                height: 4rem;
+                border-radius: 50%;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -2px rgba(0,0,0,0.2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9998;
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                /* NEW: Pulsing animation */
+                animation: pulse-animation 2.5s infinite cubic-bezier(0.4, 0, 0.6, 1);
+                font-family: var(--chat-font); /* UPDATED: Font */
+            }
+            @keyframes pulse-animation {
+                0%, 100% {
+                    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
+                }
+                70% {
+                    box-shadow: 0 0 0 12px rgba(124, 58, 237, 0);
+                }
+            }
+            #chat-open-button:hover {
+                transform: scale(1.1);
+                animation-play-state: paused; /* Pause pulse on hover */
+            }
+            /* NEW: Proactive Callout Bubble */
+            #chat-callout-bubble {
+                position: fixed;
+                bottom: 7rem;
+                right: 2rem;
+                background-color: var(--chat-bg);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                color: var(--chat-text);
+                padding: 0.75rem 1.25rem;
+                border-radius: 0.75rem;
+                border: 1px solid var(--chat-border);
+                box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+                font-family: var(--chat-font);
+                font-size: 0.9rem;
+                font-weight: 500;
+                z-index: 9998;
+                transform-origin: bottom right;
+                animation: callout-fade-in 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            }
+            #chat-callout-bubble::after { /* Triangle pointer */
+                content: '';
+                position: absolute;
+                bottom: -8px;
+                right: 22px;
+                width: 0;
+                height: 0;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 8px solid var(--chat-bg);
+            }
+            @keyframes callout-fade-in {
+                from { opacity: 0; transform: translateY(10px) scale(0.95); }
+                to { opacity: 1; transform: translateY(0) scale(1); }
+            }
+            #chat-window {
+                position: fixed;
+                bottom: 7rem;
+                right: 2rem;
+                width: 90%;
+                max-width: 400px;
+                height: 60vh;
+                max-height: 500px;
+                background-color: var(--chat-bg);
+                /* NEW: Frosted glass effect */
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                border: 1px solid var(--chat-border);
+                border-radius: 0.75rem; /* 12px */
+                box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2);
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+                /* UPDATED: Smoother animation */
+                transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease;
+                transform-origin: bottom right;
+                font-family: var(--chat-font); /* UPDATED: Font */
+            }
+            .chat-hidden {
+                opacity: 0 !important;
+                transform: scale(0.9) translateY(20px) !important;
+                pointer-events: none !important;
+            }
+            #chat-header {
+                padding: 1rem;
+                background-color: transparent; /* Let the blur show through */
+                border-bottom: 1px solid var(--chat-border);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-shrink: 0;
+            }
+            /* NEW: Online Status Dot */
+            #chat-header-status {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            #chat-header-status::before {
+                content: '';
+                width: 10px;
+                height: 10px;
+                background-color: #22c55e; /* Green dot */
+                border-radius: 50%;
+                border: 1px solid rgba(255,255,255,0.3);
+                animation: pulse-dot 1.5s infinite;
+            }
+            @keyframes pulse-dot {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.5; }
+            }
+            /* UPDATED: Font for header */
+            #chat-header h3 {
+                font-family: var(--chat-font);
+                font-weight: 700;
+            }
+            #chat-header p {
+                font-family: var(--chat-font);
+                color: var(--chat-text-light); /* UPDATED: Use variable */
+                font-size: 0.8rem;
+                margin: 0;
+                opacity: 0.8;
+            }
+            #chat-close-button {
+                background: none;
+                border: none;
+                color: var(--chat-text);
+                cursor: pointer;
+                padding: 0.25rem;
+                opacity: 0.7;
+                transition: opacity 0.2s ease;
+            }
+            #chat-close-button:hover {
+                opacity: 1;
+            }
+            #chat-messages {
+                flex-grow: 1;
+                overflow-y: auto;
+                padding: 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .chat-message {
+                padding: 0.75rem 1rem;
+                border-radius: 0.5rem;
+                max-width: 85%;
+                word-wrap: break-word;
+                /* NEW: Fade-in animation for new messages */
+                animation: fade-in 0.3s ease forwards;
+            }
+            @keyframes fade-in {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .chat-message.user {
+                /* UPDATED: Gradient background */
+                background-image: linear-gradient(135deg, var(--chat-accent), #9333ea);
+                color: white;
+                align-self: flex-end;
+                border-bottom-right-radius: 0;
+            }
+            .chat-message.model {
+                background-color: #333; /* Darker bubble for model */
+                color: var(--chat-text);
+                align-self: flex-start;
+                border-bottom-left-radius: 0;
+            }
+            /* NEW: Markdown formatting styles */
+            .chat-message strong {
+                font-weight: 700;
+                color: var(--chat-text);
+            }
+            .chat-message em {
+                font-style: italic;
+                color: var(--chat-text-light);
+            }
+            .chat-message s {
+                text-decoration: line-through;
+                opacity: 0.7;
+            }
+            .chat-message code {
+                font-family: monospace;
+                background-color: rgba(0,0,0,0.3);
+                padding: 0.1em 0.3em;
+                border-radius: 4px;
+                font-size: 0.9em;
+                color: var(--chat-accent-light);
+            }
+            /* END: Markdown formatting styles */
+            .chat-message p {
+                margin: 0 0 0.5rem 0;
+            }
+            .chat-message p:last-child {
+                margin-bottom: 0;
+            }
+            .chat-message a {
+                color: var(--chat-accent-light);
+                text-decoration: underline;
+                font-weight: 500;
+            }
+            /* UPDATED: Bouncing dot loader */
+            .typing-indicator {
+                padding: 0.75rem 1rem;
+                border-radius: 0.5rem;
+                background-color: #333;
+                align-self: flex-start;
+                border-bottom-left-radius: 0;
+                display: flex;
+                gap: 5px;
+            }
+            .loading-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background-color: #a0a0a0;
+                animation: bounce-dot 1.4s infinite ease-in-out both;
+            }
+            .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+            .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+            @keyframes bounce-dot {
+                0%, 80%, 100% { transform: scale(0); }
+                40% { transform: scale(1.0); }
+            }
+            /* END: Bouncing dot loader */
+
+            /* NEW: Suggested Questions */
+            #chat-suggestions {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding-top: 0.5rem;
+                border-bottom: 1px solid var(--chat-border);
+                padding-bottom: 1rem;
+                margin-bottom: 0.5rem;
+                animation: fade-in 0.5s ease forwards;
+            }
+            .suggestion-btn {
+                background-color: rgba(255,255,255,0.05);
+                border: 1px solid var(--chat-border);
+                color: var(--chat-text-light);
+                padding: 0.6rem 0.75rem;
+                border-radius: 0.5rem;
+                cursor: pointer;
+                text-align: left;
+                font-family: var(--chat-font);
+                font-size: 0.85rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+            }
+            .suggestion-btn:hover {
+                background-color: rgba(255,255,255,0.1);
+                border-color: var(--chat-accent-light);
+                color: var(--chat-text);
+            }
+            
+            #chat-input-area {
+                padding: 1rem;
+                border-top: 1px solid var(--chat-border);
+                display: flex;
+                gap: 0.5rem;
+                background-color: transparent; /* Let the blur show through */
+            }
+            #chat-input {
+                flex-grow: 1;
+                border: 1px solid var(--chat-border);
+                background-color: rgba(0,0,0,0.3); /* Darker transparent input */
+                color: var(--chat-text);
+                border-radius: 9999px;
+                padding: 0.75rem 1rem;
+                font-family: var(--chat-font); /* UPDATED: Font */
+                transition: all 0.2s ease;
+            }
+            #chat-input:focus {
+                outline: none;
+                border-color: var(--chat-accent);
+                box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.5); /* Focus glow */
+            }
+            #chat-send-button {
+                /* UPDATED: Gradient background */
+                background-image: linear-gradient(135deg, var(--chat-accent), #9333ea);
+                border: none;
+                color: white;
+                border-radius: 50%;
+                width: 3rem;
+                height: 3rem;
+                flex-shrink: 0;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.2s ease, transform 0.2s ease;
+                font-family: var(--chat-font); /* UPDATED: Font */
+            }
+            #chat-send-button:hover:not(:disabled) {
+                transform: scale(1.1);
+            }
+            #chat-send-button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+            @media (max-width: 450px) {
+                #chat-window {
+                    bottom: 1rem;
+                    right: 1rem;
+                    width: calc(100% - 2rem);
+                    height: 70vh;
+                    max-height: none;
+                }
+                #chat-open-button {
+                    bottom: 1rem;
+                    right: 1rem;
+                }
+                #chat-callout-bubble {
+                    bottom: 6rem;
+                    right: 1rem;
+                    width: calc(100% - 2rem);
+                }
+                #chat-callout-bubble::after {
+                    right: 22px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // --- 5. CREATE AND INJECT WIDGET HTML ---
+    function createWidgetHTML() {
+        const container = document.createElement('div');
+        container.id = 'gemini-chat-widget-container';
+        
+        container.innerHTML = `
+            <!-- Chat Open Button -->
+            <button id="chat-open-button" aria-label="Open chat">
+                <!-- UPDATED: Bot Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>
+                </svg>
+            </button>
+            
+            <!-- NEW: Callout Bubble -->
+            <div id="chat-callout-bubble" class="chat-hidden">
+                Chat with my AI assistant!
+            </div>
+
+            <!-- Chat Window -->
+            <div id="chat-window" class="chat-hidden">
+                <div id="chat-header">
+                    <!-- UPDATED: Header with status dot and subtitle -->
+                    <div id="chat-header-status">
+                        <div>
+                            <h3 style="color: var(--chat-text); font-weight: 700; margin: 0; font-size: 1.1rem;">AI Assistant</h3>
+                            <!-- UPDATED: Removed inline style -->
+                            <p>Powered by Gemini</p>
+                        </div>
+                    </div>
+                    <button id="chat-close-button" aria-label="Close chat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div id="chat-messages">
+                    <div class="chat-message model">
+                        Hi there! I'm Himangshu's AI assistant. Ask me anything about his projects, services, or experience.
+                    </div>
+                    <!-- NEW: Suggested Questions -->
+                    <div id="chat-suggestions">
+                        <button class="suggestion-btn" data-prompt="What services does Himangshu offer?">What services does he offer?</button>
+                        <button class="suggestion-btn" data-prompt="Tell me about his 'Internal AI Workflow Tool' project.">Tell me about his AI project.</button>
+                        <button class="suggestion-btn" data-prompt="What's his experience with Android development?">What's his Android experience?</button>
+                    </div>
+                </div>
+                <div id="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Ask about projects, services...">
+                    <button id="chat-send-button" aria-label="Send message">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(container);
+    }
+
+    // --- 6. WIDGET LOGIC ---
+    function toggleChat() {
+        isChatOpen = !isChatOpen;
+        document.getElementById('chat-window').classList.toggle('chat-hidden');
+        document.getElementById('chat-open-button').classList.toggle('chat-hidden');
+        
+        // NEW: Hide callout bubble permanently when chat is opened
+        if (isChatOpen) {
+            document.getElementById('chat-callout-bubble').style.display = 'none';
+            document.getElementById('chat-input').focus();
+        }
+    }
+    
+    function formatText(text) {
+        // Sanitize and format text (simple markdown to HTML)
+        let formattedText = text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
+        // Apply markdown formatting
+        formattedText = formattedText
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')     // Italic
+            .replace(/~~(.*?)~~/g, '<s>$1</s>')       // Strikethrough
+            .replace(/`(.*?)`/g, '<code>$1</code>')     // Inline code
+            .replace(/\n/g, '<br>')                     // Newlines
+            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>'); // Links
+
+        return formattedText;
+    }
+
+    function displayMessage(sender, text) {
+        const messagesContainer = document.getElementById('chat-messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('chat-message', sender);
+        messageDiv.innerHTML = formatText(text);
+        
+        // Insert before suggestions if they exist
+        const suggestions = document.getElementById('chat-suggestions');
+        if (suggestions) {
+            messagesContainer.insertBefore(messageDiv, suggestions);
+        } else {
+            messagesContainer.appendChild(messageDiv);
+        }
+        
+        // Scroll to bottom
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // NEW: Helper to create loading bubble
+    function createLoadingBubble() {
+        const bubble = document.createElement('div');
+        bubble.id = 'loading-indicator';
+        bubble.classList.add('chat-message', 'model', 'typing-indicator');
+        bubble.innerHTML = `
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+        `;
+        return bubble;
+    }
+    
+    // NEW: Function to handle suggested prompts
+    function handleSuggestionClick(e) {
+        const prompt = e.target.dataset.prompt;
+        document.getElementById('chat-input').value = prompt;
+        sendMessage();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const sendButton = document.getElementById('chat-send-button');
+        const suggestions = document.getElementById('chat-suggestions');
+        const messagesContainer = document.getElementById('chat-messages');
+        const message = input.value.trim();
+
+        if (message === '' || isLoading) return;
+
+        isLoading = true;
+        input.value = '';
+        input.disabled = true;
+        sendButton.disabled = true;
+
+        // Hide suggestions
+        if (suggestions) {
+            suggestions.style.display = 'none';
+        }
+        
+        displayMessage('user', message);
+        
+        // Add user message to history
+        chatHistory.push({ role: 'user', parts: [{ text: message }] });
+
+        // Show loading indicator
+        const loadingBubble = createLoadingBubble();
+        messagesContainer.appendChild(loadingBubble);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        try {
+            const responseText = await callGeminiAPI(chatHistory);
+            
+            // Add model response to history
+            chatHistory.push({ role: 'model', parts: [{ text: responseText }] });
+            
+            // Remove loading and display response
+            loadingBubble.remove();
+            displayMessage('model', responseText);
+
+        } catch (error) {
+            console.error("Gemini API Error:", error);
+            loadingBubble.remove();
+            displayMessage('model', "Sorry, I'm having a little trouble connecting. Please try again in a moment.");
+            // Remove the last user message from history on failure so they can retry
+            chatHistory.pop();
+        } finally {
+            isLoading = false;
+            input.disabled = false;
+            sendButton.disabled = false;
+            input.focus();
+        }
+    }
+    
+    // --- 7. GEMINI API CALL (with Backoff) ---
+    async function fetchWithBackoff(url, options, retries = 3, delay = 1000) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                // 429 is rate limiting, 5xx is server error
+                if (response.status === 429 || response.status >= 500) {
+                    throw new Error(`APIError ${response.status}`);
+                }
+            }
+            return response.json();
+        } catch (error) {
+            if (retries > 0 && error.message.includes('APIError')) {
+                await new Promise(res => setTimeout(res, delay));
+                return fetchWithBackoff(url, options, retries - 1, delay * 2);
+            }
+            throw error;
+        }
+    }
+
+    async function callGeminiAPI(history) {
+        const payload = {
+            contents: history,
+            systemInstruction: {
+                parts: [{ text: SYSTEM_PROMPT }]
+            }
+        };
+
+        const response = await fetchWithBackoff(API_URL + API_KEY, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (response.candidates && response.candidates[0].content) {
+            return response.candidates[0].content.parts[0].text;
+        } else {
+            console.warn("Unexpected API response structure:", response);
+            throw new Error("Invalid response from API.");
+        }
+    }
+
+    // --- 8. INITIALIZE THE WIDGET ---
+    function init() {
+        createWidgetCSS();
+        createWidgetHTML();
+
+        // Add event listeners
+        document.getElementById('chat-open-button').addEventListener('click', toggleChat);
+        document.getElementById('chat-close-button').addEventListener('click', toggleChat);
+        document.getElementById('chat-send-button').addEventListener('click', sendMessage);
+        document.getElementById('chat-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // Prevent newline on Enter
+                sendMessage();
+            }
+        });
+        
+        // NEW: Add listeners for suggestion buttons
+        document.querySelectorAll('.suggestion-btn').forEach(btn => {
+            btn.addEventListener('click', handleSuggestionClick);
+        });
+
+        // NEW: Show proactive callout bubble
+        setTimeout(() => {
+            const callout = document.getElementById('chat-callout-bubble');
+            if (callout && !isChatOpen) { // Only show if chat is still closed
+                callout.classList.remove('chat-hidden');
+            }
+        }, 3500); // Show after 3.5 seconds
+    }
+
+    // Run the init function once the window is loaded
+    if (document.readyState === 'complete') {
+        init();
+    } else {
+        window.addEventListener('load', init);
+    }
+
+})();
+</script>
+<!-- === END OF AI CHATBOT SNIPPET === -->
