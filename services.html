@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- === UPDATED: Title for services page === --><title>Services - Himangshu Paul - Full Stack & Android Developer</title>
+    
+    <!-- === NEW: Inline SVG Favicon === --><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='15' fill='%237C3AED' /%3E%3Ctext x='50' y='55' font-size='50' font-weight='bold' fill='%23F5F5F5' text-anchor='middle' font-family='sans-serif'%3EHP%3C/text%3E%3C/svg%3E">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- lucide-react is for React, we just need lucide for HTML --><script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === CHANGED: CSS Variables for NEW Dark Theme === */
+        :root {
+            --bg-color: #121212; /* Dark background */
+            --bg-secondary: #1E1E1E; /* Slightly lighter dark */
+            --text-color: #F5F5F5; /* Off-white text */
+            --text-color-light: #A0A0A0; /* Light gray */
+            --accent-color: #7C3AED; /* Vibrant Purple (Stays the same) */
+            --border-color: #333333; /* Dark border */
+            --bg-contact: #2C2A4A; /* Dark purple */
+            --btn-dark: #FFFFFF; /* Was dark, now light */
+        }
+
+        /* Apply custom fonts */
+        body {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 400;
+            background-color: var(--bg-color);
+            color: var(--text-color); /* Default text color is now light */
+            letter-spacing: 0.025em;
+        }
+
+        /* Grain overlay */
+        body::after {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background-image: url('https://born2earn.in/himanghu/grain.png');
+          background-repeat: repeat;
+          opacity: 0.07;
+          pointer-events: none;
+          z-index: 0; 
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--text-color); /* Headings are light */
+        }
+
+        .hero-heading-heavy {
+            font-weight: 900;
+            color: var(--text-color);
+        }
+        
+        /* Shimmer Effect */
+        .shimmer-text {
+            background: linear-gradient(
+                90deg, 
+                var(--accent-color) 30%, 
+                #F5F5F5 50%, /* Using --text-color for shine */
+                var(--accent-color) 70%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer-animation 4s linear infinite;
+        }
+
+        @keyframes shimmer-animation {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Section Glow Effect */
+        .section-glow {
+            position: relative;
+            overflow: hidden; /* Contain the glows */
+        }
+        .section-glow::before {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            left: 0;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%,
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+        .section-glow::after {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%,
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+        .section-glow > div {
+            position: relative;
+            z-index: 2; 
+        }
+
+        /* === NEW: Service Card Styles === */
+        .service-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 2rem; /* 32px */
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            
+            /* Animation initial state */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .service-icon-wrapper {
+            width: 4rem; /* 64px */
+            height: 4rem; /* 64px */
+            border-radius: 9999px; /* rounded-full */
+            background-color: rgba(124, 58, 237, 0.1); /* Faded accent */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--accent-color);
+        }
+        /* === END: Service Card Styles === */
+
+        /* === Client Marquee Styles (from index.html) === */
+        .client-marquee-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .client-marquee-content {
+            display: inline-block;
+            animation: marquee-scroll-clients 50s linear infinite;
+        }
+        .client-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem; /* 16px */
+            margin: 0 2rem; /* 32px */
+            text-decoration: none;
+        }
+        .client-item img {
+            height: 2.5rem; /* 40px */
+            width: auto;
+            filter: grayscale(100%) brightness(150%);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .client-item span {
+            font-size: 1.5rem; /* 2xl */
+            font-weight: 500;
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+        }
+        .client-item:hover img {
+            filter: none;
+            opacity: 1;
+        }
+        .client-item:hover span {
+            color: var(--text-color);
+        }
+        @keyframes marquee-scroll-clients {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* === End Client Marquee === */
+
+        /* === Animation Initial States === */
+        #services-page-h1,
+        #services-page-p,
+        #clients-h2 {
+             opacity: 0;
+             visibility: hidden;
+             transform: translateY(50px);
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- === Header (Consistent with other pages) === --><header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0">
+                    <!-- === UPDATED: Logo links to root === --><a href="/" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
+                </div>
+                
+                <!-- Desktop Nav --><div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="/#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
+                    <a href="/projects" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
+                    
+                    <!-- Services Dropdown --><div class="relative group">
+                        <button class="text-[var(--text-color)] text-sm font-medium flex items-center gap-1 focus:outline-none">
+                            <span>Services</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <a href="/services" class="block px-4 py-3 text-sm text-[var(--text-color)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">All Services</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Web Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">App Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">SEO</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Ads</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Google Play Console</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-b-lg">Performance Marketing</a>
+                        </div>
+                    </div>
+
+                    <a href="/#clients" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Clients</a>
+                    <a href="/#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
+                    <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
+                        Contact Me
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button --><div class="md:hidden">
+                    <button id="menu-btn" type="button" class="text-[var(--text-color-light)] hover:text-[var(--text-color)] focus:outline-none focus:text-[var(--text-color)]" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="h-6 w-6" id="menu-icon-open"></i>
+                        <i data-lucide="x" class="h-6 w-6 hidden" id="menu-icon-close"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu --><div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
+                <a href="/#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
+                <a href="/projects" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                
+                <!-- Mobile Services Dropdown --><div class="px-3 py-2">
+                    <button id="services-toggle-mobile" class="w-full flex justify-between items-center text-[var(--text-color)] text-base font-medium focus:outline-none">
+                        <span>Services</span>
+                        <i data-lucide="chevron-down" id="services-chevron-mobile" class="w-5 h-5 transition-transform duration-200"></i>
+                    </button>
+                    <div id="services-submenu-mobile" class="pl-4 mt-2 space-y-1 hidden">
+                         <a href="/services" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">All Services</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Web Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">App Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">SEO</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Ads</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Google Play Console</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Performance Marketing</a>
+                    </div>
+                </div>
+
+                <a href="/#clients" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Clients</a>
+                <a href="/#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
+                <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content --><main>
+
+        <!-- === NEW: Services Page Hero === --><section id="services-hero" class="py-24 md:py-32 section-glow">
+            <!-- This div gets z-index: 2 --><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h1 id="services-page-h1" class="text-5xl md:text-7xl font-bold mb-6">
+                        <span class="hero-heading-heavy shimmer-text">My Services</span>
+                    </h1>
+                    <p id="services-page-p" class="text-xl md:text-2xl font-light text-[var(--text-color-light)]">
+                        Solutions I provide to build, launch, and grow your digital products from the ground up.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- === NEW: Services Grid === --><!-- === UPDATED: Added section-glow class here === --><section id="services-grid" class="py-20 md:py-32 bg-[var(--bg-color)] section-glow">
+             <!-- This div gets z-index: 2 --><div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Service Card 1: Web Development --><div class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i data-lucide="globe" class="w-8 h-8 text-[var(--accent-color)]"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[var(--text-color)] mt-6 mb-3">Web Development</h3>
+                        <p class="text-[var(--text-color-light)] mb-4">
+                            Building responsive, high-performance websites using GoHighLevel, WordPress, and custom PHP solutions.
+                        </p>
+                        
+                        <!-- NEW: Pricing Models -->
+                        <div class="mt-4">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Pricing Models</h4>
+                            <div>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Project-Based</span>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Hourly Rate</span>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Add-ons -->
+                        <div class="mt-6">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Common Add-ons</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    CMS Integration
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    E-commerce Setup
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    GHL Automations
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-auto pt-6">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                <span>Get a Web Quote</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 2: App Development --><div class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i data-lucide="smartphone" class="w-8 h-8 text-[var(--accent-color)]"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[var(--text-color)] mt-6 mb-3">App Development</h3>
+                        <p class="text-[var(--text-color-light)] mb-4">
+                            Creating native Android applications with Kotlin, focusing on clean UI, fast performance, and a great user experience.
+                        </p>
+                        
+                        <!-- NEW: Pricing Models -->
+                        <div class="mt-4">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Pricing Models</h4>
+                            <div>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Project-Based</span>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Milestones</span>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Add-ons -->
+                        <div class="mt-6">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Common Add-ons</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Firebase Backend
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Push Notifications
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    In-App Purchases
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-auto pt-6">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                <span>Get an App Quote</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 3: SEO --><div class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i data-lucide="trending-up" class="w-8 h-8 text-[var(--accent-color)]"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[var(--text-color)] mt-6 mb-3">SEO</h3>
+                        <p class="text-[var(--text-color-light)] mb-4">
+                            Optimizing your site's technical and on-page elements to rank higher on search engines and attract organic traffic.
+                        </p>
+                        
+                        <!-- NEW: Pricing Models -->
+                        <div class="mt-4">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Pricing Models</h4>
+                            <div>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Monthly Retainer</span>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Hourly Consulting</span>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Add-ons -->
+                        <div class="mt-6">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Common Add-ons</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Technical SEO Audit
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Content Strategy
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Local SEO
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-auto pt-6">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                <span>Discuss SEO</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 4: Ads --><div class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i data-lucide="target" class="w-8 h-8 text-[var(--accent-color)]"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[var(--text-color)] mt-6 mb-3">Ads</h3>
+                        <p class="text-[var(--text-color-light)] mb-4">
+                            Managing and optimizing paid advertising campaigns on Google and social media to maximize your return on investment.
+                        </p>
+                        
+                        <!-- NEW: Pricing Models -->
+                        <div class="mt-4">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Pricing Models</h4>
+                            <div>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Monthly Retainer</span>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">% of Ad Spend</span>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Add-ons -->
+                        <div class="mt-6">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Common Add-ons</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Ad Copywriting
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    A/B Testing
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Landing Page Design
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-auto pt-6">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                <span>Discuss Ads</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 5: Google Play Console --><div class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i data-lucide="play-circle" class="w-8 h-8 text-[var(--accent-color)]"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[var(--text-color)] mt-6 mb-3">Google Play Console</h3>
+                        <p class="text-[var(--text-color-light)] mb-4">
+                            Handling the complete app publishing lifecycle, from store listing optimization to managing releases and compliance.
+                        </p>
+                        
+                        <!-- NEW: Pricing Models -->
+                        <div class="mt-4">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Pricing Models</h4>
+                            <div>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Per-App Fee</span>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Hourly Rate</span>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Add-ons -->
+                        <div class="mt-6">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Common Add-ons</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    App Store Optimization (ASO)
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Release Management
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Reply to Reviews
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-auto pt-6">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                <span>Discuss Publishing</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Service Card 6: Performance Marketing --><div class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i data-lucide="bar-chart-2" class="w-8 h-8 text-[var(--accent-color)]"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-[var(--text-color)] mt-6 mb-3">Performance Marketing</h3>
+                        <p class="text-[var(--text-color-light)] mb-4">
+                            Developing data-driven marketing strategies to grow your user base and increase conversions.
+                        </p>
+                        
+                        <!-- NEW: Pricing Models -->
+                        <div class="mt-4">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Pricing Models</h4>
+                            <div>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Monthly Retainer</span>
+                                <span class="inline-block border border-[var(--accent-color)] text-[var(--accent-color)] text-xs font-medium px-3 py-1 rounded-full mr-2 mb-2">Hourly Consulting</span>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Add-ons -->
+                        <div class="mt-6">
+                            <h4 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Common Add-ons</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Funnel Building
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Email Marketing
+                                </li>
+                                <li class="flex items-center text-[var(--text-color-light)] text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-[var(--accent-color)] mr-2 flex-shrink-0"></i>
+                                    Analytics & Reporting
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="mt-auto pt-6">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                <span>Discuss Marketing</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        
+        <!-- === Client Marquee Section (from index.html) === --><section id="clients" class="py-20 md:py-32 bg-[var(--bg-secondary)] overflow-hidden border-y border-[var(--border-color)]">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+                <h2 id="clients-h2" class="text-4xl font-semibold text-center shimmer-text">Trusted By</h2>
+            </div>
+            
+            <div class="client-marquee-wrapper">
+                <div class="client-marquee-content">
+                    <!-- Client items --><a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+A&font=sans" alt="Client A Logo" class="">
+                        <span class="text-2xl">Client A</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+B&font=sans" alt="Client B Logo" class="">
+                        <span class="text-2xl">Client B</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+C&font=sans" alt="Client C Logo" class="">
+                        <span class="text-2xl">Client C</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+D&font=sans" alt="Client D Logo" class="">
+                        <span class="text-2xl">Client D</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+E&font=sans" alt="Client E Logo" class="">
+                        <span class="text-2xl">Client E</span>
+                    </a>
+                    <!-- Duplicate for seamless scroll --><a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+A&font=sans" alt="Client A Logo" class="">
+                        <span class="text-2xl">Client A</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+B&font=sans" alt="Client B Logo" class="">
+                        <span class="text-2xl">Client B</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="httpsks://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+C&font=sans" alt="Client C Logo" class="">
+                        <span class="text-2xl">Client C</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+D&font=sans" alt="Client D Logo" class="">
+                        <span class="text-2xl">Client D</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+E&font=sans" alt="Client E Logo" class="">
+                        <span class="text-2xl">Client E</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- === Footer (Consistent with other pages) === --><footer class="bg-[var(--bg-color)] text-white relative z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold">Himangshu Paul</h3>
+                    <p class="text-gray-400 mt-2">Full Stack & Android Developer</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="mailto:himangshu.inbox@gmail.com" class="hover:text-[var(--accent-color)] transition-colors">himangshu.inbox@gmail.com</a></li>
+                        <li><a href="tel:+919564604956" class="hover:text-[var(--accent-color)] transition-colors">+91 9564604956</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Follow</h4>
+                    <div class="flex space-x-6">
+                        <a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                        </a>
+                        <a href="mailto:himangshu.inbox@gmail.com" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Email">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </a>
+                        <a href="tel:+919564604956" class="text-gray-400 hover:text-[var(--accent-colof)] transition-colors" title="Phone">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-[var(--border-color)] mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
+                <p class="text-gray-400 text-sm">
+                    &copy; <span id="current-year"></span> Himangshu Paul
+                </P>
+                <p class="text-gray-500 text-sm mt-2 sm:mt-0">
+                    Designed with ❤️
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        window.addEventListener("load", () => {
+        
+            // Initialize Lucide Icons
+            lucide.createIcons();
+            
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+            
+            /* * ===========================================
+             * Animations for Services Page
+             * ===========================================
+             */
+
+            // --- Page Header Animations (On Load) ---
+            gsap.to("#services-page-h1", { duration: 0.8, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out" });
+            gsap.to("#services-page-p", { duration: 0.8, y: 0, autoAlpha: 1, delay: 0.4, ease: "power3.out" });
+            
+            // --- Staggered Card Animation (On Load) ---
+            gsap.to(".service-card", {
+                duration: 0.5,
+                y: 0,
+                autoAlpha: 1,
+                stagger: 0.1, // Stagger animation for each card
+                delay: 0.6, // Start after header animates
+                ease: "power3.out"
+            });
+            
+            // --- Client Section Animation (On Scroll) ---
+            gsap.to("#clients-h2", {
+                scrollTrigger: { trigger: "#clients", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
+            });
+
+
+            /* * ===========================================
+             * Re-usable Menu/Footer Logic
+             * ===========================================
+             */
+            
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+
+            menuBtn.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden', !isHidden);
+                menuIconClose.classList.toggle('hidden', isHidden);
+            });
+            
+            // Mobile Submenu Toggle for Services
+            const servicesToggleMobile = document.getElementById('services-toggle-mobile');
+            const servicesSubmenuMobile = document.getElementById('services-submenu-mobile');
+            const servicesChevronMobile = document.getElementById('services-chevron-mobile');
+
+            if (servicesToggleMobile) {
+                servicesToggleMobile.addEventListener('click', () => {
+                    const isHidden = servicesSubmenuMobile.classList.toggle('hidden');
+                    servicesChevronMobile.classList.toggle('rotate-180', !isHidden);
+                });
+            }
+            
+            // Close mobile menu when a main link is clicked
+            const mobileLinks = mobileMenu.querySelectorAll('a:not([id="services-toggle-mobile"] a)');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Check if it's NOT a child of the submenu button
+                    if(!e.target.closest('#services-submenu-mobile') && !e.target.closest('#services-toggle-mobile')) {
+                        mobileMenu.classList.add('hidden');
+                        menuIconOpen.classList.remove('hidden');
+                        menuIconClose.classList.add('hidden');
+                    }
+                });
+            });
+            
+             // Close mobile menu when a link inside the submenu is clicked
+            const mobileSubmenuLinks = document.querySelectorAll('#services-submenu-mobile a');
+            mobileSubmenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                    // Also reset the submenu state
+                    servicesSubmenuMobile.classList.add('hidden');
+                    servicesChevronMobile.classList.remove('rotate-180');
+                });
+            });
+
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        }); // <-- This closes the "load" event listener
+    </script>
+
+</body>
+</html>
