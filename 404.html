@@ -1,44 +1,368 @@
-<div id="main">
-    	<div class="fof">
-        		<h1>Error 404</h1>
-    	</div>
-</div>
-<style>
-  *{
-    transition: all 0.6s;
-}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- === UPDATED: Title for error page === -->
+    <title>Page Not Found (404) - Himangshu Paul</title>
+    
+    <!-- === NEW: Inline SVG Favicon === -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='15' fill='%237C3AED' /%3E%3Ctext x='50' y='55' font-size='50' font-weight='bold' fill='%23F5F5F5' text-anchor='middle' font-family='sans-serif'%3EHP%3C/text%3E%3C/svg%3E">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- lucide-react is for React, we just need lucide for HTML --><script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === CHANGED: CSS Variables for NEW Dark Theme === */
+        :root {
+            --bg-color: #121212; /* Dark background */
+            --bg-secondary: #1E1E1E; /* Slightly lighter dark */
+            --text-color: #F5F5F5; /* Off-white text */
+            --text-color-light: #A0A0A0; /* Light gray */
+            --accent-color: #7C3AED; /* Vibrant Purple (Stays the same) */
+            --border-color: #333333; /* Dark border */
+            --bg-contact: #2C2A4A; /* Dark purple */
+            --btn-dark: #FFFFFF; /* Was dark, now light */
+        }
 
-html {
-    height: 100%;
-}
+        /* Apply custom fonts */
+        body {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 400;
+            background-color: var(--bg-color);
+            color: var(--text-color); /* Default text color is now light */
+            letter-spacing: 0.025em;
+        }
 
-body{
-    font-family: 'Lato', sans-serif;
-    color: #888;
-    margin: 0;
-}
+        /* Grain overlay */
+        body::after {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background-image: url('https://born2earn.in/himanghu/grain.png');
+          background-repeat: repeat;
+          opacity: 0.07;
+          pointer-events: none;
+          z-index: 0; 
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--text-color); /* Headings are light */
+        }
 
-#main{
-    display: table;
-    width: 100%;
-    height: 100vh;
-    text-align: center;
-}
+        .hero-heading-heavy {
+            font-weight: 900;
+            color: var(--text-color);
+        }
+        
+        /* Shimmer Effect */
+        .shimmer-text {
+            background: linear-gradient(
+                90deg, 
+                var(--accent-color) 30%, 
+                #F5F5F5 50%, /* Using --text-color for shine */
+                var(--accent-color) 70%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer-animation 4s linear infinite;
+        }
 
-.fof{
-	  display: table-cell;
-	  vertical-align: middle;
-}
+        @keyframes shimmer-animation {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
 
-.fof h1{
-	  font-size: 50px;
-	  display: inline-block;
-	  padding-right: 12px;
-	  animation: type .5s alternate infinite;
-}
+        /* Section Glow Effect */
+        .section-glow {
+            position: relative;
+            overflow: hidden; /* Contain the glows */
+        }
+        .section-glow::before {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            left: 0;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%,
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+        .section-glow::after {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%,
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+        .section-glow > div {
+            position: relative;
+            z-index: 2; 
+        }
+        
+        /* Ensure the main error content takes up the full viewport height minus header/footer */
+        main {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 5rem); /* 100vh minus header height */
+        }
+        #error-section {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-@keyframes type{
-	  from{box-shadow: inset -3px 0px 0px #888;}
-	  to{box-shadow: inset -3px 0px 0px transparent;}
-}
-</style>
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- === Header (Consistent with other pages) === -->
+    <header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0">
+                    <!-- === UPDATED: Logo links to root === -->
+                    <a href="/" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="/#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
+                    <a href="/projects" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
+                    
+                    <!-- Services Dropdown -->
+                    <div class="relative group">
+                        <button class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium flex items-center gap-1 focus:outline-none">
+                            <span>Services</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <a href="/services" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">All Services</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Web Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">App Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">SEO</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Ads</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Google Play Console</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-b-lg">Performance Marketing</a>
+                        </div>
+                    </div>
+
+                    <a href="/#clients" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Clients</a>
+                    <a href="/#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
+                    <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
+                        Contact Me
+                    </a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="menu-btn" type="button" class="text-[var(--text-color-light)] hover:text-[var(--text-color)] focus:outline-none focus:text-[var(--text-color)]" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="h-6 w-6" id="menu-icon-open"></i>
+                        <i data-lucide="x" class="h-6 w-6 hidden" id="menu-icon-close"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
+                <a href="/#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
+                <a href="/projects" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                
+                <!-- Mobile Services Dropdown -->
+                <div class="px-3 py-2">
+                    <button id="services-toggle-mobile" class="w-full flex justify-between items-center text-[var(--text-color-light)] text-base font-medium focus:outline-none">
+                        <span>Services</span>
+                        <i data-lucide="chevron-down" id="services-chevron-mobile" class="w-5 h-5 transition-transform duration-200"></i>
+                    </button>
+                    <div id="services-submenu-mobile" class="pl-4 mt-2 space-y-1 hidden">
+                         <a href="/services" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">All Services</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Web Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">App Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">SEO</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Ads</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Google Play Console</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Performance Marketing</a>
+                    </div>
+                </div>
+
+                <a href="/#clients" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Clients</a>
+                <a href="/#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
+                <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- === NEW: Error Page Content === -->
+        <section id="error-section" class="py-24 md:py-32 section-glow">
+            <!-- This div gets z-index: 2 -->
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h1 class="text-8xl md:text-9xl font-bold mb-4">
+                        <span class="hero-heading-heavy shimmer-text">404</span>
+                    </h1>
+                    <h2 class="text-4xl md:text-5xl font-semibold text-[var(--text-color)] mb-6">
+                        Page Not Found
+                    </h2>
+                    <p class="text-xl md:text-2xl font-light text-[var(--text-color-light)] mb-12">
+                        Oops! The page you're looking for doesn't exist. It might have been moved or deleted.
+                    </p>
+                    <a href="/" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-6 py-3 rounded-full text-base font-medium hover:opacity-90 transition-opacity">
+                        <i data-lucide="home" class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1"></i>
+                        <span>Go Back Home</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- === Footer (Consistent with other pages) === -->
+    <footer class="bg-[var(--bg-color)] text-white relative z-50 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold">Himangshu Paul</h3>
+                    <p class="text-gray-400 mt-2">Full Stack & Android Developer</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="mailto:himangshu.inbox@gmail.com" class="hover:text-[var(--accent-color)] transition-colors">himangshu.inbox@gmail.com</a></li>
+                        <li><a href="tel:+919564604956" class="hover:text-[var(--accent-color)] transition-colors">+91 9564604956</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Follow</h4>
+                    <div class="flex space-x-6">
+                        <a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                        </a>
+                        <a href="mailto:himangshu.inbox@gmail.com" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Email">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </a>
+                        <a href="tel:+919564604956" class="text-gray-400 hover:text-[var(--accent-colof)] transition-colors" title="Phone">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-[var(--border-color)] mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
+                <p class="text-gray-400 text-sm">
+                    &copy; <span id="current-year"></span> Himangshu Paul
+                </P>
+                <p class="text-gray-500 text-sm mt-2 sm:mt-0">
+                    Designed with ❤️
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        window.addEventListener("load", () => {
+        
+            // Initialize Lucide Icons
+            lucide.createIcons();
+            
+            /* * ===========================================
+             * Re-usable Menu/Footer Logic
+             * ===========================================
+             */
+            
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+
+            if (menuBtn) {
+                menuBtn.addEventListener('click', () => {
+                    const isHidden = mobileMenu.classList.toggle('hidden');
+                    menuIconOpen.classList.toggle('hidden', !isHidden);
+                    menuIconClose.classList.toggle('hidden', isHidden);
+                });
+            }
+            
+            // Mobile Submenu Toggle for Services
+            const servicesToggleMobile = document.getElementById('services-toggle-mobile');
+            const servicesSubmenuMobile = document.getElementById('services-submenu-mobile');
+            const servicesChevronMobile = document.getElementById('services-chevron-mobile');
+
+            if (servicesToggleMobile) {
+                servicesToggleMobile.addEventListener('click', () => {
+                    const isHidden = servicesSubmenuMobile.classList.toggle('hidden');
+                    servicesChevronMobile.classList.toggle('rotate-180', !isHidden);
+                });
+            }
+            
+            // Close mobile menu when a main link is clicked
+            const mobileLinks = document.querySelectorAll('#mobile-menu a:not([id="services-toggle-mobile"] a)');
+            if (mobileLinks) {
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        // Check if it's NOT a child of the submenu button
+                        if(!e.target.closest('#services-submenu-mobile') && !e.target.closest('#services-toggle-mobile')) {
+                            mobileMenu.classList.add('hidden');
+                            menuIconOpen.classList.remove('hidden');
+                            menuIconClose.classList.add('hidden');
+                        }
+                    });
+                });
+            }
+            
+             // Close mobile menu when a link inside the submenu is clicked
+            const mobileSubmenuLinks = document.querySelectorAll('#services-submenu-mobile a');
+            if (mobileSubmenuLinks) {
+                mobileSubmenuLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileMenu.classList.add('hidden');
+                        menuIconOpen.classList.remove('hidden');
+                        menuIconClose.classList.add('hidden');
+                        // Also reset the submenu state
+                        servicesSubmenuMobile.classList.add('hidden');
+                        servicesChevronMobile.classList.remove('rotate-180');
+                    });
+                });
+            }
+
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        }); // <-- This closes the "load" event listener
+    </script>
+
+</body>
+</html>
