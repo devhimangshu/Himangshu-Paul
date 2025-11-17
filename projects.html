@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Himangshu Paul - Full Stack & Android Developer</title>
+    <!-- === UPDATED: Title for project page === -->
+    <title>Projects - Himangshu Paul - Full Stack & Android Developer</title>
     
     <!-- === NEW: Inline SVG Favicon === -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='15' fill='%237C3AED' /%3E%3Ctext x='50' y='55' font-size='50' font-weight='bold' fill='%23F5F5F5' text-anchor='middle' font-family='sans-serif'%3EHP%3C/text%3E%3C/svg%3E">
@@ -649,10 +650,20 @@
         
         /* .project-link styles from original file */
         /* === REMOVED: Old .project-link styles === */
+        /* === NEW: Project link style for this page === */
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem; /* 8px */
+            color: var(--accent-color);
+            font-weight: 500; /* medium */
+            margin-top: 1rem;
+        }
         .project-link .link-arrow {
             transition: transform 0.3s ease;
         }
-        .project-card-3d:hover .project-link .link-arrow {
+        /* === MODIFIED: Target .project-link instead of .project-card-3d === */
+        .project-link:hover .link-arrow {
             transform: translateX(4px);
         }
 
@@ -775,7 +786,7 @@
             transform: translateY(50px);
             
             /* === NEW: Added transition for filtering === */
-            transition: transform 0.3s ease, border-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            transition: all 0.3s ease-in-out;
         }
         /* === NEW: Make hidden class smooth === */
         .project-card.hidden {
@@ -789,6 +800,12 @@
             padding: 0;
             border: none;
             overflow: hidden;
+            /* === NEW: Add delay to removal === */
+            transition-delay: 0s;
+        }
+        .project-card:not(.hidden) {
+             /* === NEW: Add delay to appearance === */
+            transition-delay: 0.1s;
         }
         .project-card:hover {
             transform: translateY(-5px);
@@ -869,7 +886,7 @@
         .search-input:focus {
             outline: none;
             border-color: var(--accent-color);
-            box-shadow: 0 0 0 2px var(--accent-color);
+            /* === REMOVED: box-shadow for a subtler focus === */
         }
         @media (min-width: 768px) {
             .search-input {
@@ -881,6 +898,12 @@
             color: var(--text-color-light);
             font-size: 1.25rem; /* 20px */
             padding: 4rem 0; /* 64px */
+            /* === NEW: Transition for no-results === */
+            transition: opacity 0.3s ease;
+        }
+        #no-results.hidden {
+            opacity: 0;
+            display: none; /* Keep display none for layout */
         }
         /* === End Filter and Search Styles === */
 
@@ -894,15 +917,15 @@
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0">
-                    <!-- === REMOVED shimmer-text class === -->
-                    <a href="#home" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
+                    <!-- === UPDATED: Logo links to root === -->
+                    <a href="/" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
                 </div>
                 
                 <!-- Desktop Nav. Uses --accent-color on hover --><div class="hidden md:flex md:items-center md:space-x-8">
-                    <!-- === NEW: Introduction Link === -->
-                    <a href="#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
+                    <!-- === UPDATED: Introduction Link to root === -->
+                    <a href="/#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
                     <!-- === UPDATED: "Work" to "Projects" === -->
-                    <a href="#what-i-did" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
+                    <a href="/projects" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
                     
                     <!-- === NEW: Services Dropdown === -->
                     <div class="relative group">
@@ -912,7 +935,9 @@
                         </button>
                         <!-- Dropdown Menu -->
                         <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">Web Development</a>
+                            <!-- === NEW: All Services Link === -->
+                            <a href="/services" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">All Services</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Web Development</a>
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">App Development</a>
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">SEO</a>
                             <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Ads</a>
@@ -922,9 +947,10 @@
                         </div>
                     </div>
 
-                    <!-- === NEW: Clients Link === -->
-                    <a href="#clients" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Clients</a>
-                    <a href="#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
+                    <!-- === UPDATED: Clients Link to root === -->
+                    <a href="/#clients" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Clients</a>
+                    <!-- === UPDATED: Testimonials Link to root === -->
+                    <a href="/#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
                     <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
                         Contact Me
                     </a>
@@ -942,10 +968,10 @@
 
         <!-- === CHANGED: Mobile Menu bg and text colors === --><div class="md:hidden hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
-                <!-- === NEW: Introduction Link === -->
-                <a href="#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
+                <!-- === UPDATED: Introduction Link to root === -->
+                <a href="/#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
                 <!-- === UPDATED: "Work" to "Projects" === -->
-                <a href="#what-i-did" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                <a href="/projects" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
                 
                 <!-- === UPDATED: Services Links for Mobile (now a toggle) === -->
                 <div class="px-3 py-2">
@@ -954,6 +980,8 @@
                         <i data-lucide="chevron-down" id="services-chevron-mobile" class="w-5 h-5 transition-transform duration-200"></i>
                     </button>
                     <div id="services-submenu-mobile" class="pl-4 mt-2 space-y-1 hidden">
+                         <!-- === NEW: All Services Link === -->
+                         <a href="/services" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">All Services</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Web Development</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">App Development</a>
                          <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">SEO</a>
@@ -964,9 +992,10 @@
                     </div>
                 </div>
 
-                <!-- === NEW: Clients Link === -->
-                <a href="#clients" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Clients</a>
-                <a href="#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
+                <!-- === UPDATED: Clients Link to root === -->
+                <a href="/#clients" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Clients</a>
+                <!-- === UPDATED: Testimonials Link to root === -->
+                <a href="/#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
                 <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
             </div>
         </div>
@@ -1267,11 +1296,12 @@
             const searchInput = document.getElementById('project-search');
             const projectCards = document.querySelectorAll('.project-card');
             const noResultsMessage = document.getElementById('no-results');
+            const projectsGrid = document.getElementById('projects-grid');
 
             function filterProjects() {
                 const searchTerm = searchInput.value.toLowerCase();
                 const activeCategory = document.querySelector('.filter-btn.active').dataset.filter;
-                let resultsFound = false;
+                let resultsFound = 0; // Use a counter
 
                 projectCards.forEach(card => {
                     const title = card.querySelector('h3').textContent.toLowerCase();
@@ -1284,13 +1314,15 @@
 
                     if (textMatch && categoryMatch) {
                         card.classList.remove('hidden');
-                        resultsFound = true;
+                        resultsFound++;
                     } else {
                         card.classList.add('hidden');
                     }
                 });
 
-                noResultsMessage.classList.toggle('hidden', resultsFound);
+                // Use 'grid' for the grid container
+                noResultsMessage.classList.toggle('hidden', resultsFound > 0);
+                projectsGrid.classList.toggle('hidden', resultsFound === 0);
             }
 
             // Add event listener for search input
@@ -1344,11 +1376,33 @@
             const mobileLinks = mobileMenu.querySelectorAll('a');
             mobileLinks.forEach(link => {
                 link.addEventListener('click', () => {
+                    // Only close if it's a hash link on the same page (or a different page)
+                    // We don't want to close it if it's just toggling the submenu
+                    if (link.href && !link.closest('#services-toggle-mobile')) {
+                         // Check if it's not the toggle button itself
+                        const isToggleButton = link.parentElement.id === 'services-toggle-mobile' || link.id === 'services-toggle-mobile';
+                        if(!isToggleButton) {
+                            mobileMenu.classList.add('hidden');
+                            menuIconOpen.classList.remove('hidden');
+                            menuIconClose.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+            
+             // Close mobile menu when a link inside the submenu is clicked
+            const mobileSubmenuLinks = servicesSubmenuMobile.querySelectorAll('a');
+            mobileSubmenuLinks.forEach(link => {
+                link.addEventListener('click', () => {
                     mobileMenu.classList.add('hidden');
                     menuIconOpen.classList.remove('hidden');
                     menuIconClose.classList.add('hidden');
+                    // Also reset the submenu state if needed
+                    servicesSubmenuMobile.classList.add('hidden');
+                    servicesChevronMobile.classList.remove('rotate-180');
                 });
             });
+
 
             // === REMOVED: 3D Project Card Tilt Effect (not used on this page) ===
 
