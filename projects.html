@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himangshu Paul - Full Stack & Android Developer</title>
+    
+    <!-- === NEW: Inline SVG Favicon === -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='15' fill='%237C3AED' /%3E%3Ctext x='50' y='55' font-size='50' font-weight='bold' fill='%23F5F5F5' text-anchor='middle' font-family='sans-serif'%3EHP%3C/text%3E%3C/svg%3E">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- lucide-react is for React, we just need lucide for HTML --><script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+    
+    <!-- === REMOVED: Devicon CDN (no longer using font icons) === -->
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" /> -->
+
+    <style>
+        /* === CHANGED: CSS Variables for NEW Dark Theme === */
+        :root {
+            --bg-color: #121212; /* Dark background */
+            --bg-secondary: #1E1E1E; /* Slightly lighter dark */
+            --text-color: #F5F5F5; /* Off-white text */
+            --text-color-light: #A0A0A0; /* Light gray */
+            --accent-color: #7C3AED; /* Vibrant Purple (Stays the same) */
+            --border-color: #333333; /* Dark border */
+            --bg-contact: #2C2A4A; /* Dark purple */
+            --btn-dark: #FFFFFF; /* Was dark, now light */
+        }
+
+        /* Apply custom fonts */
+        body {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 400;
+            background-color: var(--bg-color);
+            color: var(--text-color); /* Default text color is now light */
+            letter-spacing: 0.025em;
+
+            /* === REVERTED: Removed background-image for grain from body === */
+        }
+
+        /* === REVERTED: Added back body::after pseudo-element for grain with reduced opacity === */
+        body::after {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background-image: url('https://born2earn.in/himanghu/grain.png');
+          background-repeat: repeat;
+          opacity: 0.07;
+          pointer-events: none;
+          z-index: 0; 
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--text-color); /* Headings are light */
+        }
+
+        /* Hero heading font weights (like reference) */
+        .hero-heading-light {
+            font-weight: 300;
+        }
+        .hero-heading-heavy {
+            font-weight: 900;
+            color: var(--text-color);
+        }
+        
+        /* === REMOVED ===
+         * .hero-gradient class
+         */
+
+        /* Accent Text Effect */
+        .accent-text {
+            color: var(--accent-color);
+        }
+        
+        /* === REMOVED: Old .project-card styling === */
+        
+        /* === REMOVED: Bouncing Chevron === */
+
+        /* === NEW: Animated Scroll Mouse Indicator === */
+        .scroll-mouse {
+            width: 30px;
+            height: 50px;
+            border: 2px solid var(--text-color-light);
+            border-radius: 60px;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .scroll-mouse:hover {
+            border-color: var(--accent-color);
+        }
+        .scroll-wheel {
+            width: 4px;
+            height: 10px;
+            background: var(--text-color-light);
+            border-radius: 2px;
+            position: absolute;
+            left: 50%;
+            top: 10px;
+            transform: translateX(-50%);
+            animation: scroll-animation 2s infinite ease-in-out;
+            transition: background-color 0.3s ease;
+        }
+        .scroll-mouse:hover .scroll-wheel {
+            background-color: var(--accent-color);
+        }
+
+        @keyframes scroll-animation {
+            0% {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(-50%, 15px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+        }
+        
+        /* Marquee Animation */
+        .marquee-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee-scroll 40s linear infinite;
+        }
+        /* === REMOVED: Old marquee span styling === */
+        
+        /* === NEW: Skill Marquee Item Styling === */
+        .skill-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem; /* 12px */
+            margin: 0 1.5rem; /* Replaces the bullet margin */
+            font-size: 1.5rem; /* 2xl */
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        .skill-item:hover {
+            color: var(--text-color);
+        }
+        /* === REMOVED: Devicon font-icon style === */
+        
+        /* === NEW: Skill image styling === */
+        .skill-img {
+            width: 2rem; /* 32px */
+            height: 2rem; /* 32px */
+        }
+
+        .skill-item .ghl-icon { /* GHL SVG */
+            width: 2rem; /* 32px */
+            height: 2rem; /* 32px */
+            /* === CHANGED: Set a specific color instead of inheriting === */
+            fill: var(--accent-color);
+        }
+        /* === End Skill Marquee Styling === */
+
+        @keyframes marquee-scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                /* Translate by half the width (since content is duplicated) */
+                transform: translateX(-50%); 
+            }
+        }
+        
+        /* === UPDATED SECTION GLOW (More Visible, Left & Right) === */
+        .section-glow {
+            position: relative;
+            overflow: hidden; /* Contain the glows */
+        }
+        
+        /* Left-side glow */
+        .section-glow::before {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            left: 0;
+            top: 50%;
+            transform: translate(-50%, -50%); /* Adjusted position */
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%, /* Increased opacity */
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        /* Right-side glow */
+        .section-glow::after {
+            content: '';
+            position: absolute;
+            z-index: 0; /* Behind the content */
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%); /* Positioned to the right */
+            width: 800px; 
+            height: 800px;
+            background-image: radial-gradient(ellipse at center, 
+                rgba(124, 58, 237, 0.25) 0%, /* Increased opacity */
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+
+        /* Ensure section content stays above the glows */
+        .section-glow > div { /* <-- MODIFIED SELECTOR (removed :not) */
+            position: relative;
+            z-index: 2; /* Stays above glows and new pattern */
+        }
+
+        /* === NEW: Stats Bar Styling === */
+        .palette-color {
+            width: 1.25rem; /* w-5 */
+            height: 1.25rem; /* h-5 */
+            border-radius: 9999px; /* rounded-full */
+            border: 1px solid var(--border-color);
+        }
+
+        /* === NEW: Shimmer Effect for Stats === */
+        .shimmer-text {
+            background: linear-gradient(
+                90deg, 
+                var(--accent-color) 30%, 
+                #F5F5F5 50%, /* Using --text-color for shine */
+                var(--accent-color) 70%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer-animation 4s linear infinite;
+        }
+
+        @keyframes shimmer-animation {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        /* === End Shimmer Effect === */
+
+        /* === REMOVED: .hero-watermark CSS === */
+
+        /* === CHANGED: Vertical Watermark (BEHIND CONTENT), 50px, and lower position === */
+        .section-glow > .hero-pattern {
+            position: absolute;
+            bottom: 0px; /* NEW: Pushing it right to the bottom */
+            right: -200px; /* NEW: Pushed it further to the right */
+            transform-origin: 0% 0%; /* Rotate around the top-left corner */
+            transform: translateY(-100%) rotate(-90deg); /* UPDATED: Move up by 100% of its height, then rotate */
+            
+            font-size: 50px; /* NEW: Fixed font size to 50px */
+            font-weight: 900; /* Extra bold */
+            color: var(--text-color); /* Light text color */
+            
+            opacity: 0.05; /* Very low opacity, as it's on top */
+            z-index: 1;      /* This will now apply correctly */
+            pointer-events: none; /* Allows clicking through it */
+            
+            white-space: nowrap; /* Prevent text from wrapping */
+            user-select: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero-pattern {
+                display: none; /* Hide pattern on mobile */
+            }
+        }
+        /* === NEW: Responsive Skill Marquee Icons === */
+        @media (min-width: 768px) {
+            .skill-item {
+                font-size: 2.25rem; /* 4xl */
+                gap: 1rem; /* 16px */
+            }
+            /* === REMOVED: Responsive icon font style === */
+
+            /* === NEW: Responsive image styling === */
+            .skill-img {
+                width: 2.5rem; /* 40px */
+                height: 2.5rem; /* 40px */
+            }
+            
+            .skill-item .ghl-icon {
+                width: 2.5rem; /* 40px */
+                height: 2.5rem; /* 40px */
+            }
+        }
+        /* === End Hero Background Pattern === */
+
+
+        /* * ===========================================
+         * "Multi-Layer" Animation Fix
+         * ===========================================
+         */
+        
+        /* Hero Items: Initial State */
+        #hero-status {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+        }
+        /* === NEW: Initial State for Badge === */
+        #hero-badge {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+        }
+        .hero-line-1 .inline-block,
+        .hero-line-2 .inline-block {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        #hero-p {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+        }
+        
+        /* Scroll-Triggered Sections: Initial State */
+        
+        /* === NEW: Initial State for Intro Section === */
+        #intro-text {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-100px);
+        }
+        #intro-image {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(50px) scale(0.9); /* Start slightly smaller and from the right */
+            filter: blur(8px); /* Start blurred */
+        }
+
+
+        /* === NEW: Initial State for Stats === */
+        #stats-1, #stats-2, #stats-3 {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        
+        /* === NEW: Experience Initial States === */
+        #experience-h3 {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        /* === REMOVED old experience/education initial states === */
+
+        /* === NEW: Education Initial States === */
+        #education-h3 {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        /* === REMOVED old experience/education initial states === */
+        
+        /* === NEW: Client Title Initial State === */
+        #clients-h2 {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+
+        #testimonials-h2,
+        #testimonial-card { /* This is now .testimonial-card-slide, but we'll target the container */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        
+        /* === NEW: Initial state for the slider container === */
+        .testimonial-slider-container {
+             opacity: 0;
+             visibility: hidden;
+             transform: translateY(100px);
+        }
+
+        /* === UPDATED: "What I Did" Section Initial States === */
+        #what-i-did-h2,
+        #what-i-did-p {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        /* === REMOVED: #websites-box, #apps-box initial state (handled by .project-card-3d) === */
+        
+        /* === NEW: Initial State for Brand Guidelines === */
+        #brand-h2,
+        #brand-p,
+        #brand-left-col,
+        #brand-right-col {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+
+
+        /* NEW: Social icon styles */
+        .social-icon-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white for contrast */
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .social-icon-circle:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        /* === REVERTED: Removed grain from testimonials section and added back its default background === */
+        #testimonials {
+            background-color: var(--bg-secondary);
+            /* Removed background-image for grain */
+        }
+
+        /* === REMOVED: Pixel Art DP styles (no longer needed) === */
+        
+        /* === NEW: Timeline Styling === */
+        .timeline-container {
+            position: relative;
+            max-width: 100%; /* Was max-w-3xl on the wrapper */
+        }
+
+        /* The vertical line */
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--border-color);
+            top: 10px; /* Start below the heading */
+            bottom: 10px;
+            left: 1.25rem; /* Aligns with the center of the 2.5rem node */
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 4rem; /* Space for the node + line */
+            padding-bottom: 2.5rem; /* 40px */
+            z-index: 2;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        /* The circle node */
+        .timeline-node {
+            position: absolute;
+            left: 1.25rem; /* Center align with the line */
+            top: 4px; /* Align with the top of the text */
+            transform: translateX(-50%) scale(0.5); /* Initial state for animation */
+            width: 2.5rem; /* 40px */
+            height: 2.5rem; /* 40px */
+            background-color: var(--accent-color);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1rem;
+            z-index: 3;
+            border: 4px solid var(--bg-color); /* Creates cutout effect */
+            
+            /* Animation initial state */
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .timeline-content {
+            position: relative;
+            background-color: var(--bg-secondary);
+            border-radius: 0.5rem; /* 8px */
+            padding: 1.5rem; /* 24px */
+            /* === REVERTED: Added static border back === */
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+
+            /* Animation initial state */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(50px);
+        }
+
+        /* === REMOVED: Shimmer styles for timeline === */
+        
+        .timeline-content:hover {
+            /* === REVERTED: Added border-color change on hover === */
+            border-color: var(--accent-color);
+            transform: translateY(-3px); /* Only vertical movement on hover */
+        }
+
+        /* Small triangle pointing to the timeline */
+        .timeline-content::before {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 18px; /* Aligns with the node's center roughly */
+            width: 0;
+            z-index: 1;
+            left: -10px; /* Points left */
+            border: medium solid transparent;
+            border-width: 10px 10px 10px 0;
+            /* === REVERTED: Border color matches static border === */
+            border-right-color: var(--border-color); 
+            /* === REMOVED: Shimmer mask properties === */
+        }
+        .timeline-content::after {
+            content: " ";
+            height: 0;
+            position: absolute;
+            top: 19px;
+            width: 0;
+            z-index: 2;
+            left: -9px;
+            border: medium solid transparent;
+            border-width: 9px 9px 9px 0;
+            border-right-color: var(--bg-secondary);
+        }
+
+        /* Link styling for @ mentions */
+        .timeline-content-link {
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+            text-decoration: none; /* remove underline */
+        }
+        .timeline-content-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        /* === REMOVED: All old project/video/poster card styles === */
+        /* ... */
+
+        /* === REMOVED: Shimmer Border Class === */
+        /* ... */
+
+        /* === NEW: 3D Project Card Layout (Replaces Expanding Card) === */
+        #what-i-did-container {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile-first: 1 column */
+            gap: 2rem;
+            perspective: 1500px; /* Apply perspective to the container for 3D */
+        }
+
+        @media (min-width: 768px) {
+            #what-i-did-container {
+                grid-template-columns: 1fr 1fr; /* 2 columns on desktop */
+                height: 60vh; /* Taller on desktop (from original design) */
+            }
+        }
+
+        .project-card-3d { /* This class replaces .expanding-card */
+            display: block;
+            position: relative;
+            border-radius: 0.75rem; /* rounded-xl */
+            overflow: hidden;
+            text-decoration: none;
+            height: 400px; /* Taller fixed height for mobile */
+            background-color: var(--bg-secondary); /* Fallback */
+            border: 1px solid var(--border-color); /* Add a border */
+            
+            /* 3D and transition properties */
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Smooth ease-out for mouseleave */
+
+            /* Initial animation state (from old poster card) */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px) scale(0.95);
+        }
+        
+        @media (min-width: 768px) {
+             .project-card-3d {
+                 height: 100%; /* Fill container height on desktop */
+             }
+        }
+
+        .project-card-3d video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+            z-index: 0;
+        }
+
+        .project-card-3d .card-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            /* Darker overlay to protect text */
+            /* === UPDATED: Made gradient darker and extend further for text visibility === */
+            background: linear-gradient(to top, rgba(18,18,18,0.98) 20%, rgba(18,18,18,0.7) 60%, transparent 100%);
+            transition: background 0.5s ease;
+        }
+
+        .project-card-3d .card-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Aligns content to bottom */
+            
+            /* Pop content forward in 3D space */
+            transform: translateZ(40px);
+        }
+
+        /* Content inside the card */
+        .project-card-3d h3 {
+            transition: color 0.3s ease;
+            font-size: 2.25rem; /* 4xl */
+        }
+        .project-card-3d:hover h3 {
+            color: var(--accent-color);
+        }
+        
+        /* .project-link styles from original file */
+        /* === REMOVED: Old .project-link styles === */
+        .project-link .link-arrow {
+            transition: transform 0.3s ease;
+        }
+        .project-card-3d:hover .project-link .link-arrow {
+            transform: translateX(4px);
+        }
+
+        /* === END: 3D Project Card Layout === */
+
+        /* === NEW: Client Marquee Styling === */
+        .client-marquee-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .client-marquee-content {
+            display: inline-block;
+            animation: marquee-scroll-clients 50s linear infinite; /* Slower scroll for clients */
+        }
+        .client-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem; /* 16px */
+            margin: 0 2rem; /* 32px */
+            text-decoration: none;
+        }
+        .client-item img {
+            height: 2.5rem; /* 40px */
+            width: auto;
+            filter: grayscale(100%) brightness(150%);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .client-item span {
+            font-size: 1.5rem; /* 2xl */
+            font-weight: 500;
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+        }
+        .client-item:hover img {
+            filter: none;
+            opacity: 1;
+        }
+        .client-item:hover span {
+            color: var(--text-color);
+        }
+
+        @keyframes marquee-scroll-clients {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* === End Client Marquee === */
+
+        /* === NEW: Testimonial Slider Styling === */
+        .testimonial-slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem; /* rounded-lg */
+        }
+        .testimonial-slider-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .testimonial-slide {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 0 0.25rem; /* Small gap between slides if needed */
+            box-sizing: border-box;
+        }
+
+        /* Re-style the card to be a class, not ID */
+        .testimonial-card-slide {
+            background-color: var(--bg-color);
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* === UPDATED: Testimonial Dots (Moved) === */
+        .testimonial-dots {
+            /* REMOVED position: absolute; */
+            /* REMOVED bottom: 1.5rem; */
+            /* REMOVED left: 50%; */
+            /* REMOVED transform: translateX(-50%); */
+            display: flex;
+            justify-content: center; /* NEW */
+            gap: 0.75rem; /* 12px */
+            /* REMOVED z-index: 10; */
+            margin-top: 2rem; /* NEW */
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .dot:hover {
+            background-color: var(--text-color-light);
+        }
+        .dot.active {
+            background-color: var(--accent-color);
+            transform: scale(1.2);
+        }
+        /* === End Testimonial Slider === */
+
+        /* === NEW: Project Page Specific Styles === */
+        .project-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem; /* rounded-xl */
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column; /* Ensure content flows top-to-bottom */
+            
+            /* Animation initial state */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(50px);
+            
+            /* === NEW: Added transition for filtering === */
+            transition: transform 0.3s ease, border-color 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+        }
+        /* === NEW: Make hidden class smooth === */
+        .project-card.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.95);
+            /* We can't transition display: none, so we use opacity/visibility */
+            /* We also need to remove it from the grid flow */
+            height: 0;
+            margin: 0;
+            padding: 0;
+            border: none;
+            overflow: hidden;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+        .project-card-image {
+            width: 100%;
+            height: 250px; /* Fixed height for image */
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .project-card-content {
+            padding: 1.5rem; /* 24px */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Allows footer to stick to bottom */
+        }
+        .tech-tag {
+            display: inline-block;
+            background-color: var(--border-color);
+            color: var(--text-color-light);
+            font-size: 0.75rem; /* 12px */
+            font-weight: 500;
+            padding: 0.25rem 0.75rem; /* 4px 12px */
+            border-radius: 9999px; /* rounded-full */
+            margin-right: 0.5rem; /* 8px */
+            margin-bottom: 0.5rem; /* 8px */
+        }
+        .project-card-footer {
+            margin-top: auto; /* Pushes this to the bottom of the card */
+            padding-top: 1rem; /* Space above the links */
+        }
+        /* === End Project Page Styles === */
+
+        /* === NEW: Filter and Search Styles === */
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem; /* 40px */
+        }
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem; /* 12px */
+        }
+        .filter-btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-color-light);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem; /* 8px 16px */
+            border-radius: 9999px; /* rounded-full */
+            font-size: 0.875rem; /* 14px */
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover {
+            border-color: var(--text-color);
+            color: var(--text-color);
+        }
+        .filter-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        .search-input {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 9999px; /* rounded-full */
+            padding: 0.6rem 1.25rem; /* 10px 20px */
+            font-size: 0.875rem; /* 14px */
+            width: 100%; /* Full width on mobile */
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+        @media (min-width: 768px) {
+            .search-input {
+                width: auto; /* Auto width on desktop */
+            }
+        }
+        #no-results {
+            text-align: center;
+            color: var(--text-color-light);
+            font-size: 1.25rem; /* 20px */
+            padding: 4rem 0; /* 64px */
+        }
+        /* === End Filter and Search Styles === */
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- === REMOVED: Shimmer Mask SVG === -->
+
+    <!-- === CHANGED: Updated header bg and text colors === --><!-- The header has z-50, so it will be ON TOP of the grain (z-0) --><header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0">
+                    <!-- === REMOVED shimmer-text class === -->
+                    <a href="#home" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
+                </div>
+                
+                <!-- Desktop Nav. Uses --accent-color on hover --><div class="hidden md:flex md:items-center md:space-x-8">
+                    <!-- === NEW: Introduction Link === -->
+                    <a href="#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
+                    <!-- === UPDATED: "Work" to "Projects" === -->
+                    <a href="#what-i-did" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
+                    
+                    <!-- === NEW: Services Dropdown === -->
+                    <div class="relative group">
+                        <button class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors flex items-center gap-1 focus:outline-none">
+                            <span>Services</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">Web Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">App Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">SEO</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Ads</a>
+                            <!-- === UPDATED: Changed "Others" to be specific === -->
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Google Play Console</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-b-lg">Performance Marketing</a>
+                        </div>
+                    </div>
+
+                    <!-- === NEW: Clients Link === -->
+                    <a href="#clients" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Clients</a>
+                    <a href="#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
+                    <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
+                        Contact Me
+                    </a>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="menu-btn" type="button" class="text-[var(--text-color-light)] hover:text-[var(--text-color)] focus:outline-none focus:text-[var(--text-color)]" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <i data-lucide="menu" class="h-6 w-6" id="menu-icon-open"></i>
+                        <i data-lucide="x" class="h-6 w-6 hidden" id="menu-icon-close"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- === CHANGED: Mobile Menu bg and text colors === --><div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
+                <!-- === NEW: Introduction Link === -->
+                <a href="#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
+                <!-- === UPDATED: "Work" to "Projects" === -->
+                <a href="#what-i-did" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                
+                <!-- === UPDATED: Services Links for Mobile (now a toggle) === -->
+                <div class="px-3 py-2">
+                    <button id="services-toggle-mobile" class="w-full flex justify-between items-center text-[var(--text-color-light)] text-base font-medium focus:outline-none">
+                        <span>Services</span>
+                        <i data-lucide="chevron-down" id="services-chevron-mobile" class="w-5 h-5 transition-transform duration-200"></i>
+                    </button>
+                    <div id="services-submenu-mobile" class="pl-4 mt-2 space-y-1 hidden">
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Web Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">App Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">SEO</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Ads</a>
+                         <!-- === UPDATED: Changed "Others" to be specific === -->
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Google Play Console</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Performance Marketing</a>
+                    </div>
+                </div>
+
+                <!-- === NEW: Clients Link === -->
+                <a href="#clients" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Clients</a>
+                <a href="#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
+                <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- The <main> content will be UNDER the grain overlay (z-0) --><main>
+
+        <!-- === NEW: Projects Page Content === -->
+        <section id="projects" class="py-24 md:py-32 section-glow">
+            <!-- This div gets z-index: 2 from the .section-glow > div rule -->
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h1 id="project-page-h1" class="text-5xl md:text-7xl font-bold mb-6">
+                        <span class="hero-heading-heavy shimmer-text">My Projects</span>
+                    </h1>
+                    <p id="project-page-p" class="text-xl md:text-2xl font-light text-[var(--text-color-light)]">
+                        A selection of my work in web, mobile, and automation.
+                    </p>
+                </div>
+
+                <!-- === NEW: Filter and Search Controls === -->
+                <div class="filter-controls">
+                    <!-- Filter Buttons -->
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="web">Web</button>
+                        <button class="filter-btn" data-filter="app">App</button>
+                        <button class="filter-btn" data-filter="automation">Automation</button>
+                        <button class="filter-btn" data-filter="marketing">Marketing</button>
+                    </div>
+                    <!-- Search Bar -->
+                    <div>
+                        <input type="search" id="project-search" placeholder="Search projects..." class="search-input">
+                    </div>
+                </div>
+                <!-- === END: Filter and Search Controls === -->
+
+
+                <!-- Projects Grid -->
+                <!-- === UPDATED: Added data-category to cards === -->
+                <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Project Card 1 -->
+                    <div class="project-card" data-category="web automation">
+                        <!-- === UPDATED: Replaced img with video === -->
+                        <video src="https://born2earn.in/himanghu/webbg.mp4" alt="Project 1 Video" class="project-card-image" autoplay loop muted playsinline preload="auto"></video>
+                        <div class="project-card-content">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-3">Internal AI Workflow Tool</h3>
+                            <p class="text-[var(--text-color-light)] mb-4 flex-grow">
+                                Developed a custom AI tool to automate client workflows within GoHighLevel, reducing manual data entry by 90%.
+                            </p>
+                            <!-- Tech Tags -->
+                            <div class="mb-4">
+                                <span class="tech-tag">GoHighLevel</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">AI API</span>
+                                <span class="tech-tag">Automation</span>
+                            </div>
+                            <!-- Card Footer Links -->
+                            <div class="project-card-footer">
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                    <span>Visit Project</span>
+                                    <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="project-card" data-category="app">
+                        <!-- === UPDATED: Changed placeholder to a GIF === -->
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM2FwaWJ1bWl5eG04cWR1ZHg2M3VnZzN2c3NtYjE4Y3Q2aGl5eGg5eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kHgAS2E6S5DkR0c2Cj/giphy.gif" alt="Project 2 GIF" class="project-card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1E1E1E/7C3AED?text=Project+2';">
+                        <div class="project-card-content">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-3">Born2Earn Android App</h3>
+                            <p class="text-[var(--text-color-light)] mb-4 flex-grow">
+                                Lead developer for a native Android application. Handled everything from UI/UX design to Firebase backend and Play Console management.
+                            </p>
+                            <!-- Tech Tags -->
+                            <div class="mb-4">
+                                <span class="tech-tag">Kotlin</span>
+                                <span class="tech-tag">Android</span>
+                                <span class="tech-tag">Firebase</span>
+                                <span class="tech-tag">Google Play</span>
+                            </div>
+                            <!-- Card Footer Links -->
+                            <div class="project-card-footer">
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                    <span>Visit Project</span>
+                                    <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 3 -->
+                    <div class="project-card" data-category="web">
+                        <img src="https://placehold.co/600x400/1E1E1E/7C3AED?text=WordPress+Site" alt="Project 3 Image" class="project-card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1E1E1E/7C3AED?text=Project+3';">
+                        <div class="project-card-content">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-3">Charitabl Website</h3>
+                            <p class="text-[var(--text-color-light)] mb-4 flex-grow">
+                                Full-site build for a non-profit organization using WordPress, focusing on performance, security, and ease of content management.
+                            </p>
+                            <!-- Tech Tags -->
+                            <div class="mb-4">
+                                <span class="tech-tag">WordPress</span>
+                                <span class="tech-tag">PHP</span>
+                                <span class="tech-tag">Elementor</span>
+                                <span class="tech-tag">SEO</span>
+                            </div>
+                            <!-- Card Footer Links -->
+                            <div class="project-card-footer">
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                    <span>Visit Project</span>
+                                    <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 4 -->
+                    <div class="project-card" data-category="web">
+                        <img src="https://placehold.co/600x400/1E1E1E/7C3AED?text=SaaS+Dashboard" alt="Project 4 Image" class="project-card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1E1E1E/7C3AED?text=Project+4';">
+                        <div class="project-card-content">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-3">SaaS Client Dashboard</h3>
+                            <p class="text-[var(--text-color-light)] mb-4 flex-grow">
+                                A custom PHP-based dashboard for a marketing agency, allowing clients to log in and view real-time performance metrics.
+                            </p>
+                            <!-- Tech Tags -->
+                            <div class="mb-4">
+                                <span class="tech-tag">PHP</span>
+                                <span class="tech-tag">MySQL</span>
+                                <span class="tech-tag">JavaScript</span>
+                                <span class="tech-tag">Chart.js</span>
+                            </div>
+                            <!-- Card Footer Links -->
+                            <div class="project-card-footer">
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                    <span>Visit Project</span>
+                                    <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 5 -->
+                    <div class="project-card" data-category="app">
+                        <img src="https://placehold.co/600x400/1E1E1E/7C3AED?text=Utility+App" alt="Project 5 Image" class="project-card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1E1E1E/7C3AED?text=Project+5';">
+                        <div class="project-card-content">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-3">Simple Notes (Android)</h3>
+                            <p class="text-[var(--text-color-light)] mb-4 flex-grow">
+                                A lightweight, fast, and open-source note-taking app for Android, built with Kotlin and focusing on a minimal, clean user experience.
+                            </p>
+                            <!-- Tech Tags -->
+                            <div class="mb-4">
+                                <span class="tech-tag">Kotlin</span>
+                                <span class="tech-tag">Android</span>
+                                <span class="tech-tag">RoomDB</span>
+                                <span class="tech-tag">Open Source</span>
+                            </div>
+                            <!-- Card Footer Links -->
+                            <div class="project-card-footer">
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                    <span>Visit Project</span>
+                                    <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 6 -->
+                    <div class="project-card" data-category="web marketing">
+                        <img src="https://placehold.co/600x400/1E1E1E/7C3AED?text=Marketing+Site" alt="Project 6 Image" class="project-card-image" onerror="this.onerror=null;this.src='https://placehold.co/600x400/1E1E1E/7C3AED?text=Project+6';">
+                        <div class="project-card-content">
+                            <h3 class="text-2xl font-bold text-[var(--text-color)] mb-3">Agency Landing Page</h3>
+                            <p class="text-[var(--text-color-light)] mb-4 flex-grow">
+                                Designed and developed a high-converting landing page for a performance marketing client, integrated with GHL forms and analytics.
+                            </p>
+                            <!-- Tech Tags -->
+                            <div class="mb-4">
+                                <span class="tech-tag">GoHighLevel</span>
+                                <span class="tech-tag">WordPress</span>
+                                <span class="tech-tag">Marketing</span>
+                            </div>
+                            <!-- Card Footer Links -->
+                            <div class="project-card-footer">
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity">
+                                    <span>Visit Project</span>
+                                    <i data-lucide="arrow-right" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- === NEW: No Results Message === -->
+                <div id="no-results" class="hidden">
+                    <p>No projects found matching your criteria.</p>
+                </div>
+
+            </div>
+        </section>
+        <!-- === END: Projects Page Content === -->
+
+    </main>
+
+    <!-- === REMOVED: Social FABs === --><!-- === CHANGED: Footer bg and border === --><!-- Added `relative z-50` so it sits ON TOP of the grain (z-0) --><footer class="bg-[var(--bg-color)] text-white relative z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <!-- === UPDATED: Footer Grid (3-col) === -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <!-- === REMOVED shimmer-text class === -->
+                    <h3 class="text-2xl font-bold">Himangshu Paul</h3>
+                    <p class="text-gray-400 mt-2">Full Stack & Android Developer</p>
+                </div>
+                
+                <!-- === REMOVED: Palette section === -->
+                
+                <!-- === UPDATED: Removed col-start-3 === -->
+                <div>
+                    <!-- === REMOVED shimmer-text class === -->
+                    <h4 class="font-semibold text-lg mb-4">Contact</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="mailto:himangshu.inbox@gmail.com" class="hover:text-[var(--accent-color)] transition-colors">himangshu.inbox@gmail.com</a></li>
+                        <li><a href="tel:+919564604956" class="hover:text-[var(--accent-color)] transition-colors">+91 9564604956</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <!-- === REMOVED shimmer-text class === -->
+                    <h4 class="font-semibold text-lg mb-4">Follow</h4>
+                    <div class="flex space-x-6">
+                        <!-- === FIXED: Replaced inline SVGs with lucide icons === --><a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                        </a>
+                        <a href="mailto:himangshu.inbox@gmail.com" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Email">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </a>
+                        <a href="tel:+919564604956" class="text-gray-400 hover:text-[var(--accent-colof)] transition-colors" title="Phone">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-[var(--border-color)] mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
+                <p class="text-gray-400 text-sm">
+                    &copy; <span id="current-year"></span> Himangshu Paul
+                </P>
+                <!-- === UPDATED: Footer Credit Line === -->
+                <p class="text-gray-500 text-sm mt-2 sm:mt-0">
+                    Designed with ❤️
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script>
+        // JS remains the same, as it's just for animations and logic
+        window.addEventListener("load", () => {
+        
+            // Initialize Lucide Icons
+            lucide.createIcons();
+            
+            // GSAP Animations
+            gsap.registerPlugin(ScrollTrigger);
+            
+            /* * ===========================================
+             * Animation for NEW Projects Page
+             * ===========================================
+             */
+
+            // --- Page Header Animations (On Load) ---
+            gsap.to("#project-page-h1", { duration: 0.8, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out" });
+            gsap.to("#project-page-p", { duration: 0.8, y: 0, autoAlpha: 1, delay: 0.4, ease: "power3.out" });
+            
+            // --- Staggered Card Animation (On Scroll) ---
+            // === REMOVED: Old scroll-triggered animation ===
+            // === NEW: Simple load-in animation for all cards ===
+            gsap.to(".project-card", {
+                duration: 0.5,
+                y: 0,
+                autoAlpha: 1,
+                stagger: 0.1, // Stagger animation for each card
+                delay: 0.6, // Start after header animates
+                ease: "power3.out"
+            });
+
+            /* * ===========================================
+             * NEW: Filter and Search Logic
+             * ===========================================
+             */
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const searchInput = document.getElementById('project-search');
+            const projectCards = document.querySelectorAll('.project-card');
+            const noResultsMessage = document.getElementById('no-results');
+
+            function filterProjects() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeCategory = document.querySelector('.filter-btn.active').dataset.filter;
+                let resultsFound = false;
+
+                projectCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    const tags = Array.from(card.querySelectorAll('.tech-tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
+                    const cardCategories = card.dataset.category.split(' ');
+
+                    const textMatch = title.includes(searchTerm) || description.includes(searchTerm) || tags.includes(searchTerm);
+                    const categoryMatch = activeCategory === 'all' || cardCategories.includes(activeCategory);
+
+                    if (textMatch && categoryMatch) {
+                        card.classList.remove('hidden');
+                        resultsFound = true;
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+
+                noResultsMessage.classList.toggle('hidden', resultsFound);
+            }
+
+            // Add event listener for search input
+            searchInput.addEventListener('input', filterProjects);
+
+            // Add event listeners for filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    // Run the filter function
+                    filterProjects();
+                });
+            });
+
+
+            /* * ===========================================
+             * Re-usable Menu/Footer Logic (Unchanged)
+             * ===========================================
+             */
+            
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+            const menuIconClose = document.getElementById('menu-icon-close');
+
+            /* === FIXED: Simplified menu toggle logic === */
+            menuBtn.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden', !isHidden);
+                menuIconClose.classList.toggle('hidden', isHidden);
+            });
+            
+            // === NEW: Mobile Submenu Toggle for Services ===
+            const servicesToggleMobile = document.getElementById('services-toggle-mobile');
+            const servicesSubmenuMobile = document.getElementById('services-submenu-mobile');
+            const servicesChevronMobile = document.getElementById('services-chevron-mobile');
+
+            if (servicesToggleMobile) {
+                servicesToggleMobile.addEventListener('click', () => {
+                    const isHidden = servicesSubmenuMobile.classList.toggle('hidden');
+                    servicesChevronMobile.classList.toggle('rotate-180', !isHidden);
+                });
+            }
+            // === END: Mobile Submenu Toggle ===
+            
+            // Close mobile menu when a link is clicked
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+
+            // === REMOVED: 3D Project Card Tilt Effect (not used on this page) ===
+
+            // === REMOVED: Testimonial Slider Logic (not used on this page) ===
+
+
+            // Set current year in footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        }); // <-- This closes the "load" event listener
+    </script>
+
+</body>
+</html>
