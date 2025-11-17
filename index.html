@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Himangshu Paul - Full Stack & Android Developer</title>
     
+    <!-- === NEW: Inline SVG Favicon === -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='15' fill='%237C3AED' /%3E%3Ctext x='50' y='55' font-size='50' font-weight='bold' fill='%23F5F5F5' text-anchor='middle' font-family='sans-serif'%3EHP%3C/text%3E%3C/svg%3E">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- lucide-react is for React, we just need lucide for HTML --><script src="https://unpkg.com/lucide@latest"></script>
@@ -66,7 +69,7 @@
         }
         
         /* === REMOVED ===
-            .hero-gradient class
+         * .hero-gradient class
          */
 
         /* Accent Text Effect */
@@ -75,22 +78,8 @@
         }
         
         /* === REMOVED: Old .project-card styling === */
-        /*
-        .project-card {
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            background-color: var(--bg-secondary);
-        }
-        .project-card:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        */
         
         /* === REMOVED: Bouncing Chevron === */
-        /* .scroll-down-chevron ... */
-        /* @keyframes bounce-chevron ... */
 
         /* === NEW: Animated Scroll Mouse Indicator === */
         .scroll-mouse {
@@ -148,7 +137,6 @@
             animation: marquee-scroll 40s linear infinite;
         }
         /* === REMOVED: Old marquee span styling === */
-        /* .marquee-content > span { ... } */
         
         /* === NEW: Skill Marquee Item Styling === */
         .skill-item {
@@ -165,7 +153,6 @@
             color: var(--text-color);
         }
         /* === REMOVED: Devicon font-icon style === */
-        /* .skill-item i { ... } */
         
         /* === NEW: Skill image styling === */
         .skill-img {
@@ -305,7 +292,6 @@
                 gap: 1rem; /* 16px */
             }
             /* === REMOVED: Responsive icon font style === */
-            /* .skill-item i { ... } */
 
             /* === NEW: Responsive image styling === */
             .skill-img {
@@ -389,11 +375,25 @@
         }
         /* === REMOVED old experience/education initial states === */
         
-        #testimonials-h2,
-        #testimonial-card {
+        /* === NEW: Client Title Initial State === */
+        #clients-h2 {
             opacity: 0;
             visibility: hidden;
             transform: translateY(100px);
+        }
+
+        #testimonials-h2,
+        #testimonial-card { /* This is now .testimonial-card-slide, but we'll target the container */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
+        
+        /* === NEW: Initial state for the slider container === */
+        .testimonial-slider-container {
+             opacity: 0;
+             visibility: hidden;
+             transform: translateY(100px);
         }
 
         /* === UPDATED: "What I Did" Section Initial States === */
@@ -403,7 +403,17 @@
             visibility: hidden;
             transform: translateY(100px);
         }
-        /* === REMOVED: #websites-box, #apps-box initial state === */
+        /* === REMOVED: #websites-box, #apps-box initial state (handled by .project-card-3d) === */
+        
+        /* === NEW: Initial State for Brand Guidelines === */
+        #brand-h2,
+        #brand-p,
+        #brand-left-col,
+        #brand-right-col {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(100px);
+        }
 
 
         /* NEW: Social icon styles */
@@ -491,6 +501,7 @@
             background-color: var(--bg-secondary);
             border-radius: 0.5rem; /* 8px */
             padding: 1.5rem; /* 24px */
+            /* === REVERTED: Added static border back === */
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
 
@@ -500,9 +511,12 @@
             transform: translateX(50px);
         }
 
+        /* === REMOVED: Shimmer styles for timeline === */
+        
         .timeline-content:hover {
+            /* === REVERTED: Added border-color change on hover === */
             border-color: var(--accent-color);
-            transform: translateY(-3px) translateX(0px); /* Maintain X transform on hover */
+            transform: translateY(-3px); /* Only vertical movement on hover */
         }
 
         /* Small triangle pointing to the timeline */
@@ -516,7 +530,9 @@
             left: -10px; /* Points left */
             border: medium solid transparent;
             border-width: 10px 10px 10px 0;
-            border-right-color: var(--border-color);
+            /* === REVERTED: Border color matches static border === */
+            border-right-color: var(--border-color); 
+            /* === REMOVED: Shimmer mask properties === */
         }
         .timeline-content::after {
             content: " ";
@@ -542,72 +558,97 @@
             text-decoration: underline;
         }
 
-        /* === REMOVED: Project Video Box Styling === */
-        /* .project-video-box { ... } */
-        /* .project-video-box:hover { ... } */
-        /* .project-video-box video { ... } */
-        /* .project-video-box:hover video { ... } */
-        /* @media (min-width: 768px) { .project-video-box { ... } } */
-        
-        /* === REMOVED: Old Project Video Wrapper Styling === */
-        /* .project-video-wrapper { ... } */
-        /* .project-video-wrapper:hover { ... } */
-        /* .project-video-wrapper video { ... } */
-        /* .project-video-wrapper:hover video { ... } */
+        /* === REMOVED: All old project/video/poster card styles === */
+        /* ... */
 
-        /* === REMOVED: Old Project Content Styling === */
-        /* .project-content { ... } */
-        /* .project-content:hover { ... } */
+        /* === REMOVED: Shimmer Border Class === */
+        /* ... */
 
-        /* === NEW: Project Poster Card Styling === */
-        .project-poster-card {
-            display: block; /* Make the anchor a block */
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
+        /* === NEW: 3D Project Card Layout (Replaces Expanding Card) === */
+        #what-i-did-container {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile-first: 1 column */
+            gap: 2rem;
+            perspective: 1500px; /* Apply perspective to the container for 3D */
+        }
+
+        @media (min-width: 768px) {
+            #what-i-did-container {
+                grid-template-columns: 1fr 1fr; /* 2 columns on desktop */
+                height: 60vh; /* Taller on desktop (from original design) */
+            }
+        }
+
+        .project-card-3d { /* This class replaces .expanding-card */
+            display: block;
+            position: relative;
             border-radius: 0.75rem; /* rounded-xl */
             overflow: hidden;
-            transition: all 0.3s ease-in-out;
-            text-decoration: none; /* No underline on the card */
+            text-decoration: none;
+            height: 400px; /* Taller fixed height for mobile */
+            background-color: var(--bg-secondary); /* Fallback */
+            border: 1px solid var(--border-color); /* Add a border */
+            
+            /* 3D and transition properties */
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Smooth ease-out for mouseleave */
 
-            /* Initial animation state */
+            /* Initial animation state (from old poster card) */
             opacity: 0;
             visibility: hidden;
             transform: translateY(50px) scale(0.95);
         }
-        .project-poster-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            border-color: var(--accent-color);
-            box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.2), 0 8px 10px -6px rgba(124, 58, 237, 0.2);
+        
+        @media (min-width: 768px) {
+             .project-card-3d {
+                 height: 100%; /* Fill container height on desktop */
+             }
         }
-        .project-poster-card .video-container {
-            overflow: hidden; /* Clips the video zoom */
-            aspect-ratio: 16 / 9; /* Ensure video has a consistent shape */
-        }
-        .project-poster-card video {
+
+        .project-card-3d video {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
-            object-cover: cover;
-            transition: transform 0.4s ease-out;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+            z-index: 0;
         }
-        .project-poster-card:hover video {
-            transform: scale(1.05);
+
+        .project-card-3d .card-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            /* Darker overlay to protect text */
+            /* === UPDATED: Made gradient darker and extend further for text visibility === */
+            background: linear-gradient(to top, rgba(18,18,18,0.98) 20%, rgba(18,18,18,0.7) 60%, transparent 100%);
+            transition: background 0.5s ease;
         }
-        /* Style the content inside */
-        .project-poster-card .content {
+
+        .project-card-3d .card-content {
+            position: relative;
+            z-index: 2;
             padding: 2rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Aligns content to bottom */
+            
+            /* Pop content forward in 3D space */
+            transform: translateZ(40px);
         }
-        .project-poster-card .content h3 {
-            /* Use the shimmer text, but also a hover effect */
+
+        /* Content inside the card */
+        .project-card-3d h3 {
             transition: color 0.3s ease;
+            font-size: 2.25rem; /* 4xl */
         }
-        .project-poster-card:hover .content h3 {
-            color: var(--accent-color); /* On hover, make the text accent (shimmer will be overridden) */
+        .project-card-3d:hover h3 {
+            color: var(--accent-color);
         }
-        .project-poster-card .content p {
-            color: var(--text-color-light); /* Ensure p tags get the light text color */
-        }
-         /* Style the "View" link */
-         .project-link {
+        
+        /* .project-link styles from original file */
+        .project-link {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem; /* 8px */
@@ -618,24 +659,152 @@
         .project-link .link-arrow {
             transition: transform 0.3s ease;
         }
-        .project-poster-card:hover .project-link .link-arrow {
+        .project-card-3d:hover .project-link .link-arrow {
             transform: translateX(4px);
         }
+
+        /* === END: 3D Project Card Layout === */
+
+        /* === NEW: Client Marquee Styling === */
+        .client-marquee-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .client-marquee-content {
+            display: inline-block;
+            animation: marquee-scroll-clients 50s linear infinite; /* Slower scroll for clients */
+        }
+        .client-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem; /* 16px */
+            margin: 0 2rem; /* 32px */
+            text-decoration: none;
+        }
+        .client-item img {
+            height: 2.5rem; /* 40px */
+            width: auto;
+            filter: grayscale(100%) brightness(150%);
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        .client-item span {
+            font-size: 1.5rem; /* 2xl */
+            font-weight: 500;
+            color: var(--text-color-light);
+            transition: color 0.3s ease;
+        }
+        .client-item:hover img {
+            filter: none;
+            opacity: 1;
+        }
+        .client-item:hover span {
+            color: var(--text-color);
+        }
+
+        @keyframes marquee-scroll-clients {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        /* === End Client Marquee === */
+
+        /* === NEW: Testimonial Slider Styling === */
+        .testimonial-slider-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem; /* rounded-lg */
+        }
+        .testimonial-slider-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .testimonial-slide {
+            width: 100%;
+            flex-shrink: 0;
+            padding: 0 0.25rem; /* Small gap between slides if needed */
+            box-sizing: border-box;
+        }
+
+        /* Re-style the card to be a class, not ID */
+        .testimonial-card-slide {
+            background-color: var(--bg-color);
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        /* === UPDATED: Testimonial Dots (Moved) === */
+        .testimonial-dots {
+            /* REMOVED position: absolute; */
+            /* REMOVED bottom: 1.5rem; */
+            /* REMOVED left: 50%; */
+            /* REMOVED transform: translateX(-50%); */
+            display: flex;
+            justify-content: center; /* NEW */
+            gap: 0.75rem; /* 12px */
+            /* REMOVED z-index: 10; */
+            margin-top: 2rem; /* NEW */
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .dot:hover {
+            background-color: var(--text-color-light);
+        }
+        .dot.active {
+            background-color: var(--accent-color);
+            transform: scale(1.2);
+        }
+        /* === End Testimonial Slider === */
 
     </style>
 </head>
 <body class="antialiased">
 
+    <!-- === REMOVED: Shimmer Mask SVG === -->
+
     <!-- === CHANGED: Updated header bg and text colors === --><!-- The header has z-50, so it will be ON TOP of the grain (z-0) --><header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0">
+                    <!-- === REMOVED shimmer-text class === -->
                     <a href="#home" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
                 </div>
                 
                 <!-- Desktop Nav. Uses --accent-color on hover --><div class="hidden md:flex md:items-center md:space-x-8">
                     <!-- === NEW: Introduction Link === -->
                     <a href="#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
+                    <!-- === UPDATED: "Work" to "Projects" === -->
+                    <a href="#what-i-did" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
+                    
+                    <!-- === NEW: Services Dropdown === -->
+                    <div class="relative group">
+                        <button class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors flex items-center gap-1 focus:outline-none">
+                            <span>Services</span>
+                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">Web Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">App Development</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">SEO</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Ads</a>
+                            <!-- === UPDATED: Changed "Others" to be specific === -->
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Google Play Console</a>
+                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-b-lg">Performance Marketing</a>
+                        </div>
+                    </div>
+
+                    <!-- === NEW: Clients Link === -->
+                    <a href="#clients" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Clients</a>
                     <a href="#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
                     <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
                         Contact Me
@@ -656,6 +825,28 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
                 <!-- === NEW: Introduction Link === -->
                 <a href="#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
+                <!-- === UPDATED: "Work" to "Projects" === -->
+                <a href="#what-i-did" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                
+                <!-- === UPDATED: Services Links for Mobile (now a toggle) === -->
+                <div class="px-3 py-2">
+                    <button id="services-toggle-mobile" class="w-full flex justify-between items-center text-[var(--text-color-light)] text-base font-medium focus:outline-none">
+                        <span>Services</span>
+                        <i data-lucide="chevron-down" id="services-chevron-mobile" class="w-5 h-5 transition-transform duration-200"></i>
+                    </button>
+                    <div id="services-submenu-mobile" class="pl-4 mt-2 space-y-1 hidden">
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Web Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">App Development</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">SEO</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Ads</a>
+                         <!-- === UPDATED: Changed "Others" to be specific === -->
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Google Play Console</a>
+                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E%20Can%20you%20tell%20me%20more%20about%20it%3F" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Performance Marketing</a>
+                    </div>
+                </div>
+
+                <!-- === NEW: Clients Link === -->
+                <a href="#clients" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Clients</a>
                 <a href="#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
                 <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
             </div>
@@ -830,13 +1021,14 @@
                     
                     <!-- Right: Text -->
                     <div id="intro-text" class="md:col-span-3">
-                        <h2 class="text-4xl font-semibold text-[var(--text-color)] mb-8 shimmer-text">Introduction</h2>
+                        <!-- === FIXED: Removed conflicting text color class === -->
+                        <h2 class="text-4xl font-semibold mb-8 shimmer-text">Introduction</h2>
                         <div class="space-y-6 text-lg text-[var(--text-color-light)]">
                             <p>
-                                I'm a developer based in West Bengal, passionate about building clean, efficient solutions—from native Android apps in <span class="text-[var(--accent-color)] font-medium">Kotlin</span> to smart web automation.
+                                Based in West Bengal, I build clean, efficient solutions, from native <span class="text-[var(--accent-color)] font-medium">Kotlin</span> apps to smart web automations.
                             </p>
                             <p>
-                                I see the full picture, building products that are user-friendly, high-performing, and discoverable.
+                                I build user-friendly, high-performing products, seeing the full picture from concept to launch.
                             </p>
                         </div>
                         <a href="mailto:himangshu.inbox@gmail.com" class="inline-block text-white bg-[var(--accent-color)] hover:opacity-90 px-6 py-3 rounded-full text-base font-medium transition-colors mt-8">
@@ -850,20 +1042,23 @@
 
                     <!-- Left: Experience Part -->
                     <div>
-                        <h3 id="experience-h3" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Experience</h3>
+                        <!-- === FIXED: Removed conflicting text color class === -->
+                        <h3 id="experience-h3" class="text-4xl font-semibold mb-12 shimmer-text">Experience</h3>
                         <div class="timeline-container">
                             
                             <!-- Item 1 -->
                             <div class="timeline-item">
                                 <div class="timeline-node">01</div>
+                                <!-- === REMOVED: shimmer-border class === -->
                                 <div class="timeline-content">
                                     <p class="text-sm text-gray-500">Feb 2025 - Present</p>
-                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Web Developer (Full-time)</h4>
+                                    <!-- === FIXED: Removed conflicting text color class === -->
+                                    <h4 class="text-2xl font-medium my-1 shimmer-text">Web Developer (Full-time)</h4>
                                     <a href="#" title="Visit Blue Minch (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
                                         @ Blue Minch
                                     </a>
                                     <p class="text-[var(--text-color-light)] mt-3">
-                                        Building web solutions and automation systems using GHL & WordPress. Developed an internal AI tool to simplify workflows.
+                                        Building GHL & WordPress solutions and automations. Developed an internal AI tool to simplify workflows.
                                     </p>
                                 </div>
                             </div>
@@ -871,14 +1066,16 @@
                             <!-- Item 2 -->
                             <div class="timeline-item">
                                 <div class="timeline-node">02</div>
+                                <!-- === REMOVED: shimmer-border class === -->
                                 <div class="timeline-content">
                                     <p class="text-sm text-gray-500">June 2021 - Present</p>
-                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">Lead Developer (Freelance)</h4>
+                                    <!-- === FIXED: Removed conflicting text color class === -->
+                                    <h4 class="text-2xl font-medium my-1 shimmer-text">Lead Developer (Freelance)</h4>
                                     <a href="#" title="Visit Born2Earn (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
                                         @ Born2Earn
                                     </a>
                                     <p class="text-[var(--text-color-light)] mt-3">
-                                        Led full-stack development of the app and website. Manage Google Play Console, brand design, and performance marketing.
+                                        Led full-stack app/web development. Manage Google Play Console, branding, and performance marketing.
                                     </p>
                                 </div>
                             </div>
@@ -889,15 +1086,18 @@
 
                     <!-- Right: Education Part === -->
                     <div>
-                        <h3 id="education-h3" class="text-4xl font-semibold text-[var(--text-color)] mb-12 shimmer-text">Education</h3>
+                        <!-- === FIXED: Removed conflicting text color class === -->
+                        <h3 id="education-h3" class_Hasync="AF5u-S-0-g1C5bQ-AGx3oN150M9JmUq_hA" class="text-4xl font-semibold mb-12 shimmer-text">Education</h3>
                         <div class="timeline-container">
                             
                             <!-- Item 1 -->
                             <div class="timeline-item">
                                 <div class="timeline-node">01</div>
+                                <!-- === REMOVED: shimmer-border class === -->
                                 <div class="timeline-content">
                                     <p class="text-sm text-gray-500">2022 - 2025</p>
-                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">BCA (Bachelor of Computer Applications)</h4>
+                                    <!-- === FIXED: Removed conflicting text color class === -->
+                                    <h4 class="text-2xl font-medium my-1 shimmer-text">BCA (Bachelor of Computer Applications)</h4>
                                     <a href="#" title="Visit Inspiria Knowledge Campus (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
                                         @ Inspiria Knowledge Campus (Makaut)
                                     </a>
@@ -907,9 +1107,11 @@
                             <!-- Item 2 -->
                             <div class="timeline-item">
                                 <div class="timeline-node">02</div>
+                                <!-- === REMOVED: shimmer-border class === -->
                                 <div class="timeline-content">
                                     <p class="text-sm text-gray-500">2022</p>
-                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">12th, Arts</h4>
+                                    <!-- === FIXED: Removed conflicting text color class === -->
+                                    <h4 class="text-2xl font-medium my-1 shimmer-text">12th, Arts</h4>
                                     <a href="#" title="Visit Trinity High School (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
                                         @ Trinity High School (ISC)
                                     </a>
@@ -919,9 +1121,11 @@
                             <!-- Item 3 -->
                             <div class="timeline-item">
                                 <div class="timeline-node">03</div>
+                                <!-- === REMOVED: shimmer-border class === -->
                                 <div class="timeline-content">
                                     <p class="text-sm text-gray-500">2020</p>
-                                    <h4 class="text-2xl font-medium text-[var(--text-color)] my-1 shimmer-text">10th</h4>
+                                    <!-- === FIXED: Removed conflicting text color class === -->
+                                    <h4 class="text-2xl font-medium my-1 shimmer-text">10th</h4>
                                     <a href="#" title="Visit New Light Academy (placeholder)" target="_blank" rel="noopener noreferrer" class="timeline-content-link text-lg">
                                         @ New Light Academy
                                     </a>
@@ -957,27 +1161,29 @@
         <!-- === REBUILT: Recent Projects Section === -->
         <section id="what-i-did" class="py-20 md:py-32 overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 id="what-i-did-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-4 text-center shimmer-text">What I do</h2>
+                <!-- === FIXED: Removed conflicting text color class === -->
+                <h2 id="what-i-did-h2" class="text-4xl font-semibold mb-4 text-center shimmer-text">What I do</h2>
                 <p id="what-i-did-p" class="text-lg text-[var(--text-color-light)] text-center max-w-2xl mx-auto mb-12">
-                    I build efficient, smart, and scalable digital solutions from concept to launch.
+                    I build smart, scalable digital solutions from concept to launch.
                 </p>
                 
-                <!-- === UPDATED: Creative Layout (Poster Cards) === -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <!-- === UPDATED: Creative Layout (3D Tilt Cards) === -->
+                <div id="what-i-did-container">
                     
                     <!-- Project 1: Websites -->
-                    <a href="#" id="websites-box" class="project-poster-card">
-                        <!-- Video Container -->
-                        <div class="video-container bg-[var(--bg-secondary)]">
-                            <video src="https://born2earn.in/himanghu/webbg.mp4" class="w-full h-full object-cover" autoplay loop muted playsinline preload="auto">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
+                    <!-- === CHANGED: class="expanding-card" to "project-card-3d" === -->
+                    <!-- === REMOVED: .content-hidden wrapper === -->
+                    <a href="#" id="websites-box" class="project-card-3d">
+                        <!-- Video Background -->
+                        <video src="https://born2earn.in/himanghu/webbg.mp4" class="absolute inset-0 w-full h-full object-cover z-0" autoplay loop muted playsinline preload="auto"></video>
+                        <!-- Overlay -->
+                        <div class="card-overlay"></div>
                         <!-- Content -->
-                        <div class="content">
-                            <h3 class="text-3xl font-bold text-[var(--text-color)] mb-3 shimmer-text">Websites</h3>
+                        <div class="card-content">
+                            <!-- === FIXED: Removed conflicting text color class === -->
+                            <h3 class="text-3xl md:text-4xl font-bold mb-3 shimmer-text">Websites</h3>
                             <p class="text-lg text-[var(--text-color-light)] mb-4">
-                                I specialize in building custom web solutions and automation systems using GoHighLevel (GHL) and WordPress. I also develop internal AI tools to simplify and accelerate workflows.
+                                I build custom web solutions and automations using GoHighLevel & WordPress, and develop internal AI tools to accelerate workflows.
                             </p>
                             <div class="project-link">
                                 <span>View Projects</span>
@@ -987,18 +1193,19 @@
                     </a>
 
                     <!-- Project 2: Mobile Apps -->
-                    <a href="#" id="apps-box" class="project-poster-card">
-                        <!-- Video Container -->
-                        <div class="video-container bg-[var(--bg-secondary)]">
-                            <video src="https://born2earn.in/himanghu/appbg.mp4" class="w-full h-full object-cover" autoplay loop muted playsinline preload="auto">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
+                    <!-- === CHANGED: class="expanding-card" to "project-card-3d" === -->
+                    <!-- === REMOVED: .content-hidden wrapper === -->
+                    <a href="#" id="apps-box" class="project-card-3d">
+                        <!-- Video Background -->
+                        <video src="https://born2earn.in/himanghu/appbg.mp4" class="absolute inset-0 w-full h-full object-cover z-0" autoplay loop muted playsinline preload="auto"></video>
+                        <!-- Overlay -->
+                        <div class="card-overlay"></div>
                         <!-- Content -->
-                        <div class="content">
-                            <h3 class="text-3xl font-bold text-[var(--text-color)] mb-3 shimmer-text">Mobile Apps</h3>
-                            <p class="text-lg text-[var(--text-color-light)] mb-4">
-                                I create full-stack, native Android applications using Kotlin. My focus is on building apps with clean, intuitive user interfaces and efficient, high-performing backend logic.
+                        <div class="card-content">
+                            <!-- === FIXED: Removed conflicting text color class === -->
+                            <h3 class="text-3xl md:text-4xl font-bold mb-3 shimmer-text">Mobile Apps</h3>
+                             <p class="text-lg text-[var(--text-color-light)] mb-4">
+                                I create native Android apps with Kotlin, focusing on clean UIs and high-performing backend logic.
                             </p>
                             <div class="project-link">
                                 <span>View Apps</span>
@@ -1012,39 +1219,210 @@
         </section>
         <!-- === END: Recent Projects Section === -->
 
-
-        <!-- === REMOVED: Duplicated Skills Marquee Section === -->
-
-        <!-- === REMOVED: Duplicated Scroll-Down Arrow Section === -->
-
-        <!-- === REMOVED: Work Experience Section === -->
-
-        <!-- REMOVED Featured Projects Section --><!-- === CHANGED: Added section-glow === --><section id="testimonials" class="pb-20 md:pb-32 overflow-hidden section-glow">
+        <!-- === UPDATED: Renamed Section === -->
+        <section id="style-guide" class="py-20 md:py-32 overflow-hidden section-glow">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <!-- === CHANGED: Testimonial text colors === --><h2 id="testimonials-h2" class="text-4xl font-semibold text-[var(--text-color)] mb-12 text-center shimmer-text">What My Clients Say</h2>
-                
-                <div id="testimonial-card" class="max-w-5xl mx-auto bg-[var(--bg-color)] rounded-lg shadow-xl overflow-hidden md:flex">
-                    <div class="md:w-1/3">
-                        <!-- === CHANGED: Placeholder === --><img src="https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo" alt="Testimonial Client" class="w-full h-64 md:h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo';">
+                <h2 id="brand-h2" class="text-4xl font-semibold mb-4 text-center shimmer-text">Style Guide</h2>
+                <p id="brand-p" class="text-lg text-[var(--text-color-light)] text-center max-w-2xl mx-auto mb-16">
+                    A look at the visual identity that defines this portfolio.
+                </p>
+    
+                <div id="brand-grid" class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
+                    
+                    <!-- Left Column: Typography & Logo -->
+                    <div id="brand-left-col" class="space-y-12">
+                        <!-- Typography -->
+                        <div>
+                            <h3 class="text-2xl font-medium text-[var(--text-color)] mb-6">Typography</h3>
+                            <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg p-6">
+                                <h4 class="text-6xl font-black text-[var(--text-color)]">Satoshi</h4>
+                                <!-- === UPDATED: Replaced list with a compact grid === -->
+                                <div class="mt-6 grid grid-cols-2 gap-6">
+                                    <div>
+                                        <p class="text-3xl font-bold text-[var(--text-color)]">Bold</p>
+                                        <p class="text-[var(--text-color-light)] font-mono">700</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-3xl font-medium text-[var(--text-color)]">Medium</p>
+                                        <p class="text-[var(--text-color-light)] font-mono">500</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-3xl font-normal text-[var(--text-color)]">Regular</p>
+                                        <p class="text-[var(--text-color-light)] font-mono">400</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-3xl font-light text-[var(--text-color)]">Light</p>
+                                        <p class="text-[var(--text-color-light)] font-mono">300</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
-                    <div class="md:w-2/3 p-10 md:p-16 flex flex-col justify-center">
-                        <svg class="w-16 h-16 text-[var(--accent-color)] mb-6" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 32H12L16 16V0H0V32ZM28 32H40L44 16V0H28V32Z" fill="currentColor"/>
-                        </svg>
-                        
-                        <p class="text-2xl font-light text-[var(--text-color-light)] mb-8">
-                            "Working with Himangshu has been transformative for our business. He took the time to understand our goals and delivered measurable results. He is genuinely invested in our success and is a pleasure to work with."
-                        </p>
-                        
-                        <div class="flex items-center">
-                            <!-- === CHANGED: Placeholder === --><img src="https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo" alt="Client Logo" class="h-8 mr-4" onerror="this.onerror=null;this.src='https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo';">
-                            <div>
-                                <p class="font-bold text-[var(--text-color)] text-lg">Mike Gore</p>
-                                <p class="text-gray-500">CEO - Charitabl</p>
+    
+                    <!-- Right Column: Color Palette -->
+                    <div id="brand-right-col">
+                        <h3 class="text-2xl font-medium text-[var(--text-color)] mb-6">Color Palette</h3>
+                        <!-- === UPDATED: Replaced 4 cards with one compact palette card === -->
+                        <div class="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg p-6">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <!-- Color 1 -->
+                                <div>
+                                    <div class="h-20 w-full rounded-md border border-[var(--border-color)]" style="background-color: #7C3AED;"></div>
+                                    <p class="font-medium text-[var(--text-color)] mt-2">Accent</p>
+                                    <p class="font-mono text-sm text-[var(--text-color-light)]">#7C3AED</p>
+                                </div>
+                                <!-- Color 2 -->
+                                <div>
+                                    <div class="h-20 w-full rounded-md border border-[var(--border-color)]" style="background-color: #F5F5F5;"></div>
+                                    <p class="font-medium text-[var(--text-color)] mt-2">Text</p>
+                                    <p class="font-mono text-sm text-[var(--text-color-light)]">#F5F5F5</p>
+                                </div>
+                                <!-- Color 3 -->
+                                <div>
+                                    <div class="h-20 w-full rounded-md border border-[var(--border-color)]" style="background-color: #1E1E1E;"></div>
+                                    <p class="font-medium text-[var(--text-color)] mt-2">Surface</p>
+                                    <p class="font-mono text-sm text-[var(--text-color-light)]">#1E1E1E</p>
+                                </div>
+                                <!-- Color 4 -->
+                                <div>
+                                    <div class="h-20 w-full rounded-md border border-[var(--border-color)]" style="background-color: #121212;"></div>
+                                    <p class="font-medium text-[var(--text-color)] mt-2">Background</p>
+                                    <p class="font-mono text-sm text-[var(--text-color-light)]">#121212</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+        <!-- === END: Style Guide Section === -->
+
+
+        <!-- === NEW: Client Marquee Section === -->
+        <section id="clients" class="py-12 md:py-16 bg-[var(--bg-color)] overflow-hidden border-y border-[var(--border-color)]">
+            <!-- === NEW: Client Section Title === -->
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+                <h2 id="clients-h2" class="text-4xl font-semibold text-center shimmer-text">Trusted By</h2>
+            </div>
+            
+            <div class="client-marquee-wrapper">
+                <div class="client-marquee-content">
+                    <!-- Add client items here -->
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+A&font=sans" alt="Client A Logo" class="">
+                        <span class="text-2xl">Client A</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+B&font=sans" alt="Client B Logo" class="">
+                        <span class="text-2xl">Client B</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+C&font=sans" alt="Client C Logo" class="">
+                        <span class="text-2xl">Client C</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+D&font=sans" alt="Client D Logo" class="">
+                        <span class="text-2xl">Client D</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+E&font=sans" alt="Client E Logo" class="">
+                        <span class="text-2xl">Client E</span>
+                    </a>
+                    <!-- Duplicate for seamless scroll -->
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+A&font=sans" alt="Client A Logo" class="">
+                        <span class="text-2xl">Client A</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+B&font=sans" alt="Client B Logo" class="">
+                        <span class="text-2xl">Client B</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+C&font=sans" alt="Client C Logo" class="">
+                        <span class="text-2xl">Client C</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+D&font=sans" alt="Client D Logo" class="">
+                        <span class="text-2xl">Client D</span>
+                    </a>
+                    <a href="#" target="_blank" rel="noopener" class="client-item">
+                        <img src="https://placehold.co/150x60/1E1E1E/F5F5F5?text=Client+E&font=sans" alt="Client E Logo" class="">
+                        <span class="text-2xl">Client E</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- === END: Client Marquee Section === -->
+
+
+        <!-- === UPDATED: Testimonials Section (Now a Slider) === -->
+        <!-- === CHANGED: Added section-glow and py-20 md:py-32 === -->
+        <section id="testimonials" class="py-20 md:py-32 overflow-hidden section-glow">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- === FIXED: Removed conflicting text color class === -->
+                <h2 id="testimonials-h2" class="text-4xl font-semibold mb-12 text-center shimmer-text">What My Clients Say</h2>
+                
+                <!-- === NEW: Slider Structure === -->
+                <div class="testimonial-slider-container max-w-5xl mx-auto">
+                    <div class="testimonial-slider-track flex">
+                        
+                        <!-- Slide 1 -->
+                        <div class="testimonial-slide">
+                            <div class="testimonial-card-slide md:flex">
+                                <div class="md:w-1/3">
+                                    <img src="https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo" alt="Testimonial Client" class="w-full h-64 md:h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x600/F5F5F5/121212?text=Client+Photo';">
+                                </div>
+                                <div class="md:w-2/3 p-10 md:p-16 flex flex-col justify-center">
+                                    <svg class="w-16 h-16 text-[var(--accent-color)] mb-6" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 32H12L16 16V0H0V32ZM28 32H40L44 16V0H28V32Z" fill="currentColor"/>
+                                    </svg>
+                                    <p class="text-2xl font-light text-[var(--text-color-light)] mb-8">
+                                        "Himangshu's work was transformative. He understood our goals, delivered measurable results, and was genuinely invested in our success. A pleasure to work with."
+                                    </p>
+                                    <div class="flex items-center">
+                                        <img src="https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo" alt="Client Logo" class="h-8 mr-4" onerror="this.onerror=null;this.src='https://placehold.co/100x40/121212/F5F5F5?text=Client+Logo';">
+                                        <div>
+                                            <p class="font-bold text-[var(--text-color)] text-lg">Mike Gore</p>
+                                            <p class="text-gray-500">CEO - Charitabl</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 (Placeholder) -->
+                        <div class="testimonial-slide">
+                            <div class="testimonial-card-slide md:flex">
+                                <div class="md:w-1/3">
+                                    <img src="https://placehold.co/500x600/F5F5F5/121212?text=Jane+Smith" alt="Testimonial Client" class="w-full h-64 md:h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/500x600/F5F5F5/121212?text=Jane+Smith';">
+                                </div>
+                                <div class="md:w-2/3 p-10 md:p-16 flex flex-col justify-center">
+                                    <svg class="w-16 h-16 text-[var(--accent-color)] mb-6" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 32H12L16 16V0H0V32ZM28 32H40L44 16V0H28V32Z" fill="currentColor"/>
+                                    </svg>
+                                    <p class="text-2xl font-light text-[var(--text-color-light)] mb-8">
+                                        "The communication was seamless, and the final product exceeded our expectations. Himangshu is a reliable and highly skilled developer."
+                                    </p>
+                                    <div class="flex items-center">
+                                        <img src="https://placehold.co/100x40/121212/F5F5F5?text=Startup+Inc" alt="Client Logo" class="h-8 mr-4" onerror="this.onerror=null;this.src='https://placehold.co/100x40/121212/F5F5F5?text=Startup+Inc';">
+                                        <div>
+                                            <p class="font-bold text-[var(--text-color)] text-lg">Jane Smith</p>
+                                            <p class="text-gray-500">Founder - Startup Inc</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- === REMOVED: Slide 3 === -->
+
+                    </div>
+                </div>
+                <!-- Dots Navigation (Moved Outside) -->
+                <div class="testimonial-dots"></div>
+                <!-- === END: Slider Structure === -->
+
             </div>
         </section>
 
@@ -1052,36 +1430,20 @@
 
     <!-- === REMOVED: Social FABs === --><!-- === CHANGED: Footer bg and border === --><!-- Added `relative z-50` so it sits ON TOP of the grain (z-0) --><footer class="bg-[var(--bg-color)] text-white relative z-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- === UPDATED: Footer Grid (3-col) === -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
+                    <!-- === REMOVED shimmer-text class === -->
                     <h3 class="text-2xl font-bold">Himangshu Paul</h3>
                     <p class="text-gray-400 mt-2">Full Stack & Android Developer</p>
                 </div>
                 
-                <!-- === NEW: Palette moved to footer === --><div>
-                    <h4 class="font-semibold text-lg mb-4 shimmer-text">Palette</h4>
-                    <div class="flex flex-wrap justify-start gap-x-4 gap-y-2">
-                        <div class="flex items-center space-x-2">
-                            <div class="palette-color" style="background-color: #7C3AED;"></div>
-                            <span class="text-sm text-gray-400 font-mono">#7C3AED</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="palette-color" style="background-color: #F5F5F5;"></div>
-                            <span class="text-sm text-gray-400 font-mono">#F5F5F5</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="palette-color" style="background-color: #1E1E1E;"></div>
-                            <span class="text-sm text-gray-400 font-mono">#1E1E1E</span>
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <div class="palette-color" style="background-color: #121212;"></div>
-                            <span class="text-sm text-gray-400 font-mono">#121212</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- === REMOVED: Palette section === -->
                 
-                <div class="md:col-start-3">
-                    <h4 class="font-semibold text-lg mb-4 shimmer-text">Contact</h4>
+                <!-- === UPDATED: Removed col-start-3 === -->
+                <div>
+                    <!-- === REMOVED shimmer-text class === -->
+                    <h4 class="font-semibold text-lg mb-4">Contact</h4>
                     <ul class="space-y-2 text-gray-300">
                         <li><a href="mailto:himangshu.inbox@gmail.com" class="hover:text-[var(--accent-color)] transition-colors">himangshu.inbox@gmail.com</a></li>
                         <li><a href="tel:+919564604956" class="hover:text-[var(--accent-color)] transition-colors">+91 9564604956</a></li>
@@ -1089,7 +1451,8 @@
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-lg mb-4 shimmer-text">Follow</h4>
+                    <!-- === REMOVED shimmer-text class === -->
+                    <h4 class="font-semibold text-lg mb-4">Follow</h4>
                     <div class="flex space-x-6">
                         <!-- === FIXED: Replaced inline SVGs with lucide icons === --><a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
                             <i data-lucide="linkedin" class="w-6 h-6"></i>
@@ -1108,8 +1471,9 @@
                 <p class="text-gray-400 text-sm">
                     &copy; <span id="current-year"></span> Himangshu Paul
                 </P>
+                <!-- === UPDATED: Footer Credit Line === -->
                 <p class="text-gray-500 text-sm mt-2 sm:mt-0">
-                    Design inspired by lightfielddigital.com.au
+                    Designed with ❤️
                 </p>
             </div>
         </div>
@@ -1250,16 +1614,40 @@
                 duration: 1, y: 0, autoAlpha: 1, delay: 0.1, ease: "power3.out"
             });
             
-            <!-- === UPDATED: Animate Project 1 (Websites) === -->
+            <!-- === UPDATED: Animate Project 1 (Websites) - Now targets .project-card-3d === -->
             gsap.to("#websites-box", {
                 scrollTrigger: { trigger: "#websites-box", start: "top 85%", toggleActions: "play none none none" },
                 duration: 0.8, y: 0, scale: 1, autoAlpha: 1, delay: 0.2, ease: "power3.out"
             });
 
-            <!-- === UPDATED: Animate Project 2 (Apps) === -->
+            <!-- === UPDATED: Animate Project 2 (Apps) - Now targets .project-card-3d === -->
             gsap.to("#apps-box", {
                 scrollTrigger: { trigger: "#apps-box", start: "top 85%", toggleActions: "play none none none" },
                 duration: 0.8, y: 0, scale: 1, autoAlpha: 1, delay: 0.3, ease: "power3.out"
+            });
+
+            // === UPDATED: Style Guide Animation ===
+            gsap.to("#brand-h2", {
+                scrollTrigger: { trigger: "#style-guide", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
+            });
+            gsap.to("#brand-p", {
+                scrollTrigger: { trigger: "#style-guide", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, delay: 0.1, ease: "power3.out"
+            });
+            gsap.to("#brand-left-col", {
+                scrollTrigger: { trigger: "#brand-grid", start: "top 85%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out"
+            });
+            gsap.to("#brand-right-col", {
+                scrollTrigger: { trigger: "#brand-grid", start: "top 85%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, delay: 0.3, ease: "power3.out"
+            });
+
+            // === NEW: Client Section Title Animation ===
+            gsap.to("#clients-h2", {
+                scrollTrigger: { trigger: "#clients", start: "top 80%", toggleActions: "play none none none" },
+                duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
             });
 
             // NEW: Testimonials Section Animation
@@ -1267,8 +1655,9 @@
                 scrollTrigger: { trigger: "#testimonials", start: "top 80%", toggleActions: "play none none none" },
                 duration: 1, y: 0, autoAlpha: 1, ease: "power3.out"
             });
-            gsap.to("#testimonial-card", {
-                scrollTrigger: { trigger: "#testimonial-card", start: "top 85%", toggleActions: "play none none none" },
+            // === UPDATED: Target the new slider container ===
+            gsap.to(".testimonial-slider-container", {
+                scrollTrigger: { trigger: ".testimonial-slider-container", start: "top 85%", toggleActions: "play none none none" },
                 duration: 1, y: 0, autoAlpha: 1, delay: 0.2, ease: "power3.out"
             });
 
@@ -1289,6 +1678,19 @@
                 menuIconClose.classList.toggle('hidden', isHidden);
             });
             
+            // === NEW: Mobile Submenu Toggle for Services ===
+            const servicesToggleMobile = document.getElementById('services-toggle-mobile');
+            const servicesSubmenuMobile = document.getElementById('services-submenu-mobile');
+            const servicesChevronMobile = document.getElementById('services-chevron-mobile');
+
+            if (servicesToggleMobile) {
+                servicesToggleMobile.addEventListener('click', () => {
+                    const isHidden = servicesSubmenuMobile.classList.toggle('hidden');
+                    servicesChevronMobile.classList.toggle('rotate-180', !isHidden);
+                });
+            }
+            // === END: Mobile Submenu Toggle ===
+            
             // Close mobile menu when a link is clicked
             const mobileLinks = mobileMenu.querySelectorAll('a');
             mobileLinks.forEach(link => {
@@ -1298,6 +1700,117 @@
                     menuIconClose.classList.add('hidden');
                 });
             });
+
+            // === NEW: 3D Project Card Tilt Effect ===
+            const cards = document.querySelectorAll('.project-card-3d');
+            const maxTilt = 12; // Max tilt angle in degrees
+
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    // Only apply on non-touch devices
+                    if (window.matchMedia("(pointer: fine)").matches) {
+                        const rect = card.getBoundingClientRect();
+                        const cardWidth = rect.width;
+                        const cardHeight = rect.height;
+                        const cardX = rect.left + cardWidth / 2;
+                        const cardY = rect.top + cardHeight / 2;
+                        
+                        // Get mouse position relative to card center
+                        const mouseX = e.clientX - cardX;
+                        const mouseY = e.clientY - cardY;
+                        
+                        // Calculate tilt
+                        // Invert mouseY for natural rotation (mouse up -> tilt top back)
+                        const rotateX = (-maxTilt * mouseY) / (cardHeight / 2);
+                        const rotateY = (maxTilt * mouseX) / (cardWidth / 2);
+
+                        // Apply the transform
+                        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`; // Add a slight scale for pop
+                        card.style.transition = 'transform 0.1s linear'; // Make transition fast
+                    }
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    if (window.matchMedia("(pointer: fine)").matches) {
+                        // Reset transform
+                        card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
+                        card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)'; // Smooth ease-out
+                    }
+                });
+
+                // Add touch listeners to just enable the hover/focus state for tap
+                 card.addEventListener('touchstart', () => {
+                     // This will trigger :hover CSS states on some mobile browsers
+                 }, { passive: true });
+            });
+
+
+            // === NEW: Testimonial Slider Logic ===
+            const sliderContainer = document.querySelector('.testimonial-slider-container');
+            if (sliderContainer) {
+                const sliderTrack = document.querySelector('.testimonial-slider-track');
+                const slides = Array.from(sliderTrack.children);
+                const dotsContainer = document.querySelector('.testimonial-dots');
+                let currentSlide = 0;
+                let slideInterval;
+
+                // 1. Create Dots
+                if (dotsContainer) {
+                    slides.forEach((_, i) => {
+                        const dot = document.createElement('button');
+                        dot.classList.add('dot');
+                        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                        if (i === 0) dot.classList.add('active');
+                        
+                        dot.addEventListener('click', () => {
+                            goToSlide(i);
+                            resetInterval(); // Reset timer on manual click
+                        });
+                        dotsContainer.appendChild(dot);
+                    });
+                }
+
+                const dots = dotsContainer ? Array.from(dotsContainer.children) : [];
+
+                // 2. GoToSlide Function
+                function goToSlide(index) {
+                    if (index < 0 || index >= slides.length || !sliderTrack) return;
+                    sliderTrack.style.transform = `translateX(-${index * 100}%)`;
+                    currentSlide = index;
+                    updateDots();
+                }
+
+                // 3. Update Dots Function
+                function updateDots() {
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentSlide);
+                    });
+                }
+
+                // 4. NextSlide Function
+                function nextSlide() {
+                    const nextSlideIndex = (currentSlide + 1) % slides.length;
+                    goToSlide(nextSlideIndex);
+                }
+
+                // 5. Interval Functions
+                function startInterval() {
+                    // Start interval only if there is more than one slide
+                    if (slides.length > 1) {
+                        slideInterval = setInterval(nextSlide, 5000); // 5 seconds
+                    }
+                }
+
+                function resetInterval() {
+                    clearInterval(slideInterval);
+                    startInterval();
+                }
+
+                // Initial setup
+                goToSlide(0);
+                startInterval();
+            }
+
 
             // Set current year in footer
             document.getElementById('current-year').textContent = new Date().getFullYear();
