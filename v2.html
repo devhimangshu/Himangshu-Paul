@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himangshu Paul - Full Stack & Android Developer</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='15' fill='%234f46e5' /%3E%3Ctext x='50' y='55' font-size='50' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'%3EHP%3C/text%3E%3C/svg%3E">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Fonts: Satoshi -->
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
+    
+    <!-- Lenis (Smooth Scroll) -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <style>
+        /* === PALETTE (Light Theme High-End) === */
+        :root {
+            --bg-void: #ffffff;
+            --bg-surface: #f8fafc;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-light: #94a3b8;
+            --accent-primary: #4f46e5; /* Indigo 600 */
+            --accent-secondary: #7c3aed; /* Violet 600 */
+            --accent-tertiary: #ec4899; /* Pink 600 */
+            --border-light: rgba(0, 0, 0, 0.06);
+            --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Global Settings */
+        html { scroll-behavior: initial; } /* Disable native smooth scroll to let Lenis handle it */
+        html.lenis, html.lenis body { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        /* === AMBIENT BACKGROUND BLOBS === */
+        .blob-cont {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -2;
+            overflow: hidden; pointer-events: none; background: #fff;
+        }
+        .blob {
+            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5;
+            animation: floatBlob 10s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .blob-1 { width: 600px; height: 600px; background: #e0e7ff; top: -10%; left: -10%; animation-delay: 0s; }
+        .blob-2 { width: 500px; height: 500px; background: #fae8ff; bottom: -10%; right: -10%; animation-delay: -2s; }
+        .blob-3 { width: 400px; height: 400px; background: #ede9fe; top: 40%; left: 40%; animation-delay: -4s; }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 50px) scale(1.1); }
+        }
+
+        /* === TYPOGRAPHY EFFECTS === */
+        .text-outline {
+            -webkit-text-stroke: 1.5px var(--text-primary); color: transparent; transition: all 0.3s ease;
+        }
+        .text-outline:hover { -webkit-text-stroke: 0px; color: var(--accent-primary); }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .shimmer-text {
+            background: linear-gradient(90deg, var(--text-primary) 0%, #94a3b8 50%, var(--text-primary) 100%);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+        @keyframes shimmer { to { background-position: 200% center; } }
+
+        /* === 3D CARDS === */
+        .perspective-container { perspective: 2000px; }
+        .card-3d {
+            transform-style: preserve-3d; transition: transform 0.1s ease-out;
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: var(--card-shadow);
+            position: relative;
+        }
+        .card-inner-clip {
+            overflow: hidden; border-radius: inherit; width: 100%; height: 100%; position: relative; z-index: 1;
+        }
+        .card-content-pop { transform: translateZ(30px); z-index: 10; }
+        
+        /* === MAGNET BUTTONS === */
+        .magnet-btn {
+            position: relative; display: inline-flex; justify-content: center; align-items: center;
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* === NAVIGATION === */
+        nav { transition: all 0.3s ease; }
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        /* Dropdown */
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0) translateX(-50%); }
+        .dropdown-menu {
+            opacity: 0; visibility: hidden; transform: translateY(10px) translateX(-50%);
+            transition: all 0.2s ease;
+        }
+
+        /* === SPLASH SCREEN === */
+        .preloader {
+            position: fixed; inset: 0; background: #fff; z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .counter { font-size: 10vw; font-weight: 900; color: #000; letter-spacing: -0.05em; }
+        .loading-bar { width: 0%; height: 4px; background: var(--accent-primary); margin-top: 20px; }
+
+        /* === CURSOR === */
+        .cursor-dot {
+            width: 8px; height: 8px; background: #000; position: fixed; border-radius: 50%;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid rgba(0,0,0,0.2); position: fixed;
+            border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* === MARQUEE === */
+        .marquee-wrap { overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .marquee-track { display: flex; gap: 4rem; animation: scroll 40s linear infinite; white-space: nowrap; }
+        @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* === MOBILE MENU === */
+        .mobile-menu-overlay {
+            position: fixed; inset: 0; background: #fff; z-index: 100;
+            transform: translateY(-100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .mobile-menu-overlay.active { transform: translateY(0); }
+
+        /* === TIMELINE === */
+        .timeline-container { position: relative; }
+        .timeline-line { 
+            position: absolute; left: 19px; top: 10px; bottom: 0; width: 2px; background: #e2e8f0; 
+        }
+        .timeline-item { position: relative; padding-left: 4rem; padding-bottom: 3rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-node {
+            position: absolute; left: 0; top: 0; width: 2.5rem; height: 2.5rem;
+            background: var(--accent-primary); border-radius: 50%; color: white;
+            display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem;
+            border: 4px solid #fff; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10;
+        }
+        .timeline-content {
+            background: #fff; border: 1px solid var(--border-light); border-radius: 0.75rem; padding: 1.5rem;
+            box-shadow: var(--card-shadow); transition: transform 0.3s ease;
+        }
+        .timeline-content:hover { transform: translateY(-5px); border-color: var(--accent-primary); }
+
+        /* === TESTIMONIAL SLIDER === */
+        .testimonial-slide { display: none; animation: fadeUp 0.5s ease forwards; }
+        .testimonial-slide.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === ROTATING BADGE === */
+        .rotating-text { animation: rotate 10s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* GHL Icon Color */
+        .ghl-icon { fill: #000; transition: fill 0.3s; }
+        .group:hover .ghl-icon { fill: var(--accent-primary); }
+        
+        /* Scroll Mouse */
+        .scroll-mouse {
+            width: 26px; height: 42px; border: 2px solid var(--text-secondary); border-radius: 20px; position: relative;
+        }
+        .scroll-wheel {
+            width: 4px; height: 8px; background: var(--text-secondary); border-radius: 2px;
+            position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+            animation: mouseScroll 2s infinite;
+        }
+        @keyframes mouseScroll {
+            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(15px); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Ambient Blobs -->
+    <div class="blob-cont">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Splash Screen -->
+    <div class="preloader" id="preloader">
+        <div class="counter-container overflow-hidden"><div class="counter" id="counter">0%</div></div>
+        <div class="loading-bar" id="loading-bar"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
+            <a href="#home" class="text-2xl font-black tracking-tighter z-50 relative magnet-btn">
+                HP<span class="text-indigo-600">.</span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#introduction" class="text-sm font-medium text-gray-600 hover:text-black transition-colors magnet-btn">Introduction</a>
+                <a href="#projects" class="text-sm font-medium text-gray-600 hover:text-black transition-colors magnet-btn">Projects</a>
+                
+                <!-- Services Dropdown (Restored Full Links) -->
+                <div class="relative dropdown group h-24 flex items-center">
+                    <button class="text-sm font-medium text-gray-600 group-hover:text-black transition-colors magnet-btn flex items-center gap-1">
+                        Services <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                    <div class="dropdown-menu absolute top-20 left-1/2 w-64 bg-white/95 backdrop-blur-md border border-gray-100 rounded-xl shadow-xl p-2 z-50">
+                        <a href="/services" class="block px-4 py-3 text-sm font-bold text-gray-800 hover:bg-gray-50 rounded-lg">All Services</a>
+                        <div class="h-px bg-gray-100 my-1"></div>
+                        <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20Web%20Development" target="_blank" class="block px-4 py-2 text-sm text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Web Development</a>
+                        <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20App%20Development" target="_blank" class="block px-4 py-2 text-sm text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">App Development</a>
+                        <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20SEO" target="_blank" class="block px-4 py-2 text-sm text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">SEO & Ads</a>
+                        <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20Google%20Play%20Console" target="_blank" class="block px-4 py-2 text-sm text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Google Play Console</a>
+                        <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20Performance%20Marketing" target="_blank" class="block px-4 py-2 text-sm text-gray-600 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg">Performance Marketing</a>
+                    </div>
+                </div>
+
+                <a href="#clients" class="text-sm font-medium text-gray-600 hover:text-black transition-colors magnet-btn">Clients</a>
+                <a href="#testimonials" class="text-sm font-medium text-gray-600 hover:text-black transition-colors magnet-btn">Testimonials</a>
+                
+                <a href="mailto:himangshu.inbox@gmail.com" class="px-6 py-2 rounded-full bg-black hover:bg-indigo-600 text-white text-sm font-medium transition-all magnet-btn shadow-lg hover:shadow-indigo-500/30">
+                    Contact Me
+                </a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button id="menu-toggle" class="md:hidden z-50 text-black focus:outline-none">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobile-menu">
+        <nav class="flex flex-col space-y-6 text-center">
+            <a href="#introduction" class="text-3xl font-bold hover:text-indigo-600 transition-colors menu-link">Introduction</a>
+            <a href="#projects" class="text-3xl font-bold hover:text-indigo-600 transition-colors menu-link">Projects</a>
+            <a href="#style-guide" class="text-3xl font-bold hover:text-indigo-600 transition-colors menu-link">Style Guide</a>
+            <a href="#clients" class="text-3xl font-bold hover:text-indigo-600 transition-colors menu-link">Clients</a>
+            <a href="mailto:himangshu.inbox@gmail.com" class="text-3xl font-bold text-indigo-600 transition-colors menu-link">Contact Me</a>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex flex-col justify-center relative overflow-hidden pt-32 pb-20">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full relative z-10 flex-grow flex flex-col justify-center">
+                
+                <!-- Badges -->
+                <div class="flex flex-wrap gap-4 mb-16 hero-fade opacity-0 translate-y-10">
+                    <div class="inline-flex items-center space-x-2 border border-gray-200 bg-white/60 backdrop-blur-md rounded-full px-4 py-2 shadow-sm">
+                        <span class="flex h-2.5 w-2.5 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                        <span class="text-xs font-bold tracking-wide uppercase text-gray-600">Available for projects</span>
+                    </div>
+                    <a href="https://www.credential.net/12a9bceb-fea0-4fbc-9502-011f6bfeaaf0#acc.2PC8H4IR" target="_blank" class="inline-flex items-center space-x-2 border border-gray-200 bg-white/60 backdrop-blur-md rounded-full px-4 py-2 shadow-sm hover:border-indigo-500 transition-colors">
+                        <img src="https://developers-dot-devsite-v2-prod.appspot.com/certification/directory/images/badges/play_academy_certificate.png" alt="Badge" class="w-4 h-4">
+                        <span class="text-xs font-bold tracking-wide uppercase text-gray-600">Google Certified</span>
+                    </a>
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-[13vw] md:text-[10vw] leading-[0.85] font-black tracking-tight mb-16 text-gray-900 relative z-20">
+                    <div class="overflow-hidden pb-2"><span class="hero-line block translate-y-full text-[3vw] md:text-[2vw] font-medium text-gray-400 tracking-widest mb-[-0.5vw]">I'M</span></div>
+                    <div class="overflow-hidden pb-2"><span class="hero-line block translate-y-full">HIMANGSHU</span></div>
+                    <div class="overflow-hidden pb-6"><span class="hero-line block translate-y-full text-outline">PAUL.</span></div>
+                </h1>
+
+                <div class="flex flex-col md:flex-row justify-between items-end mt-4 border-t border-gray-200 pt-10">
+                    <p class="text-xl md:text-2xl text-gray-600 max-w-xl leading-relaxed hero-fade opacity-0 translate-y-10 font-medium">
+                        Full Stack & Android Developer building <span class="shimmer-text font-bold">immersive</span> digital solutions.
+                    </p>
+                    <!-- Stats -->
+                    <div class="hidden md:flex space-x-16 mt-8 md:mt-0 hero-fade opacity-0 translate-y-10">
+                        <div class="text-left">
+                            <span class="block text-5xl font-black text-gray-900">3+</span>
+                            <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">Years</span>
+                        </div>
+                        <div class="text-left">
+                            <span class="block text-5xl font-black text-gray-900">12+</span>
+                            <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">Projects</span>
+                        </div>
+                        <div class="text-left">
+                            <span class="block text-5xl font-black text-gray-900">4+</span>
+                            <span class="text-xs text-gray-500 uppercase tracking-widest font-bold">Apps</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Socials - Fixed Top Space -->
+                <div class="flex space-x-6 mt-6 hero-fade opacity-0 translate-y-10">
+                    <a href="https://linkedin.com/in/himangshupaul" target="_blank" class="magnet-btn p-2 hover:text-indigo-600 transition-colors"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                    <a href="https://github.com/himangshupaul" target="_blank" class="magnet-btn p-2 hover:text-indigo-600 transition-colors"><i data-lucide="github" class="w-6 h-6"></i></a>
+                    <a href="https://twitter.com/himangshupaul" target="_blank" class="magnet-btn p-2 hover:text-indigo-600 transition-colors"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    <a href="https://instagram.com/himangshupaul" target="_blank" class="magnet-btn p-2 hover:text-indigo-600 transition-colors"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                </div>
+            </div>
+            
+            <!-- Scroll Down Indicator (Clickable) -->
+            <a href="#introduction" class="absolute bottom-10 left-1/2 -translate-x-1/2 flex justify-center hero-fade opacity-0 translate-y-10 cursor-pointer z-20 group" aria-label="Scroll to Introduction">
+                <div class="scroll-mouse transition-colors border-gray-400 group-hover:border-indigo-600">
+                    <div class="scroll-wheel bg-gray-400 group-hover:bg-indigo-600 transition-colors"></div>
+                </div>
+            </a>
+        </section>
+
+        <!-- Skills Marquee -->
+        <section id="skills-marquee" class="py-12 border-y border-gray-100 bg-white/70 backdrop-blur-sm">
+            <div class="marquee-wrap">
+                <div class="marquee-track">
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">Kotlin</span></div>
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">Android</span></div>
+                    <div class="flex items-center gap-4 px-8 group">
+                         <svg class="w-10 h-10 ghl-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 18.216c-3.43 0-6.216-2.786-6.216-6.216S8.57 5.784 12 5.784s6.216 2.786 6.216 6.216-2.786 6.216-6.216 6.216zm0-4.043c1.198 0 2.173-0.975 2.173-2.173s-0.975-2.173-2.173-2.173-2.173 0.975-2.173 2.173 0.975 2.173 2.173 2.173z"/></svg>
+                         <span class="text-2xl font-bold text-gray-800">GoHighLevel</span>
+                    </div>
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">JavaScript</span></div>
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">React</span></div>
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/firebase/firebase-plain.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">Firebase</span></div>
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">PHP</span></div>
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/wordpress/wordpress-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">WordPress</span></div>
+                    <!-- Duplicate for seamless scroll -->
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kotlin/kotlin-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">Kotlin</span></div>
+                    <div class="flex items-center gap-4 px-8 group"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/android/android-original.svg" class="w-10 h-10"><span class="text-2xl font-bold text-gray-800">Android</span></div>
+                     <div class="flex items-center gap-4 px-8 group">
+                         <svg class="w-10 h-10 ghl-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 18.216c-3.43 0-6.216-2.786-6.216-6.216S8.57 5.784 12 5.784s6.216 2.786 6.216 6.216-2.786 6.216-6.216 6.216zm0-4.043c1.198 0 2.173-0.975 2.173-2.173s-0.975-2.173-2.173-2.173-2.173 0.975-2.173 2.173 0.975 2.173 2.173 2.173z"/></svg>
+                         <span class="text-2xl font-bold text-gray-800">GoHighLevel</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Introduction & Timeline -->
+        <section id="introduction" class="py-32 relative">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                    
+                    <!-- Left: Sticky Image (Wider: col-span-5) -->
+                    <div class="lg:col-span-5 perspective-container relative z-10 lg:sticky lg:top-32">
+                         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-indigo-500/30 to-purple-500/30 blur-3xl -z-10 rounded-full"></div>
+                         
+                         <div class="card-3d rounded-2xl h-[600px] w-full relative group border-none" style="overflow: visible;"> 
+                            <div class="card-inner-clip rounded-2xl shadow-2xl">
+                                <img src="https://born2earn.in/himanghu/dp1.png" alt="Himangshu Paul" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" onerror="this.src='https://placehold.co/600x800/eee/333?text=Himangshu'">
+                            </div>
+                            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-white rounded-full flex items-center justify-center card-content-pop shadow-2xl">
+                                <svg class="w-28 h-28 rotating-text" viewBox="0 0 100 100">
+                                    <path id="curve" d="M 25 50 A 25 25 0 1 1 25 50.001" fill="transparent"/>
+                                    <text width="100%">
+                                        <textPath xlink:href="#curve" class="text-[13px] font-bold tracking-widest uppercase font-sans fill-gray-900">
+                                            • Full Stack • Developer •
+                                        </textPath>
+                                    </text>
+                                </svg>
+                                <i data-lucide="code-2" class="w-8 h-8 absolute text-indigo-600"></i>
+                            </div>
+                         </div>
+                    </div>
+                    
+                    <!-- Right: Content & Timeline (Narrower: col-span-7) -->
+                    <div class="lg:col-span-7">
+                        <div class="mb-12 text-center lg:text-left">
+                            <span class="text-indigo-600 font-bold tracking-widest mb-4 uppercase text-sm">Introduction</span>
+                            <h2 class="text-4xl md:text-5xl font-black leading-tight mb-8 text-gray-900">
+                                Based in West Bengal, I build clean, efficient solutions, from <span class="gradient-text">native Kotlin apps</span> to smart web automations.
+                            </h2>
+                            <p class="text-lg text-gray-600 mb-12 leading-relaxed">
+                                 I build user-friendly, high-performing products, seeing the full picture from concept to launch.
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <!-- Experience Timeline -->
+                            <div>
+                                <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="briefcase" class="w-5 h-5 text-indigo-600"></i> Experience</h3>
+                                <div class="timeline-container">
+                                    <div class="timeline-line"></div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-node">01</div>
+                                        <div class="timeline-content">
+                                            <span class="text-sm text-gray-500 font-bold">Feb 2025 - Present</span>
+                                            <h4 class="text-lg font-bold text-gray-900 mt-1">Web Developer</h4>
+                                            <p class="text-indigo-600 font-medium">@ Blue Minch</p>
+                                            <p class="text-sm text-gray-500 mt-2">GHL & WordPress solutions, internal AI tools.</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-node">02</div>
+                                        <div class="timeline-content">
+                                            <span class="text-sm text-gray-500 font-bold">June 2021 - Present</span>
+                                            <h4 class="text-lg font-bold text-gray-900 mt-1">Lead Developer</h4>
+                                            <p class="text-indigo-600 font-medium">@ Born2Earn</p>
+                                            <p class="text-sm text-gray-500 mt-2">Full-stack app/web dev, Google Play Console management.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Education Timeline -->
+                            <div>
+                                <h3 class="text-2xl font-bold mb-6 flex items-center gap-2"><i data-lucide="graduation-cap" class="w-5 h-5 text-indigo-600"></i> Education</h3>
+                                <div class="timeline-container">
+                                    <div class="timeline-line"></div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-node">01</div>
+                                        <div class="timeline-content">
+                                            <span class="text-sm text-gray-500 font-bold">2022 - 2025</span>
+                                            <h4 class="text-lg font-bold text-gray-900 mt-1">BCA</h4>
+                                            <p class="text-indigo-600 font-medium">@ Inspiria Knowledge Campus</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-node">02</div>
+                                        <div class="timeline-content">
+                                            <span class="text-sm text-gray-500 font-bold">2022</span>
+                                            <h4 class="text-lg font-bold text-gray-900 mt-1">12th, Arts</h4>
+                                            <p class="text-indigo-600 font-medium">@ Trinity High School</p>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-node">03</div>
+                                        <div class="timeline-content">
+                                            <span class="text-sm text-gray-500 font-bold">2020</span>
+                                            <h4 class="text-lg font-bold text-gray-900 mt-1">10th</h4>
+                                            <p class="text-indigo-600 font-medium">@ New Light Academy</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-12">
+                            <a href="mailto:himangshu.inbox@gmail.com" class="px-8 py-4 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all shadow-lg hover:shadow-indigo-500/50 inline-flex items-center gap-2 group">
+                                Hire Me <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Divider -->
+        <section class="w-full overflow-hidden my-20 border-y border-gray-100 bg-black">
+            <video 
+                src="https://born2earn.in/himanghu/divider-explore.mp4" 
+                class="w-full h-auto block" 
+                autoplay loop muted playsinline>
+            </video>
+        </section>
+
+        <!-- Projects Section (RESTORED LAYOUT) -->
+        <section id="projects" class="py-32 relative">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-20">
+                    <h2 class="text-7xl md:text-9xl font-black tracking-tighter text-gray-900 leading-[0.9] pb-6">SELECTED<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">WORKS</span></h2>
+                    <p class="text-gray-500 max-w-xs text-right mt-6 md:mt-0 font-medium text-lg">Fusion of design and code.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 perspective-container">
+                    <!-- Project 1 -->
+                    <div class="card-3d group rounded-[2rem] h-[600px] cursor-pointer bg-white">
+                        <div class="card-inner-clip">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                            <video src="https://born2earn.in/himanghu/webbg.mp4" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" autoplay loop muted playsinline></video>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-10 z-20 card-content-pop">
+                            <span class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold tracking-widest mb-4 uppercase border border-white/30">Web & Automation</span>
+                            <h3 class="text-5xl font-black text-white mb-4 leading-tight">Web Solutions</h3>
+                            <p class="text-gray-300 mb-6 max-w-md text-lg">Custom solutions using GoHighLevel & WordPress. Internal AI tools for workflow acceleration.</p>
+                            <div class="flex items-center gap-4 text-white font-bold text-sm">
+                                <span>VIEW PROJECTS</span>
+                                <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center bg-white/10 backdrop-blur group-hover:bg-white group-hover:text-black transition-colors"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="card-3d group rounded-[2rem] h-[600px] cursor-pointer bg-white md:mt-32">
+                        <div class="card-inner-clip">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>
+                            <video src="https://born2earn.in/himanghu/appbg.mp4" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" autoplay loop muted playsinline></video>
+                        </div>
+                        <div class="absolute bottom-0 left-0 w-full p-10 z-20 card-content-pop">
+                            <span class="inline-block px-4 py-1 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold tracking-widest mb-4 uppercase border border-white/30">Mobile Apps</span>
+                            <h3 class="text-5xl font-black text-white mb-4 leading-tight">Native Android</h3>
+                            <p class="text-gray-300 mb-6 max-w-md text-lg">High-performance native apps built with Kotlin. Clean UI/UX and robust backend logic.</p>
+                            <div class="flex items-center gap-4 text-white font-bold text-sm">
+                                <span>VIEW APPS</span>
+                                <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center bg-white/10 backdrop-blur group-hover:bg-white group-hover:text-black transition-colors"><i data-lucide="arrow-right" class="w-5 h-5"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Style Guide -->
+        <section id="style-guide" class="py-32 bg-gray-50 border-y border-gray-200">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12">
+                <h2 class="text-4xl font-bold mb-16 text-center">Visual Identity</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 perspective-container">
+                    <div class="card-3d p-10 rounded-2xl bg-white">
+                        <h3 class="text-gray-500 uppercase tracking-widest text-sm mb-8">Typography</h3>
+                        <div class="space-y-6 card-content-pop">
+                            <div><span class="text-6xl font-black text-gray-900">Aa</span><p class="text-gray-400 mt-2 font-bold">Satoshi Black</p></div>
+                            <div><span class="text-6xl font-medium text-gray-900">Aa</span><p class="text-gray-400 mt-2">Satoshi Medium</p></div>
+                        </div>
+                    </div>
+                    <div class="card-3d p-10 rounded-2xl bg-white">
+                        <h3 class="text-gray-500 uppercase tracking-widest text-sm mb-8">Palette</h3>
+                        <div class="grid grid-cols-2 gap-4 card-content-pop">
+                            <div class="h-32 rounded-xl bg-indigo-600 shadow-lg flex items-end p-4 text-white font-mono text-xs">#4F46E5</div>
+                            <div class="h-32 rounded-xl bg-violet-600 shadow-lg flex items-end p-4 text-white font-mono text-xs">#7C3AED</div>
+                            <div class="h-32 rounded-xl bg-gray-900 shadow-lg flex items-end p-4 text-white font-mono text-xs">#0F172A</div>
+                            <div class="h-32 rounded-xl bg-white border border-gray-200 shadow-lg flex items-end p-4 text-gray-500 font-mono text-xs">#FFFFFF</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clients Section -->
+        <section id="clients" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center mb-12">
+                 <span class="text-indigo-600 font-bold tracking-widest uppercase text-sm">TRUSTED BY</span>
+                 <h2 class="text-3xl font-bold mt-2 text-gray-900">Amazing Clients</h2>
+            </div>
+            <div class="marquee-wrap">
+                <div class="marquee-track">
+                    <!-- Logo Placeholders -->
+                    <div class="px-12 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
+                         <span class="text-3xl font-black text-gray-400 hover:text-indigo-900 tracking-tighter">LOGO<span class="text-indigo-600">IPSUM</span></span>
+                    </div>
+                    <div class="px-12 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
+                         <span class="text-3xl font-bold text-gray-400 hover:text-black tracking-widest">CLIENT<span class="font-light">TWO</span></span>
+                    </div>
+                    <div class="px-12 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
+                         <span class="text-3xl font-black text-gray-400 hover:text-blue-600 italic">BlueMinch</span>
+                    </div>
+                    <div class="px-12 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
+                         <span class="text-3xl font-bold text-gray-400 hover:text-green-600">Born<span class="text-green-500">2</span>Earn</span>
+                    </div>
+                     <!-- Loop -->
+                    <div class="px-12 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
+                         <span class="text-3xl font-black text-gray-400 hover:text-indigo-900 tracking-tighter">LOGO<span class="text-indigo-600">IPSUM</span></span>
+                    </div>
+                    <div class="px-12 opacity-60 hover:opacity-100 transition-opacity grayscale hover:grayscale-0 cursor-pointer">
+                         <span class="text-3xl font-bold text-gray-400 hover:text-black tracking-widest">CLIENT<span class="font-light">TWO</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="py-32 relative">
+            <div class="max-w-4xl mx-auto px-6 relative z-10">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-bold text-gray-900">Client Stories</h2>
+                </div>
+
+                <div class="relative bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-2xl p-8 md:p-16 border border-white">
+                    <i data-lucide="quote" class="w-16 h-16 text-indigo-100 absolute top-8 left-8"></i>
+                    
+                    <div id="testimonial-container">
+                        <!-- Slide 1 -->
+                        <div class="testimonial-slide active text-center">
+                            <p class="text-2xl md:text-3xl font-medium text-gray-800 leading-relaxed mb-10">
+                                "Himangshu's work was transformative. He understood our goals, delivered measurable results, and was genuinely invested in our success."
+                            </p>
+                            <div class="flex items-center justify-center gap-4">
+                                <img src="https://placehold.co/100x100/eee/333?text=MG" class="w-12 h-12 rounded-full object-cover">
+                                <div class="text-left">
+                                    <h4 class="font-bold text-gray-900">Mike Gore</h4>
+                                    <p class="text-sm text-gray-500">CEO, Charitabl</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="testimonial-slide text-center">
+                            <p class="text-2xl md:text-3xl font-medium text-gray-800 leading-relaxed mb-10">
+                                "The communication was seamless, and the final product exceeded our expectations. Himangshu is a reliable and highly skilled developer."
+                            </p>
+                            <div class="flex items-center justify-center gap-4">
+                                <img src="https://placehold.co/100x100/eee/333?text=JS" class="w-12 h-12 rounded-full object-cover">
+                                <div class="text-left">
+                                    <h4 class="font-bold text-gray-900">Jane Smith</h4>
+                                    <p class="text-sm text-gray-500">Founder, Startup Inc</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center gap-3 mt-12">
+                        <button onclick="showSlide(0)" class="w-3 h-3 rounded-full bg-indigo-600 transition-all dot-btn"></button>
+                        <button onclick="showSlide(1)" class="w-3 h-3 rounded-full bg-gray-300 hover:bg-indigo-400 transition-all dot-btn"></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-20 bg-gray-50 relative overflow-hidden">
+             <div class="absolute bottom-0 left-0 w-full select-none pointer-events-none overflow-hidden">
+                <h2 class="text-[20vw] font-black text-gray-200 leading-none text-center translate-y-1/4 opacity-50">PAUL</h2>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
+                    <div>
+                        <h4 class="text-3xl font-bold mb-6 text-gray-900">Himangshu Paul</h4>
+                        <p class="text-gray-500 text-lg">Full Stack & Android Developer</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-gray-900">Contact</h4>
+                        <ul class="space-y-2">
+                            <li><a href="mailto:himangshu.inbox@gmail.com" class="text-gray-500 hover:text-indigo-600 transition-colors">himangshu.inbox@gmail.com</a></li>
+                            <li><a href="tel:+919564604956" class="text-gray-500 hover:text-indigo-600 transition-colors">+91 9564604956</a></li>
+                        </ul>
+                    </div>
+                    <div class="flex gap-6 justify-start md:justify-end items-start">
+                        <a href="https://linkedin.com/in/himangshupaul" class="p-4 rounded-full border border-gray-200 hover:bg-indigo-600 hover:border-indigo-600 hover:text-white text-gray-600 transition-all duration-300"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                        <a href="https://github.com/himangshupaul" class="p-4 rounded-full border border-gray-200 hover:bg-indigo-600 hover:border-indigo-600 hover:text-white text-gray-600 transition-all duration-300"><i data-lucide="github" class="w-6 h-6"></i></a>
+                        <a href="https://twitter.com/himangshupaul" class="p-4 rounded-full border border-gray-200 hover:bg-indigo-600 hover:border-indigo-600 hover:text-white text-gray-600 transition-all duration-300"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 pt-8 text-sm text-gray-500">
+                    <p>&copy; <span id="year"></span> Himangshu Paul. All Rights Reserved.</p>
+                    <p>Designed with ❤️</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <script>
+    (() => { 
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        let lenis;
+        if (typeof Lenis !== 'undefined') {
+            lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true, wheelMultiplier: 1 });
+            function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+            requestAnimationFrame(raf);
+        }
+
+        // Anchor Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                const target = document.querySelector(targetId);
+                if (target) {
+                     lenis.scrollTo(target, { offset: 0, duration: 2 });
+                     // Close mobile menu if present
+                     const mobileMenu = document.getElementById('mobile-menu');
+                     if (mobileMenu && mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        if(lenis) lenis.start();
+                     }
+                }
+            });
+        });
+
+        const yearSpan = document.getElementById('year');
+        if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+        window.addEventListener('load', () => {
+            const counter = document.getElementById('counter');
+            const bar = document.getElementById('loading-bar');
+            const preloader = document.getElementById('preloader');
+            if (!counter || !bar || !preloader) return;
+            
+            let p = 0;
+            const int = setInterval(() => {
+                p += Math.floor(Math.random()*10)+5;
+                if(p>100) p=100;
+                counter.innerText = p+"%";
+                bar.style.width = p+"%";
+                if(p===100) {
+                    clearInterval(int);
+                    const tl = gsap.timeline();
+                    tl.to(counter, {y:-100, opacity:0, duration:0.5, delay:0.2})
+                      .to(preloader, {yPercent:-100, duration:1, ease:"expo.inOut"})
+                      .to(".hero-line", {y:"0%", duration:1.5, stagger:0.1, ease:"power4.out"}, "-=0.5")
+                      .to(".hero-fade", {opacity:1, y:0, duration:1, stagger:0.1}, "-=1");
+                }
+            }, 80);
+        });
+
+        // Canvas Particles
+        const canvas = document.getElementById('bg-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const colors = ['#4f46e5', '#7c3aed', '#ec4899']; 
+
+            const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.size = Math.random() * 2;
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.alpha = Math.random() * 0.5 + 0.1;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    if(this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+                }
+                draw() {
+                    ctx.globalAlpha = this.alpha;
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+                    ctx.fill();
+                }
+            }
+            for(let i=0; i<100; i++) particles.push(new Particle());
+            const animate = () => {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // 3D Tilt
+        document.querySelectorAll('.card-3d').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width/2;
+                const y = e.clientY - rect.top - rect.height/2;
+                gsap.to(card, { transform: `perspective(1000px) rotateX(${-y/20}deg) rotateY(${x/20}deg) scale3d(1.02, 1.02, 1.02)`, duration:0.5 });
+            });
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { transform: `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`, duration:1, ease:"elastic.out(1,0.5)" });
+            });
+        });
+
+        // Cursor
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+        if (dot && outline) {
+            window.addEventListener('mousemove', (e) => {
+                dot.style.left = e.clientX+"px"; dot.style.top = e.clientY+"px";
+                outline.animate({left:e.clientX+"px", top:e.clientY+"px"}, {duration:500, fill:"forwards"});
+            });
+        }
+
+        // Magnets
+        document.querySelectorAll('.magnet-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const r = btn.getBoundingClientRect();
+                gsap.to(btn, {x:(e.clientX - r.left - r.width/2)*0.3, y:(e.clientY - r.top - r.height/2)*0.3, duration:0.3});
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {x:0, y:0, duration:0.8, ease:"elastic.out(1,0.3)"});
+            });
+        });
+
+        // Mobile Menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (menuToggle && mobileMenu) {
+            let isMenuOpen = false;
+            menuToggle.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                mobileMenu.classList.toggle('active', isMenuOpen);
+                if(lenis) isMenuOpen ? lenis.stop() : lenis.start();
+            });
+            document.querySelectorAll('.menu-link').forEach(l => l.addEventListener('click', () => {
+                isMenuOpen = false;
+                mobileMenu.classList.remove('active');
+                if(lenis) lenis.start();
+            }));
+        }
+
+        // Navbar Scroll
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            window.addEventListener('scroll', () => {
+                navbar.classList.toggle('scrolled', window.scrollY > 50);
+            });
+        }
+
+        // Testimonial Slider
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.dot-btn');
+        window.showSlide = (idx) => {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => { d.classList.remove('bg-indigo-600'); d.classList.add('bg-gray-300'); });
+            if(slides[idx]) slides[idx].classList.add('active');
+            if(dots[idx]) {
+                dots[idx].classList.remove('bg-gray-300');
+                dots[idx].classList.add('bg-indigo-600');
+            }
+        }
+    })();
+    </script>
+</body>
+</html>
