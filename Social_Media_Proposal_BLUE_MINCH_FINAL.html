@@ -1,0 +1,721 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Content Creation Proposal - Blue Minch</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f0f2f5; }
+
+        .slide {
+            width: 1000px;
+            height: 750px;
+            margin: 30px auto;
+            padding: 50px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fbfd 100%);
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 25px 70px rgba(13, 71, 161, 0.2);
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(13, 71, 161, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(33, 150, 243, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .slide-content {
+            position: relative;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            max-height: 650px;
+            padding-right: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .slide.title-slide {
+            background: linear-gradient(135deg, #0D47A1 0%, #1565C0 50%, #1976D2 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.title-slide::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            right: -15%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(255,255,255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .slide.title-slide::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .slide-title-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        .slide h1 { 
+            font-size: 54px; 
+            margin-bottom: 20px; 
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            text-shadow: 0 4px 12px rgba(0,0,0, 0.2);
+        }
+
+        .slide h2 { 
+            font-size: 42px; 
+            color: #0D47A1; 
+            margin-bottom: 25px; 
+            border-bottom: 4px solid #2196F3; 
+            padding-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .slide h3 { 
+            font-size: 24px; 
+            color: #1565C0; 
+            margin-top: 20px; 
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .slide p { 
+            font-size: 16px; 
+            line-height: 1.7; 
+            margin-bottom: 12px; 
+            color: #333;
+        }
+
+        .slide ul { 
+            margin-left: 40px; 
+            margin-bottom: 15px;
+        }
+
+        .slide li { 
+            font-size: 16px; 
+            line-height: 1.9; 
+            margin-bottom: 12px; 
+            color: #333;
+        }
+
+        .title-slide p { 
+            font-size: 28px; 
+            opacity: 0.98; 
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .title-slide .subtitle { 
+            font-size: 20px; 
+            opacity: 0.92; 
+            margin-top: 50px;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+        }
+
+        .title-slide .company-text {
+            font-size: 14px;
+            margin-top: 60px;
+            opacity: 0.85;
+            letter-spacing: 2px;
+        }
+
+        .icon {
+            font-size: 32px;
+            margin-right: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(13, 71, 161, 0.12);
+        }
+
+        th {
+            background: linear-gradient(135deg, #0D47A1 0%, #1565C0 100%);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            border: 1px solid #E3F2FD;
+            padding: 14px 16px;
+            color: #333;
+        }
+
+        tr:nth-child(even) { 
+            background-color: #F8FBFD;
+        }
+
+        tr:hover {
+            background-color: #E3F2FD;
+            transition: background-color 0.3s ease;
+        }
+
+        .highlight { 
+            background: linear-gradient(135deg, rgba(33, 150, 243, 0.08) 0%, rgba(13, 71, 161, 0.05) 100%);
+            padding: 20px; 
+            border-left: 5px solid #2196F3; 
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .pricing-highlight { 
+            background: linear-gradient(135deg, #0D47A1 0%, #1565C0 100%);
+            color: white; 
+            padding: 28px; 
+            border-radius: 10px; 
+            margin: 20px 0; 
+            font-size: 24px; 
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 12px 30px rgba(13, 71, 161, 0.35);
+            letter-spacing: 1px;
+        }
+
+        .two-column { 
+            display: flex; 
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .two-column div { 
+            flex: 1;
+            background: linear-gradient(135deg, #ffffff 0%, #F8FBFD 100%);
+            padding: 24px;
+            border-radius: 10px;
+            border-left: 4px solid #2196F3;
+            box-shadow: 0 6px 20px rgba(13, 71, 161, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .two-column div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(13, 71, 161, 0.15);
+        }
+
+        .note { 
+            font-size: 12px; 
+            color: #666; 
+            font-style: italic; 
+            margin-top: 15px;
+            padding: 12px;
+            background: linear-gradient(135deg, #F0F7FF 0%, #E8F4FF 100%);
+            border-radius: 6px;
+            border-left: 3px solid #2196F3;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFF3E0 100%);
+            border-left: 5px solid #FF9800;
+            padding: 16px;
+            margin: 15px 0;
+            border-radius: 8px;
+            color: #D97706;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+        }
+
+        .checkmark {
+            color: #2196F3;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        li::marker {
+            color: #2196F3;
+        }
+
+        .accent-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #0D47A1 0%, #2196F3 100%);
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1: TITLE PAGE -->
+<div class="slide title-slide">
+    <div class="slide-title-wrapper">
+        <h1>Social Media Content Creation</h1>
+        <p>Comprehensive Proposal</p>
+        <p style="font-size: 22px; margin-top: 40px; opacity: 0.95;">December 1, 2025 - January 31, 2026</p>
+        <p class="subtitle">278 Posts • 2 Months • Professional Management</p>
+        <p class="company-text">BLUE MINCH</p>
+    </div>
+</div>
+
+<!-- SLIDE 2: EXECUTIVE OVERVIEW -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">📋</span>Executive Overview</h2>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td><strong>Project Duration</strong></td>
+                <td>December 1, 2025 - January 31, 2026 (62 days)</td>
+            </tr>
+            <tr>
+                <td><strong>Total Content Volume</strong></td>
+                <td>278 Posts/Videos (173 Anything Else? + 105 GCBC)</td>
+            </tr>
+            <tr>
+                <td><strong>Daily Average</strong></td>
+                <td>~4.5 posts per day</td>
+            </tr>
+            <tr>
+                <td><strong>Weekly Average</strong></td>
+                <td>~31 posts per week</td>
+            </tr>
+            <tr>
+                <td><strong>Platforms</strong></td>
+                <td>LinkedIn, Instagram, Facebook, YouTube, TikTok, Blog</td>
+            </tr>
+            <tr>
+                <td><strong>Scheduling Platform</strong></td>
+                <td>GHL (5-10 mins per post for posting & captions)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- SLIDE 3: CLIENT BREAKDOWN -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">👥</span>Client Content Breakdown</h2>
+        <div class="two-column">
+            <div>
+                <h3>Anything Else?</h3>
+                <ul>
+                    <li><span class="checkmark">✓</span>Total Posts: <strong>173</strong></li>
+                    <li><span class="checkmark">✓</span>Shorts/Reels/TikTok: 51</li>
+                    <li><span class="checkmark">✓</span>Instagram Posts: 36</li>
+                    <li><span class="checkmark">✓</span>LinkedIn Posts: 27</li>
+                    <li><span class="checkmark">✓</span>Facebook Posts: 27</li>
+                    <li><span class="checkmark">✓</span>Blogs (AI-written): 6</li>
+                    <li><span class="checkmark">✓</span>YouTube Main Videos: 9 (TBD)</li>
+                </ul>
+            </div>
+            <div>
+                <h3>GCBC</h3>
+                <ul>
+                    <li><span class="checkmark">✓</span>Total Posts: <strong>105</strong></li>
+                    <li><span class="checkmark">✓</span>YouTube Shorts: 18</li>
+                    <li><span class="checkmark">✓</span>Instagram Posts: 27</li>
+                    <li><span class="checkmark">✓</span>LinkedIn Posts: 27</li>
+                    <li><span class="checkmark">✓</span>Facebook Posts: 27</li>
+                    <li><span class="checkmark">✓</span>Blogs (AI-written): 6</li>
+                    <li style="opacity: 0.6;">TikTok excluded per instruction</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 4: CONTENT TYPES -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">📱</span>Content Types & Platform Formats</h2>
+        <table>
+            <tr>
+                <th>Platform</th>
+                <th>Post Types</th>
+            </tr>
+            <tr>
+                <td><strong>LinkedIn</strong></td>
+                <td>Carousel Posts (3-5 slides) • Single Image Posts • Text Posts</td>
+            </tr>
+            <tr>
+                <td><strong>Instagram</strong></td>
+                <td>Reels (15-30 sec videos) • Carousel Posts (5-10 slides) • Single Image Posts</td>
+            </tr>
+            <tr>
+                <td><strong>Facebook</strong></td>
+                <td>Image Posts • Carousel Posts (3-5 images) • Poll Posts</td>
+            </tr>
+            <tr>
+                <td><strong>YouTube</strong></td>
+                <td>Main Videos (full-length) • Shorts (short-form videos)</td>
+            </tr>
+            <tr>
+                <td><strong>TikTok</strong></td>
+                <td>Short Videos (15-60 seconds) - Anything Else? only</td>
+            </tr>
+            <tr>
+                <td><strong>Blog</strong></td>
+                <td>AI-Written Articles</td>
+            </tr>
+        </table>
+        <div class="note">Each post type is counted separately for accurate costing</div>
+    </div>
+</div>
+
+<!-- SLIDE 5: PRICING STRUCTURE -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">💰</span>Pricing Structure</h2>
+        <table>
+            <tr>
+                <th>Content Type</th>
+                <th>Cost per Unit</th>
+                <th>Time Required</th>
+            </tr>
+            <tr>
+                <td>Short Videos / Reels / YouTube Shorts</td>
+                <td>$50</td>
+                <td>4 hours</td>
+            </tr>
+            <tr>
+                <td>Creatives (Single Image Posts)</td>
+                <td>$25</td>
+                <td>2 hours</td>
+            </tr>
+            <tr>
+                <td>Carousel Posts (5 slides)</td>
+                <td>$30</td>
+                <td>3.5 hours</td>
+            </tr>
+            <tr>
+                <td>Text Posts (LinkedIn)</td>
+                <td>$25</td>
+                <td>2 hours</td>
+            </tr>
+            <tr>
+                <td>Poll Posts (Facebook)</td>
+                <td>$25</td>
+                <td>2 hours</td>
+            </tr>
+            <tr>
+                <td>Blog - AI Written</td>
+                <td>$30</td>
+                <td>1.5 hours</td>
+            </tr>
+            <tr>
+                <td>GHL Posting & Scheduling</td>
+                <td>Per Post</td>
+                <td>5-10 mins</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- SLIDE 6: ANYTHING ELSE COSTING -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">💼</span>Anything Else? - Costing</h2>
+        <table style="font-size: 13px;">
+            <tr>
+                <th>Content Type</th>
+                <th>Qty</th>
+                <th>Cost/Unit</th>
+                <th>Subtotal</th>
+            </tr>
+            <tr>
+                <td>Shorts/Reels/TikTok Videos</td>
+                <td>51</td>
+                <td>$50</td>
+                <td><strong>$2,550</strong></td>
+            </tr>
+            <tr>
+                <td>Single Image Creatives</td>
+                <td>36</td>
+                <td>$25</td>
+                <td><strong>$900</strong></td>
+            </tr>
+            <tr>
+                <td>Carousel Posts</td>
+                <td>27</td>
+                <td>$30</td>
+                <td><strong>$810</strong></td>
+            </tr>
+            <tr>
+                <td>Blogs (AI-Written)</td>
+                <td>6</td>
+                <td>$30</td>
+                <td><strong>$180</strong></td>
+            </tr>
+            <tr>
+                <td>GHL Posting & Scheduling</td>
+                <td>120 posts</td>
+                <td>Per Post</td>
+                <td>5-10 mins each</td>
+            </tr>
+        </table>
+        <div class="pricing-highlight">SUBTOTAL: $4,440</div>
+        <div class="note">YouTube Main Videos (9): Costing TBD - requires file review</div>
+    </div>
+</div>
+
+<!-- SLIDE 7: GCBC COSTING -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">💼</span>GCBC - Costing Breakdown</h2>
+        <table style="font-size: 13px;">
+            <tr>
+                <th>Content Type</th>
+                <th>Qty</th>
+                <th>Cost/Unit</th>
+                <th>Subtotal</th>
+            </tr>
+            <tr>
+                <td>YouTube Shorts</td>
+                <td>18</td>
+                <td>$50</td>
+                <td><strong>$900</strong></td>
+            </tr>
+            <tr>
+                <td>Instagram Reels</td>
+                <td>9</td>
+                <td>$50</td>
+                <td><strong>$450</strong></td>
+            </tr>
+            <tr>
+                <td>Carousel Posts (Multi-platform)</td>
+                <td>27</td>
+                <td>$30</td>
+                <td><strong>$810</strong></td>
+            </tr>
+            <tr>
+                <td>Single Image Posts (Multi-platform)</td>
+                <td>27</td>
+                <td>$25</td>
+                <td><strong>$675</strong></td>
+            </tr>
+            <tr>
+                <td>Text Posts (LinkedIn)</td>
+                <td>9</td>
+                <td>$25</td>
+                <td><strong>$225</strong></td>
+            </tr>
+            <tr>
+                <td>Poll Posts (Facebook)</td>
+                <td>9</td>
+                <td>$25</td>
+                <td><strong>$225</strong></td>
+            </tr>
+            <tr>
+                <td>Blogs (AI-Written)</td>
+                <td>6</td>
+                <td>$30</td>
+                <td><strong>$180</strong></td>
+            </tr>
+            <tr>
+                <td>GHL Posting & Scheduling</td>
+                <td>105 posts</td>
+                <td>Per Post</td>
+                <td>5-10 mins each</td>
+            </tr>
+        </table>
+        <div class="pricing-highlight">TOTAL: $3,465</div>
+    </div>
+</div>
+
+<!-- SLIDE 8: GRAND TOTAL -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">🎯</span>Total Investment Summary</h2>
+        <table style="font-size: 16px; margin-top: 40px;">
+            <tr>
+                <th style="font-size: 14px;">Client</th>
+                <th style="font-size: 14px;">Posts</th>
+                <th style="font-size: 14px;">Costing</th>
+            </tr>
+            <tr style="background-color: #E3F2FD;">
+                <td><strong>Anything Else?</strong></td>
+                <td>173 posts + 9 YT videos (TBD)</td>
+                <td><strong style="color: #0D47A1;">$4,440</strong></td>
+            </tr>
+            <tr style="background-color: #E3F2FD;">
+                <td><strong>GCBC</strong></td>
+                <td>105 posts</td>
+                <td><strong style="color: #0D47A1;">$3,465</strong></td>
+            </tr>
+        </table>
+
+        <div class="pricing-highlight" style="margin-top: 50px; font-size: 28px;">
+        TOTAL INVESTMENT: $7,905
+        </div>
+
+        <div class="warning-box" style="margin-top: 30px;">
+            <strong>📌 Note:</strong> YouTube Main Videos (9) costing TBD after file review
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 9: TIMELINE -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">📅</span>Project Timeline & Deliverables</h2>
+
+        <h3>Start Date</h3>
+        <p>ASAP - Coverage from now through January 31, 2026</p>
+
+        <h3>Deliverables</h3>
+        <ul>
+            <li><span class="checkmark">✓</span>All 278 posts uploaded to GHL</li>
+            <li><span class="checkmark">✓</span>All posts set to "Needs Approval" status</li>
+            <li><span class="checkmark">✓</span>Posts evenly distributed through Jan 31</li>
+            <li><span class="checkmark">✓</span>Captions written for each post</li>
+            <li><span class="checkmark">✓</span>All content scheduled in GHL</li>
+            <li><span class="checkmark">✓</span>Approval ready for Lauren</li>
+        </ul>
+
+        <h3>GHL Posting</h3>
+        <p>5-10 minutes per post for posting & caption writing (278 posts total)</p>
+    </div>
+</div>
+
+<!-- SLIDE 10: SUMMARY -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">✅</span>Summary & Client Requirements</h2>
+
+        <h3>What's Included in $7,905:</h3>
+        <ul>
+            <li><span class="checkmark">✓</span>173 Anything Else? posts (Shorts, Creatives, Carousels, Blogs)</li>
+            <li><span class="checkmark">✓</span>105 GCBC posts (YouTube Shorts, Reels, Carousels, Singles, Text, Polls, Blogs)</li>
+            <li><span class="checkmark">✓</span>GHL scheduling & posting (5-10 mins per post)</li>
+            <li><span class="checkmark">✓</span>Caption writing & optimization</li>
+            <li><span class="checkmark">✓</span>Lauren approval workflow</li>
+        </ul>
+
+        <h3>NOT Included (TBD):</h3>
+        <ul>
+            <li>YouTube Main Videos (9) - Requires file review</li>
+        </ul>
+
+        <h3>What We Need from Client:</h3>
+        <ul>
+            <li><span class="checkmark">✓</span>Confirm blog preference (AI-written included)</li>
+            <li><span class="checkmark">✓</span>Provide YouTube main video files for costing</li>
+            <li><span class="checkmark">✓</span>Brand guidelines for all platforms</li>
+            <li><span class="checkmark">✓</span>Confirmation to proceed</li>
+        </ul>
+    </div>
+</div>
+
+<!-- SLIDE 11: NEXT STEPS -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">🚀</span>Next Steps & Action Items</h2>
+
+        <h3>Immediate Actions:</h3>
+        <ul>
+            <li><span class="checkmark">☐</span>Client approves $7,905 proposal for 278 social posts</li>
+            <li><span class="checkmark">☐</span>Client provides YouTube main video files</li>
+            <li><span class="checkmark">☐</span>Confirm brand guidelines & preferences</li>
+            <li><span class="checkmark">☐</span>Set up GHL approval workflow for Lauren</li>
+        </ul>
+
+        <h3>Project Start:</h3>
+        <ul>
+            <li><span class="checkmark">☐</span>Begin content creation immediately upon approval</li>
+            <li><span class="checkmark">☐</span>YouTube videos assessed & costed separately</li>
+            <li><span class="checkmark">☐</span>All 278 posts scheduled in GHL within 2 weeks</li>
+            <li><span class="checkmark">☐</span>Ready for Lauren's review & approval</li>
+        </ul>
+
+        <h3>Timeline:</h3>
+        <p style="margin-bottom: 8px;"><strong>Weeks 1-2:</strong> Content creation & GHL scheduling</p>
+        <p style="margin-bottom: 8px;"><strong>Week 3+:</strong> YouTube video processing (pending file receipt)</p>
+        <p><strong>Throughout:</strong> Ongoing publishing & optimization</p>
+    </div>
+</div>
+
+<!-- SLIDE 12: FINAL SUMMARY -->
+<div class="slide">
+    <div class="slide-content">
+        <div class="accent-bar"></div>
+        <h2><span class="icon">📊</span>Final Summary</h2>
+
+        <div class="highlight">
+            <h3>Investment: $7,905</h3>
+            <p><strong>Anything Else?:</strong> $4,440 (173 posts)</p>
+            <p><strong>GCBC:</strong> $3,465 (105 posts)</p>
+            <p><strong>YouTube Main Videos:</strong> TBD (pending file review)</p>
+        </div>
+
+        <h3>Deliverables:</h3>
+        <ul>
+            <li><span class="checkmark">✓</span>278 professional social media posts</li>
+            <li><span class="checkmark">✓</span>All content scheduled in GHL</li>
+            <li><span class="checkmark">✓</span>Lauren approval workflow ready</li>
+            <li><span class="checkmark">✓</span>2-month coverage (Dec 1 - Jan 31)</li>
+            <li><span class="checkmark">✓</span>Professional captions & optimization</li>
+        </ul>
+
+        <div class="pricing-highlight" style="margin-top: 40px;">
+        Ready to Begin Upon Client Approval ✓
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
