@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Anu ❤️</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'hand': ['"Dancing Script"', 'cursive'],
+                        'sans': ['"Outfit"', 'sans-serif'],
+                    },
+                    colors: {
+                        'love-pink': '#ff7eb3',
+                        'love-purple': '#8e44ad',
+                        'deep-space': '#050214',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling on main body */
+            background: #050214;
+            color: white;
+            touch-action: none; /* Disables browser handling of gestures */
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        /* Typewriter Cursor */
+        .cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Transitions */
+        .stage {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            pointer-events: none; /* Allow clicks to pass through when hidden */
+        }
+        .stage.active {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Hearts for Mini Game */
+        .floating-heart {
+            position: absolute;
+            font-size: 4rem; /* Increased size for visibility and easy tapping */
+            cursor: pointer;
+            user-select: none;
+            animation: floatUp 8s linear forwards; /* Slower default animation */
+            z-index: 100;
+            filter: drop-shadow(0 0 10px rgba(255, 126, 179, 0.8)); /* Glow effect for visibility */
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; } /* Keep visible longer */
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Neon Glow Text */
+        .neon-text {
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff7eb3, 0 0 30px #ff7eb3;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-love-pink selection:text-white font-sans h-screen w-screen overflow-hidden">
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
+        <!-- A sweet, royalty-free piano track -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=piano-moment-11176.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Toggle UI -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="music-btn" class="glass-card p-3 rounded-full hover:bg-white/10 transition-colors">
+            <i data-lucide="music" class="w-6 h-6 text-love-pink"></i>
+        </button>
+    </div>
+
+    <!-- Love Meter (Progress Bar) -->
+    <div class="fixed top-0 left-0 w-full h-1 bg-gray-800 z-50">
+        <div id="love-meter" class="h-full bg-gradient-to-r from-love-pink to-purple-500 w-0 transition-all duration-1000"></div>
+    </div>
+
+    <!-- 3D Background -->
+    <div id="canvas-container"></div>
+
+    <!-- UI Overlay Layer -->
+    <div class="absolute inset-0 z-10 w-full h-full">
+        
+        <!-- STAGE 1: INTRO (Typewriter) -->
+        <div id="stage-1" class="stage active flex-col items-center justify-center bg-deep-space text-center p-8">
+            <h1 id="typewriter" class="font-hand text-4xl md:text-6xl text-love-pink mb-8 min-h-[5rem] cursor"></h1>
+            <p class="text-gray-400 text-sm mb-8 animate-pulse">Turn up your volume 🎧</p>
+            <button id="btn-next-1" class="opacity-0 transition-opacity duration-1000 px-8 py-3 rounded-full border border-love-pink text-love-pink hover:bg-love-pink hover:text-white transition-colors">
+                Start Journey &rarr;
+            </button>
+        </div>
+
+        <!-- STAGE 2: HYPNOSIS -->
+        <div id="stage-2" class="stage flex-col items-center justify-center text-center p-4">
+            <div class="glass-card p-6 rounded-2xl max-w-sm animate-pulse-fast border-love-pink/30">
+                <h2 class="text-3xl font-bold neon-text mb-2">Focus on the Heart...</h2>
+                <p class="text-sm text-gray-300">You are entering my world now.</p>
+            </div>
+            <button id="btn-next-2" class="mt-12 px-8 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full text-white font-bold transition-all transform hover:scale-105 shadow-lg shadow-love-pink/20">
+                I'm Mesmerized (Next)
+            </button>
+        </div>
+
+        <!-- STAGE 3: MINI GAME (Catch Hearts) -->
+        <div id="stage-3" class="stage flex-col items-center justify-center text-center p-4 bg-black/40">
+            <h2 class="text-4xl font-hand text-love-pink mb-4">Catch My Love!</h2>
+            <p class="text-lg text-white mb-8">Tap <span id="hearts-needed" class="text-love-pink font-bold text-2xl">5</span> floating hearts to unlock the door.</p>
+            <div id="game-area" class="absolute inset-0 pointer-events-none"></div> <!-- Hearts spawn here -->
+        </div>
+
+        <!-- STAGE 4: REASONS I LOVE YOU -->
+        <div id="stage-4" class="stage flex-col items-center justify-center p-4">
+            <div class="glass-card w-full max-w-md p-8 rounded-3xl text-center relative">
+                <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-love-pink text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
+                    Why I Love You
+                </div>
+                
+                <p id="reason-text" class="text-2xl font-sans font-light my-8 min-h-[4rem] flex items-center justify-center text-pink-100">
+                    Click the button below...
+                </p>
+
+                <button id="btn-reason" class="w-full bg-white/10 hover:bg-white/20 py-3 rounded-xl mb-4 transition-colors text-love-pink border border-love-pink/30">
+                    Tell me another reason ❤️
+                </button>
+
+                <button id="btn-next-4" class="hidden w-full bg-gradient-to-r from-love-pink to-purple-600 py-3 rounded-xl text-white font-bold shadow-lg animate-bounce-slow">
+                    See The Surprise &rarr;
+                </button>
+            </div>
+        </div>
+
+        <!-- STAGE 5: FINAL GALAXY -->
+        <div id="stage-5" class="stage flex-col items-center justify-center p-4 overflow-y-auto">
+            <div class="glass-card p-8 md:p-10 rounded-3xl max-w-md w-full text-center animate-float relative overflow-hidden mt-8">
+                
+                <!-- Decorative Elements -->
+                <div class="absolute top-0 right-0 p-4 opacity-50"><i data-lucide="sparkles" class="text-yellow-200"></i></div>
+                <div class="absolute bottom-0 left-0 p-4 opacity-50"><i data-lucide="stars" class="text-love-pink"></i></div>
+
+                <!-- Content -->
+                <div class="relative z-10 space-y-6">
+                    <!-- Image -->
+                    <div class="relative w-32 h-32 mx-auto rounded-full overflow-hidden border-4 border-white/30 shadow-2xl">
+                        <img src="https://html-generator.com/uploads/images/2025/12/11/64095OW406AQ1HH.jpg" 
+                             alt="Love" class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- Text -->
+                    <div>
+                        <h1 class="font-hand text-5xl text-transparent bg-clip-text bg-gradient-to-r from-love-pink to-white mb-2">
+                            My Dearest Anu
+                        </h1>
+                        <p class="font-sans text-gray-200 leading-relaxed font-light text-sm md:text-base">
+                            I collected the stars, built a universe, and caught every heartbeat just to tell you one thing:
+                            <br><br>
+                            <span class="font-bold text-xl text-love-pink">You complete my world.</span>
+                        </p>
+                    </div>
+
+                    <!-- Action -->
+                    <button id="wish-btn" class="bg-gradient-to-r from-purple-500 to-love-pink text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-love-pink/50 transition-all transform hover:scale-105 w-full">
+                        ✨ Make a Wish ✨
+                    </button>
+                    <p id="wish-msg" class="text-xs text-pink-200 opacity-0 transition-opacity mt-2">Your wish has been sent to the stars...</p>
+                </div>
+            </div>
+            
+            <footer class="mt-6 text-white/30 text-[10px] uppercase tracking-widest">Designed for Anu</footer>
+        </div>
+
+    </div>
+
+    <script>
+        // --- ICONS ---
+        lucide.createIcons();
+
+        // --- GLOBAL STATE ---
+        let currentStage = 1;
+        let score = 0;
+        const totalHearts = 5;
+        const loveMeter = document.getElementById('love-meter');
+
+        function updateLoveMeter(percent) {
+            loveMeter.style.width = percent + '%';
+        }
+
+        function switchStage(fromId, toId) {
+            const from = document.getElementById(fromId);
+            const to = document.getElementById(toId);
+            
+            from.classList.remove('active');
+            from.style.opacity = '0';
+            
+            setTimeout(() => {
+                from.style.display = 'none';
+                to.style.display = 'flex';
+                // Trigger reflow
+                void to.offsetWidth;
+                to.classList.add('active');
+            }, 800);
+        }
+
+        // --- AUDIO ---
+        const bgMusic = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicBtn.innerHTML = '<i data-lucide="music" class="w-6 h-6 text-love-pink"></i>';
+                lucide.createIcons();
+            } else {
+                bgMusic.play().catch(e => console.log("Audio autoplay blocked needs interaction"));
+                musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-6 h-6 text-white"></i>';
+                lucide.createIcons();
+            }
+            isPlaying = !isPlaying;
+        });
+
+
+        // --- STAGE 1: INTRO ---
+        const textToType = ["Hey Anu...", "I made something special.", "Just for you.", "Are you ready?"];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typeElement = document.getElementById('typewriter');
+        const nextBtn1 = document.getElementById('btn-next-1');
+
+        function type() {
+            const currentText = textToType[textIndex];
+            if (isDeleting) {
+                typeElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typeElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let delta = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentText.length) {
+                if (textIndex === textToType.length - 1) {
+                    nextBtn1.classList.remove('opacity-0');
+                    return; 
+                }
+                delta = 1500;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex++;
+            }
+            setTimeout(type, delta);
+        }
+        window.addEventListener('load', type);
+
+        nextBtn1.addEventListener('click', () => {
+            switchStage('stage-1', 'stage-2');
+            updateLoveMeter(20);
+            document.getElementById('canvas-container').style.opacity = '1';
+            
+            // Start Tunnel Effect
+            currentMode = 'TUNNEL';
+            
+            // Try playing music on first interaction
+            if(!isPlaying) {
+                bgMusic.volume = 0.5;
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    musicBtn.innerHTML = '<i data-lucide="volume-2" class="w-6 h-6 text-white"></i>';
+                    lucide.createIcons();
+                }).catch(() => {});
+            }
+        });
+
+
+        // --- STAGE 2: HYPNOSIS ---
+        document.getElementById('btn-next-2').addEventListener('click', () => {
+            switchStage('stage-2', 'stage-3');
+            updateLoveMeter(40);
+            startMiniGame();
+        });
+
+
+        // --- STAGE 3: MINI GAME ---
+        function startMiniGame() {
+            const gameArea = document.getElementById('game-area');
+            const counter = document.getElementById('hearts-needed');
+            let caught = 0;
+            
+            // Spawn hearts interval
+            const spawner = setInterval(() => {
+                if (caught >= totalHearts) {
+                    clearInterval(spawner);
+                    return;
+                }
+                
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.classList.add('floating-heart');
+                heart.style.left = Math.random() * 80 + 10 + '%'; // Keep within 10-90% width
+                
+                // MAKE HEARTS SLOWER: 6s to 9s float speed
+                heart.style.animationDuration = (Math.random() * 3 + 6) + 's'; 
+                
+                // Allow clicking through the overlay
+                gameArea.style.pointerEvents = 'auto';
+
+                heart.addEventListener('click', (e) => {
+                    e.target.remove();
+                    caught++;
+                    counter.innerText = totalHearts - caught;
+                    
+                    // Visual pop
+                    const pop = document.createElement('div');
+                    pop.style.position = 'absolute';
+                    pop.style.left = e.clientX + 'px';
+                    pop.style.top = e.clientY + 'px';
+                    pop.style.color = '#ff7eb3';
+                    pop.style.fontWeight = 'bold';
+                    pop.innerText = '+1 Love';
+                    pop.style.pointerEvents = 'none';
+                    document.body.appendChild(pop);
+                    
+                    // Animate pop up and fade
+                    pop.animate([
+                        { transform: 'translateY(0)', opacity: 1 },
+                        { transform: 'translateY(-50px)', opacity: 0 }
+                    ], { duration: 1000, fill: 'forwards' });
+
+                    if(caught >= totalHearts) {
+                        gameArea.style.pointerEvents = 'none';
+                        setTimeout(() => {
+                            switchStage('stage-3', 'stage-4');
+                            updateLoveMeter(60);
+                        }, 500);
+                    }
+                });
+                
+                // Touch event for mobile
+                heart.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); // prevent zoom
+                    heart.click();
+                });
+
+                gameArea.appendChild(heart);
+                
+                // Clean up heart if not clicked
+                setTimeout(() => {
+                    if(heart.parentNode) heart.remove();
+                }, 10000); // Wait longer before removing since animation is slower
+
+            }, 800);
+        }
+
+
+        // --- STAGE 4: REASONS ---
+        const reasons = [
+            "Your smile lights up my darkest days.",
+            "You are the kindest soul I know.",
+            "Your laugh is my favorite melody.",
+            "You make ordinary moments magical.",
+            "I love how you care for everyone.",
+            "You are simply beautiful, inside and out."
+        ];
+        let reasonIndex = 0;
+        const reasonText = document.getElementById('reason-text');
+        const reasonBtn = document.getElementById('btn-reason');
+        const nextBtn4 = document.getElementById('btn-next-4');
+        let reasonsShown = 0;
+
+        reasonBtn.addEventListener('click', () => {
+            reasonText.style.opacity = 0;
+            setTimeout(() => {
+                reasonText.innerText = reasons[reasonIndex];
+                reasonText.style.opacity = 1;
+                reasonIndex = (reasonIndex + 1) % reasons.length;
+                reasonsShown++;
+                
+                if(reasonsShown >= 3) {
+                    nextBtn4.classList.remove('hidden');
+                    nextBtn4.classList.add('flex'); // tailwind flex
+                    // Change button text to indicate done
+                    reasonBtn.innerText = "One more reason...";
+                }
+            }, 300);
+        });
+
+        nextBtn4.addEventListener('click', () => {
+            switchStage('stage-4', 'stage-5');
+            updateLoveMeter(80);
+            currentMode = 'GALAXY';
+            // Trigger shooting stars automatically occasionally
+            setInterval(createShootingStar, 2000);
+        });
+
+
+        // --- STAGE 5: FINAL WISH ---
+        document.getElementById('wish-btn').addEventListener('click', () => {
+            updateLoveMeter(100);
+            document.getElementById('wish-msg').style.opacity = 1;
+            
+            // Trigger Meteor Shower
+            for(let i=0; i<20; i++) {
+                setTimeout(createShootingStar, i * 100);
+            }
+            
+            // Warp speed effect briefly
+            warpSpeed = true;
+            setTimeout(() => { warpSpeed = false; }, 3000);
+        });
+
+
+        // ==========================================
+        // --- THREE.JS LOGIC ---
+        // ==========================================
+        
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050214, 0.002);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // --- HEART TEXTURE ---
+        function createHeartTexture() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 64; canvas.height = 64;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(32, 56);
+            ctx.bezierCurveTo(8, 40, 0, 32, 0, 20);
+            ctx.bezierCurveTo(0, 0, 22, 0, 32, 18);
+            ctx.bezierCurveTo(42, 0, 64, 0, 64, 20);
+            ctx.bezierCurveTo(64, 32, 56, 40, 32, 56);
+            ctx.fill();
+            return new THREE.CanvasTexture(canvas);
+        }
+        const heartTexture = createHeartTexture();
+
+        // --- PARTICLES SYSTEM ---
+        const particlesCount = 2000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particlesCount * 3);
+        const colors = new Float32Array(particlesCount * 3);
+        const sizes = new Float32Array(particlesCount);
+        
+        const galaxyPositions = new Float32Array(particlesCount * 3);
+        const tunnelPositions = new Float32Array(particlesCount * 3);
+
+        const color1 = new THREE.Color('#ff7eb3');
+        const color2 = new THREE.Color('#8e44ad');
+
+        // INITIALIZE POSITIONS
+        for(let i=0; i<particlesCount; i++) {
+            const i3 = i * 3;
+            
+            // Galaxy Logic
+            const radius = Math.random() * 400 + 50;
+            const spinAngle = radius * 0.03;
+            const branchAngle = (i % 3) * ((2 * Math.PI) / 3);
+            galaxyPositions[i3] = Math.cos(branchAngle + spinAngle) * radius + (Math.random()-0.5)*80;
+            galaxyPositions[i3+1] = (Math.random()-0.5) * 60;
+            galaxyPositions[i3+2] = Math.sin(branchAngle + spinAngle) * radius + (Math.random()-0.5)*80;
+
+            // Tunnel Logic
+            const angle = i * 0.1;
+            const tRadius = 25 + Math.random() * 5;
+            tunnelPositions[i3] = Math.cos(angle) * tRadius;
+            tunnelPositions[i3+1] = Math.sin(angle) * tRadius;
+            tunnelPositions[i3+2] = (i * 0.5) - 800; // Depth
+
+            // Initial State (Scattered)
+            positions[i3] = (Math.random()-0.5) * 1000;
+            positions[i3+1] = (Math.random()-0.5) * 1000;
+            positions[i3+2] = (Math.random()-0.5) * 1000;
+
+            // Colors
+            const mixedColor = color1.clone().lerp(color2, Math.random());
+            colors[i3] = mixedColor.r;
+            colors[i3+1] = mixedColor.g;
+            colors[i3+2] = mixedColor.b;
+            sizes[i] = Math.random() * 8;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        const material = new THREE.PointsMaterial({
+            size: 6,
+            map: heartTexture,
+            transparent: true,
+            opacity: 0.9,
+            vertexColors: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            sizeAttenuation: true
+        });
+
+        const points = new THREE.Points(geometry, material);
+        scene.add(points);
+
+        // --- SHOOTING STARS ---
+        const starGeo = new THREE.BufferGeometry();
+        const starMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 });
+        const shootingStars = []; // Array to hold star objects
+
+        function createShootingStar() {
+            if (currentMode !== 'GALAXY') return;
+
+            const points = [];
+            // Random start position
+            const x = (Math.random() - 0.5) * 600;
+            const y = (Math.random() - 0.5) * 600;
+            const z = (Math.random() - 0.5) * 200;
+            
+            // Length of trail
+            const len = 40;
+            
+            points.push(new THREE.Vector3(x, y, z));
+            points.push(new THREE.Vector3(x + len, y - len, z)); // Diagonal movement
+
+            const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line(lineGeo, starMat);
+            
+            scene.add(line);
+            shootingStars.push({ mesh: line, life: 1.0, speed: Math.random() * 5 + 2 });
+        }
+
+
+        // --- ANIMATION LOOP ---
+        let currentMode = 'IDLE'; 
+        let warpSpeed = false;
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth/2) * 0.001;
+            mouseY = (e.clientY - window.innerHeight/2) * 0.001;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+            const positionsAttr = geometry.attributes.position;
+            const array = positionsAttr.array;
+
+            // 1. Particle Morphing
+            if (currentMode === 'TUNNEL') {
+                for(let i=0; i<particlesCount; i++) {
+                    const i3 = i * 3;
+                    // Move towards tunnel formation
+                    array[i3] += (tunnelPositions[i3] - array[i3]) * 0.05;
+                    array[i3+1] += (tunnelPositions[i3+1] - array[i3+1]) * 0.05;
+                    array[i3+2] += (tunnelPositions[i3+2] - array[i3+2]) * 0.05;
+                    
+                    // Flight effect
+                    array[i3+2] += 4;
+                    if(array[i3+2] > 50) array[i3+2] = -800;
+                }
+                points.rotation.z = time * 0.2; // Spiral
+                points.rotation.y = 0;
+            } 
+            else if (currentMode === 'GALAXY') {
+                for(let i=0; i<particlesCount; i++) {
+                    const i3 = i * 3;
+                    array[i3] += (galaxyPositions[i3] - array[i3]) * 0.03;
+                    array[i3+1] += (galaxyPositions[i3+1] - array[i3+1]) * 0.03;
+                    array[i3+2] += (galaxyPositions[i3+2] - array[i3+2]) * 0.03;
+                }
+                points.rotation.y = time * 0.05;
+                if(warpSpeed) points.rotation.y += 0.2;
+
+                // Parallax
+                camera.position.x += (mouseX * 30 - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY * 30 - camera.position.y) * 0.05;
+                camera.position.z = warpSpeed ? 400 : 700;
+            }
+
+            positionsAttr.needsUpdate = true;
+
+            // 2. Shooting Stars Animation
+            for (let i = shootingStars.length - 1; i >= 0; i--) {
+                const s = shootingStars[i];
+                s.life -= 0.02;
+                s.mesh.position.x -= s.speed; // Move left
+                s.mesh.position.y -= s.speed; // Move down
+                s.mesh.material.opacity = s.life;
+
+                if (s.life <= 0) {
+                    scene.remove(s.mesh);
+                    shootingStars.splice(i, 1);
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // --- RESIZE ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
