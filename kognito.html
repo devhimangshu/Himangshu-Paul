@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth cursor-none">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kognito | Next-Gen Digital Experience</title>
+    <meta name="description" content="Kognito is a top-tier digital marketing agency specializing in SEO, PPC, and high-conversion web design. We turn traffic into revenue.">
+    <link rel="icon" type="image/png" href="https://himangshu.site/kognito/favicon.PNG">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts: Manrope & Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Configuration for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kognito: {
+                            blue: '#6c74fc',    // Cornflower Blue
+                            turmeric: '#acc444', // Turmeric (Action Color)
+                            violet: '#4b53b3',   // Blue Violet (Depth)
+                            dark: '#0f172a',     // Deep Slate
+                            darker: '#020617',   // Almost Black
+                            glass: 'rgba(15, 23, 42, 0.8)' // Dark Glass
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+                        'neon': '0 0 20px rgba(108, 116, 252, 0.4)',
+                        '3d': '20px 20px 60px #0a0f1c, -20px -20px 60px #141f38'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'scroll': 'scroll 30s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        scroll: {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        body {
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+            background-color: #0f172a; /* Fixed Dark Background */
+            color: #e2e8f0; /* Light Text */
+            cursor: none;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: white;
+        }
+        
+        /* Smooth Gradient Overlay */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 0%, rgba(108, 116, 252, 0.15), transparent 70%),
+                        radial-gradient(circle at 80% 80%, rgba(75, 83, 179, 0.08), transparent 50%),
+                        radial-gradient(circle at 0% 100%, rgba(172, 196, 68, 0.05), transparent 50%);
+        }
+
+        /* Section Backgrounds - Shiny Gradients */
+        .bg-shiny-1 {
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+        }
+        .bg-shiny-2 {
+            background: radial-gradient(ellipse at bottom right, rgba(108, 116, 252, 0.15), transparent 60%),
+                        linear-gradient(to bottom, #020617, #0f172a);
+        }
+        .bg-shiny-3 {
+            background: radial-gradient(circle at top left, rgba(172, 196, 68, 0.08), transparent 50%),
+                        linear-gradient(to bottom, #0f172a, #020617);
+        }
+        .bg-shiny-4 {
+            background: radial-gradient(circle at center, #172554 0%, #0f172a 100%);
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #acc444; /* Turmeric */
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        body:hover .cursor-outline.hovered {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(172, 196, 68, 0.1);
+            border-color: #acc444;
+        }
+        
+        /* Dark Glass Panel */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85); /* Darker for readability */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-25deg);
+            transition: 0.5s;
+            pointer-events: none;
+        }
+
+        .glass-card:hover::before {
+            left: 150%;
+            transition: 0.7s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(108, 116, 252, 0.3);
+            box-shadow: 0 20px 40px -10px rgba(108, 116, 252, 0.15);
+        }
+
+        .glass-dark {
+            background: rgba(10, 15, 28, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #6c74fc, #acc444, #6c74fc);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 5s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .banner-card {
+            transition: all 0.5s ease;
+        }
+        .banner-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Scanning Animation Line */
+        .scan-line {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, transparent, #acc444, transparent);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            box-shadow: 0 0 15px #acc444;
+            display: none;
+            z-index: 20;
+        }
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            100% { top: 100%; opacity: 0; }
+        }
+        
+        /* FAQ Accordion */
+        .accordion-content {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .accordion-item.active .accordion-content { max-height: 300px; }
+        .accordion-icon { transition: transform 0.4s ease; }
+        .accordion-item.active .accordion-icon { transform: rotate(180deg); }
+
+        /* Magnetic Button Base */
+        .magnetic-btn {
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: inline-block;
+        }
+
+        /* Map Background Pattern */
+        .bg-map-pattern {
+            background-image: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%236c74fc" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+        }
+
+        /* Warp Speed Background (New CTA) */
+        .warp-bg {
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at center, transparent 0%, #020617 80%),
+                linear-gradient(rgba(108, 116, 252, 0.1) 1px, transparent 1px) 0 0 / 50px 50px,
+                linear-gradient(90deg, rgba(108, 116, 252, 0.1) 1px, transparent 1px) 0 0 / 50px 50px;
+            transform: perspective(500px) rotateX(60deg) scale(2);
+            transform-origin: center top;
+            animation: warp-move 10s linear infinite;
+            opacity: 0.3;
+        }
+        @keyframes warp-move {
+            from { background-position: 0 0; }
+            to { background-position: 0 1000px; }
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-200 bg-kognito-dark selection:bg-kognito-turmeric selection:text-white relative">
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Global Gradient Texture -->
+    <div class="bg-noise"></div>
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- Full Width Glass Navigation -->
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 glass-panel" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo (Small) -->
+            <div class="flex-shrink-0 flex items-center cursor-pointer hoverable-element magnetic-btn" onclick="window.scrollTo(0,0)">
+                <img class="h-8 md:h-10 w-auto transition-transform hover:scale-105" src="https://himangshu.site/kognito/logo.PNG" alt="Kognito Logo">
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden xl:flex items-center space-x-6">
+                <a href="#" class="text-gray-300 hover:text-white font-semibold text-sm uppercase tracking-wide transition relative group hoverable-element magnetic-btn">
+                    Home
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kognito-blue to-kognito-violet transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#services" class="text-gray-300 hover:text-white font-semibold text-sm uppercase tracking-wide transition relative group hoverable-element magnetic-btn">
+                    Services
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kognito-blue to-kognito-violet transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#portfolio" class="text-gray-300 hover:text-white font-semibold text-sm uppercase tracking-wide transition relative group hoverable-element magnetic-btn">
+                    Workfolio
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kognito-blue to-kognito-violet transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#reviews" class="text-gray-300 hover:text-white font-semibold text-sm uppercase tracking-wide transition relative group hoverable-element magnetic-btn">
+                    Client Testimonials
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kognito-blue to-kognito-violet transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#who-we-are" class="text-gray-300 hover:text-white font-semibold text-sm uppercase tracking-wide transition relative group hoverable-element magnetic-btn">
+                    Our Team
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kognito-blue to-kognito-violet transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="text-gray-300 hover:text-white font-semibold text-sm uppercase tracking-wide transition relative group hoverable-element magnetic-btn">
+                    Careers
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kognito-blue to-kognito-violet transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="text-gray-300 hover:text-white font-semibold text-sm uppercase tracking-wide transition relative group hoverable-element magnetic-btn">
+                    Blog
+                    <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-kognito-blue to-kognito-violet transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#contact" class="px-6 py-2.5 bg-kognito-turmeric text-gray-900 text-sm font-bold rounded-full hover:bg-white hover:text-kognito-blue transition shadow-lg transform hover:-translate-y-1 hover:shadow-neon border border-transparent hoverable-element magnetic-btn">
+                    Get Free Audit
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="xl:hidden flex items-center">
+                <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-lg hover:bg-white/10 transition">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-kognito-dark/95 backdrop-blur-xl shadow-xl transform scale-y-0 origin-top transition-transform duration-300 border-t border-gray-800">
+            <div class="flex flex-col py-6 px-6 space-y-4">
+                <a href="#" class="text-xl font-bold text-gray-200 hover:text-kognito-blue transition" onclick="closeMenu()">Home</a>
+                <a href="#services" class="text-xl font-bold text-gray-200 hover:text-kognito-blue transition" onclick="closeMenu()">Services</a>
+                <a href="#portfolio" class="text-xl font-bold text-gray-200 hover:text-kognito-blue transition" onclick="closeMenu()">Workfolio</a>
+                <a href="#reviews" class="text-xl font-bold text-gray-200 hover:text-kognito-blue transition" onclick="closeMenu()">Client Testimonials</a>
+                <a href="#who-we-are" class="text-xl font-bold text-gray-200 hover:text-kognito-blue transition" onclick="closeMenu()">Our Team</a>
+                <a href="#contact" class="text-xl font-bold text-gray-200 hover:text-kognito-blue transition" onclick="closeMenu()">Careers</a>
+                <a href="#contact" class="text-xl font-bold text-gray-200 hover:text-kognito-blue transition" onclick="closeMenu()">Blog</a>
+                <a href="#contact" class="w-full text-center px-6 py-3 bg-kognito-turmeric text-gray-900 font-bold rounded-lg shadow-md hover:bg-white transition" onclick="closeMenu()">Get Audit</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-24 overflow-hidden flex items-center min-h-screen">
+        
+        <!-- Background Video with Dark Overlay -->
+        <div class="absolute inset-0 w-full h-full overflow-hidden z-0">
+            <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-80">
+                <source src="https://born2earn.in/kognito/herobg.mp4" type="video/mp4">
+            </video>
+            <!-- Dark Overlay for readability -->
+            <div class="absolute inset-0 bg-kognito-dark/40 backdrop-blur-[1px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <!-- Grid: items-start aligns top of text with top of image -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+                
+                <!-- Content (Left Column) -->
+                <div class="text-center lg:text-left z-10 relative reveal-up">
+                    
+                    <div class="inline-flex items-center gap-3 px-4 py-2 mb-8 bg-white/5 backdrop-blur-lg rounded-full border border-white/10 shadow-lg animate-float hoverable-element">
+                        <span class="relative flex h-2.5 w-2.5">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                        </span>
+                        <span class="text-gray-300 font-bold text-[10px] tracking-widest uppercase">Accepting New Clients</span>
+                    </div>
+                    
+                    <h1 class="text-5xl md:text-6xl lg:text-8xl font-bold text-white leading-[1.05] mb-6 tracking-tight">
+                        We Don't Guess. <br>
+                        We <span class="gradient-text">Scale.</span>
+                    </h1>
+                    
+                    <p class="text-base md:text-lg lg:text-xl text-gray-400 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Stop burning cash on generic marketing. Kognito builds <span class="font-semibold text-white">precision-engineered</span> campaigns that turn clicks into measurable revenue.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start mb-10">
+                        <a href="#contact" class="group px-8 py-4 bg-kognito-turmeric text-gray-900 font-bold rounded-full shadow-lg shadow-yellow-200/20 hover:bg-white hover:text-kognito-blue transition transform hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-3 hoverable-element magnetic-btn">
+                            <span>Get Strategy Audit</span>
+                            <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition"></i>
+                        </a>
+                        <a href="#services" class="px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 text-gray-200 font-bold rounded-full hover:bg-white hover:text-kognito-dark transition shadow-md hoverable-element flex items-center justify-center magnetic-btn">
+                            Our Work
+                        </a>
+                    </div>
+
+                    <!-- Trust Dashboard (Partners + Stats + Team) - FIXED MOBILE -->
+                    <div class="border-t border-gray-700/50 pt-8 animate-float" style="animation-duration: 6s;">
+                        
+                        <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+                            
+                            <!-- 1. Certified Partners (Left Side - Horizontal Layout) -->
+                            <div class="flex flex-col sm:flex-row items-center gap-4 flex-shrink-0">
+                                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest pt-1">Certified Partners:</p>
+                                <div class="flex gap-5 items-center">
+                                    <i class="fab fa-google text-lg text-[#4285F4] hover:scale-110 transition cursor-pointer"></i>
+                                    <i class="fab fa-meta text-lg text-[#0668E1] hover:scale-110 transition cursor-pointer"></i>
+                                    <i class="fab fa-shopify text-lg text-[#96bf48] hover:scale-110 transition cursor-pointer"></i>
+                                    <i class="fab fa-hubspot text-lg text-[#ff7a59] hover:scale-110 transition cursor-pointer"></i>
+                                </div>
+                            </div>
+
+                            <!-- Divider (Desktop Only) -->
+                            <div class="hidden lg:block w-px h-10 bg-gray-600/50"></div>
+
+                            <!-- 2. Stats & Team Group (Right Side) - Stack on mobile, row on desktop -->
+                            <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-8 lg:gap-10 items-center">
+                                
+                                <div class="flex gap-8">
+                                    <!-- ROI -->
+                                    <div class="text-center lg:text-left border-r border-gray-700/50 pr-4">
+                                        <p class="text-3xl font-black text-white leading-none counter" data-target="450" data-suffix="%">0</p>
+                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1 whitespace-nowrap">Avg ROI %</p>
+                                    </div>
+
+                                    <!-- Leads -->
+                                    <div class="text-center lg:text-left pr-4">
+                                        <p class="text-3xl font-black text-white leading-none counter" data-target="10000" data-suffix="+">0</p>
+                                        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mt-1 whitespace-nowrap">Leads Gen</p>
+                                    </div>
+                                </div>
+
+                                <!-- Team & Energy (Fixed Layout) -->
+                                <div class="flex items-center gap-4 pl-0 sm:pl-4 sm:border-l sm:border-gray-700/50">
+                                    <div class="flex -space-x-3 flex-shrink-0">
+                                        <img class="w-10 h-10 rounded-full border-2 border-kognito-dark object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=64&h=64" alt="Team">
+                                        <img class="w-10 h-10 rounded-full border-2 border-kognito-dark object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=64&h=64" alt="Team">
+                                        <div class="w-10 h-10 rounded-full border-2 border-kognito-dark bg-white text-kognito-dark flex items-center justify-center text-[10px] font-bold">+50</div>
+                                    </div>
+                                    <div class="flex flex-col text-left">
+                                        <p class="text-[10px] font-bold text-gray-300 uppercase tracking-wide whitespace-nowrap">Our Team</p>
+                                        <div class="flex items-center gap-1.5 whitespace-nowrap">
+                                            <i class="fa-solid fa-bolt text-kognito-turmeric text-[10px] animate-pulse"></i>
+                                            <span class="text-[9px] font-bold text-kognito-blue uppercase tracking-wider">Infinite Energy</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Visual (Aligned Top) -->
+                <div class="relative z-10 lg:pl-10 perspective-1000 group reveal-up lg:-mt-20" style="transition-delay: 0.2s;">
+                    <div class="relative w-full aspect-square md:aspect-[4/3] transform transition duration-700 group-hover:rotate-y-12 tilt-element">
+                        <!-- Holographic Base -->
+                        <div class="holo-base"></div>
+
+                        <!-- Orbit -->
+                        <div class="absolute inset-0 border border-kognito-blue/20 rounded-full animate-spin-slow scale-150 -z-10"></div>
+                        
+                        <!-- Main Image -->
+                        <div class="absolute inset-0 rounded-[2rem] overflow-hidden glass-card p-2 shadow-2xl transform transition duration-500 hover:scale-[1.02]">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Dashboard" class="w-full h-full object-cover rounded-[1.5rem] filter contrast-110 opacity-90">
+                            <div class="absolute inset-0 bg-gradient-to-t from-kognito-dark/80 via-transparent to-transparent rounded-[1.5rem]"></div>
+                            <!-- Radar Scan Effect -->
+                            <div class="radar-scan"></div>
+                        </div>
+
+                        <!-- Float Card 1: Revenue -->
+                        <div class="absolute -bottom-8 -left-8 glass-panel p-5 rounded-2xl shadow-glass-hover animate-float hoverable-element bg-kognito-dark/80 backdrop-blur-xl border border-white/10 hidden sm:block">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 text-xl shadow-inner border border-green-500/30">
+                                    <i class="fa-solid fa-arrow-trend-up"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wide">Monthly Revenue</p>
+                                    <p class="text-xl font-extrabold text-white">$124,500.00</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Float Card 2: Recent Win -->
+                        <div class="absolute top-8 -right-12 glass-panel px-4 py-3 rounded-xl shadow-glass-hover animate-float hoverable-element bg-kognito-dark/80 backdrop-blur-xl border border-white/10 hidden sm:block" style="animation-delay: 2s;">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 text-sm border border-yellow-500/30">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] text-gray-400 font-bold uppercase">Recent Win</p>
+                                    <p class="text-sm font-bold text-white">#1 Ranking Achieved</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who We Are Section (Shiny Dark Background 1) -->
+    <section id="who-we-are" class="py-24 relative reveal-up bg-shiny-1">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-20">
+                <div class="lg:w-1/2 relative group">
+                     <div class="relative z-10 rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 transform hover:scale-[1.01] transition duration-500">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Team" class="w-full h-auto filter contrast-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-kognito-dark/90 to-transparent"></div>
+                         <div class="absolute bottom-8 left-8">
+                             <div class="px-4 py-2 bg-kognito-blue/20 backdrop-blur-md rounded-lg border border-kognito-blue/30 inline-block mb-2">
+                                 <span class="text-kognito-blue font-bold text-xs uppercase tracking-widest">Our DNA</span>
+                             </div>
+                             <h4 class="text-2xl font-bold text-white">Data-Driven Creativity</h4>
+                         </div>
+                    </div>
+                    <!-- Decor -->
+                    <div class="absolute -top-10 -left-10 w-40 h-40 bg-kognito-blue/20 rounded-full blur-3xl -z-10"></div>
+                </div>
+                <div class="lg:w-1/2">
+                    <h2 class="text-kognito-turmeric font-bold tracking-[0.2em] uppercase text-xs mb-4">Who We Are?</h2>
+                    <h3 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">We are a collective of <br><span class="text-kognito-blue">Digital Maniacs.</span></h3>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                        Born from the need to kill "average" marketing. We combine ruthless data analysis with design that demands attention. We don't care about vanity metrics. We care about your bottom line. If it doesn't sell, we don't do it.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-kognito-blue text-xl">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-bold">Strategic Thinking</p>
+                                <p class="text-sm text-gray-500">No guesswork, just logic.</p>
+                            </div>
+                        </div>
+                         <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-kognito-turmeric text-xl">
+                                <i class="fa-solid fa-rocket"></i>
+                            </div>
+                            <div>
+                                <p class="text-white font-bold">Rapid Execution</p>
+                                <p class="text-sm text-gray-500">We move fast and break things.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services (Expanded & Detailed with CTAs) -->
+    <section id="services" class="py-24 relative reveal-up bg-shiny-2">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-kognito-blue font-bold tracking-[0.2em] uppercase text-xs mb-3">Our Services</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-white mb-6">What We Do?</h3>
+                <p class="text-gray-400 text-lg">Comprehensive digital solutions engineered for growth.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service 1: SMM -->
+                <div class="glass-card p-8 rounded-3xl group hoverable-element magnetic-btn">
+                    <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400 text-2xl mb-6 group-hover:scale-110 transition border border-blue-500/20">
+                        <i class="fa-solid fa-hashtag"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">Social Media Marketing</h4>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Content Calendar & Strategy</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Profile Management</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Static & Motion Creatives</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Reel Editing & Production</li>
+                    </ul>
+                    <a href="#contact" class="inline-flex items-center text-kognito-blue font-bold text-sm hover:text-white transition group-hover:translate-x-2 duration-300 mt-auto">
+                        Learn More <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- Service 2: Advertising -->
+                <div class="glass-card p-8 rounded-3xl group hoverable-element magnetic-btn">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400 text-2xl mb-6 group-hover:scale-110 transition border border-purple-500/20">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">Advertising</h4>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Meta Ads (FB/Insta)</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Google Ads (Search/Display)</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Performance Tracking</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> ROAS Optimization</li>
+                    </ul>
+                     <a href="#contact" class="inline-flex items-center text-kognito-turmeric font-bold text-sm hover:text-white transition group-hover:translate-x-2 duration-300 mt-auto">
+                        Start Advertising <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- Service 3: Graphic Design -->
+                <div class="glass-card p-8 rounded-3xl group hoverable-element magnetic-btn">
+                    <div class="w-14 h-14 bg-pink-500/10 rounded-2xl flex items-center justify-center text-pink-400 text-2xl mb-6 group-hover:scale-110 transition border border-pink-500/20">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">Graphic Designing</h4>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Logo & Branding</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Posters & Billboards</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Social Media Creatives</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Marketing Collateral</li>
+                    </ul>
+                     <a href="#contact" class="inline-flex items-center text-pink-400 font-bold text-sm hover:text-white transition group-hover:translate-x-2 duration-300 mt-auto">
+                        See Portfolio <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- Service 4: Video Editing -->
+                <div class="glass-card p-8 rounded-3xl group hoverable-element magnetic-btn">
+                    <div class="w-14 h-14 bg-red-500/10 rounded-2xl flex items-center justify-center text-red-400 text-2xl mb-6 group-hover:scale-110 transition border border-red-500/20">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">Video Editing</h4>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Short Form (Reels/TikTok)</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Long Form (YouTube)</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Podcast Edits</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Motion Graphics</li>
+                    </ul>
+                     <a href="#contact" class="inline-flex items-center text-red-400 font-bold text-sm hover:text-white transition group-hover:translate-x-2 duration-300 mt-auto">
+                        Get Edits <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- Service 5: Website Development -->
+                <div class="glass-card p-8 rounded-3xl group hoverable-element magnetic-btn">
+                    <div class="w-14 h-14 bg-cyan-500/10 rounded-2xl flex items-center justify-center text-cyan-400 text-2xl mb-6 group-hover:scale-110 transition border border-cyan-500/20">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">Website Development</h4>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Custom Web Apps</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> WordPress / Shopify / Wix</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> GoHighLevel Automation</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> E-commerce Solutions</li>
+                    </ul>
+                     <a href="#contact" class="inline-flex items-center text-cyan-400 font-bold text-sm hover:text-white transition group-hover:translate-x-2 duration-300 mt-auto">
+                        Build Your Site <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                 <!-- Service 6: App Development -->
+                 <div class="glass-card p-8 rounded-3xl group hoverable-element magnetic-btn">
+                    <div class="w-14 h-14 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-400 text-2xl mb-6 group-hover:scale-110 transition border border-orange-500/20">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">App Development</h4>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Android Development</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Native iOS Apps</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Cross-Platform Solutions</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> UI/UX for Mobile</li>
+                    </ul>
+                     <a href="#contact" class="inline-flex items-center text-orange-400 font-bold text-sm hover:text-white transition group-hover:translate-x-2 duration-300 mt-auto">
+                        Develop App <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+
+                <!-- Service 7: SEO -->
+                <div class="glass-card p-8 rounded-3xl group hoverable-element magnetic-btn md:col-span-2 lg:col-span-1">
+                    <div class="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-400 text-2xl mb-6 group-hover:scale-110 transition border border-green-500/20">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold text-white mb-4">SEO Optimization</h4>
+                    <ul class="space-y-3 text-sm text-gray-400 mb-8 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> On-Page & Off-Page SEO</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Keyword Research Packages</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> High-Quality Backlinks</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-kognito-turmeric mt-1"></i> Technical Site Audits</li>
+                    </ul>
+                     <a href="#contact" class="inline-flex items-center text-green-400 font-bold text-sm hover:text-white transition group-hover:translate-x-2 duration-300 mt-auto">
+                        Rank #1 <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us (Shiny Dark Background 3) -->
+    <section id="why-us" class="py-24 relative overflow-hidden bg-shiny-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-16">
+                <div class="lg:w-1/3">
+                    <h2 class="text-kognito-turmeric font-bold tracking-[0.2em] uppercase text-xs mb-3">The Edge</h2>
+                    <h3 class="text-4xl font-bold text-white mb-6">Why clients go with Kognito?</h3>
+                    <p class="text-gray-400 mb-8">We don't just deliver services; we deliver an unfair advantage. Our methodology is built on speed, precision, and absolute transparency.</p>
+                    <a href="#contact" class="text-kognito-blue font-bold flex items-center gap-2 hover:gap-4 transition-all magnetic-btn">Get Started <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/10 transition magnetic-btn">
+                        <i class="fa-solid fa-bolt text-3xl text-kognito-turmeric mb-4"></i>
+                        <h4 class="text-xl font-bold text-white mb-2">Speed to Market</h4>
+                        <p class="text-sm text-gray-400">We execute campaigns faster than traditional agencies plan them.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/10 transition magnetic-btn">
+                        <i class="fa-solid fa-eye text-3xl text-kognito-blue mb-4"></i>
+                        <h4 class="text-xl font-bold text-white mb-2">Total Transparency</h4>
+                        <p class="text-sm text-gray-400">Live dashboards. No hidden fees. You see what we see.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/10 transition magnetic-btn">
+                        <i class="fa-solid fa-chart-line text-3xl text-purple-400 mb-4"></i>
+                        <h4 class="text-xl font-bold text-white mb-2">ROI Obsessed</h4>
+                        <p class="text-sm text-gray-400">We track every rupee. If it doesn't make money, we cut it.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/10 transition magnetic-btn">
+                        <i class="fa-solid fa-user-astronaut text-3xl text-pink-400 mb-4"></i>
+                        <h4 class="text-xl font-bold text-white mb-2">Elite Talent</h4>
+                        <p class="text-sm text-gray-400">Work directly with experts, not account managers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative "Best Agency in Bangalore" Section -->
+    <section class="py-20 relative overflow-hidden bg-kognito-darker border-y border-white/5 bg-map-pattern">
+         <div class="absolute inset-0 bg-gradient-to-r from-kognito-dark to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="md:w-1/2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-kognito-blue/20 rounded-full border border-kognito-blue/30 mb-4">
+                    <div class="w-2 h-2 bg-kognito-blue rounded-full animate-ping"></div>
+                    <span class="text-[10px] font-bold text-kognito-blue uppercase tracking-widest">HQ Location</span>
+                </div>
+                <h2 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">Bangalore's <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-kognito-blue to-kognito-turmeric">Digital Powerhouse</span></h2>
+                <p class="text-gray-400 leading-relaxed text-lg mb-8">
+                    Dominating the tech capital's landscape. We don't just follow trends; we set them for brands that demand excellence in India's silicon valley.
+                </p>
+                <div class="flex gap-8">
+                    <div>
+                        <p class="text-3xl font-bold text-white">100%</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Client Satisfaction</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-bold text-white">#1</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-wider">Rated Agency</p>
+                    </div>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative">
+                <!-- Decorative Map Pin Visual -->
+                <div class="relative w-full aspect-video bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm flex items-center justify-center overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-kognito-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    <i class="fa-solid fa-location-dot text-6xl text-kognito-turmeric drop-shadow-[0_0_15px_rgba(172,196,68,0.5)] animate-bounce"></i>
+                    <div class="absolute bottom-4 left-6">
+                        <p class="text-white font-bold">Bangalore, IN</p>
+                        <p class="text-xs text-gray-400">Kognito HQ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative Our Clients (Auto Scroll & Colorful) -->
+    <section class="py-24 relative overflow-hidden bg-shiny-4">
+        <div class="max-w-7xl mx-auto px-4 mb-12 text-center">
+            <h3 class="text-3xl font-bold text-white">Trusted by Industry Leaders</h3>
+        </div>
+        
+        <div class="relative w-full overflow-hidden group">
+            <div class="absolute inset-y-0 left-0 w-40 bg-gradient-to-r from-kognito-dark to-transparent z-20"></div>
+            <div class="absolute inset-y-0 right-0 w-40 bg-gradient-to-l from-kognito-dark to-transparent z-20"></div>
+            
+            <div class="flex gap-20 animate-scroll w-max items-center">
+                <!-- Using FontAwesome and colored text as placeholders for colorful logos -->
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-aws text-5xl text-[#FF9900]"></i> AWS</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-react text-5xl text-[#61DAFB]"></i> React</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-node text-5xl text-[#339933]"></i> Node</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-figma text-5xl text-[#F24E1E]"></i> Figma</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-docker text-5xl text-[#2496ED]"></i> Docker</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-android text-5xl text-[#3DDC84]"></i> Android</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-apple text-5xl text-gray-200"></i> Apple</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-stripe text-5xl text-[#635BFF]"></i> Stripe</div>
+                
+                <!-- Duplicate for loop -->
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-aws text-5xl text-[#FF9900]"></i> AWS</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-react text-5xl text-[#61DAFB]"></i> React</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-node text-5xl text-[#339933]"></i> Node</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-figma text-5xl text-[#F24E1E]"></i> Figma</div>
+                <div class="flex items-center gap-3 text-3xl font-bold text-white opacity-80 hover:opacity-100 transition hover:scale-110 duration-300"><i class="fab fa-docker text-5xl text-[#2496ED]"></i> Docker</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio" class="py-24 relative reveal-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h3 class="text-4xl md:text-5xl font-bold text-white">Check out our portfolio</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer magnetic-btn">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" class="object-cover w-full h-full transition duration-700 group-hover:scale-110" alt="Project 1">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center flex-col">
+                        <h4 class="text-xl font-bold text-white">FinTech App Growth</h4>
+                        <p class="text-kognito-turmeric text-sm">300% User Increase</p>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer magnetic-btn">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="object-cover w-full h-full transition duration-700 group-hover:scale-110" alt="Project 2">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center flex-col">
+                        <h4 class="text-xl font-bold text-white">E-commerce Scale</h4>
+                        <p class="text-kognito-turmeric text-sm">$2M Revenue</p>
+                    </div>
+                </div>
+                <div class="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer magnetic-btn">
+                    <img src="https://images.unsplash.com/photo-1555421689-492a1880ceb9?auto=format&fit=crop&w=800&q=80" class="object-cover w-full h-full transition duration-700 group-hover:scale-110" alt="Project 3">
+                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center flex-col">
+                        <h4 class="text-xl font-bold text-white">SaaS Branding</h4>
+                        <p class="text-kognito-turmeric text-sm">Rebranding & UI</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10">
+                <button class="px-8 py-3 border border-white/20 rounded-full text-white hover:bg-white hover:text-kognito-dark transition font-bold magnetic-btn">View All Projects</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative Reviews (Masonry Style) -->
+    <section id="reviews" class="py-24 bg-shiny-1 reveal-up relative">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-kognito-blue/10 rounded-full filter blur-[100px]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+             <div class="text-center mb-20">
+                <h3 class="text-4xl md:text-5xl font-bold text-white">Client Love</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                
+                <!-- Review 1 -->
+                <div class="glass-card p-8 rounded-tr-[3rem] rounded-bl-[3rem] rounded-tl-xl rounded-br-xl magnetic-btn border-t-2 border-kognito-turmeric/50">
+                    <div class="flex text-kognito-turmeric mb-6 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 mb-8 italic leading-relaxed">"Kognito completely transformed our lead generation pipeline. We saw results in week 2, not month 2. Their data-first approach is refreshing."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full border border-white/20"></div>
+                        <div>
+                            <p class="font-bold text-white">Sarah Jenkins</p>
+                            <p class="text-xs text-kognito-blue font-bold uppercase tracking-wider">CEO, TechStart</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 (Offset Down) -->
+                <div class="glass-card p-8 rounded-xl magnetic-btn border-t-2 border-kognito-blue/50 md:mt-12">
+                    <div class="flex text-kognito-turmeric mb-6 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 mb-8 italic leading-relaxed">"The web design team is on another level. Our conversion rate doubled after the redesign. They truly understand user psychology."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full border border-white/20"></div>
+                        <div>
+                            <p class="font-bold text-white">Rahul Verma</p>
+                            <p class="text-xs text-kognito-blue font-bold uppercase tracking-wider">Founder, E-Shop</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="glass-card p-8 rounded-tl-[3rem] rounded-br-[3rem] rounded-tr-xl rounded-bl-xl magnetic-btn border-t-2 border-kognito-violet/50">
+                    <div class="flex text-kognito-turmeric mb-6 text-sm">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 mb-8 italic leading-relaxed">"Best agency in Bangalore hands down. No fluff, just hard data and great creative. They delivered exactly what they promised."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-900 rounded-full border border-white/20"></div>
+                        <div>
+                            <p class="font-bold text-white">Elena Rodriguez</p>
+                            <p class="text-xs text-kognito-blue font-bold uppercase tracking-wider">CMO, DataFlow</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQs -->
+    <section class="py-24 relative reveal-up bg-kognito-dark">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-white">FAQs</h3>
+            </div>
+            <div class="space-y-4">
+                <!-- Item 1 -->
+                <div class="glass-card rounded-xl overflow-hidden accordion-item cursor-pointer magnetic-btn" onclick="toggleAccordion(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h4 class="font-bold text-white">How fast can we see results?</h4>
+                        <i class="fa-solid fa-chevron-down text-kognito-blue accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content px-6 pb-0 text-gray-400">
+                        <p class="pb-6">For PPC, results are almost immediate. For SEO, typically 3-6 months for significant impact. We provide weekly reports so you always know where you stand.</p>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="glass-card rounded-xl overflow-hidden accordion-item cursor-pointer magnetic-btn" onclick="toggleAccordion(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h4 class="font-bold text-white">Do you work with startups?</h4>
+                        <i class="fa-solid fa-chevron-down text-kognito-blue accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content px-6 pb-0 text-gray-400">
+                        <p class="pb-6">Yes! We love high-growth startups. We have specific packages designed to help you scale rapidly from zero to one.</p>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="glass-card rounded-xl overflow-hidden accordion-item cursor-pointer magnetic-btn" onclick="toggleAccordion(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h4 class="font-bold text-white">What makes you different?</h4>
+                        <i class="fa-solid fa-chevron-down text-kognito-blue accordion-icon"></i>
+                    </div>
+                    <div class="accordion-content px-6 pb-0 text-gray-400">
+                        <p class="pb-6">We don't use templates. We don't outsource critical work. We are a team of senior experts who combine code, design, and data to build custom growth engines.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative CTA Section (Warp Speed Effect) -->
+    <section id="contact" class="py-32 relative reveal-up overflow-hidden bg-kognito-darker">
+        <!-- Warp Background -->
+        <div class="absolute inset-0 bg-kognito-dark z-0">
+             <div class="absolute inset-0 opacity-30" style="background: radial-gradient(circle at center, #2a2a2a 1px, transparent 1px); background-size: 20px 20px; transform: perspective(500px) rotateX(60deg) scale(2); animation: warp 5s linear infinite;"></div>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-4 relative z-10 text-center">
+            
+            <div class="inline-block mb-6 relative">
+                 <div class="absolute inset-0 bg-kognito-turmeric/50 blur-xl rounded-full"></div>
+                 <span class="relative z-10 text-kognito-turmeric font-bold tracking-[0.3em] uppercase text-sm border border-kognito-turmeric/50 px-4 py-2 rounded-full">System Ready</span>
+            </div>
+
+            <h2 class="text-5xl md:text-7xl font-black text-white mb-8 tracking-tight leading-tight">
+                The <span class="text-transparent bg-clip-text bg-gradient-to-r from-kognito-blue to-cyan-400">Kognito Accelerator</span> <br> Is Waiting.
+            </h2>
+            
+            <p class="text-blue-200 text-xl md:text-2xl mb-12 font-light max-w-2xl mx-auto">
+                No fluff. No wasted budget. Just a strategic roadmap to dominate your market share in 90 days or less.
+            </p>
+            
+            <!-- Floating Glass Interface Card -->
+            <div class="glass-card p-1 rounded-2xl inline-block shadow-2xl hover:shadow-neon transition duration-500 magnetic-btn">
+                <div class="bg-kognito-dark/90 rounded-xl p-8 md:p-12 border border-white/10 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-r from-kognito-blue/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500"></div>
+                    
+                    <button class="relative z-10 px-10 py-5 bg-gradient-to-r from-kognito-blue to-kognito-violet text-white text-xl font-bold rounded-xl shadow-lg hover:shadow-2xl hover:scale-105 transition transform flex items-center gap-4 mx-auto">
+                        Ignite Your Brand <i class="fa-solid fa-rocket animate-bounce"></i>
+                    </button>
+                    
+                    <p class="relative z-10 mt-6 text-sm text-gray-400 font-mono"><i class="fa-solid fa-circle-check text-green-400 mr-2"></i> Free 30-Min Strategy Call</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-kognito-dark/90 backdrop-blur-xl border-t border-gray-800 pt-20 pb-10 reveal-up relative z-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Brand Column -->
+                <div class="space-y-6">
+                    <img src="https://himangshu.site/kognito/logo.PNG" alt="Kognito" class="h-8 brightness-200 contrast-0 opacity-90">
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+                        Kognito is the digital partner for brands that refuse to be average. We design, we code, we market, and we win.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-kognito-blue hover:text-white transition-all duration-300 magnetic-btn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-kognito-blue hover:text-white transition-all duration-300 magnetic-btn">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-kognito-blue hover:text-white transition-all duration-300 magnetic-btn">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Links Column 1 -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Company</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li><a href="#who-we-are" class="hover:text-kognito-blue transition-colors">About Us</a></li>
+                        <li><a href="#portfolio" class="hover:text-kognito-blue transition-colors">Workfolio</a></li>
+                        <li><a href="#contact" class="hover:text-kognito-blue transition-colors">Careers</a></li>
+                        <li><a href="#contact" class="hover:text-kognito-blue transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Links Column 2 -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Services</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-kognito-blue transition-colors">SEO Optimization</a></li>
+                        <li><a href="#" class="hover:text-kognito-blue transition-colors">Performance Ads</a></li>
+                        <li><a href="#" class="hover:text-kognito-blue transition-colors">Web Development</a></li>
+                        <li><a href="#" class="hover:text-kognito-blue transition-colors">App Development</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info Column (Replaces Newsletter) -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Get in Touch</h4>
+                    <ul class="space-y-4 text-sm text-gray-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-kognito-blue"></i>
+                            <span>Bangalore, India<br>Kognito HQ</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-kognito-blue"></i>
+                            <a href="mailto:hello@kognito.com" class="hover:text-white transition-colors">hello@kognito.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+                <p>&copy; 2025 Kognito. All rights reserved.</p>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Trigger Reveal Animations
+        window.addEventListener('load', () => {
+             document.querySelectorAll('.reveal-up').forEach((el, index) => {
+                 setTimeout(() => {
+                     el.classList.add('active');
+                 }, index * 100);
+             });
+        });
+
+        // FAQ Accordion
+        function toggleAccordion(element) {
+            element.classList.toggle('active');
+        }
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverableElements = document.querySelectorAll('.hoverable-element, a, button, input, .accordion-item');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Re-attach listeners for new elements if needed
+        hoverableElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.classList.add('hovered');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.classList.remove('hovered');
+            });
+        });
+
+        // 3D Tilt Effect (Re-added for Services)
+        const tiltElements = document.querySelectorAll('.group'); // Applied to group class generally
+        tiltElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+                
+                // Only apply if it has the tilt-element class to avoid messy transforms on all groups
+                if(el.classList.contains('tilt-element')) {
+                     el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                if(el.classList.contains('tilt-element')) {
+                    el.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                }
+            });
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let isMenuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if(isMenuOpen) {
+                mobileMenu.classList.remove('scale-y-0');
+            } else {
+                mobileMenu.classList.add('scale-y-0');
+            }
+        });
+
+        function closeMenu() {
+             mobileMenu.classList.add('scale-y-0');
+             isMenuOpen = false;
+        }
+
+        // Magnetic Buttons Logic
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+        
+        // Counter Animation
+        const counters = document.querySelectorAll('.counter');
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-target');
+                    const suffix = counter.getAttribute('data-suffix') || '';
+                    const increment = Math.max(Math.ceil(target / 100), 1); // Ensure at least 1
+                    
+                    let count = 0;
+                    const updateCounter = () => {
+                        if(count < target) {
+                            count += increment;
+                            if (count > target) count = target;
+                            counter.innerText = count + suffix;
+                            setTimeout(updateCounter, 20);
+                        } else {
+                            counter.innerText = target + suffix;
+                        }
+                    };
+                    updateCounter();
+                    observer.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        counters.forEach(counter => {
+            counterObserver.observe(counter);
+        });
+
+        // Scroll Progress Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById("scroll-progress");
+            if(progressBar) {
+                 progressBar.style.width = scrolled + "%";
+            }
+        };
+    </script>
+</body>
+</html>
