@@ -1,0 +1,883 @@
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lavate Media | Built to elevate</title>
+    <meta name="description" content="Lavate Media is a professional creative and digital media brand representing growth, structure, and confidence.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        lavate: {
+                            black: '#0A090C',
+                            gold: '#E7A349',
+                            blue: '#5459AB',
+                            rose: '#C36F86',
+                            bronze: '#8D5442',
+                            softGold: '#EDD5A6',
+                            light: '#F8F8FA', // Ultra light gray for background
+                            dark: '#121214'
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'brand-gradient': 'linear-gradient(135deg, #E7A349, #C36F86, #5459AB)',
+                        'brand-gradient-dark': 'linear-gradient(135deg, rgba(231, 163, 73, 0.2), rgba(195, 111, 134, 0.2), rgba(84, 89, 171, 0.2))',
+                        'mesh': 'radial-gradient(at 40% 20%, rgba(231, 163, 73, 0.15) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(195, 111, 134, 0.15) 0px, transparent 50%), radial-gradient(at 0% 50%, rgba(84, 89, 171, 0.15) 0px, transparent 50%)',
+                    },
+                    spacing: {
+                        '128': '32rem',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 20s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Styles */
+        body {
+            background-color: #F8F8FA;
+            color: #0A090C;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            cursor: none; /* Hiding default cursor for custom one */
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #E7A349;
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(10, 9, 12, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        /* Hover State for Cursor */
+        body:hover .cursor-outline {
+            border-color: #E7A349;
+        }
+        a:hover ~ .cursor-outline, button:hover ~ .cursor-outline {
+            transform: scale(1.5);
+            background-color: rgba(231, 163, 73, 0.1);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A090C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #E7A349, #C36F86);
+            border-radius: 5px;
+            border: 2px solid #0A090C;
+        }
+
+        /* Utilities */
+        .text-gradient {
+            background: linear-gradient(135deg, #E7A349, #C36F86, #5459AB);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Sticky Section logic */
+        .sticky-wrapper {
+            position: sticky;
+            top: 120px;
+        }
+
+        /* Marquee Animation */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0A090C;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+        .loader-line {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            position: relative;
+            overflow: hidden;
+        }
+        .loader-line::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; height: 100%; width: 50%;
+            background: #E7A349;
+            animation: load 2s ease-in-out infinite;
+        }
+        @keyframes load {
+            0% { left: -50%; }
+            100% { left: 100%; }
+        }
+        
+        /* Floating WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background-color: #25D366;
+            color: #FFF;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-lavate-gold selection:text-black">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="text-center">
+            <h1 class="text-lavate-gold font-cinzel text-2xl tracking-[0.5em] mb-4">LAVATE</h1>
+            <div class="loader-line mx-auto"></div>
+        </div>
+    </div>
+
+    <!-- Custom Cursor Elements -->
+    <div class="cursor-dot hidden md:block" id="cursor-dot"></div>
+    <div class="cursor-outline hidden md:block" id="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-lavate-black/95 backdrop-blur-md border-b border-white/5" id="navbar">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
+            <div class="flex justify-between items-center h-24">
+                
+                <!-- Logo -->
+                <a href="#" class="flex-shrink-0 z-50 group">
+                    <img src="https://born2earn.in/himanghu/lavate/logo.png" alt="Lavate Media" class="h-12 w-auto object-contain transition-transform group-hover:scale-105"> 
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex absolute left-1/2 transform -translate-x-1/2 space-x-10">
+                    <a href="#about" class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-lavate-gold transition-colors py-2">About</a>
+                    <a href="#services" class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-lavate-rose transition-colors py-2">Services</a>
+                    <a href="#work" class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-lavate-blue transition-colors py-2">Work</a>
+                    <a href="#reviews" class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors py-2">Reviews</a>
+                    <a href="#faq" class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 hover:text-white transition-colors py-2">FAQ</a>
+                </div>
+
+                <!-- Right Action -->
+                <div class="hidden lg:flex items-center gap-6">
+                    <a href="tel:+917022776211" class="text-white hover:text-lavate-gold text-xs font-bold tracking-widest transition-colors">
+                        +91 70227 76211
+                    </a>
+                    <a href="#contact" class="group relative px-6 py-2 bg-white text-lavate-black overflow-hidden font-bold text-xs uppercase tracking-widest hover:text-white transition-colors">
+                         <div class="absolute inset-0 w-0 bg-lavate-gold transition-all duration-[250ms] ease-out group-hover:w-full z-0"></div>
+                         <span class="relative z-10">Start Project</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger & Contact -->
+                <div class="lg:hidden flex items-center gap-4">
+                     <a href="tel:+917022776211" class="text-white text-xs font-bold tracking-widest">
+                        <i class="fas fa-phone-alt"></i>
+                    </a>
+                    <button id="menu-toggle" class="z-50 p-2 text-white focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-lavate-black transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col justify-center items-center">
+        <button id="menu-close" class="absolute top-8 right-8 text-white text-3xl focus:outline-none">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="flex flex-col space-y-8 text-center">
+            <a href="#about" class="text-3xl font-cinzel text-white hover:text-lavate-gold mobile-link">About</a>
+            <a href="#services" class="text-3xl font-cinzel text-white hover:text-lavate-rose mobile-link">Services</a>
+            <a href="#work" class="text-3xl font-cinzel text-white hover:text-lavate-blue mobile-link">Work</a>
+            <a href="#reviews" class="text-3xl font-cinzel text-white hover:text-lavate-gold mobile-link">Reviews</a>
+            <a href="#contact" class="text-3xl font-cinzel text-lavate-gold mobile-link">Contact</a>
+            <a href="tel:+917022776211" class="text-xl font-inter text-white mt-8 border-t border-white/20 pt-8">+91 70227 76211</a>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/917022776211" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Hero Section (Video Background) -->
+    <header class="relative min-h-screen flex items-center justify-center pt-20 bg-lavate-black overflow-hidden">
+        <!-- Background Video -->
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-60">
+            <source src="https://born2earn.in/himanghu/lavate/herobgm.mp4" type="video/mp4">
+        </video>
+        <!-- Dark Overlay for readability -->
+        <div class="absolute inset-0 bg-black/50 z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-lavate-black via-transparent to-lavate-black/80 z-10"></div>
+        
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 relative z-20 text-center">
+            
+            <div class="inline-block mb-6 px-4 py-2 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm" data-aos="fade-down">
+                <span class="text-[10px] md:text-xs font-bold tracking-[0.3em] text-lavate-gold uppercase">Built to Elevate</span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl lg:text-9xl font-cinzel text-white mb-8 tracking-tight leading-none drop-shadow-2xl" data-aos="zoom-in" data-aos-duration="1000">
+                LAVATE <br> 
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-lavate-gold via-lavate-rose to-lavate-blue">MEDIA</span>
+            </h1>
+            
+            <p class="text-gray-200 text-lg md:text-xl font-light max-w-2xl mx-auto mb-12 leading-relaxed drop-shadow-md" data-aos="fade-up" data-aos-delay="200">
+                A professional creative brand representing <span class="text-white font-medium">growth</span>, <span class="text-white font-medium">structure</span>, and <span class="text-white font-medium">confidence</span>.
+            </p>
+
+            <div class="flex flex-col md:flex-row justify-center gap-6" data-aos="fade-up" data-aos-delay="400">
+                <a href="#services" class="px-10 py-4 bg-brand-gradient text-white font-bold uppercase tracking-widest text-xs hover:shadow-glow-gold transition-all hover:scale-105 border border-transparent">
+                    Explore Capabilities
+                </a>
+                <a href="#work" class="px-10 py-4 border border-white/40 bg-black/20 backdrop-blur-sm text-white font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all">
+                    View Portfolio
+                </a>
+            </div>
+        </div>
+        <!-- No Scroll Indicator -->
+    </header>
+
+    <!-- Trusted By (Marquee) -->
+    <div class="py-12 bg-white border-b border-gray-100 relative z-30">
+        <p class="text-center text-xs font-bold uppercase tracking-[0.2em] text-gray-400 mb-6">Trusted by Industry Leaders</p>
+        <div class="marquee-container">
+            <div class="marquee-content flex gap-20 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                <span class="text-2xl font-cinzel font-bold text-lavate-black">APEX FINANCE</span>
+                <span class="text-2xl font-inter font-black text-lavate-black">VELVET</span>
+                <span class="text-2xl font-serif italic font-bold text-lavate-black">Lumina.</span>
+                <span class="text-2xl font-mono font-bold text-lavate-black">TECHNOVA</span>
+                <span class="text-2xl font-cinzel font-bold text-lavate-black">STERLING</span>
+                <span class="text-2xl font-inter font-black text-lavate-black">GROWTH.CO</span>
+                <span class="text-2xl font-cinzel font-bold text-lavate-black">APEX FINANCE</span>
+                <span class="text-2xl font-inter font-black text-lavate-black">VELVET</span>
+                <span class="text-2xl font-serif italic font-bold text-lavate-black">Lumina.</span>
+                <span class="text-2xl font-mono font-bold text-lavate-black">TECHNOVA</span>
+                <span class="text-2xl font-cinzel font-bold text-lavate-black">STERLING</span>
+                 <span class="text-2xl font-inter font-black text-lavate-black">GROWTH.CO</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- About / Introduction Section -->
+    <section id="about" class="py-32 bg-lavate-light px-6 lg:px-12 relative overflow-hidden">
+        <!-- Decoration -->
+        <div class="absolute top-20 right-0 w-64 h-64 bg-lavate-gold/10 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div data-aos="fade-right">
+                <span class="text-lavate-rose text-xs font-bold tracking-[0.25em] uppercase block mb-6">Who We Are</span>
+                <h2 class="text-4xl md:text-5xl lg:text-6xl text-lavate-black mb-8 leading-tight">
+                    We don't do "Basic". <br>
+                    We do <span class="text-transparent bg-clip-text bg-brand-gradient">Disciplined Growth.</span>
+                </h2>
+                <div class="space-y-6 text-gray-600 text-lg font-light leading-relaxed">
+                    <p>
+                        In a world full of noise, clarity is power. Lavate Media was built to provide structure to chaos. We are not just designers or marketers; we are architects of digital presence.
+                    </p>
+                    <p>
+                        Our identity is modern, minimal, and disciplined. We reject loud visuals and unnecessary decoration in favor of premium quality and measurable results.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-8 mt-12 border-t border-gray-200 pt-8">
+                    <div>
+                        <h4 class="text-3xl font-cinzel text-lavate-black mb-1">4+</h4>
+                        <p class="text-xs uppercase tracking-widest text-gray-400">Years Active</p>
+                    </div>
+                    <div>
+                        <h4 class="text-3xl font-cinzel text-lavate-black mb-1">100+</h4>
+                        <p class="text-xs uppercase tracking-widest text-gray-400">Projects</p>
+                    </div>
+                     <div>
+                        <h4 class="text-3xl font-cinzel text-lavate-black mb-1">24/7</h4>
+                        <p class="text-xs uppercase tracking-widest text-gray-400">Support</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative h-[600px] w-full" data-aos="fade-left">
+                <div class="absolute inset-0 bg-gray-200 overflow-hidden rounded-sm shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-700">
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Team Meeting" class="w-full h-full object-cover">
+                    <!-- Overlay Info -->
+                    <div class="absolute bottom-0 left-0 bg-white p-6 w-3/4">
+                        <p class="font-cinzel text-xl text-lavate-black mb-2">Strategic Planning</p>
+                        <p class="text-xs text-gray-500 uppercase tracking-widest">Our core methodology</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Services Section -->
+    <section id="services" class="py-32 bg-white relative">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
+            <div class="text-center mb-20">
+                <span class="text-lavate-blue text-xs font-bold tracking-[0.25em] uppercase">Capabilities</span>
+                <h2 class="text-4xl md:text-5xl text-lavate-black mt-4">Full-Spectrum Digital Services</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="group relative bg-lavate-light p-8 lg:p-10 hover:bg-lavate-black transition-colors duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="0">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-lavate-gold/10 rounded-bl-full group-hover:bg-lavate-gold/20 transition-colors"></div>
+                    
+                    <i class="fas fa-layer-group text-4xl text-lavate-gold mb-8 group-hover:scale-110 transition-transform duration-300"></i>
+                    
+                    <h3 class="text-xl text-lavate-black font-bold mb-4 group-hover:text-white transition-colors">Brand Identity</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8 group-hover:text-gray-400 transition-colors">
+                        We build brands that command respect. Logo design, typography, color psychology, and comprehensive visual systems.
+                    </p>
+                    
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-lavate-gold rounded-full mr-2"></span> Logo & Guidelines
+                        </li>
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-lavate-gold rounded-full mr-2"></span> Rebranding
+                        </li>
+                    </ul>
+
+                    <a href="#contact" class="inline-block text-xs font-bold uppercase tracking-widest border-b border-lavate-black pb-1 group-hover:text-lavate-gold group-hover:border-lavate-gold transition-colors">Learn More</a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group relative bg-lavate-light p-8 lg:p-10 hover:bg-lavate-black transition-colors duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-lavate-rose/10 rounded-bl-full group-hover:bg-lavate-rose/20 transition-colors"></div>
+                    
+                    <i class="fas fa-video text-4xl text-lavate-rose mb-8 group-hover:scale-110 transition-transform duration-300"></i>
+                    
+                    <h3 class="text-xl text-lavate-black font-bold mb-4 group-hover:text-white transition-colors">Content Production</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8 group-hover:text-gray-400 transition-colors">
+                        High-end photography and videography. We create assets that tell your story with cinematic quality and precision.
+                    </p>
+                    
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-lavate-rose rounded-full mr-2"></span> Commercial Shoots
+                        </li>
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-lavate-rose rounded-full mr-2"></span> Social Reels
+                        </li>
+                    </ul>
+
+                    <a href="#contact" class="inline-block text-xs font-bold uppercase tracking-widest border-b border-lavate-black pb-1 group-hover:text-lavate-rose group-hover:border-lavate-rose transition-colors">Learn More</a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group relative bg-lavate-light p-8 lg:p-10 hover:bg-lavate-black transition-colors duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-lavate-blue/10 rounded-bl-full group-hover:bg-lavate-blue/20 transition-colors"></div>
+                    
+                    <i class="fas fa-globe text-4xl text-lavate-blue mb-8 group-hover:scale-110 transition-transform duration-300"></i>
+                    
+                    <h3 class="text-xl text-lavate-black font-bold mb-4 group-hover:text-white transition-colors">Web Development</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8 group-hover:text-gray-400 transition-colors">
+                        Fast, secure, and SEO-optimized websites. We code with discipline to ensure your digital home is robust and scalable.
+                    </p>
+                    
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-lavate-blue rounded-full mr-2"></span> Custom Code
+                        </li>
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-lavate-blue rounded-full mr-2"></span> E-Commerce
+                        </li>
+                    </ul>
+
+                    <a href="#contact" class="inline-block text-xs font-bold uppercase tracking-widest border-b border-lavate-black pb-1 group-hover:text-lavate-blue group-hover:border-lavate-blue transition-colors">Learn More</a>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="group relative bg-lavate-light p-8 lg:p-10 hover:bg-lavate-black transition-colors duration-500 overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-white rounded-bl-full group-hover:bg-gray-800 transition-colors"></div>
+                    
+                    <i class="fas fa-chart-line text-4xl text-lavate-black mb-8 group-hover:text-white group-hover:scale-110 transition-transform duration-300"></i>
+                    
+                    <h3 class="text-xl text-lavate-black font-bold mb-4 group-hover:text-white transition-colors">Growth Strategy</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed mb-8 group-hover:text-gray-400 transition-colors">
+                        Data-driven marketing. We use SEO, paid ads, and analytics to ensure your brand reaches the right audience.
+                    </p>
+                    
+                    <ul class="space-y-2 mb-8">
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> SEO & SEM
+                        </li>
+                        <li class="flex items-center text-xs text-gray-500 group-hover:text-gray-400">
+                            <span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> Social Growth
+                        </li>
+                    </ul>
+
+                    <a href="#contact" class="inline-block text-xs font-bold uppercase tracking-widest border-b border-lavate-black pb-1 group-hover:text-white group-hover:border-white transition-colors">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compact Portfolio Section -->
+    <section id="work" class="py-24 bg-lavate-black text-white px-6 lg:px-12">
+        <div class="max-w-[1600px] mx-auto">
+            <div class="flex justify-between items-center mb-16 border-b border-white/10 pb-6">
+                <h2 class="text-3xl md:text-4xl font-cinzel">Selected Works</h2>
+                <a href="#" class="hidden md:inline-block px-8 py-3 border border-white/20 text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                    View Full Portfolio
+                </a>
+            </div>
+
+            <!-- Compact Creative Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="group relative overflow-hidden rounded-sm cursor-pointer" data-aos="fade-up">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Apex Finance" class="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/50 to-transparent">
+                        <span class="text-lavate-gold text-[10px] font-bold uppercase tracking-widest block mb-1">Branding</span>
+                        <h3 class="text-xl font-cinzel">Apex Financial</h3>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group relative overflow-hidden rounded-sm cursor-pointer" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Velvet Interiors" class="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/50 to-transparent">
+                        <span class="text-lavate-rose text-[10px] font-bold uppercase tracking-widest block mb-1">Social Media</span>
+                        <h3 class="text-xl font-cinzel">Velvet Interiors</h3>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="group relative overflow-hidden rounded-sm cursor-pointer" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="TechNova" class="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100">
+                    <div class="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black/50 to-transparent">
+                        <span class="text-lavate-blue text-[10px] font-bold uppercase tracking-widest block mb-1">Web Dev</span>
+                        <h3 class="text-xl font-cinzel">TechNova</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center md:hidden">
+                <a href="#" class="inline-block px-8 py-3 border border-white/20 text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                    View Full Portfolio
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us / Team Section (Creative Layout) -->
+    <section class="py-32 bg-white px-6 lg:px-12 relative">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl md:text-5xl text-lavate-black">The Minds Behind</h2>
+                <p class="text-gray-500 mt-4">Disciplined experts committed to your growth.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Member 1 -->
+                <div class="group relative" data-aos="fade-up">
+                    <div class="h-[400px] w-full overflow-hidden bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute inset-0 bg-lavate-gold/80 translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex items-center justify-center">
+                            <div class="text-center text-lavate-black p-4">
+                                <p class="font-bold mb-2">"Quality is not an act, it is a habit."</p>
+                                <div class="flex justify-center gap-4 mt-4">
+                                    <i class="fab fa-linkedin text-xl cursor-pointer hover:text-white"></i>
+                                    <i class="fab fa-twitter text-xl cursor-pointer hover:text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <h4 class="text-xl text-lavate-black font-cinzel">Arjun Lavate</h4>
+                        <p class="text-xs uppercase tracking-widest text-lavate-gold">Founder & Strategy</p>
+                    </div>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="group relative" data-aos="fade-up" data-aos-delay="100">
+                    <div class="h-[400px] w-full overflow-hidden bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute inset-0 bg-lavate-rose/80 translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex items-center justify-center">
+                             <div class="text-center text-lavate-black p-4">
+                                <p class="font-bold mb-2">"Design is intelligence made visible."</p>
+                                <div class="flex justify-center gap-4 mt-4">
+                                    <i class="fab fa-linkedin text-xl cursor-pointer hover:text-white"></i>
+                                    <i class="fab fa-behance text-xl cursor-pointer hover:text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <h4 class="text-xl text-lavate-black font-cinzel">Sarah Jenkins</h4>
+                        <p class="text-xs uppercase tracking-widest text-lavate-rose">Creative Director</p>
+                    </div>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="group relative" data-aos="fade-up" data-aos-delay="200">
+                    <div class="h-[400px] w-full overflow-hidden bg-gray-200 relative">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                        <div class="absolute inset-0 bg-lavate-blue/80 translate-y-full group-hover:translate-y-0 transition-transform duration-500 flex items-center justify-center">
+                             <div class="text-center text-lavate-black p-4">
+                                <p class="font-bold mb-2">"Code is poetry."</p>
+                                <div class="flex justify-center gap-4 mt-4">
+                                    <i class="fab fa-linkedin text-xl cursor-pointer hover:text-white"></i>
+                                    <i class="fab fa-github text-xl cursor-pointer hover:text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <h4 class="text-xl text-lavate-black font-cinzel">David Chen</h4>
+                        <p class="text-xs uppercase tracking-widest text-lavate-blue">Tech Lead</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews / Testimonials (Expanded) -->
+    <section id="reviews" class="py-32 bg-lavate-light px-6 lg:px-12 border-t border-gray-200">
+        <div class="max-w-[1400px] mx-auto">
+            <h2 class="text-4xl text-lavate-black mb-16 text-center">Client Words</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Review 1 -->
+                <div class="bg-white p-8 border border-gray-100 shadow-lg relative rounded-sm">
+                    <i class="fas fa-quote-right absolute top-8 right-8 text-4xl text-gray-100"></i>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-12 h-12 rounded-full grayscale" alt="Client">
+                        <div>
+                            <p class="font-bold text-lavate-black text-sm">James Sterling</p>
+                            <p class="text-xs text-lavate-gold uppercase">CEO, Sterling Assets</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        "Lavate Media didn't just redesign our website. They completely restructured our digital presence. The result was a 200% increase in leads."
+                    </p>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="bg-white p-8 border border-gray-100 shadow-lg relative rounded-sm">
+                    <i class="fas fa-quote-right absolute top-8 right-8 text-4xl text-gray-100"></i>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-12 h-12 rounded-full grayscale" alt="Client">
+                        <div>
+                            <p class="font-bold text-lavate-black text-sm">Elena Ross</p>
+                            <p class="text-xs text-lavate-rose uppercase">Founder, Velvet</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        "The most disciplined team I've worked with. No fluff, no excuses. Just high-quality work delivered on time. Highly recommended."
+                    </p>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="bg-white p-8 border border-gray-100 shadow-lg relative rounded-sm">
+                    <i class="fas fa-quote-right absolute top-8 right-8 text-4xl text-gray-100"></i>
+                    <div class="flex items-center gap-4 mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/85.jpg" class="w-12 h-12 rounded-full grayscale" alt="Client">
+                        <div>
+                            <p class="font-bold text-lavate-black text-sm">Michael K.</p>
+                            <p class="text-xs text-lavate-blue uppercase">CTO, TechNova</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        "Their technical expertise matches their creative vision. The site is fast, robust, and beautiful. A perfect combination."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-24 bg-white px-6 lg:px-12">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="text-3xl text-center text-lavate-black mb-12">Frequently Asked Questions</h2>
+            
+            <div class="space-y-4">
+                <details class="group bg-lavate-light p-6 rounded-sm cursor-pointer border border-transparent hover:border-lavate-gold/30 transition-all">
+                    <summary class="flex justify-between items-center font-bold text-lavate-black list-none">
+                        Do you work with startups?
+                        <i class="fas fa-plus text-lavate-gold group-open:rotate-45 transition-transform"></i>
+                    </summary>
+                    <p class="text-gray-500 text-sm mt-4 leading-relaxed">
+                        Yes. We partner with ambitious startups that understand the value of a strong brand foundation from day one.
+                    </p>
+                </details>
+
+                <details class="group bg-lavate-light p-6 rounded-sm cursor-pointer border border-transparent hover:border-lavate-gold/30 transition-all">
+                    <summary class="flex justify-between items-center font-bold text-lavate-black list-none">
+                        What are your pricing packages?
+                        <i class="fas fa-plus text-lavate-gold group-open:rotate-45 transition-transform"></i>
+                    </summary>
+                    <p class="text-gray-500 text-sm mt-4 leading-relaxed">
+                        We offer customized proposals based on your specific goals. However, we also have retainer packages for ongoing SEO and Social Media management.
+                    </p>
+                </details>
+
+                <details class="group bg-lavate-light p-6 rounded-sm cursor-pointer border border-transparent hover:border-lavate-gold/30 transition-all">
+                    <summary class="flex justify-between items-center font-bold text-lavate-black list-none">
+                        How long does a branding project take?
+                        <i class="fas fa-plus text-lavate-gold group-open:rotate-45 transition-transform"></i>
+                    </summary>
+                    <p class="text-gray-500 text-sm mt-4 leading-relaxed">
+                        Typically 4-6 weeks for a complete identity system (Logo, Guidelines, Typography, Collateral). We value depth over speed.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Big CTA Section -->
+    <section class="py-40 bg-brand-gradient text-white text-center px-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float"></div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-cinzel mb-8">Ready to Elevate?</h2>
+            <p class="text-xl text-white/90 font-light mb-12">Stop blending in. Start standing out.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="#contact" class="px-12 py-5 bg-white text-lavate-black font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all shadow-xl">
+                    Start Project
+                </a>
+                <a href="https://wa.me/917022776211" class="px-12 py-5 border border-white text-white font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                    WhatsApp Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Massive) -->
+    <footer id="contact" class="bg-lavate-black text-gray-400 pt-24 pb-12 px-6 lg:px-12 border-t border-white/5">
+        <div class="max-w-[1600px] mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+                
+                <!-- Col 1 -->
+                <div>
+                     <img src="https://born2earn.in/himanghu/lavate/logo.png" alt="Lavate Media" class="h-10 w-auto mb-8 opacity-80">
+                    <p class="text-sm leading-relaxed mb-8">
+                        Lavate Media is a professional creative and digital media brand. We represent growth, structure, and confidence.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://www.instagram.com/lavate_media" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-lavate-rose hover:text-white transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-lavate-blue hover:text-white transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                         <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-lavate-gold hover:text-white transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-widest mb-8 text-xs">Sitemap</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="#about" class="hover:text-lavate-gold transition-colors">About</a></li>
+                        <li><a href="#services" class="hover:text-lavate-gold transition-colors">Services</a></li>
+                        <li><a href="#work" class="hover:text-lavate-gold transition-colors">Work</a></li>
+                        <li><a href="#reviews" class="hover:text-lavate-gold transition-colors">Reviews</a></li>
+                        <li><a href="#contact" class="hover:text-lavate-gold transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-widest mb-8 text-xs">Services</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="#" class="hover:text-lavate-gold transition-colors">Brand Identity</a></li>
+                        <li><a href="#" class="hover:text-lavate-gold transition-colors">Web Development</a></li>
+                        <li><a href="#" class="hover:text-lavate-gold transition-colors">SEO & Strategy</a></li>
+                        <li><a href="#" class="hover:text-lavate-gold transition-colors">Content Creation</a></li>
+                        <li><a href="#" class="hover:text-lavate-gold transition-colors">Social Media</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4 -->
+                <div>
+                    <h4 class="text-white font-bold uppercase tracking-widest mb-8 text-xs">Contact</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt text-lavate-gold mt-1"></i>
+                            <span>Bengaluru, India</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone text-lavate-gold"></i>
+                            <a href="tel:+917022776211" class="hover:text-white">+91 70227 76211</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-lavate-gold"></i>
+                            <a href="mailto:contact@lavatemedia.com" class="hover:text-white">contact@lavatemedia.com</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8">
+                        <h4 class="text-white font-bold uppercase tracking-widest mb-4 text-xs">Newsletter</h4>
+                        <form class="flex border-b border-white/20 pb-2">
+                            <input type="email" placeholder="Email Address" class="bg-transparent w-full outline-none text-white placeholder-gray-600 text-sm">
+                            <button class="text-lavate-gold font-bold uppercase text-xs">Join</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest uppercase">
+                <p>&copy; 2026 Lavate Media. All Rights Reserved.</p>
+                <div class="flex gap-8 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white">Privacy Policy</a>
+                    <a href="#" class="hover:text-white">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Init AOS
+        AOS.init({
+            once: true,
+            offset: 50,
+            duration: 800,
+            easing: 'ease-out-cubic',
+        });
+
+        // Preloader Logic
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            }, 1500);
+        });
+
+        // Custom Cursor Logic
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            // Dot follows instantly
+            dot.style.left = `${posX}px`;
+            dot.style.top = `${posY}px`;
+            
+            // Outline follows with slight delay (animation in CSS transition)
+            outline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Mobile Menu Logic
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('translate-x-full');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        menuClose.addEventListener('click', toggleMenu);
+        
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', toggleMenu);
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if(window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body>
+</html>
