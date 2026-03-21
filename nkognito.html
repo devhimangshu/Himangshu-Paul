@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#0a0a0a] text-white">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kognito | Data-Driven Digital Marketing</title>
+    <meta name="description" content="We build marketing strategies based on hard data. Get clear reporting, better search rankings, and lower ad costs.">
+    
+    <!-- Open Graph SEO -->
+    <meta property="og:title" content="Kognito | Data-Driven Digital Marketing">
+    <meta property="og:description" content="We focus on data to build strategies that drive actual revenue. Clear reporting, better rankings, and optimized ad costs.">
+    <meta property="og:type" content="website">
+    
+    <!-- Brand Favicon -->
+    <link rel="icon" type="image/png" href="https://hirekognito.in/assets/favicon.png">
+
+    <!-- Google Fonts: Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP Core & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        turmeric: '#acc444',
+                        cornflower: '#6c74fc',
+                        blueviolet: '#4b53b3',
+                        dark: '#0a0a0a',
+                        card: '#111111'
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6c74fc; }
+
+        /* Film Grain Overlay */
+        .bg-noise {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 40; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Dot Grid Background */
+        .bg-dot-grid {
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Cursor - Big Color-Inverting X-Ray Effect + Radar Addon */
+        body { cursor: none; overflow-x: hidden; }
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; 
+            width: 32px; height: 32px;
+            background-color: #6c74fc;
+            border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            mix-blend-mode: difference; 
+            transform: translate(-50%, -50%);
+            display: flex; align-items: center; justify-content: center;
+            transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+        }
+
+        /* Tech Radar Ring Addon */
+        #custom-cursor::before {
+            content: '';
+            position: absolute;
+            width: 64px; height: 64px;
+            border: 1.5px dashed #6c74fc;
+            border-radius: 50%;
+            animation: cursor-spin 6s linear infinite;
+            transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+            opacity: 0.6;
+        }
+
+        /* Hover States for Cursor */
+        .hover-target:hover ~ #custom-cursor {
+            width: 56px;
+            height: 56px;
+            background-color: #acc444; 
+        }
+
+        .hover-target:hover ~ #custom-cursor::before {
+            width: 96px;
+            height: 96px;
+            border-color: #acc444;
+            opacity: 1;
+            animation-duration: 2s;
+        }
+
+        @keyframes cursor-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            #custom-cursor { display: none !important; }
+        }
+
+        /* Outline text utility */
+        .text-outline {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(108, 116, 252, 0.5); 
+            transition: all 0.3s ease;
+        }
+        .text-outline:hover {
+            color: #acc444;
+            -webkit-text-stroke: 1px #acc444;
+        }
+
+        /* Progress Bar */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px; background: #6c74fc;
+            z-index: 100; width: 0%; transition: width 0.1s ease;
+        }
+
+        /* Clients Marquee Animation */
+        .clients-marquee {
+            display: flex;
+            width: max-content;
+            animation: scroll-clients 25s linear infinite;
+        }
+        @keyframes scroll-clients {
+            to { transform: translateX(-50%); }
+        }
+        .clients-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Prevent layout shift during GSAP entrance */
+        .hero-line-container { overflow: hidden; display: block; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+        .hero-line { display: block; transform: translateY(110%); }
+        .hero-fade { opacity: 0; transform: translateY(20px); }
+        
+        /* Laptop Specific Styles */
+        .laptop-glare {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%);
+        }
+
+        /* --- 3D Dolby Atmos Orbit Styles --- */
+        .portfolio-scene {
+            perspective: 1500px;
+            position: relative;
+            width: 100%;
+            height: 480px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: visible; 
+            touch-action: none; /* Prevents scroll when dragging on mobile */
+        }
+        @media (min-width: 768px) {
+            .portfolio-scene { height: 600px; }
+        }
+
+        .atmos-wrapper {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: atmosFloat 12s ease-in-out infinite;
+            pointer-events: none; /* Pass events to scene */
+        }
+
+        .portfolio-ring {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        .ring-card {
+            position: absolute;
+            width: 260px;
+            height: 360px;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+            user-select: none;
+            pointer-events: auto; /* Re-enable pointer events */
+            /* Center perfectly */
+            left: 50%;
+            top: 50%;
+            margin-left: -130px;
+            margin-top: -180px;
+            transform-style: preserve-3d;
+        }
+        @media (min-width: 768px) {
+            .ring-card { 
+                width: 340px; 
+                height: 440px; 
+                border-radius: 2rem; 
+                margin-left: -170px;
+                margin-top: -220px;
+            }
+        }
+
+        /* 3D Double-sided Card Geometry */
+        .ring-card-front, .ring-card-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: inherit;
+            will-change: transform;
+        }
+        .ring-card-front {
+            background-color: #111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .ring-card-back {
+            background: #080808;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: rotateY(180deg);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8);
+        }
+
+        @keyframes atmosFloat {
+            0%, 100% { transform: translateY(0px) rotateX(-5deg); }
+            50% { transform: translateY(-20px) rotateX(-12deg); }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cornflower selection:text-white overflow-x-hidden">
+
+    <div class="bg-noise"></div>
+    <div id="custom-cursor"></div>
+    <div id="progress-bar"></div>
+
+    <!-- Navigation -->
+    <header class="fixed top-0 w-full z-50 px-4 md:px-8 py-4 md:py-6 mix-blend-difference flex justify-between items-center pointer-events-none">
+        <a href="#" class="hover-target relative z-50 pointer-events-auto">
+            <img src="https://hirekognito.in/assets/logo.png" alt="Kognito Logo" class="h-8 md:h-10 object-contain">
+        </a>
+        <button id="menu-toggle" class="magnetic text-white focus:outline-none hover-target flex items-center gap-2 uppercase text-xs md:text-sm font-bold tracking-widest p-2 transition-colors relative z-50 pointer-events-auto">
+            <span class="hidden md:block pointer-events-none">Menu</span>
+            <div class="space-y-1.5 pointer-events-none">
+                <span class="block w-6 h-0.5 bg-current"></span>
+                <span class="block w-4 h-0.5 bg-current ml-auto"></span>
+            </div>
+        </button>
+    </header>
+
+    <!-- Fullscreen Menu -->
+    <div id="fullscreen-menu" class="fixed inset-0 bg-cornflower z-[60] flex flex-col justify-center items-center transform -translate-y-full transition-transform duration-500 ease-in-out">
+        <button id="menu-close" class="magnetic absolute top-6 right-4 md:right-8 text-white focus:outline-none hover-target p-4">
+            <i data-lucide="x" class="w-8 h-8 md:w-10 md:h-10 pointer-events-none"></i>
+        </button>
+        <nav class="flex flex-col text-center space-y-6 md:space-y-8 w-full px-6">
+            <a href="#services" class="menu-link text-[clamp(3rem,8vw,7rem)] font-black text-white uppercase tracking-tighter hover:text-turmeric transition-colors hover-target leading-none">Services</a>
+            <a href="#portfolio" class="menu-link text-[clamp(3rem,8vw,7rem)] font-black text-white uppercase tracking-tighter hover:text-turmeric transition-colors hover-target leading-none">Work</a>
+            <a href="#results" class="menu-link text-[clamp(3rem,8vw,7rem)] font-black text-white uppercase tracking-tighter hover:text-turmeric transition-colors hover-target leading-none">Results</a>
+            <a href="#process" class="menu-link text-[clamp(3rem,8vw,7rem)] font-black text-white uppercase tracking-tighter hover:text-turmeric transition-colors hover-target leading-none">Process</a>
+            <a href="#contact" class="menu-link text-[clamp(3rem,8vw,7rem)] font-black text-white uppercase tracking-tighter hover:text-turmeric transition-colors hover-target leading-none">Contact</a>
+        </nav>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <div class="min-h-[100dvh] flex flex-col relative overflow-hidden bg-dark">
+            <section class="flex-1 flex flex-col lg:flex-row items-center justify-center px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-7xl mx-auto pt-28 pb-8 md:pt-32 md:pb-12 relative z-10 gap-10 lg:gap-12">
+                
+                <!-- Left Side Typography -->
+                <div class="w-full lg:w-[50%] flex flex-col items-center lg:items-start text-center lg:text-left z-20">
+                    
+                    <div class="hero-fade inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#111] border border-gray-800 mb-8 sm:mb-10 shadow-lg">
+                        <div class="w-1.5 h-1.5 md:w-2 md:h-2 bg-turmeric rounded-full animate-pulse"></div>
+                        <span class="uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs font-bold text-white pt-0.5 leading-none">Data-Driven Marketing Agency</span>
+                    </div>
+                    
+                    <h1 class="font-black tracking-tighter uppercase max-w-full break-words flex flex-col items-center lg:items-start w-full">
+                        <span class="hero-line-container"><span class="hero-line font-light normal-case tracking-normal text-[clamp(1.5rem,4vh,3rem)] text-gray-300 mb-1 sm:mb-2 leading-none">We are Digital</span></span>
+                        <span class="hero-line-container"><span class="hero-line text-[clamp(3.5rem,8vh,9rem)] text-cornflower drop-shadow-lg leading-[0.9]">Specialists.</span></span>
+                        
+                        <span class="relative w-full flex justify-center lg:justify-start min-h-[1.4em] sm:min-h-[1.3em] mt-1 sm:mt-2" style="overflow: visible;">
+                            <span class="flip-word absolute top-0 w-max text-[clamp(3.5rem,8vh,9rem)] leading-[1] text-outline hover:text-turmeric transition-colors pb-4">Strategists.</span>
+                            <span class="flip-word absolute top-0 w-max text-[clamp(3.5rem,8vh,9rem)] leading-[1] opacity-0 text-outline hover:text-turmeric transition-colors pb-4">Marketers.</span>
+                            <span class="flip-word absolute top-0 w-max text-[clamp(3.5rem,8vh,9rem)] leading-[1] opacity-0 text-outline hover:text-turmeric transition-colors pb-4">Developers.</span>
+                            <span class="flip-word absolute top-0 w-max text-[clamp(3.5rem,8vh,9rem)] leading-[1] opacity-0 text-outline hover:text-turmeric transition-colors pb-4">Designers.</span>
+                            <span class="flip-word absolute top-0 w-max text-[clamp(3.5rem,8vh,9rem)] leading-[1] opacity-0 text-outline hover:text-turmeric transition-colors pb-4">Editors.</span>
+                        </span>
+                    </h1>
+                    
+                    <div class="mt-4 md:mt-8 flex flex-col sm:flex-row items-center lg:items-start gap-6 w-full justify-center lg:justify-start">
+                        <a href="#contact" class="hero-fade magnetic group flex items-center justify-between gap-4 bg-[#111] border border-gray-800 p-1.5 pr-6 md:pr-8 rounded-full font-bold text-xs sm:text-sm md:text-base uppercase tracking-widest hover:border-cornflower hover:bg-[#1a1a1a] transition-colors duration-300 shadow-xl hover-target pointer-events-auto w-fit z-50 text-white mt-4">
+                            <span class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-cornflower flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(108,116,252,0.4)]">
+                                <i data-lucide="arrow-right" class="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 -rotate-45 group-hover:rotate-0 transition-transform duration-300"></i>
+                            </span>
+                            <span>Start Growing</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side Laptop UI Elements -->
+                <div class="w-full lg:w-[50%] relative z-20 mt-6 lg:mt-0 flex justify-center lg:justify-end perspective-1000">
+                    
+                    <!-- Glowing Orbs -->
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] md:w-[400px] h-[250px] md:h-[400px] bg-cornflower/10 blur-[80px] md:blur-[120px] rounded-full z-0"></div>
+                    <div class="absolute top-1/4 left-1/4 w-[150px] md:w-[250px] h-[150px] md:h-[250px] bg-blueviolet/20 blur-[60px] md:blur-[100px] rounded-full z-0"></div>
+
+                    <div class="relative w-[90%] sm:w-[85%] max-w-[500px] z-20 mx-auto lg:mx-0 lg:mr-4">
+                        
+                        <!-- Rotating Stamp -->
+                        <div class="hero-fade absolute -top-12 -left-6 sm:-top-16 sm:-left-12 w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center opacity-90 z-50 pointer-events-none">
+                            <svg class="absolute inset-0 w-full h-full animate-spin-slow" viewBox="0 0 100 100">
+                                <path id="stampPath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="none" />
+                                <text class="text-[10px] sm:text-[10.5px] font-black uppercase tracking-[0.2em]" fill="#6c74fc">
+                                    <textPath href="#stampPath" startOffset="0%">★ ROI DRIVEN ★ GROWTH EXPERTS</textPath>
+                                </text>
+                            </svg>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-cornflower flex items-center justify-center shadow-[0_0_15px_rgba(108,116,252,0.4)]">
+                                <i data-lucide="arrow-up-right" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
+                            </div>
+                        </div>
+
+                        <!-- Laptop Screen -->
+                        <div class="hero-fade relative z-20 w-full aspect-[16/10] bg-[#111] p-1.5 sm:p-2 md:p-3 rounded-t-xl sm:rounded-t-2xl md:rounded-t-3xl shadow-2xl border-t border-x border-gray-600/50 flex flex-col">
+                            <div class="absolute top-1 sm:top-1.5 md:top-2 left-1/2 -translate-x-1/2 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-black rounded-full shadow-[inset_0_1px_2px_rgba(255,255,255,0.2)]"></div>
+                            
+                            <div class="flex-1 w-full bg-[#050505] rounded-t-sm sm:rounded-t-md overflow-hidden relative flex flex-col border border-gray-900 mt-1 sm:mt-2">
+                                <div class="laptop-glare absolute inset-0 z-10 pointer-events-none w-full h-full"></div>
+                                
+                                <div class="h-3 sm:h-4 md:h-5 bg-gray-900 w-full flex items-center px-2 sm:px-3 gap-1 sm:gap-1.5 border-b border-gray-800 z-0">
+                                    <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 rounded-full bg-red-500"></div>
+                                    <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 rounded-full bg-yellow-500"></div>
+                                    <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 md:w-2 md:h-2 rounded-full bg-green-500"></div>
+                                </div>
+
+                                <div class="flex-1 p-2 sm:p-3 md:p-5 flex flex-col gap-2 sm:gap-3 md:gap-4 z-0 bg-[#050505]">
+                                    <div class="flex justify-between gap-2 sm:gap-3 md:gap-4">
+                                        <div class="flex-1 bg-card border border-gray-800/80 p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg md:rounded-xl">
+                                            <div class="text-[5px] sm:text-[7px] md:text-[9px] text-gray-400 uppercase tracking-widest mb-0.5 sm:mb-1">Total Revenue</div>
+                                            <div class="text-xs sm:text-sm md:text-xl font-black text-white">₹12,45,000</div>
+                                            <div class="text-[5px] sm:text-[7px] md:text-[9px] text-turmeric font-bold mt-0.5 sm:mt-1 tracking-wide">↑ +34.5%</div>
+                                        </div>
+                                        <div class="flex-1 bg-card border border-gray-800/80 p-1.5 sm:p-2 md:p-3 rounded-md sm:rounded-lg md:rounded-xl">
+                                            <div class="text-[5px] sm:text-[7px] md:text-[9px] text-gray-400 uppercase tracking-widest mb-0.5 sm:mb-1">Sales Growth</div>
+                                            <div class="text-xs sm:text-sm md:text-xl font-black text-white">8,432</div>
+                                            <div class="text-[5px] sm:text-[7px] md:text-[9px] text-turmeric font-bold mt-0.5 sm:mt-1 tracking-wide">↑ +12.8%</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 bg-card border border-gray-800/80 rounded-md sm:rounded-lg md:rounded-xl p-2 sm:p-3 relative flex items-end overflow-hidden">
+                                        <div class="absolute top-1 sm:top-2 md:top-3 left-2 sm:left-3 text-[5px] sm:text-[7px] md:text-[9px] text-gray-500 uppercase tracking-widest font-bold">Performance Analytics</div>
+                                        <svg class="absolute bottom-0 left-0 w-full h-[70%]" preserveAspectRatio="none" viewBox="0 0 100 40">
+                                            <path d="M0,40 L10,32 L20,35 L30,22 L40,26 L50,15 L60,18 L70,8 L80,10 L90,2 L100,0 L100,40 Z" fill="url(#graphGrad)" opacity="0.3"/>
+                                            <path d="M0,40 L10,32 L20,35 L30,22 L40,26 L50,15 L60,18 L70,8 L80,10 L90,2 L100,0" fill="none" stroke="#6c74fc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <defs>
+                                                <linearGradient id="graphGrad" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="0%" stop-color="#6c74fc" stop-opacity="0.8"/>
+                                                    <stop offset="100%" stop-color="#6c74fc" stop-opacity="0"/>
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Laptop Base -->
+                        <div class="hero-fade laptop-base relative z-30 w-[114%] -left-[7%] h-2.5 sm:h-4 md:h-5 bg-gradient-to-b from-[#444] via-[#222] to-[#111] rounded-b-md sm:rounded-b-lg shadow-[0_20px_40px_rgba(0,0,0,0.9)] border-t border-gray-500 flex justify-center items-start">
+                            <div class="w-[20%] h-1 sm:h-1.5 md:h-2 bg-gradient-to-b from-[#111] to-[#222] rounded-b-md mt-0 shadow-[inset_0_2px_4px_rgba(0,0,0,0.5)]"></div>
+                        </div>
+
+                        <!-- Floating Indicators -->
+                        <div class="floating-icon absolute -top-2 right-0 sm:-top-4 sm:-right-4 md:-top-6 md:-right-8 bg-[#111] border border-gray-800 backdrop-blur-md p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl md:rounded-2xl z-40 shadow-xl flex items-center gap-1.5 sm:gap-2">
+                            <div class="bg-cornflower p-1 sm:p-1.5 rounded-full"><i data-lucide="heart" class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-white fill-white"></i></div>
+                            <span class="text-[8px] sm:text-[10px] md:text-xs font-bold text-white">+1.2k</span>
+                        </div>
+
+                        <div class="floating-icon absolute top-1/3 -left-4 sm:-left-8 md:-left-12 bg-[#111] border border-gray-800 backdrop-blur-md p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl md:rounded-2xl z-40 shadow-xl flex items-center gap-1.5 sm:gap-2">
+                            <div class="bg-turmeric p-1 sm:p-1.5 rounded-full"><i data-lucide="rocket" class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-black"></i></div>
+                            <span class="text-[8px] sm:text-[10px] md:text-xs font-bold text-white">Scaling</span>
+                        </div>
+
+                        <div class="floating-icon absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-6 md:-bottom-6 md:-left-8 bg-[#111] border border-gray-800 backdrop-blur-md p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl md:rounded-2xl z-40 shadow-xl flex items-center gap-1.5 sm:gap-2">
+                            <div class="bg-cornflower p-1 sm:p-1.5 rounded-full"><i data-lucide="megaphone" class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-white"></i></div>
+                            <span class="text-[8px] sm:text-[10px] md:text-xs font-bold text-white">Reach</span>
+                        </div>
+
+                        <div class="floating-icon absolute -bottom-1 -right-2 sm:-bottom-2 sm:-right-6 md:-bottom-4 md:-right-10 bg-[#111] border border-gray-800 backdrop-blur-md p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl md:rounded-2xl z-40 shadow-xl flex items-center gap-1.5 sm:gap-2">
+                            <div class="bg-turmeric p-1 sm:p-1.5 rounded-full"><i data-lucide="users" class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 text-black"></i></div>
+                            <span class="text-[8px] sm:text-[10px] md:text-xs font-bold text-white">+840 Leads</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="abstract-shape-1 absolute top-1/4 right-[5%] w-48 h-48 md:w-96 md:h-96 opacity-20 pointer-events-none blur-3xl rounded-full bg-cornflower mix-blend-screen hidden sm:block"></div>
+                <div class="abstract-shape-2 absolute bottom-1/4 left-[10%] w-32 h-32 md:w-72 md:h-72 opacity-10 pointer-events-none blur-3xl rounded-full bg-blueviolet mix-blend-screen hidden sm:block"></div>
+            </section>
+
+            <!-- Bottom Marquee -->
+            <div class="w-full bg-cornflower py-2 sm:py-3 overflow-hidden flex whitespace-nowrap border-y border-black shrink-0 relative z-40 mt-auto">
+                <div class="animate-marquee inline-block font-black text-sm sm:text-base md:text-xl uppercase tracking-widest text-white">
+                    CUSTOM WEBSITES FROM ₹9,999 ONWARDS &nbsp; • &nbsp; SEO PLANS FROM ₹9,999 MONTHLY &nbsp; • &nbsp; PERFORMANCE ADS FROM ₹14,999 &nbsp; • &nbsp; BULK SMM SERVICES AVAILABLE &nbsp; • &nbsp; CUSTOM WEBSITES FROM ₹9,999 ONWARDS &nbsp; • &nbsp; SEO PLANS FROM ₹9,999 MONTHLY &nbsp; • &nbsp; PERFORMANCE ADS FROM ₹14,999 &nbsp; • &nbsp; BULK SMM SERVICES AVAILABLE &nbsp; • &nbsp;
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section (Creative Layout + Speaker Button) -->
+        <section id="about" class="py-16 sm:py-24 md:py-32 px-4 md:px-8 lg:px-12 bg-[#050505] relative overflow-hidden bg-dot-grid border-b border-gray-900">
+            <!-- Decorative Elements -->
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-cornflower/5 blur-[150px] rounded-full pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-turmeric/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-12 lg:gap-20 items-center justify-between relative z-10 bg-card/60 backdrop-blur-xl border border-gray-800 p-8 md:p-16 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] shadow-2xl">
+                
+                <div class="w-full md:w-3/5 text-center md:text-left">
+                    <span class="inline-block px-3 py-1 rounded-full border border-gray-700 bg-[#111] text-[10px] font-bold uppercase tracking-widest text-turmeric mb-6">About Our Agency</span>
+                    <h2 class="text-[clamp(2.5rem,8vw,6rem)] font-black uppercase tracking-tighter leading-[0.9] mb-6 text-white section-title opacity-0 translate-y-10">Who We <span class="text-cornflower">Are</span></h2>
+                    <p class="text-gray-400 text-sm sm:text-base md:text-lg leading-relaxed mb-8 max-w-lg mx-auto md:mx-0 font-medium">
+                        We are a data-driven digital marketing agency. We build fast websites, rank them on search engines, and run profitable ad campaigns. We ignore vanity metrics and focus completely on strategies that drive actual business revenue.
+                    </p>
+                    
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                        <a href="/about-us" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-turmeric text-black font-bold uppercase tracking-widest text-xs shadow-lg transition-colors hover:bg-white hover-target">
+                            Read More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                        
+                        <!-- Pronounce Audio Button -->
+                        <button id="pronounce-btn" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#111] border border-gray-700 text-white font-bold uppercase tracking-widest text-xs shadow-lg transition-colors hover:border-cornflower hover:bg-cornflower/10 hover-target group overflow-hidden">
+                            <i data-lucide="volume-2" class="w-4 h-4 text-cornflower group-hover:scale-110 transition-transform relative z-10"></i> 
+                            <span class="relative z-10">Kognito</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="w-full md:w-2/5 flex justify-center">
+                    <div class="w-56 h-56 sm:w-72 sm:h-72 rounded-full border border-gray-800 flex items-center justify-center relative shadow-[0_0_50px_rgba(108,116,252,0.15)] bg-[#0a0a0a] animate-float">
+                         <div class="absolute inset-2 border border-cornflower/30 border-dashed rounded-full animate-spin-slow"></div>
+                         <div class="absolute inset-6 border border-turmeric/20 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+                         <i data-lucide="fingerprint" class="w-16 h-16 sm:w-20 sm:h-20 text-turmeric opacity-80"></i>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Clients Section (Modern Layout) -->
+        <section id="clients" class="py-16 sm:py-24 md:py-32 bg-[#0a0a0a] relative overflow-hidden border-b border-gray-900 bg-dot-grid">
+            <div class="max-w-7xl mx-auto relative z-10 px-4 md:px-8">
+                
+                <div class="text-center mb-10">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111] border border-gray-800 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-gray-400 section-title opacity-0 translate-y-5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-turmeric animate-pulse"></span>
+                        Partner Network
+                    </span>
+                </div>
+                
+                <!-- Modern Glassmorphism Marquee Container -->
+                <div class="relative flex overflow-hidden group w-full bg-card/40 backdrop-blur-md border border-gray-800 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] py-8 sm:py-12 shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+                    
+                    <!-- Inner glow -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-cornflower/5 via-transparent to-turmeric/5 opacity-50 pointer-events-none"></div>
+
+                    <!-- Fade Masks for Container -->
+                    <div class="absolute inset-y-0 left-0 w-16 md:w-40 bg-gradient-to-r from-[#0e0e0e] to-transparent z-10 pointer-events-none rounded-l-2xl sm:rounded-l-[2rem] md:rounded-l-[3rem]"></div>
+                    <div class="absolute inset-y-0 right-0 w-16 md:w-40 bg-gradient-to-l from-[#0e0e0e] to-transparent z-10 pointer-events-none rounded-r-2xl sm:rounded-r-[2rem] md:rounded-r-[3rem]"></div>
+                    
+                    <!-- Infinite Scroll Track -->
+                    <div class="clients-marquee gap-16 sm:gap-24 px-8 items-center" id="client-track">
+                        <div class="text-gray-500 text-xs uppercase tracking-widest font-bold px-10 flex items-center gap-2">
+                            <i data-lucide="loader-2" class="w-4 h-4 animate-spin text-cornflower"></i> Loading Partners...
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Services -->
+        <section id="services" class="py-16 sm:py-24 md:py-32 px-4 md:px-8 lg:px-12 bg-dark border-b border-gray-900">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12 md:mb-24 text-center lg:text-left">
+                    <h2 class="section-title text-[clamp(2.5rem,8vw,6rem)] font-black tracking-tighter uppercase leading-[0.9] opacity-0 translate-y-10 text-white">Our Services</h2>
+                </div>
+
+                <div class="relative w-full pb-10">
+                    
+                    <!-- Card 1: Website Development -->
+                    <div class="service-card sticky top-[80px] md:top-24 w-full bg-card border border-gray-800 p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] mb-6 md:mb-8 shadow-2xl opacity-0 translate-y-10 flex flex-col justify-between overflow-hidden">
+                        <!-- Watermark Icon -->
+                        <i data-lucide="monitor-smartphone" class="absolute -bottom-10 -right-10 w-64 h-64 text-white/5 rotate-[-15deg] pointer-events-none"></i>
+                        
+                        <div class="flex flex-col lg:flex-row justify-between gap-6 md:gap-8 lg:gap-16 relative z-10">
+                            <div class="w-full lg:w-1/2">
+                                <!-- Unique Element Icon -->
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-4 sm:mb-6">
+                                    <i data-lucide="code-2" class="w-6 h-6 sm:w-8 sm:h-8 text-cornflower"></i>
+                                </div>
+                                <span class="text-cornflower font-bold text-lg md:text-xl lg:text-2xl mb-2 md:mb-4 block">01 /</span>
+                                <h3 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-[0.9] text-white">Website <br> Development</h3>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                                <p class="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed mb-6 md:mb-8">
+                                    We build fast websites optimized for technical SEO and lead generation. Your site needs a premium look to turn visitors into paying customers.
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 font-medium uppercase tracking-wider text-[10px] sm:text-xs md:text-sm border-t border-gray-800 pt-6 md:pt-8 text-gray-300">
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-cornflower shrink-0"></span> Custom Coding</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-cornflower shrink-0"></span> Landing Pages</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-cornflower shrink-0"></span> UI/UX Design</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-gray-800 flex justify-end relative z-10">
+                            <a href="/website-development" class="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-turmeric hover:text-white transition-colors hover-target">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Influencer Marketing -->
+                    <div class="service-card sticky top-[95px] md:top-32 w-full bg-[#161616] border border-gray-700 p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] mb-6 md:mb-8 shadow-2xl opacity-0 translate-y-10 flex flex-col justify-between overflow-hidden">
+                        <i data-lucide="star" class="absolute -bottom-10 -right-10 w-64 h-64 text-white/5 rotate-12 pointer-events-none"></i>
+                        
+                        <div class="flex flex-col lg:flex-row justify-between gap-6 md:gap-8 lg:gap-16 relative z-10">
+                            <div class="w-full lg:w-1/2">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#222] border border-gray-600 flex items-center justify-center mb-4 sm:mb-6">
+                                    <i data-lucide="smartphone" class="w-6 h-6 sm:w-8 sm:h-8 text-turmeric"></i>
+                                </div>
+                                <span class="text-turmeric font-bold text-lg md:text-xl lg:text-2xl mb-2 md:mb-4 block">02 /</span>
+                                <h3 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-[0.9] text-white">Influencer <br> Marketing</h3>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                                <p class="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed mb-6 md:mb-8">
+                                    Connect your brand with top creators to drive immediate awareness and sales on social media.
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 font-medium uppercase tracking-wider text-[10px] sm:text-xs md:text-sm border-t border-gray-700 pt-6 md:pt-8 text-gray-300">
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Creator Outreach</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Campaign Strategy</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> ROI Tracking</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end relative z-10">
+                            <a href="/influencer-marketing" class="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-cornflower hover:text-white transition-colors hover-target">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: SMM Services -->
+                    <div class="service-card sticky top-[110px] md:top-40 w-full bg-cornflower text-white border border-cornflower p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] mb-6 md:mb-8 shadow-2xl opacity-0 translate-y-10 flex flex-col justify-between overflow-hidden">
+                        <i data-lucide="share-2" class="absolute -bottom-10 -right-10 w-64 h-64 text-black/10 rotate-[-10deg] pointer-events-none"></i>
+                        
+                        <div class="flex flex-col lg:flex-row justify-between gap-6 md:gap-8 lg:gap-16 relative z-10">
+                            <div class="w-full lg:w-1/2">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mb-4 sm:mb-6">
+                                    <i data-lucide="thumbs-up" class="w-6 h-6 sm:w-8 sm:h-8 text-turmeric"></i>
+                                </div>
+                                <span class="text-turmeric font-bold text-lg md:text-xl lg:text-2xl mb-2 md:mb-4 block">03 /</span>
+                                <h3 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-[0.9] text-white">SMM <br> Services</h3>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                                <p class="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed mb-6 md:mb-8 font-semibold">
+                                    Build social proof securely. We provide bulk services for platforms like LinkedIn, Google Reviews, and general social media growth.
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 font-bold uppercase tracking-wider text-[10px] sm:text-xs md:text-sm border-t border-white/20 pt-6 md:pt-8 text-white">
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Bulk Likes & Views</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Google & App Reviews</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> LinkedIn Connections</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-white/20 flex justify-end relative z-10">
+                            <a href="/market-place" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-turmeric text-black font-bold uppercase tracking-widest text-xs shadow-lg transition-colors hover:bg-white hover-target">Visit Market Place <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Search Engine SEO -->
+                    <div class="service-card sticky top-[125px] md:top-48 w-full bg-card border border-gray-800 p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] mb-6 md:mb-8 shadow-2xl opacity-0 translate-y-10 flex flex-col justify-between overflow-hidden">
+                        <i data-lucide="line-chart" class="absolute -bottom-10 -right-10 w-64 h-64 text-white/5 rotate-12 pointer-events-none"></i>
+                        
+                        <div class="flex flex-col lg:flex-row justify-between gap-6 md:gap-8 lg:gap-16 relative z-10">
+                            <div class="w-full lg:w-1/2">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-4 sm:mb-6">
+                                    <i data-lucide="search" class="w-6 h-6 sm:w-8 sm:h-8 text-blueviolet"></i>
+                                </div>
+                                <span class="text-blueviolet font-bold text-lg md:text-xl lg:text-2xl mb-2 md:mb-4 block">04 /</span>
+                                <h3 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-[0.9] text-white">Search Engine <br> SEO</h3>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                                <p class="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed mb-6 md:mb-8">
+                                    Rank higher on Google. We handle technical fixes, optimize site speed, and build strong links to capture organic search traffic.
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 font-medium uppercase tracking-wider text-[10px] sm:text-xs md:text-sm border-t border-gray-800 pt-6 md:pt-8 text-gray-300">
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-blueviolet shrink-0"></span> Technical SEO</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-blueviolet shrink-0"></span> Keyword Mapping</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-blueviolet shrink-0"></span> Strong Backlinks</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-gray-800 flex justify-end relative z-10">
+                            <a href="/seo-services" class="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-turmeric hover:text-white transition-colors hover-target">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Performance Ads -->
+                    <div class="service-card sticky top-[140px] md:top-56 w-full bg-[#161616] border border-gray-700 p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] mb-6 md:mb-8 shadow-2xl opacity-0 translate-y-10 flex flex-col justify-between overflow-hidden">
+                        <i data-lucide="target" class="absolute -bottom-10 -right-10 w-64 h-64 text-white/5 rotate-[-15deg] pointer-events-none"></i>
+                        
+                        <div class="flex flex-col lg:flex-row justify-between gap-6 md:gap-8 lg:gap-16 relative z-10">
+                            <div class="w-full lg:w-1/2">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#222] border border-gray-600 flex items-center justify-center mb-4 sm:mb-6">
+                                    <i data-lucide="mouse-pointer-click" class="w-6 h-6 sm:w-8 sm:h-8 text-cornflower"></i>
+                                </div>
+                                <span class="text-cornflower font-bold text-lg md:text-xl lg:text-2xl mb-2 md:mb-4 block">05 /</span>
+                                <h3 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-[0.9] text-white">Performance <br> Ads</h3>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                                <p class="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed mb-6 md:mb-8">
+                                    Stop wasting ad budgets. We manage Google AdWords and Meta Ads to bring direct sales and high-quality leads consistently.
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 font-medium uppercase tracking-wider text-[10px] sm:text-xs md:text-sm border-t border-gray-700 pt-6 md:pt-8 text-gray-300">
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-cornflower shrink-0"></span> Google AdWords</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-cornflower shrink-0"></span> Meta Ads</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-cornflower shrink-0"></span> Retargeting</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-gray-700 flex justify-end relative z-10">
+                            <a href="/performance-ads" class="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-turmeric hover:text-white transition-colors hover-target">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 6: Creative Designing -->
+                    <div class="service-card sticky top-[155px] md:top-64 w-full bg-card border border-gray-800 p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] mb-6 md:mb-8 shadow-2xl opacity-0 translate-y-10 flex flex-col justify-between overflow-hidden">
+                        <i data-lucide="palette" class="absolute -bottom-10 -right-10 w-64 h-64 text-white/5 rotate-12 pointer-events-none"></i>
+                        
+                        <div class="flex flex-col lg:flex-row justify-between gap-6 md:gap-8 lg:gap-16 relative z-10">
+                            <div class="w-full lg:w-1/2">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-[#1a1a1a] border border-gray-700 flex items-center justify-center mb-4 sm:mb-6">
+                                    <i data-lucide="pen-tool" class="w-6 h-6 sm:w-8 sm:h-8 text-turmeric"></i>
+                                </div>
+                                <span class="text-turmeric font-bold text-lg md:text-xl lg:text-2xl mb-2 md:mb-4 block">06 /</span>
+                                <h3 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-[0.9] text-white">Creative <br> Designing</h3>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                                <p class="text-base sm:text-lg md:text-xl text-gray-400 leading-relaxed mb-6 md:mb-8">
+                                    Get ad creatives that capture attention. We design engaging visual assets and social media posts that push users to click.
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 font-medium uppercase tracking-wider text-[10px] sm:text-xs md:text-sm border-t border-gray-800 pt-6 md:pt-8 text-gray-300">
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Ad Creatives</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Social Media Posts</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Brand Identity</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-gray-800 flex justify-end relative z-10">
+                            <a href="/creative-designing" class="inline-flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-cornflower hover:text-white transition-colors hover-target">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Card 7: Video Editing -->
+                    <div class="service-card sticky top-[170px] md:top-72 w-full bg-cornflower text-white border border-cornflower p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] shadow-2xl opacity-0 translate-y-10 flex flex-col justify-between overflow-hidden">
+                        <i data-lucide="clapperboard" class="absolute -bottom-10 -right-10 w-64 h-64 text-black/10 rotate-[-10deg] pointer-events-none"></i>
+                        
+                        <div class="flex flex-col lg:flex-row justify-between gap-6 md:gap-8 lg:gap-16 relative z-10">
+                            <div class="w-full lg:w-1/2">
+                                <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center mb-4 sm:mb-6">
+                                    <i data-lucide="video" class="w-6 h-6 sm:w-8 sm:h-8 text-turmeric"></i>
+                                </div>
+                                <span class="text-turmeric font-bold text-lg md:text-xl lg:text-2xl mb-2 md:mb-4 block">07 /</span>
+                                <h3 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter mb-4 md:mb-6 leading-[0.9] text-white">Video <br> Editing</h3>
+                            </div>
+                            <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                                <p class="text-base sm:text-lg md:text-xl text-white/90 leading-relaxed mb-6 md:mb-8 font-semibold">
+                                    We edit fast-paced reels and video commercials that retain viewers, boost engagement, and drive clear action.
+                                </p>
+                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 font-bold uppercase tracking-wider text-[10px] sm:text-xs md:text-sm border-t border-white/20 pt-6 md:pt-8 text-white">
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Short-Form Reels</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> Commercial Ads</li>
+                                    <li class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-turmeric shrink-0"></span> YouTube Edits</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8 pt-6 border-t border-white/20 flex justify-end relative z-10">
+                            <a href="/video-editing" class="inline-flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-black hover:text-white transition-colors hover-target">Continue <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- New Interactive 3D Orbit Portfolio Section -->
+        <section id="portfolio" class="py-16 sm:py-24 md:py-32 px-4 md:px-8 lg:px-12 bg-[#050505] relative overflow-hidden border-b border-gray-900">
+            <div class="max-w-7xl mx-auto relative z-10">
+                <div class="text-center mb-12 md:mb-20 portfolio-reveal opacity-0 translate-y-10">
+                    <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111] border border-gray-800 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-turmeric mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-turmeric animate-pulse"></span>
+                        Recent Projects
+                    </span>
+                    <h2 class="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-tighter uppercase leading-[0.9] text-white">Our Work</h2>
+                    <p class="text-gray-400 text-sm sm:text-base md:text-lg mt-4 max-w-2xl mx-auto font-medium">Drag to explore our immersive portfolio. We build systems that drive clear growth.</p>
+                </div>
+
+                <!-- 3D Spatial Scene -->
+                <div class="portfolio-scene group cursor-grab active:cursor-grabbing hover-target">
+                    <!-- Float & Tilt Wrapper -->
+                    <div class="atmos-wrapper">
+                        <!-- Rotate Wrapper (The Ring) -->
+                        <div id="portfolio-ring" class="portfolio-ring">
+                            
+                            <!-- Card 1 -->
+                            <div class="ring-card group relative">
+                                <div class="ring-card-back"></div>
+                                <div class="ring-card-front">
+                                    <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-[#111]/80 backdrop-blur-md border border-gray-700 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-cornflower">Web Development</div>
+                                    <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=800&q=80" alt="TechNova Dashboard" class="w-full h-[65%] object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none">
+                                    <div class="h-[35%] bg-card p-5 border-t border-gray-800 flex flex-col justify-center">
+                                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 truncate">TechNova System</h3>
+                                        <p class="text-xs sm:text-sm text-gray-400 line-clamp-2">High-speed React dashboard built for a leading SaaS product.</p>
+                                    </div>
+                                    <div class="card-overlay absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                                        <a href="#" class="px-6 py-3 rounded-full bg-turmeric text-black font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-white transition-colors flex items-center gap-2">View Project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 2 -->
+                            <div class="ring-card group relative">
+                                <div class="ring-card-back"></div>
+                                <div class="ring-card-front">
+                                    <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-[#111]/80 backdrop-blur-md border border-gray-700 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-turmeric">Performance Ads</div>
+                                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Apex Fitness Ads" class="w-full h-[65%] object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none">
+                                    <div class="h-[35%] bg-card p-5 border-t border-gray-800 flex flex-col justify-center">
+                                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 truncate">Apex Fitness Lead Gen</h3>
+                                        <p class="text-xs sm:text-sm text-gray-400 line-clamp-2">Lowered cost per lead by 45% using targeted Meta ad campaigns.</p>
+                                    </div>
+                                    <div class="card-overlay absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                                        <a href="#" class="px-6 py-3 rounded-full bg-turmeric text-black font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-white transition-colors flex items-center gap-2">View Project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3 -->
+                            <div class="ring-card group relative">
+                                <div class="ring-card-back"></div>
+                                <div class="ring-card-front">
+                                    <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-[#111]/80 backdrop-blur-md border border-gray-700 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-blueviolet">Search Engine SEO</div>
+                                    <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?auto=format&fit=crop&w=800&q=80" alt="GreenLeaf SEO" class="w-full h-[65%] object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none">
+                                    <div class="h-[35%] bg-card p-5 border-t border-gray-800 flex flex-col justify-center">
+                                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 truncate">GreenLeaf Organics</h3>
+                                        <p class="text-xs sm:text-sm text-gray-400 line-clamp-2">Ranked 15 primary keywords on Google page one in six months.</p>
+                                    </div>
+                                    <div class="card-overlay absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                                        <a href="#" class="px-6 py-3 rounded-full bg-turmeric text-black font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-white transition-colors flex items-center gap-2">View Project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 4 -->
+                            <div class="ring-card group relative">
+                                <div class="ring-card-back"></div>
+                                <div class="ring-card-front">
+                                    <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-[#111]/80 backdrop-blur-md border border-gray-700 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-cornflower">Creative Designing</div>
+                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=800&q=80" alt="Bold Brew Social" class="w-full h-[65%] object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none">
+                                    <div class="h-[35%] bg-card p-5 border-t border-gray-800 flex flex-col justify-center">
+                                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 truncate">Bold Brew Coffee</h3>
+                                        <p class="text-xs sm:text-sm text-gray-400 line-clamp-2">Complete brand identity overhaul and viral reel edits.</p>
+                                    </div>
+                                    <div class="card-overlay absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                                        <a href="#" class="px-6 py-3 rounded-full bg-turmeric text-black font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-white transition-colors flex items-center gap-2">View Project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 5 -->
+                            <div class="ring-card group relative">
+                                <div class="ring-card-back"></div>
+                                <div class="ring-card-front">
+                                    <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded-full bg-[#111]/80 backdrop-blur-md border border-gray-700 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-turmeric">Web Development</div>
+                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" alt="Urban Estate Platform" class="w-full h-[65%] object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none">
+                                    <div class="h-[35%] bg-card p-5 border-t border-gray-800 flex flex-col justify-center">
+                                        <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 truncate">Urban Estate Market</h3>
+                                        <p class="text-xs sm:text-sm text-gray-400 line-clamp-2">Custom property listing platform featuring sub-second load times.</p>
+                                    </div>
+                                    <div class="card-overlay absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
+                                        <a href="#" class="px-6 py-3 rounded-full bg-turmeric text-black font-bold uppercase tracking-widest text-xs shadow-lg hover:bg-white transition-colors flex items-center gap-2">View Project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Circular Orbit Controls -->
+                <div class="flex justify-center items-center gap-6 mt-8 md:mt-12 portfolio-reveal opacity-0 translate-y-10 relative z-40">
+                    <button id="prev-btn" class="magnetic w-12 h-12 rounded-full border border-gray-700 bg-card text-white flex items-center justify-center hover:bg-turmeric hover:text-black hover:border-turmeric transition-colors hover-target shadow-lg">
+                        <i data-lucide="arrow-left" class="w-5 h-5 pointer-events-none"></i>
+                    </button>
+                    <button id="next-btn" class="magnetic w-12 h-12 rounded-full border border-gray-700 bg-card text-white flex items-center justify-center hover:bg-turmeric hover:text-black hover:border-turmeric transition-colors hover-target shadow-lg">
+                        <i data-lucide="arrow-right" class="w-5 h-5 pointer-events-none"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section id="results" class="py-16 sm:py-24 md:py-32 bg-[#111] text-white px-4 md:px-8 lg:px-12 rounded-t-2xl sm:rounded-t-[2rem] md:rounded-t-[3rem] -mt-10 relative z-20 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-8 items-center text-center lg:text-left">
+                    <div class="flex flex-col items-center lg:items-start">
+                        <h2 class="text-[clamp(2.5rem,8vw,6rem)] font-black uppercase tracking-tighter leading-[0.9] mb-4 sm:mb-6 md:mb-8 text-white">Actual Results. <br> No Excuses.</h2>
+                        <p class="text-base sm:text-lg md:text-xl font-medium text-gray-400 max-w-md">We measure success by actual business growth. Our web development, SEO, and ad campaigns are built to increase your sales directly.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6 sm:gap-8 md:gap-16">
+                        <div class="text-center lg:text-left">
+                            <p class="text-[clamp(2.5rem,7vw,6rem)] font-black tracking-tighter leading-none"><span class="stat-num text-turmeric" data-target="10">0</span><span class="text-white drop-shadow-sm">M</span></p>
+                            <p class="uppercase font-bold tracking-widest text-[9px] sm:text-[10px] md:text-xs mt-2 sm:mt-3 text-gray-500">Ad Spend Managed</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <p class="text-[clamp(2.5rem,7vw,6rem)] font-black tracking-tighter leading-none"><span class="stat-num text-turmeric" data-target="3">0</span><span class="text-white drop-shadow-sm">X</span></p>
+                            <p class="uppercase font-bold tracking-widest text-[9px] sm:text-[10px] md:text-xs mt-2 sm:mt-3 text-gray-500">Average ROI</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <p class="text-[clamp(2.5rem,7vw,6rem)] font-black tracking-tighter leading-none"><span class="stat-num text-turmeric" data-target="98">0</span><span class="text-white drop-shadow-sm">%</span></p>
+                            <p class="uppercase font-bold tracking-widest text-[9px] sm:text-[10px] md:text-xs mt-2 sm:mt-3 text-gray-500">Client Retention</p>
+                        </div>
+                        <div class="text-center lg:text-left">
+                            <p class="text-[clamp(2.5rem,7vw,6rem)] font-black tracking-tighter leading-none"><span class="stat-num text-turmeric" data-target="24">0</span><span class="text-white drop-shadow-sm">/7</span></p>
+                            <p class="uppercase font-bold tracking-widest text-[9px] sm:text-[10px] md:text-xs mt-2 sm:mt-3 text-gray-500">Monitoring</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section id="process" class="py-16 sm:py-24 md:py-32 px-4 md:px-8 lg:px-12 bg-dark rounded-t-2xl sm:rounded-t-[2rem] md:rounded-t-[3rem] -mt-6 sm:-mt-10 relative z-30 border-b border-gray-800">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="section-title text-outline text-[clamp(2.5rem,8vw,6rem)] font-black uppercase tracking-tighter leading-[0.9] mb-12 sm:mb-16 md:mb-24 transition-all opacity-0 translate-y-10 text-center lg:text-left">How It Works</h2>
+                
+                <div class="space-y-8 sm:space-y-10 md:space-y-12">
+                    <div class="process-step opacity-0 translate-y-10 group flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-12 items-start md:items-center border-b border-gray-800 pb-6 sm:pb-8 md:pb-12 hover-target cursor-default">
+                        <span class="text-turmeric font-black text-5xl sm:text-6xl md:text-8xl lg:text-[10rem] opacity-30 group-hover:opacity-100 transition-opacity duration-500 leading-none">01</span>
+                        <div class="md:ml-auto w-full md:w-2/3">
+                            <h3 class="text-xl sm:text-2xl md:text-4xl font-bold uppercase tracking-wider mb-2 sm:mb-3 md:mb-6 text-white">Audit & Plan</h3>
+                            <p class="text-gray-400 text-sm sm:text-base md:text-xl max-w-2xl leading-relaxed">We review your website traffic, search rankings, and ad performance to find exactly what needs fixing and where the opportunity lies.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step opacity-0 translate-y-10 group flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-12 items-start md:items-center border-b border-gray-800 pb-6 sm:pb-8 md:pb-12 hover-target cursor-default">
+                        <span class="text-turmeric font-black text-5xl sm:text-6xl md:text-8xl lg:text-[10rem] opacity-30 group-hover:opacity-100 transition-opacity duration-500 leading-none">02</span>
+                        <div class="md:ml-auto w-full md:w-2/3">
+                            <h3 class="text-xl sm:text-2xl md:text-4xl font-bold uppercase tracking-wider mb-2 sm:mb-3 md:mb-6 text-white">Foundation Setup</h3>
+                            <p class="text-gray-400 text-sm sm:text-base md:text-xl max-w-2xl leading-relaxed">We write clean code, fix SEO tags, set up accurate ad tracking, and design creatives that push users to take action.</p>
+                        </div>
+                    </div>
+
+                    <div class="process-step opacity-0 translate-y-10 group flex flex-col md:flex-row gap-4 sm:gap-6 md:gap-12 items-start md:items-center pb-2 sm:pb-4 hover-target cursor-default">
+                        <span class="text-turmeric font-black text-5xl sm:text-6xl md:text-8xl lg:text-[10rem] opacity-30 group-hover:opacity-100 transition-opacity duration-500 leading-none">03</span>
+                        <div class="md:ml-auto w-full md:w-2/3">
+                            <h3 class="text-xl sm:text-2xl md:text-4xl font-bold uppercase tracking-wider mb-2 sm:mb-3 md:mb-6 text-white">Rapid Scaling</h3>
+                            <p class="text-gray-400 text-sm sm:text-base md:text-xl max-w-2xl leading-relaxed">We optimize your campaigns daily. Every week, we stop the bad ads and fund the winning ones to lower ad costs and increase organic leads.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="pt-16 sm:pt-24 md:pt-32 pb-8 px-4 md:px-8 lg:px-12 bg-dark">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 lg:gap-20 mb-16 sm:mb-24 md:mb-32">
+                    <div class="contact-reveal opacity-0 translate-y-10 text-center lg:text-left flex flex-col items-center lg:items-start">
+                        <h2 class="text-[clamp(2.5rem,8vw,6rem)] font-black tracking-tighter uppercase mb-4 sm:mb-6 md:mb-10 leading-[0.9] text-white">Ready To <br> <span class="text-cornflower">Scale?</span></h2>
+                        <p class="text-base sm:text-lg md:text-xl text-gray-400 mb-8 sm:mb-10 md:mb-16 max-w-md leading-relaxed">
+                            Send us your link. We will run a quick technical review of your SEO and ad accounts to show you exactly what needs fixing. No commitments.
+                        </p>
+                        
+                        <div class="space-y-6 sm:space-y-8">
+                            <div>
+                                <p class="uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs font-bold text-gray-500 mb-2 sm:mb-3">Email Us</p>
+                                <a href="mailto:namaste@hirekognito.in" class="text-lg sm:text-xl md:text-3xl font-medium hover:text-cornflower text-white transition-colors hover-target break-all">namaste@hirekognito.in</a>
+                            </div>
+                            <div>
+                                <p class="uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs font-bold text-gray-500 mb-2 sm:mb-3">Location</p>
+                                <p class="text-lg sm:text-xl md:text-3xl font-medium text-white">New York, NY 10012</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-reveal opacity-0 translate-y-10 bg-card p-5 sm:p-6 md:p-12 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] border border-gray-800 shadow-2xl">
+                        <form id="contact-form" class="space-y-6 sm:space-y-8 md:space-y-10">
+                            <div class="relative border-b border-gray-700 pb-2 sm:pb-3">
+                                <label for="name" class="uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs font-bold text-gray-500 block mb-1 sm:mb-2">Your Full Name</label>
+                                <input type="text" id="name" required class="w-full bg-transparent text-base sm:text-lg md:text-2xl text-white placeholder-gray-700 focus:outline-none focus:border-turmeric hover-target transition-colors" placeholder="John Doe">
+                            </div>
+                            
+                            <div class="relative border-b border-gray-700 pb-2 sm:pb-3">
+                                <label for="email" class="uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs font-bold text-gray-500 block mb-1 sm:mb-2">Work Email</label>
+                                <input type="email" id="email" required class="w-full bg-transparent text-base sm:text-lg md:text-2xl text-white placeholder-gray-700 focus:outline-none focus:border-turmeric hover-target transition-colors" placeholder="john@company.com">
+                            </div>
+
+                            <div class="relative border-b border-gray-700 pb-2 sm:pb-3">
+                                <label for="website" class="uppercase tracking-widest text-[9px] sm:text-[10px] md:text-xs font-bold text-gray-500 block mb-1 sm:mb-2">Website Link</label>
+                                <input type="url" id="website" required class="w-full bg-transparent text-base sm:text-lg md:text-2xl text-white placeholder-gray-700 focus:outline-none focus:border-turmeric hover-target transition-colors" placeholder="yourdomain.com">
+                            </div>
+                            
+                            <button type="submit" id="submit-btn" class="magnetic w-full bg-turmeric text-dark font-bold uppercase tracking-widest px-6 py-4 sm:py-5 text-xs rounded-full hover:bg-cornflower hover:text-white transition-colors hover-target mt-6 sm:mt-8 flex items-center justify-center gap-2 sm:gap-3 pointer-events-auto">
+                                Let's Grow Together <i data-lucide="arrow-right" class="w-4 h-4 sm:w-5 sm:h-5 pointer-events-none"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row justify-between items-center border-t border-gray-800 pt-6 sm:pt-8 gap-4 sm:gap-6 text-center md:text-left">
+                    <p class="text-gray-500 text-[10px] sm:text-xs md:text-sm font-medium uppercase tracking-wider">© 2026 Kognito.</p>
+                    <div class="flex gap-4 sm:gap-6 md:gap-8">
+                        <a href="https://www.instagram.com/hirekognito.in" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-white text-[10px] sm:text-xs md:text-sm font-medium uppercase tracking-wider transition-colors hover-target">Instagram</a>
+                        <a href="https://www.linkedin.com/company/hirekognito" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-white text-[10px] sm:text-xs md:text-sm font-medium uppercase tracking-wider transition-colors hover-target">LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- UI & Interaction Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Icons
+            lucide.createIcons();
+
+            // Register GSAP ScrollTrigger
+            gsap.registerPlugin(ScrollTrigger);
+
+            // --- GSAP Hero Animations ---
+            const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
+            
+            heroTl.to(".hero-line:not(.flip-word)", {
+                y: "0%",
+                duration: 1.2,
+                stagger: 0.15,
+                delay: 0.2
+            })
+            .to(".hero-fade", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.15,
+                clearProps: "transform"
+            }, "-=0.8")
+            .from([".floating-icon"], {
+                y: 40,
+                opacity: 0,
+                duration: 1.2,
+                stagger: 0.2,
+                ease: "back.out(1.2)"
+            }, "-=0.8");
+
+            // --- Premium 3D Word Flip Continuous Loop ---
+            const flipWords = document.querySelectorAll(".flip-word");
+            if(flipWords.length >= 2) {
+                gsap.set(flipWords, { opacity: 0, y: 30, rotationX: -30 });
+                gsap.set(flipWords[0], { opacity: 1, y: 0, rotationX: 0 });
+                
+                heroTl.from(flipWords[0], {
+                    y: 40,
+                    opacity: 0,
+                    duration: 1.2,
+                    onComplete: () => {
+                        const flipTl = gsap.timeline({ repeat: -1 });
+                        flipWords.forEach((word, i) => {
+                            const nextWord = flipWords[(i + 1) % flipWords.length];
+                            flipTl.to(word, { y: -30, rotationX: 30, opacity: 0, duration: 0.8, ease: "power3.inOut", delay: 2 })
+                                  .to(nextWord, { y: 0, rotationX: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "<0.2")
+                                  .set(word, { y: 30, rotationX: -30 }); 
+                        });
+                    }
+                }, "<0.3");
+            }
+
+            // --- GSAP Abstract Shapes ---
+            gsap.to(".abstract-shape-1", {
+                y: "random(-20, 20)",
+                x: "random(-20, 20)",
+                rotation: "random(-10, 10)",
+                duration: 5,
+                ease: "sine.inOut",
+                yoyo: true,
+                repeat: -1
+            });
+            
+            gsap.to(".abstract-shape-2", {
+                y: "random(-30, 30)",
+                x: "random(-30, 30)",
+                rotation: "random(-15, 15)",
+                duration: 6,
+                ease: "sine.inOut",
+                yoyo: true,
+                repeat: -1,
+                delay: 1
+            });
+
+            const floatIcons = gsap.utils.toArray('.floating-icon');
+            floatIcons.forEach((icon, i) => {
+                gsap.to(icon, {
+                    y: "random(-10, 10)",
+                    x: "random(-5, 5)",
+                    rotation: "random(-5, 5)",
+                    duration: "random(3, 5)",
+                    ease: "sine.inOut",
+                    yoyo: true,
+                    repeat: -1,
+                    delay: i * 0.5 + 2 
+                });
+            });
+
+            // --- GSAP ScrollTrigger Animations ---
+            const stats = document.querySelectorAll(".stat-num");
+            stats.forEach(stat => {
+                const target = parseFloat(stat.getAttribute("data-target"));
+                ScrollTrigger.create({
+                    trigger: "#results",
+                    start: "top 85%",
+                    onEnter: () => {
+                        gsap.to(stat, {
+                            innerHTML: target,
+                            duration: 2.5,
+                            ease: "power2.out",
+                            snap: { innerHTML: 1 },
+                            onUpdate: function() {
+                                stat.innerHTML = Math.round(this.targets()[0].innerHTML);
+                            }
+                        });
+                    },
+                    once: true
+                });
+            });
+
+            gsap.utils.toArray('.section-title').forEach(title => {
+                gsap.to(title, {
+                    scrollTrigger: { trigger: title, start: "top 85%" },
+                    y: 0, opacity: 1, duration: 1, ease: "power3.out"
+                });
+            });
+
+            gsap.utils.toArray('.service-card').forEach(card => {
+                gsap.to(card, {
+                    scrollTrigger: { trigger: card, start: "top 85%" },
+                    y: 0, opacity: 1, duration: 0.8, ease: "power3.out"
+                });
+            });
+
+            gsap.utils.toArray('.process-step').forEach(step => {
+                gsap.to(step, {
+                    scrollTrigger: { trigger: step, start: "top 85%" },
+                    y: 0, opacity: 1, duration: 0.8, ease: "power3.out"
+                });
+            });
+
+            gsap.to(".portfolio-reveal", {
+                scrollTrigger: { trigger: "#portfolio", start: "top 85%" },
+                y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out"
+            });
+
+            gsap.to(".contact-reveal", {
+                scrollTrigger: { trigger: "#contact", start: "top 85%" },
+                y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: "power3.out"
+            });
+
+            // --- Custom Cursor & Magnetic Interactions ---
+            const cursor = document.getElementById('custom-cursor');
+            const cursorXTo = gsap.quickTo(cursor, "left", {duration: 0.15, ease: "power3.out"});
+            const cursorYTo = gsap.quickTo(cursor, "top", {duration: 0.15, ease: "power3.out"});
+
+            document.addEventListener('mousemove', (e) => {
+                cursorXTo(e.clientX);
+                cursorYTo(e.clientY);
+                
+                if(window.innerWidth > 1024) {
+                    const x = (window.innerWidth / 2 - e.pageX) * 0.02;
+                    const y = (window.innerHeight / 2 - e.pageY) * 0.02;
+                    gsap.to(".laptop-screen", { x: x * 0.5, y: y * 0.5, duration: 1, ease: "power2.out", overwrite: "auto" });
+                    gsap.to(".laptop-base", { x: x * 0.2, duration: 1, ease: "power2.out", overwrite: "auto" });
+                }
+            });
+
+            document.querySelectorAll('a, button, input, textarea, .ring-card').forEach(el => {
+                el.classList.add('hover-target');
+            });
+
+            const magneticElements = document.querySelectorAll('.magnetic');
+            magneticElements.forEach((el) => {
+                el.addEventListener('mousemove', (e) => {
+                    if(window.innerWidth > 768) {
+                        const rect = el.getBoundingClientRect();
+                        const xPos = gsap.getProperty(el, "x") || 0;
+                        const yPos = gsap.getProperty(el, "y") || 0;
+                        
+                        const centerX = rect.left - xPos + rect.width / 2;
+                        const centerY = rect.top - yPos + rect.height / 2;
+                        
+                        const x = (e.clientX - centerX) * 0.3;
+                        const y = (e.clientY - centerY) * 0.3;
+                        
+                        gsap.to(el, { x: x, y: y, duration: 0.2, ease: "power2.out", overwrite: "auto" });
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    if(window.innerWidth > 768) {
+                        gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.3)", overwrite: "auto" });
+                    }
+                });
+            });
+
+            // --- 3D Dolby Atmos Orbit Portfolio Logic ---
+            const portfolioRing = document.getElementById('portfolio-ring');
+            const ringCards = document.querySelectorAll('.ring-card');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (portfolioRing && ringCards.length > 0) {
+                const numCards = ringCards.length;
+                const angle = 360 / numCards;
+                let currentRingAngle = 0;
+                let ringRadius = window.innerWidth < 768 ? 200 : 400; // Smaller radius for mobile, huge for desktop
+
+                // Initial Placement of cards in 3D Space
+                const positionCards = () => {
+                    ringRadius = window.innerWidth < 768 ? 200 : 400;
+                    ringCards.forEach((card, i) => {
+                        gsap.set(card, {
+                            rotationY: i * angle,
+                            z: ringRadius,
+                            transformOrigin: "50% 50% 0"
+                        });
+                    });
+                };
+
+                positionCards();
+                window.addEventListener('resize', positionCards);
+
+                // Button rotation function
+                const rotateRing = (direction) => {
+                    currentRingAngle += direction * angle;
+                    gsap.to(portfolioRing, {
+                        rotationY: currentRingAngle,
+                        duration: 1.2,
+                        ease: "power3.out"
+                    });
+                };
+
+                prevBtn.addEventListener('click', () => rotateRing(-1));
+                nextBtn.addEventListener('click', () => rotateRing(1));
+
+                // Swipe and Drag Logic for Orbit
+                let isDraggingRing = false;
+                let startXRing = 0;
+                let startAngleRing = 0;
+                let velocity = 0;
+                let lastX = 0;
+
+                const scene = document.querySelector('.portfolio-scene');
+                
+                const onStart = (clientX) => {
+                    isDraggingRing = true;
+                    startXRing = clientX;
+                    startAngleRing = currentRingAngle;
+                    gsap.killTweensOf(portfolioRing);
+                };
+
+                const onMove = (clientX) => {
+                    if (!isDraggingRing) return;
+                    const diff = clientX - startXRing;
+                    
+                    // Adjust spin sensitivity based on device
+                    const sensitivity = window.innerWidth < 768 ? 0.6 : 0.25;
+                    currentRingAngle = startAngleRing + diff * sensitivity;
+                    
+                    gsap.set(portfolioRing, { rotationY: currentRingAngle });
+                    
+                    velocity = clientX - lastX;
+                    lastX = clientX;
+                };
+
+                const onEnd = () => {
+                    if (!isDraggingRing) return;
+                    isDraggingRing = false;
+                    
+                    // Add momentum logic
+                    let targetAngle = currentRingAngle;
+                    if (Math.abs(velocity) > 2) {
+                        targetAngle += velocity * 5; 
+                    }
+                    
+                    // Snap exactly to the nearest card (snap to multiples of our calculated angle)
+                    targetAngle = Math.round(targetAngle / angle) * angle;
+                    currentRingAngle = targetAngle;
+                    
+                    gsap.to(portfolioRing, {
+                        rotationY: currentRingAngle,
+                        duration: 1,
+                        ease: "power3.out"
+                    });
+                };
+
+                // Touch Events
+                scene.addEventListener('touchstart', e => onStart(e.touches[0].clientX), {passive: true});
+                scene.addEventListener('touchmove', e => onMove(e.touches[0].clientX), {passive: true});
+                scene.addEventListener('touchend', onEnd, {passive: true});
+
+                // Mouse Events
+                scene.addEventListener('mousedown', e => onStart(e.clientX));
+                window.addEventListener('mousemove', e => onMove(e.clientX));
+                window.addEventListener('mouseup', onEnd);
+                scene.addEventListener('mouseleave', onEnd); // Failsafe
+            }
+
+            // Scroll Progress Bar
+            const progressBar = document.getElementById('progress-bar');
+            window.addEventListener('scroll', () => {
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrollPercentage = (scrollTop / scrollHeight) * 100;
+                progressBar.style.width = scrollPercentage + '%';
+            });
+
+            // Menu Toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const menuClose = document.getElementById('menu-close');
+            const fullscreenMenu = document.getElementById('fullscreen-menu');
+            const menuLinks = document.querySelectorAll('.menu-link');
+
+            const openMenu = () => {
+                fullscreenMenu.classList.remove('-translate-y-full');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeMenu = () => {
+                fullscreenMenu.classList.add('-translate-y-full');
+                document.body.style.overflow = '';
+            };
+
+            menuToggle.addEventListener('click', openMenu);
+            menuClose.addEventListener('click', closeMenu);
+            menuLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+            // Web Speech API - Pronounce Kognito
+            const pronounceBtn = document.getElementById('pronounce-btn');
+            if (pronounceBtn) {
+                pronounceBtn.addEventListener('click', () => {
+                    if ('speechSynthesis' in window) {
+                        const utterance = new SpeechSynthesisUtterance("Repeat after us, it's Kognito.");
+                        utterance.lang = 'en-US';
+                        utterance.rate = 0.9; // Slightly slower for clarity
+                        utterance.pitch = 1.0;
+                        window.speechSynthesis.speak(utterance);
+                    }
+                });
+            }
+
+            // Form Handling
+            const form = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submit-btn');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'PROCESSING...';
+                submitBtn.classList.remove('bg-turmeric');
+                submitBtn.classList.add('bg-gray-800', 'text-white', 'cursor-not-allowed');
+
+                setTimeout(() => {
+                    submitBtn.innerHTML = 'REQUEST RECEIVED <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5 inline"></i>';
+                    lucide.createIcons();
+                    form.reset();
+                    
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.classList.add('bg-turmeric');
+                        submitBtn.classList.remove('bg-gray-800', 'text-white', 'cursor-not-allowed');
+                        lucide.createIcons();
+                    }, 3000);
+                }, 1500);
+            });
+        });
+    </script>
+    
+    <!-- Firebase SDK & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDb5Z6vSiGYeAHnZjdzyYt7ZJAp6HIW338",
+            authDomain: "kognito-a13ac.firebaseapp.com",
+            databaseURL: "https://kognito-a13ac-default-rtdb.firebaseio.com",
+            projectId: "kognito-a13ac",
+            storageBucket: "kognito-a13ac.firebasestorage.app",
+            messagingSenderId: "339613465789",
+            appId: "1:339613465789:web:d277eacd78d8b7b1430bd4",
+            measurementId: "G-EGV4J1MYPC"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const logoRef = ref(db, 'logo');
+
+        onValue(logoRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const track = document.getElementById('client-track');
+                if(!track) return;
+                
+                let html = '';
+                Object.values(data).forEach(logo => {
+                    if (logo.url) {
+                        html += `<img src="${logo.url}" alt="${logo.name}" class="h-10 sm:h-14 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 opacity-50 hover:opacity-100 hover-target" />`;
+                    }
+                });
+                
+                track.innerHTML = html + html; 
+            }
+        });
+    </script>
+</body>
+</html>
