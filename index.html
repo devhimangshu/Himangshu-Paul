@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#0a0a0a]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himangshu Paul | Creative Web Developer</title>
+    <meta name="description" content="Portfolio of Himangshu Paul, a web developer focusing on fast applications, clean code, and strong system architecture.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourwebsite.com">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#0a0a0a',
+                        surface: '#141414',
+                        surfaceHover: '#1f1f1f',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            color: #ffffff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Hide default cursor on desktop for custom micro-interaction */
+        @media (pointer: fine) {
+            body { cursor: none; }
+        }
+        
+        /* Custom Text Selection */
+        ::selection {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        /* Prevent scrolling while loading */
+        .no-scroll {
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Hardware acceleration for smooth parallax */
+        .parallax-layer {
+            will-change: transform, opacity;
+        }
+
+        /* Subtle Noise Overlay for premium texture */
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* Hide scrollbar for clean aesthetic */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Custom Cursor (Hidden on mobile via media query) */
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            mix-blend-mode: difference;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s;
+            will-change: transform, width, height;
+            display: none;
+        }
+        @media (pointer: fine) {
+            .custom-cursor { display: block; }
+        }
+        .custom-cursor.hovering {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(2px);
+            mix-blend-mode: normal;
+        }
+
+        /* Entrance Reveal Animation */
+        .reveal-target {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Delay utilities for staggered reveals */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* 3D Motion Card Base */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tilt-card-inner {
+            transform: translateZ(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @media (pointer: fine) {
+            .tilt-card:hover .tilt-card-inner {
+                transform: translateZ(40px);
+            }
+        }
+    </style>
+</head>
+<body class="no-scroll font-sans relative">
+
+    <!-- Global Noise Texture -->
+    <div class="noise-bg fixed inset-0 z-50 h-full w-full"></div>
+
+    <!-- Custom Cursor -->
+    <div id="cursor" class="custom-cursor"></div>
+
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-dark transition-all duration-700 ease-in-out">
+        <div class="relative flex flex-col items-center">
+            <i class="ph ph-circle-notch text-3xl md:text-4xl text-white/30 animate-spin mb-6"></i>
+            <div class="w-48 md:w-64 h-[2px] bg-white/10 rounded-full overflow-hidden mb-3">
+                <div id="loader-bar" class="h-full bg-white transition-none" style="width: 0%"></div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span id="loader-status" class="text-[10px] md:text-xs text-white/40 uppercase tracking-[0.2em] font-medium">Fetching Data</span>
+                <span id="loader-text" class="text-[10px] md:text-xs text-white uppercase tracking-[0.2em] font-semibold w-10 md:w-12 text-right">0%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scrollytelling Hero Section -->
+    <section id="scrolly-container" class="relative w-full bg-dark h-[250vh] md:h-[400vh]">
+        <div class="sticky top-0 h-[100dvh] w-full overflow-hidden bg-dark">
+            
+            <!-- Canvas -->
+            <canvas id="hero-canvas" class="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-screen"></canvas>
+
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-b from-dark/60 via-dark/20 to-dark/90 z-0 pointer-events-none"></div>
+
+            <!-- Overlay Section 1: Intro -->
+            <div id="overlay-1" class="parallax-layer absolute inset-0 flex flex-col items-center justify-center text-center px-4 md:px-6 z-10 pointer-events-none">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70 text-[10px] md:text-xs tracking-widest uppercase mb-4 md:mb-6 backdrop-blur-sm">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                    Available for work
+                </div>
+                <h1 class="text-4xl sm:text-6xl md:text-8xl font-bold tracking-tight mb-4 md:mb-6 text-white leading-none">
+                    Himangshu Paul
+                </h1>
+                <p class="text-base sm:text-lg md:text-2xl text-white/60 max-w-lg font-light tracking-wide">
+                    Creative Web Developer.
+                </p>
+            </div>
+
+            <!-- Overlay Section 2: Statement 1 -->
+            <div id="overlay-2" class="parallax-layer absolute inset-0 flex flex-col items-start justify-center px-6 sm:px-12 md:px-24 z-10 pointer-events-none opacity-0">
+                <h2 class="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-4 md:mb-6 max-w-4xl leading-[1.1] text-white">
+                    I build fast, functional, and scalable digital systems.
+                </h2>
+                <div class="h-[1px] w-16 md:w-24 bg-white/30 mt-2 md:mt-4"></div>
+            </div>
+
+            <!-- Overlay Section 3: Statement 2 -->
+            <div id="overlay-3" class="parallax-layer absolute inset-0 flex flex-col items-end justify-center text-right px-6 sm:px-12 md:px-24 z-10 pointer-events-none opacity-0">
+                <h2 class="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tight mb-4 md:mb-6 max-w-3xl leading-[1.1] text-white">
+                    Connecting design with strong engineering.
+                </h2>
+                <p class="text-base sm:text-lg md:text-2xl text-white/50 max-w-xl font-light">
+                    Using modern technology to deliver high-performance user interfaces.
+                </p>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div id="scroll-indicator" class="parallax-layer absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 md:gap-3 pointer-events-none z-20">
+                <span class="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-white/40 font-medium">Scroll</span>
+                <div class="w-[1px] h-12 md:h-16 bg-gradient-to-b from-white/30 to-transparent"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Work Grid Section -->
+    <section class="relative z-20 w-full bg-dark py-20 md:py-32 px-4 sm:px-6 md:px-12 lg:px-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="mb-16 md:mb-24 flex flex-col md:flex-row justify-between items-start md:items-end gap-6 md:gap-8 border-b border-white/10 pb-8 md:pb-12 reveal-target">
+                <div class="max-w-2xl">
+                    <h2 class="text-3xl sm:text-4xl md:text-6xl font-bold mb-4 md:mb-6 tracking-tight">Selected Work</h2>
+                    <p class="text-white/50 text-base md:text-xl font-light leading-relaxed">
+                        A look at recent projects focusing on clean code, modular architecture, and precise visual execution.
+                    </p>
+                </div>
+                <div class="interactive-element">
+                    <a href="#" class="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors border border-white/10 hover:border-white/30 px-5 py-2.5 md:px-6 md:py-3 rounded-full text-xs md:text-sm font-medium bg-white/5 md:bg-transparent">
+                        View GitHub Archive <i class="ph ph-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 perspective-1000">
+                
+                <!-- Project 1 -->
+                <article class="tilt-card reveal-target delay-100 group relative flex flex-col justify-between p-6 md:p-8 rounded-2xl md:rounded-3xl bg-surface border border-white/5 cursor-pointer min-h-[300px] md:h-[420px]">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    
+                    <div class="relative z-10 tilt-card-inner pointer-events-none">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 md:mb-8">
+                            <i class="ph ph-chart-line-up text-xl md:text-2xl text-white/80"></i>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-3 md:mb-4">
+                            <span class="px-2 py-1 text-[10px] md:text-[11px] font-medium tracking-wide uppercase rounded-md bg-white/5 text-white/60">React</span>
+                            <span class="px-2 py-1 text-[10px] md:text-[11px] font-medium tracking-wide uppercase rounded-md bg-white/5 text-white/60">TypeScript</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold mb-2 md:mb-3 tracking-tight group-hover:text-blue-400 transition-colors">Financial Dashboard</h3>
+                        <p class="text-white/50 text-xs md:text-sm leading-relaxed font-light">
+                            A secure application for managing large sets of financial data. Features real-time updates and modular component design for rapid loading.
+                        </p>
+                    </div>
+
+                    <div class="relative z-10 flex items-center justify-between mt-6 pt-5 border-t border-white/5 tilt-card-inner pointer-events-none">
+                        <span class="text-xs md:text-sm font-medium text-white/80 group-hover:translate-x-2 transition-transform duration-300">View Details</span>
+                        <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white group-hover:text-dark group-hover:scale-110 transition-all duration-300">
+                            <i class="ph ph-arrow-up-right text-xs md:text-sm"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="tilt-card reveal-target delay-200 group relative flex flex-col justify-between p-6 md:p-8 rounded-2xl md:rounded-3xl bg-surface border border-white/5 cursor-pointer min-h-[300px] md:h-[420px]">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    
+                    <div class="relative z-10 tilt-card-inner pointer-events-none">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 md:mb-8">
+                            <i class="ph ph-shopping-cart-simple text-xl md:text-2xl text-white/80"></i>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-3 md:mb-4">
+                            <span class="px-2 py-1 text-[10px] md:text-[11px] font-medium tracking-wide uppercase rounded-md bg-white/5 text-white/60">Next.js</span>
+                            <span class="px-2 py-1 text-[10px] md:text-[11px] font-medium tracking-wide uppercase rounded-md bg-white/5 text-white/60">PostgreSQL</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold mb-2 md:mb-3 tracking-tight group-hover:text-orange-400 transition-colors">Headless Retail</h3>
+                        <p class="text-white/50 text-xs md:text-sm leading-relaxed font-light">
+                            A modern retail platform built for speed and high conversion rates. Includes a custom checkout flow and clean inventory management.
+                        </p>
+                    </div>
+
+                    <div class="relative z-10 flex items-center justify-between mt-6 pt-5 border-t border-white/5 tilt-card-inner pointer-events-none">
+                        <span class="text-xs md:text-sm font-medium text-white/80 group-hover:translate-x-2 transition-transform duration-300">View Details</span>
+                        <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white group-hover:text-dark group-hover:scale-110 transition-all duration-300">
+                            <i class="ph ph-arrow-up-right text-xs md:text-sm"></i>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="tilt-card reveal-target delay-300 group relative flex flex-col justify-between p-6 md:p-8 rounded-2xl md:rounded-3xl bg-surface border border-white/5 cursor-pointer min-h-[300px] md:h-[420px]">
+                    <div class="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                    
+                    <div class="relative z-10 tilt-card-inner pointer-events-none">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 md:mb-8">
+                            <i class="ph ph-cpu text-xl md:text-2xl text-white/80"></i>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-3 md:mb-4">
+                            <span class="px-2 py-1 text-[10px] md:text-[11px] font-medium tracking-wide uppercase rounded-md bg-white/5 text-white/60">Python</span>
+                            <span class="px-2 py-1 text-[10px] md:text-[11px] font-medium tracking-wide uppercase rounded-md bg-white/5 text-white/60">D3.js</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-semibold mb-2 md:mb-3 tracking-tight group-hover:text-purple-400 transition-colors">Data Interface</h3>
+                        <p class="text-white/50 text-xs md:text-sm leading-relaxed font-light">
+                            A web-based interface for interacting with complex data models. Optimized for heavy datasets and clean, readable visualization.
+                        </p>
+                    </div>
+
+                    <div class="relative z-10 flex items-center justify-between mt-6 pt-5 border-t border-white/5 tilt-card-inner pointer-events-none">
+                        <span class="text-xs md:text-sm font-medium text-white/80 group-hover:translate-x-2 transition-transform duration-300">View Details</span>
+                        <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white group-hover:text-dark group-hover:scale-110 transition-all duration-300">
+                            <i class="ph ph-arrow-up-right text-xs md:text-sm"></i>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full bg-dark py-8 md:py-12 px-4 md:px-6 border-t border-white/5 relative z-20 reveal-target">
+        <div class="max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center justify-between gap-6">
+            <p class="text-white/40 text-xs md:text-sm font-light text-center md:text-left">
+                © <span id="year"></span> Himangshu Paul. All rights reserved.
+            </p>
+            <div class="flex items-center gap-6">
+                <a href="#" class="interactive-element text-white/40 hover:text-white transition-colors" aria-label="GitHub"><i class="ph ph-github-logo text-xl md:text-2xl"></i></a>
+                <a href="#" class="interactive-element text-white/40 hover:text-white transition-colors" aria-label="Twitter"><i class="ph ph-twitter-logo text-xl md:text-2xl"></i></a>
+                <a href="#" class="interactive-element text-white/40 hover:text-white transition-colors" aria-label="LinkedIn"><i class="ph ph-linkedin-logo text-xl md:text-2xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- GLOBAL VARIABLES & DYNAMIC URL GENERATION ---
+        // Generates an array of URLs for frames 000 to 119 dynamically, removing 120 lines of hardcoded code.
+        const FRAME_COUNT = 120;
+        const FRAME_URLS = Array.from({ length: FRAME_COUNT }, (_, i) => 
+            `https://hirekognito.in/sequence/frame_${String(i).padStart(3, '0')}_delay-0.066s.webp`
+        );
+        
+        const images = new Array(FRAME_COUNT);
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d', { alpha: false });
+        
+        let loadedCount = 0;
+        let isReady = false;
+        let currentFrameIndex = 0;
+        let forceLoadTimeout;
+
+        // Loader Interpolation States
+        let actualPercentage = 0;
+        let displayPercentage = 0;
+
+        // DOM Elements
+        const scrollyContainer = document.getElementById('scrolly-container');
+        const overlay1 = document.getElementById('overlay-1');
+        const overlay2 = document.getElementById('overlay-2');
+        const overlay3 = document.getElementById('overlay-3');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+
+        // Check for fine pointer (desktop vs mobile touch)
+        const isTouchDevice = !window.matchMedia("(pointer: fine)").matches;
+
+        // --- 1. START PORTFOLIO ---
+        function initPortfolio() {
+            requestAnimationFrame(animateLoader);
+            document.getElementById('loader-status').innerText = 'Loading Assets';
+            preloadImages();
+        }
+
+        // --- 2. ROBUST ASSET PRELOADER ---
+        function preloadImages() {
+            // Failsafe to show website even if images are slow to load
+            forceLoadTimeout = setTimeout(() => {
+                if (!isReady) {
+                    actualPercentage = 100;
+                    setTimeout(finalizeLoading, 500);
+                }
+            }, 6000);
+
+            if (FRAME_COUNT === 0) return;
+
+            FRAME_URLS.forEach((url, i) => {
+                const img = new Image();
+                img.src = url;
+                
+                img.onload = () => {
+                    images[i] = img;
+                    registerFrameLoad();
+                };
+                
+                img.onerror = () => {
+                    images[i] = null; 
+                    registerFrameLoad();
+                };
+            });
+        }
+
+        function registerFrameLoad() {
+            loadedCount++;
+            actualPercentage = Math.min(100, (loadedCount / FRAME_COUNT) * 100);
+            
+            if (loadedCount === FRAME_COUNT) {
+                setTimeout(finalizeLoading, 400); // Small buffer for visual completion
+            }
+        }
+
+        // Smoothly interpolate the loader bar
+        function animateLoader() {
+            if (isReady) return;
+
+            displayPercentage += (actualPercentage - displayPercentage) * 0.1;
+
+            if (displayPercentage > 0.1) {
+                document.getElementById('loader-text').innerText = `${Math.round(displayPercentage)}%`;
+                document.getElementById('loader-bar').style.width = `${displayPercentage}%`;
+            }
+
+            requestAnimationFrame(animateLoader);
+        }
+
+        function finalizeLoading() {
+            if (isReady) return;
+            isReady = true;
+            clearTimeout(forceLoadTimeout);
+            
+            resizeCanvas(); 
+            
+            // Fade out loader smoothly
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+                handleScroll(); 
+                initEntranceReveal();
+            }, 700);
+        }
+
+        // --- 3. CANVAS DRAWING LOGIC ---
+        function drawImage(index) {
+            if (!isReady || FRAME_COUNT === 0) return;
+            
+            let img = images[index];
+            
+            // Fallback to previous frame if current failed to load
+            if (!img) {
+                for (let i = index - 1; i >= 0; i--) {
+                    if (images[i]) {
+                        img = images[i];
+                        break;
+                    }
+                }
+            }
+            
+            const w = canvas.width;
+            const h = canvas.height;
+            
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, w, h);
+
+            if (!img) return; 
+            
+            const hRatio = w / img.width;
+            const vRatio = h / img.height;
+            const ratio = Math.max(hRatio, vRatio);
+            
+            const drawW = img.width * ratio;
+            const drawH = img.height * ratio;
+            const drawX = (w - drawW) / 2;
+            const drawY = (h - drawH) / 2;
+
+            ctx.drawImage(img, drawX, drawY, drawW, drawH);
+        }
+
+        function resizeCanvas() {
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
+            
+            drawImage(currentFrameIndex);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // --- 4. SCROLL TRACKING & PARALLAX ---
+        function mapRange(value, inMin, inMax, outMin, outMax) {
+            value = Math.max(inMin, Math.min(value, inMax)); 
+            return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+        }
+
+        function calculateState(progress, startIn, endIn, startOut, endOut) {
+            let opacity = 0;
+            let translateY = 30; // Slightly less travel for a tighter feel on mobile
+
+            if (progress >= startIn && progress <= endIn) {
+                opacity = mapRange(progress, startIn, endIn, 0, 1);
+                translateY = mapRange(progress, startIn, endIn, 30, 0);
+            } else if (progress > endIn && progress < startOut) {
+                opacity = 1;
+                translateY = 0;
+            } else if (progress >= startOut && progress <= endOut) {
+                opacity = mapRange(progress, startOut, endOut, 1, 0);
+                translateY = mapRange(progress, startOut, endOut, 0, -30);
+            } else if (progress > endOut) {
+                translateY = -30;
+            } else if (progress < startIn && startIn === 0) {
+                 opacity = 1;
+                 translateY = 0;
+            }
+
+            return { opacity, translateY };
+        }
+
+        let ticking = false;
+
+        function updateAnimations() {
+            if (FRAME_COUNT === 0) {
+                ticking = false;
+                return;
+            }
+
+            const rect = scrollyContainer.getBoundingClientRect();
+            const maxScroll = rect.height - window.innerHeight;
+            
+            let progress = 0;
+            if (rect.top <= 0) {
+                progress = -rect.top / maxScroll;
+            }
+            progress = Math.max(0, Math.min(1, progress));
+
+            let targetFrame = Math.floor(progress * (FRAME_COUNT - 1));
+            targetFrame = Math.max(0, Math.min(FRAME_COUNT - 1, targetFrame));
+            
+            if (targetFrame !== currentFrameIndex) {
+                currentFrameIndex = targetFrame;
+                drawImage(currentFrameIndex);
+            }
+            
+            const o1 = calculateState(progress, -0.1, 0.0, 0.20, 0.25);
+            overlay1.style.opacity = o1.opacity;
+            overlay1.style.transform = `translate3d(0, ${o1.translateY}px, 0)`;
+            scrollIndicator.style.opacity = o1.opacity;
+
+            const o2 = calculateState(progress, 0.35, 0.45, 0.60, 0.65);
+            overlay2.style.opacity = o2.opacity;
+            overlay2.style.transform = `translate3d(0, ${o2.translateY}px, 0)`;
+
+            const o3 = calculateState(progress, 0.70, 0.80, 0.95, 1.0);
+            overlay3.style.opacity = o3.opacity;
+            overlay3.style.transform = `translate3d(0, ${o3.translateY}px, 0)`;
+
+            ticking = false;
+        }
+
+        function handleScroll() {
+            if (!ticking && isReady) {
+                window.requestAnimationFrame(updateAnimations);
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // --- 5. MICRO-INTERACTIONS (Desktop Only) ---
+        if (!isTouchDevice) {
+            const cursor = document.getElementById('cursor');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`;
+            });
+
+            const interactiveElements = document.querySelectorAll('a, button, .tilt-card, .interactive-element');
+            interactiveElements.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
+            });
+
+            // 3D Motion Cards (Tilt Effect)
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -6; 
+                    const rotateY = ((x - centerX) / centerX) * 6;
+                    
+                    card.style.transition = 'none';
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+            });
+        }
+
+        // --- 6. ENTRANCE REVEAL ---
+        function initEntranceReveal() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-target').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Kickoff initialization
+        initPortfolio();
+
+    </script>
+</body>
+</html>
