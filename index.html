@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
     <title>Himangshu Paul | Web Developer</title>
     <meta name="description" content="Portfolio of Himangshu Paul. I build fast, clean, and scalable web applications and digital interfaces.">
     <meta name="robots" content="index, follow">
@@ -39,6 +40,15 @@
                     },
                     animation: {
                         'spin-slow': 'spin 12s linear infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
                     }
                 }
             }
@@ -98,6 +108,49 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #ff6b00;
+        }
+
+        /* ========== PREMIUM BACKGROUND PATTERNS ========== */
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .bg-grid-pattern-dark {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* ========== MAGIC UI BORDER BEAM ANIMATION ========== */
+        @keyframes border-beam {
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        .border-beam-container {
+            position: relative;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            padding: 2px; /* Border thickness */
+            z-index: 1;
+            background: #111111;
+        }
+        .border-beam-container::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 250%;
+            height: 250%;
+            background: conic-gradient(from 90deg at 50% 50%, #111111 0%, #111111 50%, #111111 70%, #ff6b00 85%, transparent 100%);
+            transform: translate(-50%, -50%) rotate(0deg);
+            animation: border-beam 4s linear infinite;
+            z-index: -1;
+        }
+        .border-beam-inner {
+            position: relative;
+            background: #111111;
+            border-radius: calc(1.5rem - 2px);
+            z-index: 2;
+            height: 100%;
+            width: 100%;
         }
 
         /* ========== HERO GLASS ELEMENTS ========== */
@@ -373,6 +426,7 @@
             width: 0.25em; 
         }
 
+        /* Premium Input Glasses */
         .input-glass {
             background: rgba(255,255,255,0.7);
             border: 1px solid rgba(0,0,0,0.1);
@@ -380,6 +434,18 @@
         }
         .input-glass:focus {
             background: rgba(255,255,255,1);
+            border-color: #ff6b00;
+            outline: none;
+        }
+        
+        .input-dark-glass {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            color: #ffffff;
+        }
+        .input-dark-glass:focus {
+            background: rgba(255,255,255,0.06);
             border-color: #ff6b00;
             outline: none;
         }
@@ -402,7 +468,7 @@
                 <div class="glass-specular"></div>
                 <div class="glass-content flex items-center gap-2">
                     <a href="/" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">Home</a>
-                    <a href="/about" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">About</a>
+                    <a href="#about" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">About</a>
                 </div>
             </div>
         </div>
@@ -429,476 +495,529 @@
         </div>
     </div>
 
-    <!-- Hero Sequence Section -->
-    <section id="scrolly-container" class="relative w-full" style="height: 400vh;">
-        <div class="sticky top-0 h-screen w-full overflow-hidden bg-bgBase">
-            
-            <canvas id="hero-canvas" class="absolute inset-0 h-full w-full object-cover opacity-100" style="filter: brightness(1.2) contrast(1.1) saturate(1.2);"></canvas>
+    <!-- Main Content Wrapper -->
+    <main>
+        <!-- Hero Sequence Section -->
+        <section id="scrolly-container" class="relative w-full" style="height: 400vh;">
+            <div class="sticky top-0 h-screen w-full overflow-hidden bg-bgBase">
+                
+                <canvas id="hero-canvas" class="absolute inset-0 h-full w-full object-cover opacity-100" style="filter: brightness(1.2) contrast(1.1) saturate(1.2);"></canvas>
 
-            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.15)_100%)] pointer-events-none z-0"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.15)_100%)] pointer-events-none z-0"></div>
 
-            <div id="overlay-1" class="parallax-layer absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10 pointer-events-none">
-                <div class="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
-                    <span class="text-xs font-semibold tracking-[0.35em] text-white/60 uppercase blur-text">
-                        Creative Portfolio
-                    </span>
-                    <h1 class="text-4xl font-bold md:text-6xl text-white tracking-tight blur-text">
-                        Himangshu Paul
-                    </h1>
-                    <p class="max-w-md text-sm text-white/80 md:text-base blur-text leading-relaxed">
-                        I build fast, clean, and scalable web applications and digital interfaces.
-                    </p>
-                </div>
-            </div>
-
-            <div id="overlay-2" class="parallax-layer absolute inset-0 flex flex-col items-start justify-center px-6 md:px-24 z-10 pointer-events-none opacity-0">
-                <div class="glass-container max-w-xl mb-24">
-                    <div class="glass-filter"></div>
-                    <div class="glass-overlay"></div>
-                    <div class="glass-specular"></div>
-                    <div class="glass-content p-8 md:p-12 flex flex-col gap-4">
+                <div id="overlay-1" class="parallax-layer absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10 pointer-events-none">
+                    <div class="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
                         <span class="text-xs font-semibold tracking-[0.35em] text-white/60 uppercase blur-text">
-                            System Architecture
+                            Creative Portfolio
                         </span>
-                        <h2 class="text-3xl font-bold md:text-5xl text-white tracking-tight blur-text">
-                            Fast & Scalable
-                        </h2>
+                        <h1 class="text-4xl font-bold md:text-6xl text-white tracking-tight blur-text">
+                            Himangshu Paul
+                        </h1>
                         <p class="max-w-md text-sm text-white/80 md:text-base blur-text leading-relaxed">
-                            Building digital systems that focus on strong engineering principles and seamless functionality.
+                            I build fast, clean, and scalable web applications and digital interfaces.
                         </p>
                     </div>
                 </div>
-            </div>
 
-            <div id="overlay-3" class="parallax-layer absolute inset-0 flex flex-col items-end justify-center text-right px-6 md:px-24 z-10 pointer-events-none opacity-0">
-                <div class="glass-container max-w-xl text-right mb-24">
-                    <div class="glass-filter"></div>
-                    <div class="glass-overlay"></div>
-                    <div class="glass-specular"></div>
-                    <div class="glass-content p-8 md:p-12 flex flex-col items-end gap-4">
-                        <span class="text-xs font-semibold tracking-[0.35em] text-white/60 uppercase blur-text">
-                            Visual Execution
-                        </span>
-                        <h2 class="text-3xl font-bold md:text-5xl text-white tracking-tight blur-text">
-                            Design to Code
-                        </h2>
-                        <p class="max-w-md text-sm text-white/80 md:text-base blur-text leading-relaxed">
-                            Connecting modern design thinking with robust technology to deliver high-performance user interfaces.
+                <div id="overlay-2" class="parallax-layer absolute inset-0 flex flex-col items-start justify-center px-6 md:px-24 z-10 pointer-events-none opacity-0">
+                    <div class="glass-container max-w-xl mb-24">
+                        <div class="glass-filter"></div>
+                        <div class="glass-overlay"></div>
+                        <div class="glass-specular"></div>
+                        <div class="glass-content p-8 md:p-12 flex flex-col gap-4">
+                            <span class="text-xs font-semibold tracking-[0.35em] text-white/60 uppercase blur-text">
+                                System Architecture
+                            </span>
+                            <h2 class="text-3xl font-bold md:text-5xl text-white tracking-tight blur-text">
+                                Fast & Scalable
+                            </h2>
+                            <p class="max-w-md text-sm text-white/80 md:text-base blur-text leading-relaxed">
+                                Building digital systems that focus on strong engineering principles and seamless functionality.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="overlay-3" class="parallax-layer absolute inset-0 flex flex-col items-end justify-center text-right px-6 md:px-24 z-10 pointer-events-none opacity-0">
+                    <div class="glass-container max-w-xl text-right mb-24">
+                        <div class="glass-filter"></div>
+                        <div class="glass-overlay"></div>
+                        <div class="glass-specular"></div>
+                        <div class="glass-content p-8 md:p-12 flex flex-col items-end gap-4">
+                            <span class="text-xs font-semibold tracking-[0.35em] text-white/60 uppercase blur-text">
+                                Visual Execution
+                            </span>
+                            <h2 class="text-3xl font-bold md:text-5xl text-white tracking-tight blur-text">
+                                Design to Code
+                            </h2>
+                            <p class="max-w-md text-sm text-white/80 md:text-base blur-text leading-relaxed">
+                                Connecting modern design thinking with robust technology to deliver high-performance user interfaces.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Continuous macOS Style Taskbar / Dock -->
+                <div id="overlay-dock" class="parallax-layer absolute inset-0 flex flex-col items-center justify-end pb-12 z-20 pointer-events-none opacity-0">
+                    <div class="pointer-events-auto w-full flex justify-center px-4">
+                        <div class="mac-dock">
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">Web</span>
+                                <img src="https://cdn.simpleicons.org/html5/E34F26" alt="Web">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">Android</span>
+                                <img src="https://cdn.simpleicons.org/android/3DDC84" alt="Android">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">SEO</span>
+                                <img src="https://cdn.simpleicons.org/googlesearchconsole/4285F4" alt="SEO">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">Meta Ads</span>
+                                <img src="https://cdn.simpleicons.org/meta/0668E1" alt="Meta Ads">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">GHL</span>
+                                <img src="https://api.iconify.design/ph/rocket-fill.svg?color=%2300A1E0" alt="GHL">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">Google Ads</span>
+                                <img src="https://cdn.simpleicons.org/googleads/F4B400" alt="Google Ads">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">Play Console</span>
+                                <img src="https://cdn.simpleicons.org/googleplay/3BCCFF" alt="Google Play Console">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">Analytics</span>
+                                <img src="https://cdn.simpleicons.org/googleanalytics/E37400" alt="Google Analytics">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">Shopify</span>
+                                <img src="https://cdn.simpleicons.org/shopify/95BF47" alt="Shopify">
+                            </div>
+                            <div class="mac-dock-item interactive-element">
+                                <span class="mac-dock-label">WordPress</span>
+                                <img src="https://cdn.simpleicons.org/wordpress/21759B" alt="WordPress">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thin Spinning Text Scroll Indicator -->
+                <div id="scroll-indicator" class="parallax-layer absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-20">
+                    <svg class="animate-spin-slow w-[110px] h-[110px] text-white/80" viewBox="0 0 100 100">
+                        <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent"/>
+                        <text class="text-[11px] font-thin tracking-[0.1em]" fill="currentColor">
+                            <textPath href="#circlePath" startOffset="0" textLength="215">scroll down • scroll down • scroll down • </textPath>
+                        </text>
+                    </svg>
+                    <i class="ph ph-arrow-down absolute text-accent text-xl animate-bounce"></i>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Continuous Premium Section Wrapper replacing flat whites and simple borders -->
+        <div class="relative z-20 w-full flex flex-col shadow-[0_-10px_30px_rgba(0,0,0,0.5)] bg-[#f8f9fa] bg-grid-pattern">
+            
+            <!-- ABOUT ME SECTION (Premium Light Grid with Shiny Shadows) -->
+            <section id="about" class="w-full py-16 md:py-32 px-6 md:px-12 lg:px-24 overflow-hidden text-gray-900 relative">
+                <!-- Subtle Ambient Background Glow -->
+                <div class="absolute top-20 left-0 w-full max-w-lg h-[400px] bg-gradient-to-r from-accent to-[#ff984d] opacity-[0.08] blur-[100px] pointer-events-none rounded-full mix-blend-multiply"></div>
+
+                <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+                    
+                    <div class="relative gs-reveal flex justify-center lg:justify-start group">
+                        <!-- Premium Animated Blob Shadow behind the image -->
+                        <div class="absolute -inset-2 bg-gradient-to-r from-accent via-[#ff984d] to-yellow-400 opacity-30 blur-2xl rounded-full animate-blob z-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                        
+                        <div class="relative z-10 w-full max-w-[260px] sm:max-w-xs md:max-w-md aspect-[4/5] rounded-[2rem] overflow-hidden bg-white shadow-xl border border-white">
+                            <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul" class="object-cover w-full h-full transition-transform duration-700 hover:scale-105" loading="lazy">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-8 md:gap-10 gs-reveal">
+                        <div>
+                            <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
+                                About Me
+                            </span>
+                            <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 mb-4 md:mb-6 blur-text-scroll">
+                                Building Robust Systems
+                            </h2>
+                            <p class="text-sm md:text-base text-gray-600 leading-relaxed max-w-xl blur-text-scroll">
+                                I am a web developer focused on building fast, clean, and reliable applications. My focus is on creating logical structures and responsive digital interfaces. I aim for high-quality code and modern layouts to solve user problems and deliver seamless interaction.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-col gap-4 md:gap-5 p-5 md:p-6 bg-white/80 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[1.5rem]">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-20 md:w-24 shrink-0">Experience</span>
+                                <div class="flex flex-wrap gap-3 md:gap-4 items-center">
+                                    
+                                    <div class="tooltip-trigger relative interactive-element">
+                                        <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="block relative">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc" alt="Kognito" class="w-full h-full object-contain rounded-xl">
+                                            </div>
+                                            <div class="absolute -bottom-1 -right-1 w-3 h-3 md:w-3.5 md:h-3.5 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
+                                        </a>
+                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                            <div class="font-bold text-sm">Kognito</div>
+                                            <div class="text-xs text-gray-300 mt-1">Founder</div>
+                                            <div class="text-[10px] text-green-400 font-semibold mt-1 uppercase tracking-wider">Current Position</div>
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tooltip-trigger relative interactive-element">
+                                        <a href="https://blueminch.com" target="_blank" rel="noopener noreferrer" class="block relative">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/C560BAQG7HCJ5aPX0gg/company-logo_200_200/company-logo_200_200/0/1642504044619/your_replica_logo?e=1776902400&v=beta&t=0LtsSOhuw7u85OWz39gnp8HKyoyS0go8eUzBnq-EmME" alt="Blue Minch" class="w-full h-full object-contain rounded-xl">
+                                            </div>
+                                        </a>
+                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                            <div class="font-bold text-sm">Blue Minch</div>
+                                            <div class="text-xs text-gray-300 mt-1">Web Developer</div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tooltip-trigger relative interactive-element">
+                                        <a href="https://amazon.in" target="_blank" rel="noopener noreferrer" class="block relative">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/D560BAQGDLy4STCnHbg/company-logo_200_200/B56ZnZxDipI0AI-/0/1760295142304/amazon_logo?e=1776902400&v=beta&t=Pkt-34tlkuFgo_d6O--s7BFOke10xwNIu23VHSfAC1Q" alt="Amazon" class="w-full h-full object-contain rounded-xl">
+                                            </div>
+                                        </a>
+                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                            <div class="font-bold text-sm">Amazon</div>
+                                            <div class="text-xs text-gray-300 mt-1">Affiliate Marketing</div>
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="w-full h-px bg-gray-100"></div>
+
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-20 md:w-24 shrink-0">Education</span>
+                                <div class="flex flex-wrap gap-3 md:gap-4 items-center">
+                                    
+                                    <div class="tooltip-trigger relative interactive-element">
+                                        <a href="https://inspiria.edu.in" target="_blank" rel="noopener noreferrer" class="block relative">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/C4D0BAQE_vIeWPZUeDw/company-logo_100_100/company-logo_100_100/0/1631344769191?e=1776902400&v=beta&t=V2h4SDFu3m5DOi7eoVZTpvMfxXlypSqJ3ekcX8ZB2r4" alt="Inspiria Knowledge Campus" class="w-full h-full object-contain rounded-xl">
+                                            </div>
+                                        </a>
+                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                            <div class="font-bold text-sm">Inspiria Knowledge Campus</div>
+                                            <div class="text-xs text-gray-300 mt-1">Makaut, BCA 2022-25</div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tooltip-trigger relative interactive-element">
+                                        <div class="block relative">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvxrDET6Y2KnzaUqfuipDu_oWOMtWiFW08w&s" alt="Trinity High School" class="w-full h-full object-contain rounded-xl">
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                            <div class="font-bold text-sm">Trinity High School</div>
+                                            <div class="text-xs text-gray-300 mt-1">12th, ISC</div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Banarhat</div>
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tooltip-trigger relative interactive-element">
+                                        <div class="block relative">
+                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRi0iYeamsJN_Vt3ld4JcVVaAGsxAKHfWxpA&s" alt="New Light Academy" class="w-full h-full object-contain rounded-xl">
+                                            </div>
+                                        </div>
+                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                            <div class="font-bold text-sm">New Light Academy</div>
+                                            <div class="text-xs text-gray-300 mt-1">10th, CBSE</div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Sikkim</div>
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <a href="/about" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-white text-sm font-semibold rounded-xl hover:bg-accent hover:shadow-[0_0_20px_rgba(255,107,0,0.4)] transition-all duration-300 w-max interactive-element shadow-md">
+                                More about me <i class="ph ph-arrow-right text-lg"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- SERVICES & CUSTOM 3D GLOBE SECTION -->
+            <section id="services" class="w-full py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden relative text-gray-900">
+                <div class="max-w-7xl mx-auto relative z-10">
+                    <div class="mb-12 md:mb-16 gs-reveal text-center md:text-left">
+                        <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Services</span>
+                        <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">Global Solutions</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                        
+                        <!-- Custom Interactive 3D Globe Visualization -->
+                        <div class="relative flex w-full h-[280px] md:h-[500px] items-center justify-center overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-gray-200/50 gs-reveal interactive-element group">
+                            
+                            <!-- Ambient Globe Glow -->
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-accent/5 rounded-full blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors duration-700"></div>
+
+                            <div id="three-globe-container" class="absolute inset-0 w-full h-full z-30 touch-none"></div>
+                            
+                            <!-- Flawless HTML DP Marker Overlay -->
+                            <div id="globe-dp-marker" class="absolute z-40 w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-accent overflow-hidden transition-all duration-300 pointer-events-none opacity-0 shadow-[0_0_15px_rgba(255,107,0,0.3)]" style="transform: translate(-50%, -50%); top: 50%; left: 50%; will-change: top, left, transform, opacity;">
+                                <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul" class="w-full h-full object-cover bg-black">
+                            </div>
+
+                            <!-- HTML Tooltip for Globe Toggle -->
+                            <div id="globe-tooltip" class="absolute bg-gray-900 text-white p-3 rounded-xl border border-gray-700 shadow-xl z-50 flex items-center gap-3 pointer-events-none opacity-0 transition-opacity duration-200">
+                                <div class="flex flex-col text-left">
+                                    <span class="text-sm font-bold block">Himangshu Paul</span>
+                                    <span class="text-xs text-accent">Available globally</span>
+                                </div>
+                            </div>
+
+                            <div class="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.05),rgba(255,255,255,0))] z-20"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                                    <i class="ph ph-code text-xl md:text-2xl text-accent"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-black tracking-tight">Website Development</h3>
+                                <p class="text-sm text-gray-500 leading-relaxed">Building fast, accessible, and responsive web platforms tailored for business growth.</p>
+                            </div>
+                            
+                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                                    <i class="ph ph-device-mobile text-xl md:text-2xl text-accent"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-black tracking-tight">App Deployment</h3>
+                                <p class="text-sm text-gray-500 leading-relaxed">Publishing secure applications across app stores and managing server configurations.</p>
+                            </div>
+
+                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                                    <i class="ph ph-trend-up text-xl md:text-2xl text-accent"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-black tracking-tight">Performance Marketing</h3>
+                                <p class="text-sm text-gray-500 leading-relaxed">Executing data-driven ad campaigns to maximize return on investment and user acquisition.</p>
+                            </div>
+
+                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                                    <i class="ph ph-magnifying-glass text-xl md:text-2xl text-accent"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-black tracking-tight">SEO Strategy</h3>
+                                <p class="text-sm text-gray-500 leading-relaxed">Optimizing digital footprints to increase organic reach, improve indexing, and drive traffic.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Work Section with Dual-Row Velocity Marquee -->
+            <section id="work" class="w-full py-16 md:py-24 overflow-hidden text-gray-900 relative">
+                <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
+                    <div class="mb-10 md:mb-12 md:flex justify-between items-end gap-8 pb-8 gs-reveal">
+                        <div class="max-w-2xl flex flex-col gap-4">
+                            <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
+                                Recent Projects
+                            </span>
+                            <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight blur-text-scroll">
+                                Selected Work
+                            </h2>
+                            <p class="max-w-md text-sm text-gray-600 md:text-base blur-text-scroll leading-relaxed">
+                                A look at recent projects focusing on clean code, modular architecture, and precise visual execution.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container">
+                    <div class="w-full overflow-hidden py-2 md:py-4">
+                        <div id="marquee-row-a" class="flex w-max"></div>
+                    </div>
+                    <div class="w-full overflow-hidden py-2 md:py-4 mt-2">
+                        <div id="marquee-row-b" class="flex w-max"></div>
+                    </div>
+                    <!-- Premium Gradient Fades for light background -->
+                    <div class="pointer-events-none absolute inset-y-0 left-0 w-[10%] lg:w-[20%] bg-gradient-to-r from-[#f8f9fa] to-transparent z-10"></div>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 w-[10%] lg:w-[20%] bg-gradient-to-l from-[#f8f9fa] to-transparent z-10"></div>
+                </div>
+            </section>
+
+            <!-- TESTIMONIALS SECTION -->
+            <section id="testimonials" class="w-full py-16 md:py-24 overflow-hidden text-gray-900">
+                <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
+                    <div class="mb-10 md:mb-12 gs-reveal text-center md:text-left">
+                        <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Client Feedback</span>
+                        <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">What People Say</h2>
+                    </div>
+                </div>
+
+                <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container-test">
+                    <div class="w-full overflow-hidden py-2 md:py-4">
+                        <div id="test-row-a" class="flex w-max"></div>
+                    </div>
+                    <div class="w-full overflow-hidden py-2 md:py-4 mt-2">
+                        <div id="test-row-b" class="flex w-max"></div>
+                    </div>
+                    <!-- Premium Gradient Fades for light background -->
+                    <div class="pointer-events-none absolute inset-y-0 left-0 w-[10%] lg:w-[20%] bg-gradient-to-r from-[#f8f9fa] to-transparent z-10"></div>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 w-[10%] lg:w-[20%] bg-gradient-to-l from-[#f8f9fa] to-transparent z-10"></div>
+                </div>
+            </section>
+
+            <!-- CONTACT SECTION (Dark Glass Pattern Transition with Magic UI Border Beam) -->
+            <section id="contact" class="w-full py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden bg-[#0a0a0a] bg-grid-pattern-dark text-white relative">
+                <!-- Subtle ambient glow for premium dark mode feel -->
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,107,0,0.08),transparent_50%)] pointer-events-none"></div>
+
+                <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
+                    
+                    <div class="flex flex-col gap-6 md:gap-8 gs-reveal">
+                        <div>
+                            <span class="text-xs font-semibold tracking-[0.35em] text-gray-500 uppercase blur-text-scroll">Let's Talk</span>
+                            <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight mt-4 mb-4 md:mb-6 blur-text-scroll">Get in Touch</h2>
+                            <p class="text-sm md:text-base text-gray-400 leading-relaxed max-w-md blur-text-scroll">
+                                Ready to start your next project? Reach out to discuss how we can work together to build reliable digital solutions.
+                            </p>
+                        </div>
+                        
+                        <div class="flex flex-col gap-4 md:gap-6 mt-2 md:mt-4">
+                            <a href="mailto:himangshu.inbox@gmail.com" class="flex items-center gap-4 group w-max interactive-element">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#111111] border border-[#333] flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:shadow-[0_0_15px_rgba(255,107,0,0.5)] text-white transition-all duration-300">
+                                    <i class="ph ph-envelope-simple text-lg md:text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">Email</p>
+                                    <p class="text-sm md:text-base text-white font-medium group-hover:text-accent transition-colors">himangshu.inbox@gmail.com</p>
+                                </div>
+                            </a>
+                            
+                            <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 group w-max interactive-element">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#111111] border border-[#333] flex items-center justify-center group-hover:bg-[#25D366] group-hover:border-[#25D366] group-hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] text-white transition-all duration-300">
+                                    <i class="ph ph-whatsapp-logo text-lg md:text-xl"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">WhatsApp</p>
+                                    <p class="text-sm md:text-base text-white font-medium group-hover:text-[#25D366] transition-colors">+91 9564604956</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="relative gs-reveal group">
+                        <!-- Premium Shiny Shadow behind the form -->
+                        <div class="absolute -inset-2 bg-gradient-to-r from-accent to-[#ff984d] opacity-20 blur-xl rounded-[2rem] group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"></div>
+                        
+                        <!-- Magic UI Border Beam Container -->
+                        <div class="border-beam-container shadow-2xl">
+                            <form id="whatsapp-form" class="border-beam-inner flex flex-col gap-4 md:gap-5 p-6 md:p-8">
+                                <div class="absolute inset-0 bg-white/5 pointer-events-none rounded-[calc(1.5rem-2px)]"></div>
+                                <div class="relative flex flex-col gap-2 z-10">
+                                    <label for="wa-name" class="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">Your Name</label>
+                                    <input type="text" id="wa-name" required placeholder="John Doe" class="input-dark-glass p-3 md:p-4 rounded-xl text-sm md:text-base transition-all">
+                                </div>
+                                <div class="relative flex flex-col gap-2 z-10">
+                                    <label for="wa-message" class="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">Message</label>
+                                    <textarea id="wa-message" required placeholder="Tell me about your project..." rows="4" class="input-dark-glass p-3 md:p-4 rounded-xl text-sm md:text-base transition-all resize-none"></textarea>
+                                </div>
+                                <button type="submit" class="mt-2 md:mt-4 bg-white text-black py-3.5 md:py-4 rounded-xl font-bold hover:bg-accent hover:text-white hover:shadow-[0_0_20px_rgba(255,107,0,0.5)] transition-all flex items-center justify-center gap-2 interactive-element z-10 text-sm md:text-base">
+                                    Send via WhatsApp <i class="ph ph-paper-plane-tilt text-lg"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Reorganized Charcoal Footer -->
+            <footer class="w-full py-10 md:py-16 px-6 bg-[#111111] border-t border-[#222]">
+                <div class="max-w-7xl mx-auto flex flex-col gap-10 md:gap-16">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start justify-between">
+                        <!-- Brand Info & Socials -->
+                        <div class="flex flex-col gap-4 md:gap-6">
+                            <h3 class="text-xl md:text-2xl font-bold text-white tracking-tight">Himangshu Paul</h3>
+                            <p class="text-gray-400 text-xs md:text-sm max-w-sm leading-relaxed">
+                                Building fast, clean, and scalable web applications and digital interfaces. Let's work together to create reliable digital solutions.
+                            </p>
+                            <div class="flex items-center gap-3 md:gap-4 mt-1 md:mt-2">
+                                <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element" aria-label="GitHub">
+                                    <i class="ph ph-github-logo text-base md:text-lg"></i>
+                                </a>
+                                <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element" aria-label="Instagram">
+                                    <i class="ph ph-instagram-logo text-base md:text-lg"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element" aria-label="LinkedIn">
+                                    <i class="ph ph-linkedin-logo text-base md:text-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Quick Navigation -->
+                        <div class="flex flex-col md:items-end gap-3 md:gap-5">
+                            <span class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Navigation</span>
+                            <nav class="flex flex-col md:items-end gap-2 md:gap-3 text-xs md:text-sm font-medium text-gray-300">
+                                <a href="#about" class="hover:text-accent transition-colors interactive-element">About Me</a>
+                                <a href="#services" class="hover:text-accent transition-colors interactive-element">Services</a>
+                                <a href="#work" class="hover:text-accent transition-colors interactive-element">Selected Work</a>
+                                <a href="#contact" class="hover:text-accent transition-colors interactive-element">Contact</a>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Details: Payments & Copyright -->
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 pt-6 md:pt-8 border-t border-[#222]">
+                        <div class="flex flex-col gap-2 md:gap-3 items-center md:items-start">
+                            <span class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Global Payment Options</span>
+                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> PayPal</span>
+                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Wise</span>
+                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Razorpay</span>
+                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><i class="ph-fill ph-currency-inr text-gray-400 text-xs md:text-sm"></i> UPI</span>
+                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Visa</span>
+                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Mastercard</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-500 text-[10px] md:text-xs font-medium text-center md:text-left">
+                            © <span id="year"></span> Himangshu Paul. All rights reserved.
                         </p>
                     </div>
+
                 </div>
-            </div>
-
-            <!-- Continuous macOS Style Taskbar / Dock -->
-            <div id="overlay-dock" class="parallax-layer absolute inset-0 flex flex-col items-center justify-end pb-12 z-20 pointer-events-none opacity-0">
-                <div class="pointer-events-auto w-full flex justify-center px-4">
-                    <div class="mac-dock">
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">Web</span>
-                            <img src="https://cdn.simpleicons.org/html5/E34F26" alt="Web">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">Android</span>
-                            <img src="https://cdn.simpleicons.org/android/3DDC84" alt="Android">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">SEO</span>
-                            <img src="https://cdn.simpleicons.org/googlesearchconsole/4285F4" alt="SEO">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">Meta Ads</span>
-                            <img src="https://cdn.simpleicons.org/meta/0668E1" alt="Meta Ads">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">GHL</span>
-                            <img src="https://api.iconify.design/ph/rocket-fill.svg?color=%2300A1E0" alt="GHL">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">Google Ads</span>
-                            <img src="https://cdn.simpleicons.org/googleads/F4B400" alt="Google Ads">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">Play Console</span>
-                            <img src="https://cdn.simpleicons.org/googleplay/3BCCFF" alt="Google Play Console">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">Analytics</span>
-                            <img src="https://cdn.simpleicons.org/googleanalytics/E37400" alt="Google Analytics">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">Shopify</span>
-                            <img src="https://cdn.simpleicons.org/shopify/95BF47" alt="Shopify">
-                        </div>
-                        <div class="mac-dock-item interactive-element">
-                            <span class="mac-dock-label">WordPress</span>
-                            <img src="https://cdn.simpleicons.org/wordpress/21759B" alt="WordPress">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Thin Spinning Text Scroll Indicator -->
-            <div id="scroll-indicator" class="parallax-layer absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-20">
-                <svg class="animate-spin-slow w-[110px] h-[110px] text-white/80" viewBox="0 0 100 100">
-                    <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent"/>
-                    <text class="text-[11px] font-thin tracking-[0.1em]" fill="currentColor">
-                        <textPath href="#circlePath" startOffset="0" textLength="215">scroll down • scroll down • scroll down • </textPath>
-                    </text>
-                </svg>
-                <i class="ph ph-arrow-down absolute text-accent text-xl animate-bounce"></i>
-            </div>
-
+            </footer>
         </div>
-    </section>
-
-    <!-- ABOUT ME SECTION -->
-    <section id="about" class="relative z-20 w-full py-32 px-6 md:px-12 lg:px-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
-            <div class="relative gs-reveal flex justify-center lg:justify-start">
-                <div class="relative w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden bg-gray-100 shadow-xl border border-gray-200">
-                    <img src="https://hirekognito.in/assets/himangshu.png" alt="Himangshu Paul" class="object-cover w-full h-full" loading="lazy">
-                </div>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
-            </div>
-
-            <div class="flex flex-col gap-10 gs-reveal">
-                <div>
-                    <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
-                        About Me
-                    </span>
-                    <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 mb-6 blur-text-scroll">
-                        Building Robust Systems
-                    </h2>
-                    <p class="text-base text-gray-600 leading-relaxed max-w-xl blur-text-scroll">
-                        I am a web developer focused on building fast, clean, and reliable applications. My focus is on creating logical structures and responsive digital interfaces. I aim for high-quality code and modern layouts to solve user problems and deliver seamless interaction.
-                    </p>
-                </div>
-
-                <div class="flex flex-col gap-5 p-6 bg-gray-50 border border-gray-100 rounded-2xl">
-                    <div class="flex items-center gap-6">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-24 shrink-0">Experience</span>
-                        <div class="flex flex-wrap gap-4 items-center">
-                            
-                            <div class="tooltip-trigger relative interactive-element">
-                                <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="block relative">
-                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
-                                        <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc" alt="Kognito" class="w-full h-full object-contain rounded-xl">
-                                    </div>
-                                    <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
-                                </a>
-                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
-                                    <div class="font-bold text-sm">Kognito</div>
-                                    <div class="text-xs text-gray-300 mt-1">Founder</div>
-                                    <div class="text-[10px] text-green-400 font-semibold mt-1 uppercase tracking-wider">Current Position</div>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                </div>
-                            </div>
-
-                            <div class="tooltip-trigger relative interactive-element">
-                                <a href="https://blueminch.com" target="_blank" rel="noopener noreferrer" class="block relative">
-                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
-                                        <img src="https://media.licdn.com/dms/image/v2/C560BAQG7HCJ5aPX0gg/company-logo_200_200/company-logo_200_200/0/1642504044619/your_replica_logo?e=1776902400&v=beta&t=0LtsSOhuw7u85OWz39gnp8HKyoyS0go8eUzBnq-EmME" alt="Blue Minch" class="w-full h-full object-contain rounded-xl">
-                                    </div>
-                                </a>
-                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
-                                    <div class="font-bold text-sm">Blue Minch</div>
-                                    <div class="text-xs text-gray-300 mt-1">Web Developer</div>
-                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                </div>
-                            </div>
-
-                            <div class="tooltip-trigger relative interactive-element">
-                                <a href="https://amazon.in" target="_blank" rel="noopener noreferrer" class="block relative">
-                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
-                                        <img src="https://media.licdn.com/dms/image/v2/D560BAQGDLy4STCnHbg/company-logo_200_200/B56ZnZxDipI0AI-/0/1760295142304/amazon_logo?e=1776902400&v=beta&t=Pkt-34tlkuFgo_d6O--s7BFOke10xwNIu23VHSfAC1Q" alt="Amazon" class="w-full h-full object-contain rounded-xl">
-                                    </div>
-                                </a>
-                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
-                                    <div class="font-bold text-sm">Amazon</div>
-                                    <div class="text-xs text-gray-300 mt-1">Affiliate Marketing</div>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="w-full h-px bg-gray-200"></div>
-
-                    <div class="flex items-center gap-6">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-24 shrink-0">Education</span>
-                        <div class="flex flex-wrap gap-4 items-center">
-                            
-                            <div class="tooltip-trigger relative interactive-element">
-                                <a href="https://inspiria.edu.in" target="_blank" rel="noopener noreferrer" class="block relative">
-                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
-                                        <img src="https://media.licdn.com/dms/image/v2/C4D0BAQE_vIeWPZUeDw/company-logo_100_100/company-logo_100_100/0/1631344769191?e=1776902400&v=beta&t=V2h4SDFu3m5DOi7eoVZTpvMfxXlypSqJ3ekcX8ZB2r4" alt="Inspiria Knowledge Campus" class="w-full h-full object-contain rounded-xl">
-                                    </div>
-                                </a>
-                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
-                                    <div class="font-bold text-sm">Inspiria Knowledge Campus</div>
-                                    <div class="text-xs text-gray-300 mt-1">Makaut, BCA 2022-25</div>
-                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                </div>
-                            </div>
-
-                            <div class="tooltip-trigger relative interactive-element">
-                                <div class="block relative">
-                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvxrDET6Y2KnzaUqfuipDu_oWOMtWiFW08w&s" alt="Trinity High School" class="w-full h-full object-contain rounded-xl">
-                                    </div>
-                                </div>
-                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
-                                    <div class="font-bold text-sm">Trinity High School</div>
-                                    <div class="text-xs text-gray-300 mt-1">12th, ISC</div>
-                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Banarhat</div>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                </div>
-                            </div>
-
-                            <div class="tooltip-trigger relative interactive-element">
-                                <div class="block relative">
-                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRi0iYeamsJN_Vt3ld4JcVVaAGsxAKHfWxpA&s" alt="New Light Academy" class="w-full h-full object-contain rounded-xl">
-                                    </div>
-                                </div>
-                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
-                                    <div class="font-bold text-sm">New Light Academy</div>
-                                    <div class="text-xs text-gray-300 mt-1">10th, CBSE</div>
-                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Sikkim</div>
-                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pt-2">
-                    <a href="/about" class="inline-flex items-center justify-center px-6 py-3 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors w-max interactive-element shadow-md hover:shadow-lg">
-                        More about me
-                    </a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SERVICES & CUSTOM 3D GLOBE SECTION -->
-    <section id="services" class="relative z-20 w-full py-24 px-6 md:px-12 lg:px-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="mb-16 gs-reveal text-center md:text-left">
-                <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Services</span>
-                <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">Global Solutions</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                
-                <!-- Custom Interactive 3D Globe Visualization -->
-                <div class="relative flex w-full h-[400px] md:h-[500px] items-center justify-center overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm gs-reveal interactive-element">
-                    
-                    <div id="three-globe-container" class="absolute inset-0 w-full h-full z-30"></div>
-                    
-                    <!-- HTML Tooltip for Globe Toggle -->
-                    <div id="globe-tooltip" class="absolute bg-gray-900 text-white p-3 rounded-xl border border-gray-700 shadow-xl z-50 flex items-center gap-3 pointer-events-none opacity-0 transition-opacity duration-200">
-                        <div class="flex flex-col text-left">
-                            <span class="text-sm font-bold block">Himangshu Paul</span>
-                            <span class="text-xs text-accent">Available globally</span>
-                        </div>
-                    </div>
-
-                    <div class="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.08),rgba(255,255,255,0))] z-20"></div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
-                            <i class="ph ph-code text-2xl text-accent"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-black tracking-tight">Website Development</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">Building fast, accessible, and responsive web platforms tailored for business growth.</p>
-                    </div>
-                    
-                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
-                            <i class="ph ph-device-mobile text-2xl text-accent"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-black tracking-tight">App Deployment</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">Publishing secure applications across app stores and managing server configurations.</p>
-                    </div>
-
-                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
-                            <i class="ph ph-trend-up text-2xl text-accent"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-black tracking-tight">Performance Marketing</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">Executing data-driven ad campaigns to maximize return on investment and user acquisition.</p>
-                    </div>
-
-                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
-                            <i class="ph ph-magnifying-glass text-2xl text-accent"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-black tracking-tight">SEO Strategy</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed">Optimizing digital footprints to increase organic reach, improve indexing, and drive traffic.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Work Section with Dual-Row Velocity Marquee -->
-    <section id="work" class="relative z-20 w-full py-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
-            <div class="mb-12 md:flex justify-between items-end gap-8 pb-8 border-b border-gray-200 gs-reveal">
-                <div class="max-w-2xl flex flex-col gap-4">
-                    <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
-                        Recent Projects
-                    </span>
-                    <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight blur-text-scroll">
-                        Selected Work
-                    </h2>
-                    <p class="max-w-md text-sm text-gray-600 md:text-base blur-text-scroll leading-relaxed">
-                        A look at recent projects focusing on clean code, modular architecture, and precise visual execution.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container">
-            <div class="w-full overflow-hidden py-4">
-                <div id="marquee-row-a" class="flex w-max"></div>
-            </div>
-            <div class="w-full overflow-hidden py-4 mt-2">
-                <div id="marquee-row-b" class="flex w-max"></div>
-            </div>
-            <div class="pointer-events-none absolute inset-y-0 left-0 w-[15%] lg:w-[20%] bg-gradient-to-r from-white to-transparent z-10"></div>
-            <div class="pointer-events-none absolute inset-y-0 right-0 w-[15%] lg:w-[20%] bg-gradient-to-l from-white to-transparent z-10"></div>
-        </div>
-    </section>
-
-    <!-- TESTIMONIALS SECTION with Dual-Row Velocity Marquee -->
-    <section id="testimonials" class="relative z-20 w-full py-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
-            <div class="mb-12 gs-reveal text-center md:text-left">
-                <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Client Feedback</span>
-                <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">What People Say</h2>
-            </div>
-        </div>
-
-        <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container-test">
-            <div class="w-full overflow-hidden py-4">
-                <div id="test-row-a" class="flex w-max"></div>
-            </div>
-            <div class="w-full overflow-hidden py-4 mt-2">
-                <div id="test-row-b" class="flex w-max"></div>
-            </div>
-            <div class="pointer-events-none absolute inset-y-0 left-0 w-[15%] lg:w-[20%] bg-gradient-to-r from-white to-transparent z-10"></div>
-            <div class="pointer-events-none absolute inset-y-0 right-0 w-[15%] lg:w-[20%] bg-gradient-to-l from-white to-transparent z-10"></div>
-        </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="relative z-20 w-full py-24 px-6 md:px-12 lg:px-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16">
-            
-            <div class="flex flex-col gap-8 gs-reveal">
-                <div>
-                    <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Let's Talk</span>
-                    <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 mb-6 blur-text-scroll">Get in Touch</h2>
-                    <p class="text-base text-gray-600 leading-relaxed max-w-md blur-text-scroll">
-                        Ready to start your next project? Reach out to discuss how we can work together to build reliable digital solutions.
-                    </p>
-                </div>
-                
-                <div class="flex flex-col gap-6 mt-4">
-                    <a href="mailto:himangshu.inbox@gmail.com" class="flex items-center gap-4 group w-max interactive-element">
-                        <div class="w-12 h-12 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
-                            <i class="ph ph-envelope-simple text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Email</p>
-                            <p class="text-black font-medium">himangshu.inbox@gmail.com</p>
-                        </div>
-                    </a>
-                    
-                    <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 group w-max interactive-element">
-                        <div class="w-12 h-12 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white group-hover:border-green-500 transition-colors duration-300">
-                            <i class="ph ph-whatsapp-logo text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">WhatsApp</p>
-                            <p class="text-black font-medium">+91 9564604956</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-            <div class="gs-reveal">
-                <form id="whatsapp-form" class="flex flex-col gap-5 bg-gray-50 p-8 rounded-3xl border border-gray-200 shadow-sm">
-                    <div class="flex flex-col gap-2">
-                        <label for="wa-name" class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-1">Your Name</label>
-                        <input type="text" id="wa-name" required placeholder="John Doe" class="input-glass p-4 rounded-xl text-black transition-all">
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label for="wa-message" class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-1">Message</label>
-                        <textarea id="wa-message" required placeholder="Tell me about your project..." rows="4" class="input-glass p-4 rounded-xl text-black transition-all resize-none"></textarea>
-                    </div>
-                    <button type="submit" class="mt-4 bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 interactive-element">
-                        Send via WhatsApp <i class="ph ph-paper-plane-tilt"></i>
-                    </button>
-                </form>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- White Footer -->
-    <footer class="w-full py-16 px-6 relative z-20 gs-reveal bg-white">
-        <div class="max-w-7xl mx-auto flex flex-col gap-12">
-            
-            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-                <div class="flex items-center gap-4">
-                    <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="GitHub">
-                        <i class="ph ph-github-logo text-lg"></i>
-                    </a>
-                    <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="Instagram">
-                        <i class="ph ph-instagram-logo text-lg"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="LinkedIn">
-                        <i class="ph ph-linkedin-logo text-lg"></i>
-                    </a>
-                </div>
-                
-                <p class="text-gray-500 text-sm font-medium">
-                    © <span id="year"></span> Himangshu Paul. All rights reserved.
-                </p>
-            </div>
-
-            <!-- Global Payment Partners (Stripe Removed) -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-gray-200">
-                <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Global Payment Options</span>
-                <div class="flex flex-wrap items-center justify-center gap-3">
-                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" class="h-3 w-3 opacity-60"> PayPal</span>
-                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise" class="h-3 w-3 opacity-60"> Wise</span>
-                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay" class="h-3 w-3 opacity-60"> Razorpay</span>
-                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><i class="ph-fill ph-currency-inr text-gray-400"></i> UPI</span>
-                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa" class="h-3 w-3 opacity-60"> Visa</span>
-                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard" class="h-3 w-3 opacity-60"> Mastercard</span>
-                </div>
-            </div>
-
-        </div>
-    </footer>
+    </main>
 
     <!-- Custom Three.js 3D Globe Implementation -->
     <script>
         const initThreeGlobe = () => {
             const container = document.getElementById('three-globe-container');
             const tooltip = document.getElementById('globe-tooltip');
+            const dpMarker = document.getElementById('globe-dp-marker');
             if (!container) return;
 
             const scene = new THREE.Scene();
@@ -954,7 +1073,7 @@
             const indiaLatLon = { lat: 20.5937, lon: 78.9629 };
             const indiaPos = getCoordinates(indiaLatLon.lat, indiaLatLon.lon, R + 0.05);
 
-            // === Custom 3D Map Pointer Toggle with DP ===
+            // === Custom 3D Map Pointer Toggle ===
             const pinAnchor = new THREE.Group();
             pinAnchor.position.copy(indiaPos);
             const normal = indiaPos.clone().normalize();
@@ -968,22 +1087,12 @@
             pinCone.rotation.x = Math.PI; 
             pinAnchor.add(pinCone);
 
-            // DP Head (faces camera dynamically in render loop)
-            const dpContainer = new THREE.Group();
-            dpContainer.position.y = 0.7; // Top of the stem
-            
-            const dpGeo = new THREE.CircleGeometry(0.35, 64);
-            const dpTexture = textureLoader.load('https://himangshu.site/asstets/himangshudp.webp');
-            const dpMatImg = new THREE.MeshBasicMaterial({ map: dpTexture, side: THREE.DoubleSide });
-            const dpMesh = new THREE.Mesh(dpGeo, dpMatImg);
-            
-            const ringGeo = new THREE.RingGeometry(0.35, 0.42, 64);
-            const ringMat = new THREE.MeshBasicMaterial({ color: 0xff6b00, side: THREE.DoubleSide });
-            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
-
-            dpContainer.add(dpMesh);
-            dpContainer.add(ringMesh);
-            pinAnchor.add(dpContainer);
+            // Invisible Hit Mesh for precise raycasting of the HTML marker
+            const hitGeo = new THREE.SphereGeometry(0.5, 16, 16);
+            const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+            const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+            hitMesh.position.y = 0.7; // Base height of where the marker appears
+            pinAnchor.add(hitMesh);
             
             globeGroup.add(pinAnchor);
 
@@ -1063,30 +1172,42 @@
             });
 
             container.addEventListener('pointermove', (e) => {
-                // Raycast for DP Hover Tooltip
+                // Raycast for Hover Tooltip against the invisible hitMesh
                 const rect = container.getBoundingClientRect();
                 mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
                 mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
                 
                 raycaster.setFromCamera(mouse, camera);
-                const intersects = raycaster.intersectObjects([dpMesh, ringMesh, pinCone]);
+                const intersects = raycaster.intersectObjects([hitMesh, pinCone]);
 
                 if (intersects.length > 0) {
                     container.classList.add('pointer');
                     if (!isHovered) {
                         isHovered = true;
-                        gsap.to(pinAnchor.scale, { x: 1.3, y: 1.3, z: 1.3, duration: 0.3, ease: "back.out(2)" });
+                        gsap.to(pinAnchor.scale, { x: 1.15, y: 1.15, z: 1.15, duration: 0.3, ease: "back.out(2)" });
                         tooltip.style.opacity = '1';
+                        if (dpMarker) {
+                            dpMarker.style.transform = 'translate(-50%, -50%) scale(1.15)';
+                            dpMarker.style.boxShadow = '0 0 25px rgba(255, 107, 0, 0.7)';
+                            dpMarker.style.borderColor = '#ffffff';
+                        }
                     }
-                    // Position tooltip relative to mouse
-                    tooltip.style.left = `${e.clientX - rect.left}px`;
-                    tooltip.style.top = `${e.clientY - rect.top - 20}px`;
+                    // Position tooltip relative to mouse, ensuring it stays within bounds
+                    const tooltipX = Math.min(e.clientX - rect.left, rect.width - 60);
+                    const tooltipY = Math.max(e.clientY - rect.top - 20, 40);
+                    tooltip.style.left = `${tooltipX}px`;
+                    tooltip.style.top = `${tooltipY}px`;
                 } else {
                     container.classList.remove('pointer');
                     if (isHovered) {
                         isHovered = false;
                         gsap.to(pinAnchor.scale, { x: 1, y: 1, z: 1, duration: 0.3, ease: "power2.out" });
                         tooltip.style.opacity = '0';
+                        if (dpMarker) {
+                            dpMarker.style.transform = 'translate(-50%, -50%) scale(1)';
+                            dpMarker.style.boxShadow = '0 0 15px rgba(255, 107, 0, 0.3)';
+                            dpMarker.style.borderColor = '#ff6b00';
+                        }
                     }
                 }
 
@@ -1138,8 +1259,34 @@
                 globeGroup.rotation.x += (targetRotationX - globeGroup.rotation.x) * 0.05;
                 globeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.15; 
 
-                // Ensure DP always faces the camera exactly
-                dpContainer.lookAt(camera.position);
+                // Sync Flawless HTML DP Marker
+                if (dpMarker) {
+                    const pinWorldPos = new THREE.Vector3();
+                    hitMesh.getWorldPosition(pinWorldPos);
+
+                    const vector = pinWorldPos.clone().project(camera);
+                    
+                    // Check if the pin is on the front side of the globe
+                    const normalMatrix = new THREE.Matrix3().getNormalMatrix(globeGroup.matrixWorld);
+                    const worldNormal = normal.clone().applyMatrix3(normalMatrix).normalize();
+                    const cameraDir = new THREE.Vector3().subVectors(camera.position, pinWorldPos).normalize();
+                    
+                    // Dot product > 0.15 ensures it hides smoothly as it approaches the horizon edge
+                    if (worldNormal.dot(cameraDir) > 0.15) { 
+                        const x = (vector.x * 0.5 + 0.5) * container.clientWidth;
+                        const y = (vector.y * -0.5 + 0.5) * container.clientHeight;
+                        dpMarker.style.left = `${x}px`;
+                        dpMarker.style.top = `${y}px`;
+                        
+                        // Show the marker if not already fading in
+                        if (dpMarker.style.opacity === '0') {
+                            dpMarker.style.opacity = '1';
+                        }
+                    } else {
+                        // Hide it smoothly when it spins behind
+                        dpMarker.style.opacity = '0';
+                    }
+                }
 
                 const time = Date.now() * 0.0005;
                 particles.forEach(p => {
@@ -1170,6 +1317,7 @@
 
     <!-- Main Scripts -->
     <script>
+        // Set dynamic year
         document.getElementById('year').textContent = new Date().getFullYear();
 
         // --- JSON Data for Projects ---
@@ -1178,13 +1326,13 @@
                 title: "Financial Dashboard",
                 description: "A secure application for managing large sets of financial data. Features real-time updates and modular architecture.",
                 image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
-                link: "https://example.com/project1" 
+                link: "https://github.com/devhimangshu" 
             },
             {
                 title: "Headless Retail",
                 description: "A modern retail platform built for speed and high conversion rates. Includes a custom checkout flow.",
                 image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
-                link: "#" 
+                link: "" 
             },
             {
                 title: "Data Interface",
@@ -1196,13 +1344,13 @@
                 title: "Cloud Infrastructure",
                 description: "A scalable cloud architecture setup designed for high availability and zero downtime deployment.",
                 image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
-                link: "https://example.com/project4" 
+                link: "https://github.com/devhimangshu" 
             },
             {
                 title: "Creative Agency",
                 description: "A visually striking portfolio for a design agency. Built with advanced WebGL rendering and smooth routing.",
                 image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
-                link: "#" 
+                link: "" 
             },
             {
                 title: "Health Tech App",
@@ -1225,23 +1373,23 @@
         function createCardHTML(project) {
             const isCompleteUrl = project.link && project.link.trim() !== '' && project.link.startsWith('http');
             const buttonHTML = isCompleteUrl ? `
-                <div class="p-6 pt-0 mt-auto">
-                    <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-black text-white hover:bg-gray-800 h-10 px-4 py-2 transition-colors w-max interactive-element">
-                        View Project
+                <div class="p-5 md:p-6 pt-0 mt-auto">
+                    <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 rounded-xl text-xs md:text-sm font-medium bg-black text-white hover:bg-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] h-9 md:h-10 px-4 md:px-5 py-2 transition-all duration-300 w-max interactive-element">
+                        View Project <i class="ph ph-arrow-up-right text-sm md:text-base"></i>
                     </a>
                 </div>
             ` : '';
 
             return `
-                <div class="project-card flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 h-[420px] w-[320px] md:w-[400px] shrink-0 interactive-element">
-                    <div class="p-6 pb-4">
-                        <div class="relative h-44 overflow-hidden rounded-lg bg-gray-100">
-                            <img src="${project.image}" alt="${project.title} preview" class="object-cover w-full h-full transition-transform duration-500 hover:scale-105" loading="lazy" />
+                <div class="project-card flex flex-col bg-white/80 backdrop-blur-sm border border-gray-100 rounded-[1.5rem] shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/30 transition-all duration-300 h-[380px] md:h-[420px] w-[280px] md:w-[400px] shrink-0 interactive-element overflow-hidden">
+                    <div class="p-5 md:p-6 pb-3 md:pb-4">
+                        <div class="relative h-40 md:h-44 overflow-hidden rounded-[1rem] bg-gray-100">
+                            <img src="${project.image}" alt="${project.title} preview" class="object-cover w-full h-full transition-transform duration-700 hover:scale-105" loading="lazy" />
                         </div>
                     </div>
-                    <div class="p-6 pt-0 flex-1 flex flex-col">
-                        <h3 class="text-xl font-semibold leading-none tracking-tight text-gray-900 mb-2">${project.title}</h3>
-                        <p class="text-sm text-gray-500 leading-relaxed">
+                    <div class="p-5 md:p-6 pt-0 flex-1 flex flex-col">
+                        <h3 class="text-lg md:text-xl font-semibold leading-none tracking-tight text-gray-900 mb-2">${project.title}</h3>
+                        <p class="text-xs md:text-sm text-gray-500 leading-relaxed">
                             ${project.description}
                         </p>
                     </div>
@@ -1252,15 +1400,15 @@
 
         function createReviewHTML(review) {
             return `
-                <figure class="relative h-full w-64 shrink-0 cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-gray-50/50 p-4 hover:bg-gray-100/50 transition-colors interactive-element mr-6">
-                    <div class="flex flex-row items-center gap-2">
-                        <img class="rounded-full" width="32" height="32" alt="" src="${review.img}" loading="lazy" />
+                <figure class="relative h-full w-[260px] md:w-72 shrink-0 cursor-pointer overflow-hidden rounded-[1.5rem] border border-gray-100 bg-white/80 backdrop-blur-sm shadow-sm p-5 md:p-6 hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/30 hover:-translate-y-1 transition-all duration-300 interactive-element mr-4 md:mr-6">
+                    <div class="flex flex-row items-center gap-3">
+                        <img class="rounded-full border border-gray-200" width="36" height="36" alt="${review.name} avatar" src="${review.img}" loading="lazy" />
                         <div class="flex flex-col">
-                            <figcaption class="text-sm font-medium text-gray-900">${review.name}</figcaption>
-                            <p class="text-xs font-medium text-gray-500">${review.username}</p>
+                            <figcaption class="text-xs md:text-sm font-bold text-gray-900">${review.name}</figcaption>
+                            <p class="text-[10px] md:text-xs font-medium text-accent">${review.username}</p>
                         </div>
                     </div>
-                    <blockquote class="mt-2 text-sm text-gray-700 leading-relaxed">${review.body}</blockquote>
+                    <blockquote class="mt-3 md:mt-4 text-xs md:text-sm text-gray-600 leading-relaxed italic">"${review.body}"</blockquote>
                 </figure>
             `;
         }
@@ -1276,8 +1424,8 @@
             const track1Items = row1Data.map(createCardHTML).join('');
             const track2Items = row2Data.map(createCardHTML).join('');
 
-            rowAContainer.innerHTML = `<div class="flex gap-6 pr-6 shrink-0">${track1Items}</div><div class="flex gap-6 pr-6 shrink-0">${track1Items}</div>`;
-            rowBContainer.innerHTML = `<div class="flex gap-6 pr-6 shrink-0">${track2Items}</div><div class="flex gap-6 pr-6 shrink-0">${track2Items}</div>`;
+            rowAContainer.innerHTML = `<div class="flex gap-4 md:gap-6 pr-4 md:pr-6 shrink-0">${track1Items}</div><div class="flex gap-4 md:gap-6 pr-4 md:pr-6 shrink-0">${track1Items}</div>`;
+            rowBContainer.innerHTML = `<div class="flex gap-4 md:gap-6 pr-4 md:pr-6 shrink-0">${track2Items}</div><div class="flex gap-4 md:gap-6 pr-4 md:pr-6 shrink-0">${track2Items}</div>`;
 
             // Reviews
             const testAContainer = document.getElementById('test-row-a');
@@ -1291,6 +1439,18 @@
 
             testAContainer.innerHTML = `<div class="flex shrink-0">${revTrack1Items}</div><div class="flex shrink-0">${revTrack1Items}</div>`;
             testBContainer.innerHTML = `<div class="flex shrink-0">${revTrack2Items}</div><div class="flex shrink-0">${revTrack2Items}</div>`;
+        }
+
+        // WhatsApp Form Submission Handler
+        const whatsappForm = document.getElementById('whatsapp-form');
+        if (whatsappForm) {
+            whatsappForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('wa-name').value;
+                const message = document.getElementById('wa-message').value;
+                const encodedMessage = encodeURIComponent(`Hi Himangshu, I am ${name}.\n\n${message}`);
+                window.open(`https://wa.me/919564604956?text=${encodedMessage}`, '_blank');
+            });
         }
 
         // Register GSAP ScrollTrigger
@@ -1333,7 +1493,7 @@
 
         function prepareTextBlur() {
             document.querySelectorAll('.blur-text, .blur-text-scroll').forEach(el => {
-                const text = el.textContent.trim();
+                const text = el.textContent.trim().replace(/\s+/g, ' ');
                 el.textContent = '';
                 const fragment = document.createDocumentFragment();
                 
@@ -1477,7 +1637,12 @@
             drawImage(state.currentFrame);
         }
 
-        window.addEventListener('resize', resizeHeroCanvas);
+        // Debounce resize handling
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(resizeHeroCanvas, 150);
+        });
 
         function mapRange(value, inMin, inMax, outMin, outMax) {
             value = Math.max(inMin, Math.min(value, inMax)); 
