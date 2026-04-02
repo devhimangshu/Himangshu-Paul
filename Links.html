@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#050505]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
+    <title>Links | Himangshu Paul</title>
+    <meta name="description" content="Official links and social profiles of Himangshu Paul. Connect with me, view my portfolio, or visit my agency.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="https://himangshu.site/asstets/himangshudp.webp">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: '#ff6b00',
+                        bgBase: '#050505'
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap');
+
+        body {
+            color: #ffffff; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #050505;
+        }
+        
+        @media (pointer: fine) {
+            body { cursor: none; }
+            a, button, .interactive-element { cursor: none; }
+        }
+
+        ::selection {
+            background-color: rgba(255, 107, 0, 0.4);
+            color: #ffffff;
+        }
+
+        ::-webkit-scrollbar { display: none; }
+
+        /* Premium Dark Bento Box - Hardware Accelerated */
+        .bento-card {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            transform: translateZ(0); 
+        }
+        
+        /* Base subtle inner glow */
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.05), transparent);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        /* Hover dynamics handled by Tailwind group-hover classes inline for precision */
+        .bento-card:hover {
+            transform: translateZ(0) translateY(-4px) scale(1.01);
+        }
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Inner content layering fix */
+        .bento-card > * {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 12px; height: 12px; border-radius: 50%; background-color: #ff6b00;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, border 0.2s;
+            will-change: transform, width, height;
+        }
+        .custom-cursor.hovering { width: 50px; height: 50px; background-color: rgba(255, 107, 0, 0.15); border: 1px solid #ff6b00; backdrop-filter: blur(2px); }
+
+        .bg-grid-pattern-dark {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="font-sans relative bg-[#050505] bg-grid-pattern-dark min-h-screen flex flex-col items-center py-8 px-4">
+
+    <div id="cursor" class="custom-cursor hidden md:block"></div>
+
+    <!-- Top Controls -->
+    <div class="w-full max-w-2xl mx-auto flex justify-between items-center mb-8 relative z-30">
+        <a href="/" class="interactive-element flex items-center gap-3 bg-[#111]/90 backdrop-blur-xl border border-white/10 p-1.5 pr-4 rounded-full hover:bg-white/10 hover:border-white/20 transition-all shadow-lg group gs-header" aria-label="Back to Home">
+            <i class="ph ph-arrow-left text-white text-xl ml-2 group-hover:-translate-x-1 transition-transform"></i>
+            <div class="w-9 h-9 rounded-full bg-black overflow-hidden border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform duration-300">
+                <img src="https://himangshu.site/asstets/himangshudp.webp" alt="Himangshu Paul" class="w-full h-full object-cover">
+            </div>
+        </a>
+
+        <button id="share-btn" class="interactive-element flex items-center justify-center w-12 h-12 rounded-full bg-[#111]/90 backdrop-blur-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all shadow-lg text-gray-400 hover:text-white group gs-header" aria-label="Share">
+            <i class="ph ph-share-network text-xl group-hover:scale-110 transition-transform"></i>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto flex flex-col items-center relative z-20">
+        
+        <!-- Subtle Ambient Glows -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-[400px] bg-accent/5 blur-[120px] pointer-events-none rounded-full z-0"></div>
+
+        <!-- Profile Section -->
+        <div class="flex flex-col items-center text-center mb-10 gs-header relative z-10 w-full">
+            <div class="relative w-28 h-28 md:w-32 md:h-32 mb-5 group">
+                <!-- Animated pulse behind DP -->
+                <div class="absolute inset-0 bg-accent/40 blur-xl rounded-full animate-pulse-slow"></div>
+                <div class="relative w-full h-full rounded-full border-4 border-[#050505] overflow-hidden shadow-[0_0_30px_rgba(255,107,0,0.15)] bg-[#111]">
+                    <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+            </div>
+            <h1 class="text-2xl md:text-4xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
+                Himangshu Paul <i class="ph-fill ph-seal-check text-blue-500 text-xl md:text-2xl"></i>
+            </h1>
+            <p class="text-sm md:text-base text-gray-400 font-medium mt-2">Web Developer & Founder of Kognito</p>
+        </div>
+
+        <!-- Creative Bento Grid Dashboard -->
+        <div class="w-full grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10" id="links-container">
+            
+            <!-- Link 1: Portfolio (Wide Hero Card) -->
+            <div class="col-span-2 md:col-span-2 w-full gs-link">
+                <a href="/" class="bento-card w-full h-full p-6 flex flex-col justify-between group interactive-element min-h-[160px] hover:border-accent hover:shadow-[0_10px_30px_-10px_rgba(255,107,0,0.2)]">
+                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop')] opacity-10 bg-cover bg-center transition-transform duration-700 group-hover:scale-110 z-0"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-0"></div>
+                    
+                    <div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white mb-6 shadow-lg z-10">
+                        <i class="ph ph-globe text-2xl"></i>
+                    </div>
+                    
+                    <div class="flex justify-between items-end w-full z-10">
+                        <div class="flex flex-col text-left">
+                            <span class="text-xl font-bold text-white leading-tight">Portfolio</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">View My Work</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-accent group-hover:border-accent transition-colors">
+                            <i class="ph ph-arrow-up-right text-lg"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Link 2: Kognito (Wide Hero Card) -->
+            <div class="col-span-2 md:col-span-2 w-full gs-link">
+                <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="bento-card w-full h-full p-6 flex flex-col justify-between group interactive-element min-h-[160px] hover:border-white/40 hover:shadow-[0_10px_30px_-10px_rgba(255,255,255,0.1)]">
+                    <div class="absolute right-0 bottom-0 w-32 h-32 bg-white/5 blur-2xl rounded-full pointer-events-none group-hover:bg-white/10 transition-colors z-0"></div>
+                    
+                    <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center overflow-hidden p-1.5 shadow-lg mb-6 z-10">
+                        <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc" alt="Kognito" class="w-full h-full object-contain">
+                    </div>
+                    
+                    <div class="flex justify-between items-end w-full z-10">
+                        <div class="flex flex-col text-left">
+                            <span class="text-xl font-bold text-white leading-tight">Kognito</span>
+                            <span class="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest mt-1">My Agency</span>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black group-hover:border-white transition-colors">
+                            <i class="ph ph-arrow-up-right text-lg"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Social Square: WhatsApp -->
+            <div class="col-span-1 w-full gs-link">
+                <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer" class="bento-card w-full aspect-square p-4 flex flex-col items-center justify-center group interactive-element hover:border-[#25D366] hover:shadow-[0_0_20px_rgba(37,211,102,0.15)] text-center">
+                    <div class="w-14 h-14 rounded-full bg-[#1a1a1a] flex items-center justify-center text-gray-400 group-hover:bg-[#25D366] group-hover:text-white transition-all duration-300 mb-3 shadow-md group-hover:scale-110">
+                        <i class="ph ph-whatsapp-logo text-3xl"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white">WhatsApp</span>
+                </a>
+            </div>
+
+            <!-- Social Square: LinkedIn -->
+            <div class="col-span-1 w-full gs-link">
+                <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="bento-card w-full aspect-square p-4 flex flex-col items-center justify-center group interactive-element hover:border-[#0077b5] hover:shadow-[0_0_20px_rgba(0,119,181,0.15)] text-center">
+                    <div class="w-14 h-14 rounded-full bg-[#1a1a1a] flex items-center justify-center text-gray-400 group-hover:bg-[#0077b5] group-hover:text-white transition-all duration-300 mb-3 shadow-md group-hover:scale-110">
+                        <i class="ph ph-linkedin-logo text-3xl"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white">LinkedIn</span>
+                </a>
+            </div>
+
+            <!-- Social Square: GitHub -->
+            <div class="col-span-1 w-full gs-link">
+                <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="bento-card w-full aspect-square p-4 flex flex-col items-center justify-center group interactive-element hover:border-white hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] text-center">
+                    <div class="w-14 h-14 rounded-full bg-[#1a1a1a] flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:text-black transition-all duration-300 mb-3 shadow-md group-hover:scale-110">
+                        <i class="ph ph-github-logo text-3xl"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white">GitHub</span>
+                </a>
+            </div>
+
+            <!-- Social Square: Instagram -->
+            <div class="col-span-1 w-full gs-link">
+                <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="bento-card w-full aspect-square p-4 flex flex-col items-center justify-center group interactive-element hover:border-[#E1306C] hover:shadow-[0_0_20px_rgba(225,48,108,0.15)] text-center">
+                    <div class="w-14 h-14 rounded-full bg-[#1a1a1a] flex items-center justify-center text-gray-400 group-hover:bg-gradient-to-tr group-hover:from-[#F56040] group-hover:to-[#833AB4] group-hover:text-white transition-all duration-300 mb-3 shadow-md group-hover:scale-110">
+                        <i class="ph ph-instagram-logo text-3xl"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white">Instagram</span>
+                </a>
+            </div>
+
+            <!-- Link 7: Email (Full Width Banner) -->
+            <div class="col-span-2 md:col-span-4 w-full gs-link">
+                <a href="mailto:himangshu.inbox@gmail.com" class="bento-card w-full p-4 md:p-6 flex items-center justify-between group interactive-element hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-2xl bg-[#1a1a1a] flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:text-black transition-colors shadow-inner">
+                            <i class="ph ph-envelope-simple text-2xl md:text-3xl"></i>
+                        </div>
+                        <div class="flex flex-col text-left">
+                            <span class="text-sm md:text-lg font-bold text-white leading-tight">himangshu.inbox@gmail.com</span>
+                            <span class="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest mt-1">Business Inquiries</span>
+                        </div>
+                    </div>
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/10 flex justify-center items-center text-gray-500 group-hover:bg-white group-hover:text-black group-hover:border-white transition-all">
+                        <i class="ph ph-arrow-right text-lg md:text-xl"></i>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 mb-8 text-center gs-header relative z-10 w-full">
+            <p class="text-[10px] md:text-xs text-gray-600 font-bold tracking-widest uppercase">
+                © <span id="year"></span> Himangshu Paul
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- Custom Notifications Toast -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-[#111] border border-white/10 text-white px-6 py-3 rounded-full text-sm font-medium shadow-2xl opacity-0 pointer-events-none translate-y-4 transition-all duration-300 z-[100] flex items-center gap-2">
+        <i class="ph-fill ph-check-circle text-green-500 text-lg"></i> <span id="toast-message">Link Copied!</span>
+    </div>
+
+    <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Optimized Custom Cursor Logic
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursor = document.getElementById('cursor');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = window.innerWidth / 2;
+            let cursorY = window.innerHeight / 2;
+
+            const lerp = (start, end, factor) => start + (end - start) * factor;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function renderCursor() {
+                cursorX = lerp(cursorX, mouseX, 0.3);
+                cursorY = lerp(cursorY, mouseY, 0.3);
+                cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
+                requestAnimationFrame(renderCursor);
+            }
+            requestAnimationFrame(renderCursor);
+
+            document.body.addEventListener('mouseover', (e) => {
+                if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                    cursor.classList.add('hovering');
+                }
+            }, true);
+            
+            document.body.addEventListener('mouseout', (e) => {
+                if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                    cursor.classList.remove('hovering');
+                }
+            }, true);
+        }
+
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, 0)';
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, 16px)';
+            }, 3000);
+        }
+
+        // Share Button Logic
+        const shareBtn = document.getElementById('share-btn');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', async () => {
+                const shareData = {
+                    title: 'Himangshu Paul | Links',
+                    text: 'Connect with Himangshu Paul or view his portfolio.',
+                    url: window.location.href
+                };
+
+                if (navigator.share) {
+                    try {
+                        await navigator.share(shareData);
+                    } catch (err) {
+                        console.log('Share canceled or failed', err);
+                    }
+                } else {
+                    try {
+                        await navigator.clipboard.writeText(window.location.href);
+                        showToast('Link copied to clipboard!');
+                    } catch (err) {
+                        const textArea = document.createElement("textarea");
+                        textArea.value = window.location.href;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        try {
+                            document.execCommand('copy');
+                            showToast('Link copied to clipboard!');
+                        } catch (err) {
+                            showToast('Failed to copy link.');
+                        }
+                        document.body.removeChild(textArea);
+                    }
+                }
+            });
+        }
+
+        // Initialize GSAP Entrance Animations (Smooth staggering)
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.from('.gs-header', {
+                y: 20, 
+                opacity: 0, 
+                duration: 1, 
+                ease: "power3.out",
+                stagger: 0.1
+            });
+
+            gsap.from('.gs-link', {
+                y: 30, 
+                autoAlpha: 0, 
+                duration: 0.8, 
+                ease: "power3.out",
+                stagger: 0.1,
+                delay: 0.2
+            });
+        });
+    </script>
+</body>
+</html>
