@@ -21,6 +21,9 @@
     <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Three.js for Custom Interactive Globe -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <!-- Custom Tailwind Configuration -->
     <script>
@@ -43,8 +46,7 @@
     </script>
 
     <style>
-        /* Exact Font Style requested */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap');
 
         :root {
             --lg-bg-color: rgba(255, 255, 255, 0.03);
@@ -63,7 +65,11 @@
         
         @media (min-width: 768px) {
             body { cursor: none; }
-            a, button, .interactive-element, .glass-container { cursor: none; }
+            a, button, .interactive-element, .glass-container, .mac-dock-item, .project-card, .tooltip-trigger, figure { cursor: none; }
+            /* Globe interactive cursors */
+            #three-globe-container { cursor: grab; }
+            #three-globe-container.grabbing { cursor: grabbing !important; }
+            #three-globe-container.pointer { cursor: pointer !important; }
         }
 
         ::selection {
@@ -120,7 +126,7 @@
 
         #main-nav.nav-scrolled {
             --nav-text: #050505;
-            --nav-glass-bg: rgba(255, 255, 255, 0.85); /* Highly visible frosted white */
+            --nav-glass-bg: rgba(255, 255, 255, 0.85); 
             --nav-highlight: rgba(255, 255, 255, 1);
             --nav-shadow: rgba(0, 0, 0, 0.08);
         }
@@ -132,12 +138,9 @@
             transition: background-color 0.4s ease;
         }
 
-        .nav-brand, .nav-link {
+        .nav-link {
             color: var(--nav-text);
             transition: color 0.4s ease;
-        }
-        
-        .nav-link {
             opacity: 0.8;
         }
 
@@ -186,6 +189,148 @@
             height: 100%;
         }
 
+        /* ========== 3D MAC STYLE DOCK ========== */
+        .mac-dock {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 20px;
+            height: 72px; 
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 
+                        inset 0 1px 1px rgba(255,255,255,0.1),
+                        inset 0 -1px 2px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 50;
+        }
+
+        .mac-dock-item {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 12px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1), inset 0 -2px 5px rgba(0,0,0,0.03);
+            z-index: 1;
+            transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), margin 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+            transform-origin: bottom center;
+            flex-shrink: 0;
+        }
+
+        .mac-dock-item img {
+            width: 60%;
+            height: 60%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            position: relative;
+            z-index: 2;
+            transition: filter 0.2s ease;
+        }
+
+        .mac-dock-label {
+            position: absolute;
+            top: -45px;
+            background: rgba(10, 10, 10, 0.85);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            transform: translateY(10px) scale(0.9);
+            white-space: nowrap;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            z-index: 20;
+        }
+
+        @media (min-width: 769px) {
+            .mac-dock-item:hover {
+                transform: scale(1.6) translateY(-8px);
+                margin: 0 16px 12px 16px;
+                z-index: 10;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2), inset 0 -2px 5px rgba(0,0,0,0.03);
+            }
+            .mac-dock-item:hover img {
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            }
+            .mac-dock-item:has(+ .mac-dock-item:hover),
+            .mac-dock-item:hover + .mac-dock-item {
+                transform: scale(1.3) translateY(-4px);
+                margin: 0 8px 12px 8px;
+                z-index: 5;
+            }
+            .mac-dock-item:hover .mac-dock-label {
+                opacity: 1;
+                transform: translateY(0) scale(0.625); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mac-dock { 
+                height: 60px; 
+                padding: 0 12px; 
+                gap: 8px; 
+                max-width: 90vw; 
+                overflow-x: auto; 
+                justify-content: flex-start;
+                -ms-overflow-style: none; 
+                scrollbar-width: none; 
+            }
+            .mac-dock::-webkit-scrollbar { display: none; }
+            .mac-dock-item { 
+                width: 36px; 
+                height: 36px; 
+                border-radius: 10px; 
+                margin-bottom: 10px; 
+            }
+            .mac-dock-item:hover { 
+                transform: scale(1.1) translateY(-4px); 
+                margin: 0 4px 10px 4px; 
+            }
+            .mac-dock-label { display: none; }
+        }
+
+        /* Tooltip Styles */
+        .tooltip-card {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 50;
+        }
+        .tooltip-trigger:hover .tooltip-card {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        /* Globe 3D Toggle Tooltip */
+        #globe-tooltip {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.1s ease;
+            transform: translate(-50%, -100%);
+            z-index: 50;
+        }
+
         /* Custom Cursor */
         .custom-cursor {
             position: fixed;
@@ -227,6 +372,17 @@
             display: inline-block;
             width: 0.25em; 
         }
+
+        .input-glass {
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        .input-glass:focus {
+            background: rgba(255,255,255,1);
+            border-color: #ff6b00;
+            outline: none;
+        }
     </style>
 </head>
 <body class="no-scroll font-sans relative">
@@ -236,7 +392,9 @@
     <!-- Dynamic Navbar -->
     <nav id="main-nav" class="fixed top-0 w-full z-[100] px-6 py-6 pointer-events-none transition-colors duration-500">
         <div class="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
-            <a href="/" class="nav-brand font-bold text-lg tracking-widest interactive-element" aria-label="Home">HP.</a>
+            <a href="/" class="interactive-element shrink-0" aria-label="Home">
+                <img src="https://himangshu.site/asstets/himangshudp.webp" alt="Himangshu Paul" class="w-11 h-11 rounded-full object-cover border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-transform duration-300 hover:scale-105 bg-black">
+            </a>
             
             <div class="glass-container glass-container--rounded glass-container--nav px-4 py-1.5">
                 <div class="glass-filter"></div>
@@ -244,7 +402,7 @@
                 <div class="glass-specular"></div>
                 <div class="glass-content flex items-center gap-2">
                     <a href="/" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">Home</a>
-                    <a href="#work" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">Work</a>
+                    <a href="/about" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">About</a>
                 </div>
             </div>
         </div>
@@ -275,10 +433,8 @@
     <section id="scrolly-container" class="relative w-full" style="height: 400vh;">
         <div class="sticky top-0 h-screen w-full overflow-hidden bg-bgBase">
             
-            <!-- Canvas with brighter, vibrant colors -->
             <canvas id="hero-canvas" class="absolute inset-0 h-full w-full object-cover opacity-100" style="filter: brightness(1.2) contrast(1.1) saturate(1.2);"></canvas>
 
-            <!-- Lighter Vignette -->
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.15)_100%)] pointer-events-none z-0"></div>
 
             <div id="overlay-1" class="parallax-layer absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10 pointer-events-none">
@@ -296,7 +452,7 @@
             </div>
 
             <div id="overlay-2" class="parallax-layer absolute inset-0 flex flex-col items-start justify-center px-6 md:px-24 z-10 pointer-events-none opacity-0">
-                <div class="glass-container max-w-xl">
+                <div class="glass-container max-w-xl mb-24">
                     <div class="glass-filter"></div>
                     <div class="glass-overlay"></div>
                     <div class="glass-specular"></div>
@@ -315,7 +471,7 @@
             </div>
 
             <div id="overlay-3" class="parallax-layer absolute inset-0 flex flex-col items-end justify-center text-right px-6 md:px-24 z-10 pointer-events-none opacity-0">
-                <div class="glass-container max-w-xl text-right">
+                <div class="glass-container max-w-xl text-right mb-24">
                     <div class="glass-filter"></div>
                     <div class="glass-overlay"></div>
                     <div class="glass-specular"></div>
@@ -333,11 +489,59 @@
                 </div>
             </div>
 
-            <!-- MagicUI Style Spinning Text Scroll Indicator -->
+            <!-- Continuous macOS Style Taskbar / Dock -->
+            <div id="overlay-dock" class="parallax-layer absolute inset-0 flex flex-col items-center justify-end pb-12 z-20 pointer-events-none opacity-0">
+                <div class="pointer-events-auto w-full flex justify-center px-4">
+                    <div class="mac-dock">
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">Web</span>
+                            <img src="https://cdn.simpleicons.org/html5/E34F26" alt="Web">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">Android</span>
+                            <img src="https://cdn.simpleicons.org/android/3DDC84" alt="Android">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">SEO</span>
+                            <img src="https://cdn.simpleicons.org/googlesearchconsole/4285F4" alt="SEO">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">Meta Ads</span>
+                            <img src="https://cdn.simpleicons.org/meta/0668E1" alt="Meta Ads">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">GHL</span>
+                            <img src="https://api.iconify.design/ph/rocket-fill.svg?color=%2300A1E0" alt="GHL">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">Google Ads</span>
+                            <img src="https://cdn.simpleicons.org/googleads/F4B400" alt="Google Ads">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">Play Console</span>
+                            <img src="https://cdn.simpleicons.org/googleplay/3BCCFF" alt="Google Play Console">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">Analytics</span>
+                            <img src="https://cdn.simpleicons.org/googleanalytics/E37400" alt="Google Analytics">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">Shopify</span>
+                            <img src="https://cdn.simpleicons.org/shopify/95BF47" alt="Shopify">
+                        </div>
+                        <div class="mac-dock-item interactive-element">
+                            <span class="mac-dock-label">WordPress</span>
+                            <img src="https://cdn.simpleicons.org/wordpress/21759B" alt="WordPress">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thin Spinning Text Scroll Indicator -->
             <div id="scroll-indicator" class="parallax-layer absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-20">
                 <svg class="animate-spin-slow w-[110px] h-[110px] text-white/80" viewBox="0 0 100 100">
                     <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent"/>
-                    <text class="text-[11px] font-bold tracking-[0.1em]" fill="currentColor">
+                    <text class="text-[11px] font-thin tracking-[0.1em]" fill="currentColor">
                         <textPath href="#circlePath" startOffset="0" textLength="215">scroll down • scroll down • scroll down • </textPath>
                     </text>
                 </svg>
@@ -347,12 +551,209 @@
         </div>
     </section>
 
-    <!-- PURE WHITE Work Section with Simple Cards -->
-    <section id="work" class="relative z-20 w-full py-32 px-6 md:px-12 lg:px-24 overflow-hidden bg-white text-gray-900">
-        
-        <div class="max-w-7xl mx-auto relative z-10">
+    <!-- ABOUT ME SECTION -->
+    <section id="about" class="relative z-20 w-full py-32 px-6 md:px-12 lg:px-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
-            <div class="mb-20 md:flex justify-between items-end gap-8 pb-10 border-b border-gray-200 gs-reveal">
+            <div class="relative gs-reveal flex justify-center lg:justify-start">
+                <div class="relative w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden bg-gray-100 shadow-xl border border-gray-200">
+                    <img src="https://hirekognito.in/assets/himangshu.png" alt="Himangshu Paul" class="object-cover w-full h-full" loading="lazy">
+                </div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 rounded-full blur-[80px] -z-10 pointer-events-none"></div>
+            </div>
+
+            <div class="flex flex-col gap-10 gs-reveal">
+                <div>
+                    <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
+                        About Me
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 mb-6 blur-text-scroll">
+                        Building Robust Systems
+                    </h2>
+                    <p class="text-base text-gray-600 leading-relaxed max-w-xl blur-text-scroll">
+                        I am a web developer focused on building fast, clean, and reliable applications. My focus is on creating logical structures and responsive digital interfaces. I aim for high-quality code and modern layouts to solve user problems and deliver seamless interaction.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-5 p-6 bg-gray-50 border border-gray-100 rounded-2xl">
+                    <div class="flex items-center gap-6">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-24 shrink-0">Experience</span>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            
+                            <div class="tooltip-trigger relative interactive-element">
+                                <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="block relative">
+                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
+                                        <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc" alt="Kognito" class="w-full h-full object-contain rounded-xl">
+                                    </div>
+                                    <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></div>
+                                </a>
+                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                    <div class="font-bold text-sm">Kognito</div>
+                                    <div class="text-xs text-gray-300 mt-1">Founder</div>
+                                    <div class="text-[10px] text-green-400 font-semibold mt-1 uppercase tracking-wider">Current Position</div>
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                            <div class="tooltip-trigger relative interactive-element">
+                                <a href="https://blueminch.com" target="_blank" rel="noopener noreferrer" class="block relative">
+                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
+                                        <img src="https://media.licdn.com/dms/image/v2/C560BAQG7HCJ5aPX0gg/company-logo_200_200/company-logo_200_200/0/1642504044619/your_replica_logo?e=1776902400&v=beta&t=0LtsSOhuw7u85OWz39gnp8HKyoyS0go8eUzBnq-EmME" alt="Blue Minch" class="w-full h-full object-contain rounded-xl">
+                                    </div>
+                                </a>
+                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                    <div class="font-bold text-sm">Blue Minch</div>
+                                    <div class="text-xs text-gray-300 mt-1">Web Developer</div>
+                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                            <div class="tooltip-trigger relative interactive-element">
+                                <a href="https://amazon.in" target="_blank" rel="noopener noreferrer" class="block relative">
+                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
+                                        <img src="https://media.licdn.com/dms/image/v2/D560BAQGDLy4STCnHbg/company-logo_200_200/B56ZnZxDipI0AI-/0/1760295142304/amazon_logo?e=1776902400&v=beta&t=Pkt-34tlkuFgo_d6O--s7BFOke10xwNIu23VHSfAC1Q" alt="Amazon" class="w-full h-full object-contain rounded-xl">
+                                    </div>
+                                </a>
+                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                    <div class="font-bold text-sm">Amazon</div>
+                                    <div class="text-xs text-gray-300 mt-1">Affiliate Marketing</div>
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="w-full h-px bg-gray-200"></div>
+
+                    <div class="flex items-center gap-6">
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-24 shrink-0">Education</span>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            
+                            <div class="tooltip-trigger relative interactive-element">
+                                <a href="https://inspiria.edu.in" target="_blank" rel="noopener noreferrer" class="block relative">
+                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
+                                        <img src="https://media.licdn.com/dms/image/v2/C4D0BAQE_vIeWPZUeDw/company-logo_100_100/company-logo_100_100/0/1631344769191?e=1776902400&v=beta&t=V2h4SDFu3m5DOi7eoVZTpvMfxXlypSqJ3ekcX8ZB2r4" alt="Inspiria Knowledge Campus" class="w-full h-full object-contain rounded-xl">
+                                    </div>
+                                </a>
+                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                    <div class="font-bold text-sm">Inspiria Knowledge Campus</div>
+                                    <div class="text-xs text-gray-300 mt-1">Makaut, BCA 2022-25</div>
+                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                            <div class="tooltip-trigger relative interactive-element">
+                                <div class="block relative">
+                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvxrDET6Y2KnzaUqfuipDu_oWOMtWiFW08w&s" alt="Trinity High School" class="w-full h-full object-contain rounded-xl">
+                                    </div>
+                                </div>
+                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                    <div class="font-bold text-sm">Trinity High School</div>
+                                    <div class="text-xs text-gray-300 mt-1">12th, ISC</div>
+                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Banarhat</div>
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                            <div class="tooltip-trigger relative interactive-element">
+                                <div class="block relative">
+                                    <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:scale-110 p-1.5">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRi0iYeamsJN_Vt3ld4JcVVaAGsxAKHfWxpA&s" alt="New Light Academy" class="w-full h-full object-contain rounded-xl">
+                                    </div>
+                                </div>
+                                <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                    <div class="font-bold text-sm">New Light Academy</div>
+                                    <div class="text-xs text-gray-300 mt-1">10th, CBSE</div>
+                                    <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Sikkim</div>
+                                    <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <a href="/about" class="inline-flex items-center justify-center px-6 py-3 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors w-max interactive-element shadow-md hover:shadow-lg">
+                        More about me
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES & CUSTOM 3D GLOBE SECTION -->
+    <section id="services" class="relative z-20 w-full py-24 px-6 md:px-12 lg:px-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="mb-16 gs-reveal text-center md:text-left">
+                <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Services</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">Global Solutions</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Custom Interactive 3D Globe Visualization -->
+                <div class="relative flex w-full h-[400px] md:h-[500px] items-center justify-center overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm gs-reveal interactive-element">
+                    
+                    <div id="three-globe-container" class="absolute inset-0 w-full h-full z-30"></div>
+                    
+                    <!-- HTML Tooltip for Globe Toggle -->
+                    <div id="globe-tooltip" class="absolute bg-gray-900 text-white p-3 rounded-xl border border-gray-700 shadow-xl z-50 flex items-center gap-3 pointer-events-none opacity-0 transition-opacity duration-200">
+                        <div class="flex flex-col text-left">
+                            <span class="text-sm font-bold block">Himangshu Paul</span>
+                            <span class="text-xs text-accent">Available globally</span>
+                        </div>
+                    </div>
+
+                    <div class="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.08),rgba(255,255,255,0))] z-20"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                            <i class="ph ph-code text-2xl text-accent"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-black tracking-tight">Website Development</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">Building fast, accessible, and responsive web platforms tailored for business growth.</p>
+                    </div>
+                    
+                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                            <i class="ph ph-device-mobile text-2xl text-accent"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-black tracking-tight">App Deployment</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">Publishing secure applications across app stores and managing server configurations.</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                            <i class="ph ph-trend-up text-2xl text-accent"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-black tracking-tight">Performance Marketing</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">Executing data-driven ad campaigns to maximize return on investment and user acquisition.</p>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow duration-300 gs-reveal interactive-element flex flex-col gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center">
+                            <i class="ph ph-magnifying-glass text-2xl text-accent"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-black tracking-tight">SEO Strategy</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">Optimizing digital footprints to increase organic reach, improve indexing, and drive traffic.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Section with Dual-Row Velocity Marquee -->
+    <section id="work" class="relative z-20 w-full py-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
+            <div class="mb-12 md:flex justify-between items-end gap-8 pb-8 border-b border-gray-200 gs-reveal">
                 <div class="max-w-2xl flex flex-col gap-4">
                     <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
                         Recent Projects
@@ -364,114 +765,533 @@
                         A look at recent projects focusing on clean code, modular architecture, and precise visual execution.
                     </p>
                 </div>
-                <div class="mt-8 md:mt-0 interactive-element">
-                    <a href="#" class="inline-flex items-center gap-2 text-black font-semibold px-6 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group" aria-label="View GitHub Archive">
-                        View GitHub Archive <i class="ph ph-arrow-right text-accent group-hover:translate-x-1 transition-transform"></i>
+            </div>
+        </div>
+
+        <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container">
+            <div class="w-full overflow-hidden py-4">
+                <div id="marquee-row-a" class="flex w-max"></div>
+            </div>
+            <div class="w-full overflow-hidden py-4 mt-2">
+                <div id="marquee-row-b" class="flex w-max"></div>
+            </div>
+            <div class="pointer-events-none absolute inset-y-0 left-0 w-[15%] lg:w-[20%] bg-gradient-to-r from-white to-transparent z-10"></div>
+            <div class="pointer-events-none absolute inset-y-0 right-0 w-[15%] lg:w-[20%] bg-gradient-to-l from-white to-transparent z-10"></div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION with Dual-Row Velocity Marquee -->
+    <section id="testimonials" class="relative z-20 w-full py-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
+            <div class="mb-12 gs-reveal text-center md:text-left">
+                <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Client Feedback</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">What People Say</h2>
+            </div>
+        </div>
+
+        <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container-test">
+            <div class="w-full overflow-hidden py-4">
+                <div id="test-row-a" class="flex w-max"></div>
+            </div>
+            <div class="w-full overflow-hidden py-4 mt-2">
+                <div id="test-row-b" class="flex w-max"></div>
+            </div>
+            <div class="pointer-events-none absolute inset-y-0 left-0 w-[15%] lg:w-[20%] bg-gradient-to-r from-white to-transparent z-10"></div>
+            <div class="pointer-events-none absolute inset-y-0 right-0 w-[15%] lg:w-[20%] bg-gradient-to-l from-white to-transparent z-10"></div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="relative z-20 w-full py-24 px-6 md:px-12 lg:px-24 overflow-hidden bg-white text-gray-900 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            <div class="flex flex-col gap-8 gs-reveal">
+                <div>
+                    <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Let's Talk</span>
+                    <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 mb-6 blur-text-scroll">Get in Touch</h2>
+                    <p class="text-base text-gray-600 leading-relaxed max-w-md blur-text-scroll">
+                        Ready to start your next project? Reach out to discuss how we can work together to build reliable digital solutions.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col gap-6 mt-4">
+                    <a href="mailto:himangshu.inbox@gmail.com" class="flex items-center gap-4 group w-max interactive-element">
+                        <div class="w-12 h-12 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors duration-300">
+                            <i class="ph ph-envelope-simple text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">Email</p>
+                            <p class="text-black font-medium">himangshu.inbox@gmail.com</p>
+                        </div>
+                    </a>
+                    
+                    <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 group w-max interactive-element">
+                        <div class="w-12 h-12 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white group-hover:border-green-500 transition-colors duration-300">
+                            <i class="ph ph-whatsapp-logo text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wider">WhatsApp</p>
+                            <p class="text-black font-medium">+91 9564604956</p>
+                        </div>
                     </a>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- Simple Project Card 1 -->
-                <div class="project-card flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 interactive-element">
-                    <div class="relative h-56 overflow-hidden bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" alt="Financial Dashboard preview" class="object-cover w-full h-full transition-transform duration-500 hover:scale-105" />
+            <div class="gs-reveal">
+                <form id="whatsapp-form" class="flex flex-col gap-5 bg-gray-50 p-8 rounded-3xl border border-gray-200 shadow-sm">
+                    <div class="flex flex-col gap-2">
+                        <label for="wa-name" class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-1">Your Name</label>
+                        <input type="text" id="wa-name" required placeholder="John Doe" class="input-glass p-4 rounded-xl text-black transition-all">
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-100 text-gray-600">React</span>
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-100 text-gray-600">TypeScript</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2 text-black tracking-tight">Financial Dashboard</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-6 flex-1">
-                            A secure application for managing large sets of financial data. Features real-time updates and modular component design for rapid loading.
-                        </p>
-                        <div class="flex items-center gap-3 mt-auto">
-                            <a href="#" class="px-4 py-2.5 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors w-full text-center">View Project</a>
-                            <a href="#" class="px-4 py-2.5 bg-gray-100 text-black text-sm font-semibold rounded-lg hover:bg-gray-200 transition-colors w-full text-center">Source Code</a>
-                        </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="wa-message" class="text-xs font-semibold text-gray-500 uppercase tracking-wider px-1">Message</label>
+                        <textarea id="wa-message" required placeholder="Tell me about your project..." rows="4" class="input-glass p-4 rounded-xl text-black transition-all resize-none"></textarea>
                     </div>
-                </div>
-
-                <!-- Simple Project Card 2 -->
-                <div class="project-card flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 interactive-element">
-                    <div class="relative h-56 overflow-hidden bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop" alt="Headless Retail preview" class="object-cover w-full h-full transition-transform duration-500 hover:scale-105" />
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-100 text-gray-600">Next.js</span>
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-100 text-gray-600">PostgreSQL</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2 text-black tracking-tight">Headless Retail</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-6 flex-1">
-                            A modern retail platform built for speed and high conversion rates. Includes a custom checkout flow and clean inventory management.
-                        </p>
-                        <div class="flex items-center gap-3 mt-auto">
-                            <a href="#" class="px-4 py-2.5 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors w-full text-center">View Project</a>
-                            <a href="#" class="px-4 py-2.5 bg-gray-100 text-black text-sm font-semibold rounded-lg hover:bg-gray-200 transition-colors w-full text-center">Source Code</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Simple Project Card 3 -->
-                <div class="project-card flex flex-col bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 interactive-element">
-                    <div class="relative h-56 overflow-hidden bg-gray-100">
-                        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=2076&auto=format&fit=crop" alt="Data Interface preview" class="object-cover w-full h-full transition-transform duration-500 hover:scale-105" />
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-100 text-gray-600">Python</span>
-                            <span class="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-100 text-gray-600">D3.js</span>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2 text-black tracking-tight">Data Interface</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed mb-6 flex-1">
-                            A web-based interface for interacting with complex data models. Optimized for heavy datasets and clean, readable visualization.
-                        </p>
-                        <div class="flex items-center gap-3 mt-auto">
-                            <a href="#" class="px-4 py-2.5 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors w-full text-center">View Project</a>
-                            <a href="#" class="px-4 py-2.5 bg-gray-100 text-black text-sm font-semibold rounded-lg hover:bg-gray-200 transition-colors w-full text-center">Source Code</a>
-                        </div>
-                    </div>
-                </div>
-
+                    <button type="submit" class="mt-4 bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 interactive-element">
+                        Send via WhatsApp <i class="ph ph-paper-plane-tilt"></i>
+                    </button>
+                </form>
             </div>
+
         </div>
     </section>
 
     <!-- White Footer -->
-    <footer class="w-full py-12 px-6 relative z-20 gs-reveal bg-white border-t border-gray-200">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-            <p class="text-gray-500 text-sm font-semibold tracking-wide">
-                © <span id="year"></span> Himangshu Paul. All rights reserved.
-            </p>
-            <div class="flex items-center gap-4">
-                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="GitHub">
-                    <i class="ph ph-github-logo text-lg"></i>
-                </a>
-                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="Twitter">
-                    <i class="ph ph-twitter-logo text-lg"></i>
-                </a>
-                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="LinkedIn">
-                    <i class="ph ph-linkedin-logo text-lg"></i>
-                </a>
+    <footer class="w-full py-16 px-6 relative z-20 gs-reveal bg-white">
+        <div class="max-w-7xl mx-auto flex flex-col gap-12">
+            
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="flex items-center gap-4">
+                    <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="GitHub">
+                        <i class="ph ph-github-logo text-lg"></i>
+                    </a>
+                    <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="Instagram">
+                        <i class="ph ph-instagram-logo text-lg"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 border border-gray-200 text-gray-600 hover:text-accent hover:border-accent transition-colors duration-300 interactive-element" aria-label="LinkedIn">
+                        <i class="ph ph-linkedin-logo text-lg"></i>
+                    </a>
+                </div>
+                
+                <p class="text-gray-500 text-sm font-medium">
+                    © <span id="year"></span> Himangshu Paul. All rights reserved.
+                </p>
             </div>
+
+            <!-- Global Payment Partners (Stripe Removed) -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-gray-200">
+                <span class="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Global Payment Options</span>
+                <div class="flex flex-wrap items-center justify-center gap-3">
+                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" class="h-3 w-3 opacity-60"> PayPal</span>
+                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise" class="h-3 w-3 opacity-60"> Wise</span>
+                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay" class="h-3 w-3 opacity-60"> Razorpay</span>
+                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><i class="ph-fill ph-currency-inr text-gray-400"></i> UPI</span>
+                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa" class="h-3 w-3 opacity-60"> Visa</span>
+                    <span class="px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase rounded-md bg-gray-50 text-gray-600 border border-gray-200 flex items-center gap-1"><img src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard" class="h-3 w-3 opacity-60"> Mastercard</span>
+                </div>
+            </div>
+
         </div>
     </footer>
 
-    <!-- SVG FILTER FOR HERO GLASS REFRACTION -->
-    <svg style="display: none" aria-hidden="true">
-      <filter id="lg-dist" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.003 0.003" numOctaves="2" seed="5" result="noise" />
-        <feGaussianBlur in="noise" stdDeviation="3" result="blurred" />
-        <feDisplacementMap in="SourceGraphic" in2="blurred" scale="50" xChannelSelector="R" yChannelSelector="G" />
-      </filter>
-    </svg>
+    <!-- Custom Three.js 3D Globe Implementation -->
+    <script>
+        const initThreeGlobe = () => {
+            const container = document.getElementById('three-globe-container');
+            const tooltip = document.getElementById('globe-tooltip');
+            if (!container) return;
 
-    <!-- Scripts -->
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 15;
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            const globeGroup = new THREE.Group();
+            scene.add(globeGroup);
+
+            const R = 4.8; 
+
+            // Base Sphere
+            const baseGeo = new THREE.SphereGeometry(R, 64, 64);
+            const baseMat = new THREE.MeshStandardMaterial({
+                color: 0xfdfdfd,
+                roughness: 0.8,
+                metalness: 0.1,
+            });
+            const baseSphere = new THREE.Mesh(baseGeo, baseMat);
+            globeGroup.add(baseSphere);
+
+            // Map Overlay
+            const textureLoader = new THREE.TextureLoader();
+            const earthTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg');
+            
+            const mapGeo = new THREE.SphereGeometry(R + 0.02, 64, 64);
+            const mapMat = new THREE.MeshBasicMaterial({
+                color: 0xcccccc, 
+                transparent: true,
+                alphaMap: earthTexture,
+                opacity: 0.9
+            });
+            const mapSphere = new THREE.Mesh(mapGeo, mapMat);
+            mapSphere.rotation.y = -Math.PI / 2;
+            globeGroup.add(mapSphere);
+
+            // Convert Lat/Lon to 3D Cartesian coordinates
+            function getCoordinates(lat, lng, radius) {
+                const phi = (90 - lat) * (Math.PI / 180);
+                const theta = (lng + 90) * (Math.PI / 180);
+                const x = -(radius * Math.sin(phi) * Math.cos(theta));
+                const y = radius * Math.cos(phi);
+                const z = radius * Math.sin(phi) * Math.sin(theta);
+                return new THREE.Vector3(x, y, z);
+            }
+
+            // India Anchor Position
+            const indiaLatLon = { lat: 20.5937, lon: 78.9629 };
+            const indiaPos = getCoordinates(indiaLatLon.lat, indiaLatLon.lon, R + 0.05);
+
+            // === Custom 3D Map Pointer Toggle with DP ===
+            const pinAnchor = new THREE.Group();
+            pinAnchor.position.copy(indiaPos);
+            const normal = indiaPos.clone().normalize();
+            pinAnchor.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
+
+            // Pin Stem (points down to India)
+            const pinMat = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.1, roughness: 0.2 });
+            const pinConeGeo = new THREE.ConeGeometry(0.12, 0.5, 32);
+            const pinCone = new THREE.Mesh(pinConeGeo, pinMat);
+            pinCone.position.y = 0.25; 
+            pinCone.rotation.x = Math.PI; 
+            pinAnchor.add(pinCone);
+
+            // DP Head (faces camera dynamically in render loop)
+            const dpContainer = new THREE.Group();
+            dpContainer.position.y = 0.7; // Top of the stem
+            
+            const dpGeo = new THREE.CircleGeometry(0.35, 64);
+            const dpTexture = textureLoader.load('https://himangshu.site/asstets/himangshudp.webp');
+            const dpMatImg = new THREE.MeshBasicMaterial({ map: dpTexture, side: THREE.DoubleSide });
+            const dpMesh = new THREE.Mesh(dpGeo, dpMatImg);
+            
+            const ringGeo = new THREE.RingGeometry(0.35, 0.42, 64);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0xff6b00, side: THREE.DoubleSide });
+            const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+
+            dpContainer.add(dpMesh);
+            dpContainer.add(ringMesh);
+            pinAnchor.add(dpContainer);
+            
+            globeGroup.add(pinAnchor);
+
+            // Pulse GSAP for the Pin
+            gsap.to(pinAnchor.position, {
+                ...indiaPos.clone().multiplyScalar(1.03),
+                duration: 1,
+                yoyo: true,
+                repeat: -1,
+                ease: "sine.inOut"
+            });
+
+            // Network Hubs
+            const countries = [
+                { lat: 37.0902, lon: -95.7129 }, { lat: 55.3781, lon: -3.4360 }, { lat: -25.2744, lon: 133.7751 },
+                { lat: 36.2048, lon: 138.2529 }, { lat: -14.2350, lon: -51.9253 }, { lat: -30.5595, lon: 22.9375 },
+                { lat: 51.1657, lon: 10.4515 }, { lat: 61.5240, lon: 105.3188 }, { lat: 35.8617, lon: 104.1954 },
+                { lat: 56.1304, lon: -106.3468 }, { lat: 23.6345, lon: -102.5528 }, { lat: 46.2276, lon: 2.2137 },
+                { lat: 26.8206, lon: 30.8025 }, { lat: 9.0820, lon: 8.6753 }, { lat: -0.7893, lon: 113.9213 },
+                { lat: -38.4161, lon: -63.6167 }, { lat: 23.8859, lon: 45.0792 }
+            ];
+
+            const pointGeo = new THREE.SphereGeometry(0.06, 16, 16);
+            const pointMatBasic = new THREE.MeshBasicMaterial({ color: 0xff6b00 });
+            const particles = [];
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xff6b00, transparent: true, opacity: 0.3 });
+
+            countries.forEach(country => {
+                const pos = getCoordinates(country.lat, country.lon, R + 0.05);
+                const node = new THREE.Mesh(pointGeo, pointMatBasic);
+                node.position.copy(pos);
+                globeGroup.add(node);
+
+                const distance = pos.distanceTo(indiaPos);
+                const midPoint = new THREE.Vector3().addVectors(pos, indiaPos).multiplyScalar(0.5);
+                midPoint.normalize().multiplyScalar(R + 0.05 + distance * 0.3);
+
+                const curve = new THREE.QuadraticBezierCurve3(pos, midPoint, indiaPos);
+                const points = curve.getPoints(50);
+                const curveGeo = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line(curveGeo, lineMat);
+                globeGroup.add(line);
+
+                const particleGeo = new THREE.SphereGeometry(0.04, 8, 8);
+                const particleMat = new THREE.MeshBasicMaterial({ color: 0xff8833 });
+                const particle = new THREE.Mesh(particleGeo, particleMat);
+                particle.userData = { offset: Math.random(), curve: curve };
+                globeGroup.add(particle);
+                particles.push(particle);
+            });
+
+            // Lighting
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            dirLight.position.set(5, 5, 5);
+            scene.add(dirLight);
+
+            // Interactivity & Physics Setup
+            let targetRotationX = 0;
+            let targetRotationY = -1.2; 
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            let isHovered = false;
+
+            container.addEventListener('pointerdown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+                container.classList.add('grabbing');
+            });
+
+            window.addEventListener('pointerup', () => {
+                isDragging = false;
+                container.classList.remove('grabbing');
+            });
+
+            container.addEventListener('pointermove', (e) => {
+                // Raycast for DP Hover Tooltip
+                const rect = container.getBoundingClientRect();
+                mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects([dpMesh, ringMesh, pinCone]);
+
+                if (intersects.length > 0) {
+                    container.classList.add('pointer');
+                    if (!isHovered) {
+                        isHovered = true;
+                        gsap.to(pinAnchor.scale, { x: 1.3, y: 1.3, z: 1.3, duration: 0.3, ease: "back.out(2)" });
+                        tooltip.style.opacity = '1';
+                    }
+                    // Position tooltip relative to mouse
+                    tooltip.style.left = `${e.clientX - rect.left}px`;
+                    tooltip.style.top = `${e.clientY - rect.top - 20}px`;
+                } else {
+                    container.classList.remove('pointer');
+                    if (isHovered) {
+                        isHovered = false;
+                        gsap.to(pinAnchor.scale, { x: 1, y: 1, z: 1, duration: 0.3, ease: "power2.out" });
+                        tooltip.style.opacity = '0';
+                    }
+                }
+
+                // Drag Physics
+                if (isDragging) {
+                    const deltaX = e.clientX - previousMousePosition.x;
+                    const deltaY = e.clientY - previousMousePosition.y;
+                    targetRotationY += deltaX * 0.005;
+                    targetRotationX += deltaY * 0.005;
+                    previousMousePosition = { x: e.clientX, y: e.clientY };
+                }
+            });
+
+            container.addEventListener('touchstart', (e) => {
+                if (e.touches.length > 0) {
+                    isDragging = true;
+                    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchend', () => { isDragging = false; });
+
+            window.addEventListener('touchmove', (e) => {
+                if (isDragging && e.touches.length > 0) {
+                    const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                    const deltaY = e.touches[0].clientY - previousMousePosition.y;
+                    targetRotationY += deltaX * 0.005;
+                    targetRotationX += deltaY * 0.005;
+                    previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            }, { passive: true });
+
+            window.addEventListener('resize', () => {
+                if (container.clientWidth > 0) {
+                    camera.aspect = container.clientWidth / container.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(container.clientWidth, container.clientHeight);
+                }
+            });
+
+            const autoRotateSpeed = 0.0015;
+
+            function animateGlobe() {
+                requestAnimationFrame(animateGlobe);
+
+                if (!isDragging) targetRotationY += autoRotateSpeed;
+
+                globeGroup.rotation.y += (targetRotationY - globeGroup.rotation.y) * 0.05;
+                globeGroup.rotation.x += (targetRotationX - globeGroup.rotation.x) * 0.05;
+                globeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.15; 
+
+                // Ensure DP always faces the camera exactly
+                dpContainer.lookAt(camera.position);
+
+                const time = Date.now() * 0.0005;
+                particles.forEach(p => {
+                    const t = (time + p.userData.offset) % 1; 
+                    const position = p.userData.curve.getPoint(t);
+                    p.position.copy(position);
+                });
+
+                renderer.render(scene, camera);
+            }
+            
+            globeGroup.scale.set(0, 0, 0);
+            gsap.to(globeGroup.scale, {
+                x: 1, y: 1, z: 1,
+                duration: 1.5,
+                ease: "back.out(1.2)",
+                scrollTrigger: {
+                    trigger: container,
+                    start: "top 85%"
+                }
+            });
+
+            animateGlobe();
+        };
+
+        document.addEventListener('DOMContentLoaded', initThreeGlobe);
+    </script>
+
+    <!-- Main Scripts -->
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // --- JSON Data for Projects ---
+        const projectsData = [
+            {
+                title: "Financial Dashboard",
+                description: "A secure application for managing large sets of financial data. Features real-time updates and modular architecture.",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop",
+                link: "https://example.com/project1" 
+            },
+            {
+                title: "Headless Retail",
+                description: "A modern retail platform built for speed and high conversion rates. Includes a custom checkout flow.",
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop",
+                link: "#" 
+            },
+            {
+                title: "Data Interface",
+                description: "A web-based interface for interacting with complex data models. Optimized for heavy datasets.",
+                image: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=2076&auto=format&fit=crop",
+                link: "" 
+            },
+            {
+                title: "Cloud Infrastructure",
+                description: "A scalable cloud architecture setup designed for high availability and zero downtime deployment.",
+                image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
+                link: "https://example.com/project4" 
+            },
+            {
+                title: "Creative Agency",
+                description: "A visually striking portfolio for a design agency. Built with advanced WebGL rendering and smooth routing.",
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
+                link: "#" 
+            },
+            {
+                title: "Health Tech App",
+                description: "A mobile-first web application connecting patients with healthcare providers securely.",
+                image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
+                link: "" 
+            }
+        ];
+
+        // --- JSON Data for Reviews ---
+        const reviewsData = [
+            { name: "Jack", username: "@jack", body: "I've never seen anything like this before. It's amazing. I love it.", img: "https://avatar.vercel.sh/jack" },
+            { name: "Jill", username: "@jill", body: "I don't know what to say. I'm speechless. This is amazing.", img: "https://avatar.vercel.sh/jill" },
+            { name: "John", username: "@john", body: "I'm at a loss for words. This is amazing. I love it.", img: "https://avatar.vercel.sh/john" },
+            { name: "Jane", username: "@jane", body: "I'm at a loss for words. This is amazing. I love it.", img: "https://avatar.vercel.sh/jane" },
+            { name: "Jenny", username: "@jenny", body: "I'm at a loss for words. This is amazing. I love it.", img: "https://avatar.vercel.sh/jenny" },
+            { name: "James", username: "@james", body: "I'm at a loss for words. This is amazing. I love it.", img: "https://avatar.vercel.sh/james" }
+        ];
+
+        function createCardHTML(project) {
+            const isCompleteUrl = project.link && project.link.trim() !== '' && project.link.startsWith('http');
+            const buttonHTML = isCompleteUrl ? `
+                <div class="p-6 pt-0 mt-auto">
+                    <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-black text-white hover:bg-gray-800 h-10 px-4 py-2 transition-colors w-max interactive-element">
+                        View Project
+                    </a>
+                </div>
+            ` : '';
+
+            return `
+                <div class="project-card flex flex-col bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 h-[420px] w-[320px] md:w-[400px] shrink-0 interactive-element">
+                    <div class="p-6 pb-4">
+                        <div class="relative h-44 overflow-hidden rounded-lg bg-gray-100">
+                            <img src="${project.image}" alt="${project.title} preview" class="object-cover w-full h-full transition-transform duration-500 hover:scale-105" loading="lazy" />
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex-1 flex flex-col">
+                        <h3 class="text-xl font-semibold leading-none tracking-tight text-gray-900 mb-2">${project.title}</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">
+                            ${project.description}
+                        </p>
+                    </div>
+                    ${buttonHTML}
+                </div>
+            `;
+        }
+
+        function createReviewHTML(review) {
+            return `
+                <figure class="relative h-full w-64 shrink-0 cursor-pointer overflow-hidden rounded-xl border border-gray-200 bg-gray-50/50 p-4 hover:bg-gray-100/50 transition-colors interactive-element mr-6">
+                    <div class="flex flex-row items-center gap-2">
+                        <img class="rounded-full" width="32" height="32" alt="" src="${review.img}" loading="lazy" />
+                        <div class="flex flex-col">
+                            <figcaption class="text-sm font-medium text-gray-900">${review.name}</figcaption>
+                            <p class="text-xs font-medium text-gray-500">${review.username}</p>
+                        </div>
+                    </div>
+                    <blockquote class="mt-2 text-sm text-gray-700 leading-relaxed">${review.body}</blockquote>
+                </figure>
+            `;
+        }
+
+        function renderMarquees() {
+            // Projects
+            const rowAContainer = document.getElementById('marquee-row-a');
+            const rowBContainer = document.getElementById('marquee-row-b');
+            const midIndex = Math.ceil(projectsData.length / 2);
+            const row1Data = projectsData.slice(0, midIndex);
+            const row2Data = projectsData.slice(midIndex);
+
+            const track1Items = row1Data.map(createCardHTML).join('');
+            const track2Items = row2Data.map(createCardHTML).join('');
+
+            rowAContainer.innerHTML = `<div class="flex gap-6 pr-6 shrink-0">${track1Items}</div><div class="flex gap-6 pr-6 shrink-0">${track1Items}</div>`;
+            rowBContainer.innerHTML = `<div class="flex gap-6 pr-6 shrink-0">${track2Items}</div><div class="flex gap-6 pr-6 shrink-0">${track2Items}</div>`;
+
+            // Reviews
+            const testAContainer = document.getElementById('test-row-a');
+            const testBContainer = document.getElementById('test-row-b');
+            const reviewMidIndex = Math.ceil(reviewsData.length / 2);
+            const review1Data = reviewsData.slice(0, reviewMidIndex);
+            const review2Data = reviewsData.slice(reviewMidIndex);
+
+            const revTrack1Items = review1Data.map(createReviewHTML).join('');
+            const revTrack2Items = review2Data.map(createReviewHTML).join('');
+
+            testAContainer.innerHTML = `<div class="flex shrink-0">${revTrack1Items}</div><div class="flex shrink-0">${revTrack1Items}</div>`;
+            testBContainer.innerHTML = `<div class="flex shrink-0">${revTrack2Items}</div><div class="flex shrink-0">${revTrack2Items}</div>`;
+        }
 
         // Register GSAP ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
@@ -483,8 +1303,8 @@
         });
         
         const images = new Array(FRAME_COUNT);
-        const canvas = document.getElementById('hero-canvas');
-        const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+        const heroCanvas = document.getElementById('hero-canvas');
+        const heroCtx = heroCanvas.getContext('2d', { alpha: false, desynchronized: true });
         
         let loadedCount = 0;
         let isReady = false;
@@ -505,6 +1325,7 @@
         const overlay1 = document.getElementById('overlay-1');
         const overlay2 = document.getElementById('overlay-2');
         const overlay3 = document.getElementById('overlay-3');
+        const overlayDock = document.getElementById('overlay-dock');
         const scrollIndicator = document.getElementById('scroll-indicator');
         const cursor = document.getElementById('cursor');
 
@@ -545,6 +1366,7 @@
         }
 
         function initPortfolio() {
+            renderMarquees(); 
             prepareTextBlur();
             preloadImages();
         }
@@ -592,7 +1414,7 @@
             isReady = true;
             clearTimeout(forceLoadTimeout);
             
-            resizeCanvas(); 
+            resizeHeroCanvas(); 
             
             const loader = document.getElementById('loader');
             loader.style.opacity = '0';
@@ -621,8 +1443,8 @@
             const logicalW = window.innerWidth;
             const logicalH = window.innerHeight;
             
-            ctx.fillStyle = '#050505'; 
-            ctx.fillRect(0, 0, logicalW, logicalH);
+            heroCtx.fillStyle = '#050505'; 
+            heroCtx.fillRect(0, 0, logicalW, logicalH);
             
             const hRatio = logicalW / img.width;
             const vRatio = logicalH / img.height;
@@ -633,29 +1455,29 @@
             const drawX = (logicalW - drawW) / 2;
             const drawY = (logicalH - drawH) / 2;
 
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(img, drawX, drawY, drawW, drawH);
+            heroCtx.imageSmoothingEnabled = true;
+            heroCtx.imageSmoothingQuality = 'high';
+            heroCtx.drawImage(img, drawX, drawY, drawW, drawH);
         }
 
-        function resizeCanvas() {
+        function resizeHeroCanvas() {
             const dpr = window.devicePixelRatio || 1;
             const w = window.innerWidth;
             const h = window.innerHeight;
             
-            canvas.width = w * dpr;
-            canvas.height = h * dpr;
+            heroCanvas.width = w * dpr;
+            heroCanvas.height = h * dpr;
             
-            canvas.style.width = `${w}px`;
-            canvas.style.height = `${h}px`;
+            heroCanvas.style.width = `${w}px`;
+            heroCanvas.style.height = `${h}px`;
             
-            ctx.scale(dpr, dpr);
+            heroCtx.scale(dpr, dpr);
             
             state.lastDrawnFrame = -1; 
             drawImage(state.currentFrame);
         }
 
-        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('resize', resizeHeroCanvas);
 
         function mapRange(value, inMin, inMax, outMin, outMax) {
             value = Math.max(inMin, Math.min(value, inMax)); 
@@ -711,6 +1533,25 @@
             overlay3.style.transform = `translate3d(0, ${o3.translateY}px, 0)`;
             if (o3.opacity > 0.1) overlay3.querySelectorAll('.blur-text').forEach(triggerTextBlur);
 
+            // Dock Visibility logic
+            let dockOpacity = 0;
+            let dockTranslateY = 30;
+            if (p >= 0.35 && p <= 0.45) {
+                dockOpacity = mapRange(p, 0.35, 0.45, 0, 1);
+                dockTranslateY = mapRange(p, 0.35, 0.45, 30, 0);
+            } else if (p > 0.45 && p < 0.95) {
+                dockOpacity = 1;
+                dockTranslateY = 0;
+            } else if (p >= 0.95 && p <= 1.0) {
+                dockOpacity = mapRange(p, 0.95, 1.0, 1, 0);
+                dockTranslateY = mapRange(p, 0.95, 1.0, 0, -30);
+            } else if (p > 1.0) {
+                dockTranslateY = -30;
+            }
+            
+            overlayDock.style.opacity = dockOpacity;
+            overlayDock.style.transform = `translate3d(0, ${dockTranslateY}px, 0)`;
+
             state.cursorX = lerp(state.cursorX, state.mouseX, 0.25);
             state.cursorY = lerp(state.cursorY, state.mouseY, 0.25);
             cursor.style.transform = `translate3d(calc(${state.cursorX}px - 50%), calc(${state.cursorY}px - 50%), 0)`;
@@ -733,22 +1574,79 @@
             state.mouseY = e.clientY;
         });
 
-        document.querySelectorAll('a, button, .interactive-element').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
-        });
+        document.body.addEventListener('mouseenter', (e) => {
+            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.id === 'three-globe-container' || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element') || e.target.tagName === 'FIGURE')) {
+                cursor.classList.add('hovering');
+            }
+        }, true);
+        
+        document.body.addEventListener('mouseleave', (e) => {
+            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.id === 'three-globe-container' || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element') || e.target.tagName === 'FIGURE')) {
+                cursor.classList.remove('hovering');
+            }
+        }, true);
+
+        function setupVelocityMarquee(rowA, rowB) {
+            if (!rowA || !rowB) return null;
+            let tweenA = gsap.to(rowA, { xPercent: -50, ease: "none", duration: 35, repeat: -1 });
+            gsap.set(rowB, { xPercent: -50 });
+            let tweenB = gsap.to(rowB, { xPercent: 0, ease: "none", duration: 35, repeat: -1 });
+            return [tweenA, tweenB];
+        }
 
         function initGSAPAnimations() {
-            // Dynamic Navbar Theme Switch based on section visibility
             ScrollTrigger.create({
-                trigger: "#work",
+                trigger: "#about", 
                 start: "top 80px", 
+                endTrigger: "footer", 
                 end: "bottom top",
                 onEnter: () => document.getElementById('main-nav').classList.add('nav-scrolled'),
                 onLeaveBack: () => document.getElementById('main-nav').classList.remove('nav-scrolled'),
             });
 
-            // General Section Reveals
+            // Initialize all marquees (Projects & Testimonials)
+            let allTweens = [];
+            if(projectsData.length > 0) {
+                const projTweens = setupVelocityMarquee(document.getElementById('marquee-row-a'), document.getElementById('marquee-row-b'));
+                if(projTweens) allTweens.push(...projTweens);
+            }
+            if(reviewsData.length > 0) {
+                const testTweens = setupVelocityMarquee(document.getElementById('test-row-a'), document.getElementById('test-row-b'));
+                if(testTweens) allTweens.push(...testTweens);
+            }
+
+            if(allTweens.length > 0) {
+                let currentDirection = 1;
+                ScrollTrigger.create({
+                    trigger: document.body,
+                    start: "top top",
+                    end: "bottom bottom",
+                    onUpdate: (self) => {
+                        let velocity = Math.abs(self.getVelocity());
+                        currentDirection = self.direction || 1; 
+                        
+                        if (velocity > 0) {
+                            let boost = 1 + (velocity / 200); 
+                            gsap.to(allTweens, {
+                                timeScale: currentDirection * boost,
+                                duration: 0.2,
+                                overwrite: true,
+                                onComplete: () => {
+                                    gsap.to(allTweens, { timeScale: currentDirection, duration: 0.8, ease: "power2.out" });
+                                }
+                            });
+                        } else {
+                            gsap.to(allTweens, { timeScale: currentDirection, duration: 0.8, ease: "power2.out" });
+                        }
+                    }
+                });
+
+                document.querySelectorAll('.marquee-container, .marquee-container-test').forEach(container => {
+                    container.addEventListener('mouseenter', () => { gsap.to(allTweens, { timeScale: 0, duration: 0.4 }); });
+                    container.addEventListener('mouseleave', () => { gsap.to(allTweens, { timeScale: currentDirection, duration: 0.4 }); });
+                });
+            }
+
             gsap.utils.toArray('.gs-reveal').forEach(section => {
                 gsap.from(section, {
                     scrollTrigger: {
@@ -760,21 +1658,6 @@
                         }
                     },
                     y: 40, opacity: 0, duration: 1, ease: "power3.out"
-                });
-            });
-
-            // Staggered Project Cards Reveal
-            gsap.utils.toArray('.project-card').forEach((card, i) => {
-                gsap.from(card, {
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 90%",
-                    },
-                    y: 50,
-                    opacity: 0,
-                    duration: 0.8,
-                    delay: i * 0.15,
-                    ease: "back.out(1.2)"
                 });
             });
         }
