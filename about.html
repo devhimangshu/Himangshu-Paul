@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#050505]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
+    <title>About Himangshu Paul | Web Developer</title>
+    <meta name="description" content="Learn more about Himangshu Paul. I am a web developer focused on writing clean code, building fast websites, and solving user problems.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="https://himangshu.site/asstets/himangshudp.webp">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: '#ff6b00',
+                        bgBase: '#050505'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap');
+
+        :root {
+            --lg-bg-color: rgba(255, 255, 255, 0.03);
+            --lg-highlight: rgba(255, 255, 255, 0.3);
+            --lg-shadow: rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            color: #ffffff; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #050505;
+        }
+        
+        @media (min-width: 768px) {
+            body { cursor: none; }
+            a, button, .interactive-element, .bento-card, img, video { cursor: none; }
+        }
+
+        ::selection {
+            background-color: rgba(255, 107, 0, 0.4);
+            color: #ffffff;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff6b00; }
+
+        /* Navbar Glass Switch */
+        #main-nav {
+            --nav-text: #ffffff;
+            --nav-glass-bg: rgba(255, 255, 255, 0.03);
+            --nav-highlight: rgba(255, 255, 255, 0.3);
+            --nav-shadow: rgba(0, 0, 0, 0.25);
+        }
+        #main-nav.nav-scrolled {
+            --nav-text: #050505;
+            --nav-glass-bg: rgba(255, 255, 255, 0.85); 
+            --nav-highlight: rgba(255, 255, 255, 1);
+            --nav-shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        .glass-container {
+            position: relative; display: flex; background: transparent; border-radius: 2rem; overflow: hidden;
+            box-shadow: 0 10px 30px var(--lg-shadow), 0 0 20px rgba(0, 0, 0, 0.1); transform: translateZ(0); 
+        }
+        .glass-container--rounded { border-radius: 5rem; }
+        .glass-container--nav { --lg-bg-color: var(--nav-glass-bg); --lg-highlight: var(--nav-highlight); --lg-shadow: var(--nav-shadow); transition: background-color 0.4s ease; }
+        .nav-link { color: var(--nav-text); transition: color 0.4s ease; opacity: 0.8; }
+        
+        .glass-filter { position: absolute; inset: -20px; z-index: 0; backdrop-filter: blur(20px); isolation: isolate; }
+        .glass-overlay { position: absolute; inset: 0; z-index: 1; background: var(--lg-bg-color); transition: background 0.4s ease; }
+        .glass-specular {
+            position: absolute; inset: 0; z-index: 3; border-radius: inherit; overflow: hidden; pointer-events: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.1) 100%);
+            box-shadow: inset 1px 1px 2px var(--lg-highlight), inset -1px -1px 3px rgba(0, 0, 0, 0.05); 
+        }
+        .glass-content { position: relative; z-index: 4; width: 100%; height: 100%; }
+
+        /* Premium Dark Bento Box */
+        .bento-card {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.05), transparent);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .bento-card:hover {
+            border-color: rgba(255, 107, 0, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(255, 107, 0, 0.15);
+            transform: translateY(-4px);
+        }
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 12px; height: 12px; border-radius: 50%; background-color: #ff6b00;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, border 0.3s;
+            will-change: transform, width, height;
+        }
+        .custom-cursor.hovering { width: 60px; height: 60px; background-color: rgba(255, 107, 0, 0.15); border: 1px solid #ff6b00; backdrop-filter: blur(2px); }
+
+        /* Text Animation */
+        .char-anim { display: inline-block; opacity: 0; transform: translateY(15px); transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; white-space: pre-wrap; }
+        .char-anim.visible { opacity: 1; transform: translateY(0); }
+
+        .bg-grid-pattern-dark {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        
+        .image-zoom:hover img, .image-zoom:hover video {
+            transform: scale(1.05);
+        }
+        .image-zoom img, .image-zoom video {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Auto-arrange Masonry Grid */
+        .gallery-masonry {
+            column-count: 2;
+            column-gap: 1rem;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .gallery-masonry {
+                column-count: 3;
+                column-gap: 1.5rem;
+            }
+        }
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            display: inline-block;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .gallery-item {
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans relative bg-[#050505] bg-grid-pattern-dark min-h-screen flex flex-col">
+
+    <div id="cursor" class="custom-cursor hidden md:block"></div>
+
+    <!-- Top Navigation (Back Button Only) -->
+    <nav id="main-nav" class="fixed top-0 w-full z-[100] px-6 py-6 pointer-events-none transition-colors duration-500">
+        <div class="max-w-7xl mx-auto flex justify-start items-center pointer-events-auto">
+            <a href="/" class="interactive-element flex items-center gap-3 bg-[#111]/80 backdrop-blur-xl border border-white/10 p-1.5 pr-4 rounded-full hover:bg-white/10 hover:border-white/20 transition-all shadow-lg group" aria-label="Back to Home">
+                <i class="ph ph-arrow-left text-white text-xl ml-2 group-hover:-translate-x-1 transition-transform"></i>
+                <div class="w-9 h-9 rounded-full bg-black overflow-hidden border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform duration-300">
+                    <img src="https://himangshu.site/asstets/himangshudp.webp" alt="Himangshu Paul" class="w-full h-full object-cover">
+                </div>
+            </a>
+        </div>
+    </nav>
+
+    <main class="relative w-full flex-grow flex flex-col pt-0">
+        
+        <!-- Header / Cover Section with Dynamic Media Sequence -->
+        <section class="relative w-full h-[40vh] md:h-[50vh] min-h-[300px] md:min-h-[400px] gs-reveal flex flex-col justify-end pb-0 bg-black">
+            <div class="absolute inset-0 w-full h-full overflow-hidden" id="cover-media-container">
+                <!-- Dynamic Videos and Images will be injected here -->
+            </div>
+            <!-- Natural Dark Gradient Overlay (No orange fade) -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent z-10 pointer-events-none"></div>
+        </section>
+
+        <!-- Centered Profile Info -->
+        <div class="relative z-20 w-full px-6 -mt-16 md:-mt-20 flex flex-col items-center text-center gs-reveal">
+            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#050505] overflow-hidden shadow-2xl bg-[#111] mb-5">
+                <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight mb-2 blur-text-scroll">Himangshu Paul</h1>
+            <p class="text-sm md:text-base text-gray-400 font-medium mb-6 blur-text-scroll">Web Developer & System Architect</p>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="max-w-6xl mx-auto w-full px-6 md:px-12 lg:px-24 py-10 md:py-16 flex flex-col gap-24 relative z-10">
+            
+            <!-- Subtle Ambient Glow -->
+            <div class="absolute top-0 right-0 w-full max-w-2xl h-[500px] bg-accent/5 blur-[120px] pointer-events-none rounded-full"></div>
+
+            <!-- What I'm About & Where to find me (Grid Layout) -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+                
+                <!-- What I'm About -->
+                <div class="lg:col-span-7 flex flex-col justify-center gs-reveal">
+                    <span class="text-xs font-semibold tracking-[0.35em] text-accent uppercase mb-3 blur-text-scroll">Profile</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-6 blur-text-scroll">What I'm about.</h2>
+                    <div class="bento-card p-6 md:p-8 flex flex-col gap-5">
+                        <div class="text-sm md:text-base text-gray-400 leading-relaxed block">
+                            <span class="blur-text-scroll">Hi, I am Himangshu Paul. Currently, I run</span> 
+                            
+                            <!-- Inline Clickable Badge -->
+                            <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-white hover:text-accent font-semibold transition-all align-baseline mx-1 bg-[#111] px-2.5 py-1 rounded-md border border-white/10 hover:border-accent hover:shadow-[0_0_10px_rgba(255,107,0,0.3)] relative z-50">
+                                <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc" alt="Kognito Logo" class="w-3.5 h-3.5 md:w-4 md:h-4 rounded-[3px] bg-white p-[1px] object-contain">
+                                Kognito
+                            </a>
+                            
+                            <span class="blur-text-scroll">as its founder. My background covers a lot of ground. I have worked as an Android app developer, brand manager, social media manager, and content writer.</span>
+                        </div>
+                        <p class="text-sm md:text-base text-gray-400 leading-relaxed blur-text-scroll">
+                            I also handle technical SEO and performance marketing, and sometimes I jump into graphic design. Simply put, if it involves building or growing a digital brand, I have experience doing it.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Where can you find me (3x2 Grid) -->
+                <div class="lg:col-span-5 flex flex-col gs-reveal">
+                    <span class="text-xs font-semibold tracking-[0.35em] text-gray-500 uppercase mb-3 blur-text-scroll text-right">Connect</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight mb-6 text-right blur-text-scroll">Where to find me.</h2>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 h-full relative z-40">
+                        <!-- Location Map Pin -->
+                        <div class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 relative overflow-hidden group col-span-2 md:col-span-1">
+                            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop')] opacity-10 bg-cover bg-center grayscale group-hover:scale-110 transition-transform duration-700"></div>
+                            <div class="relative z-10 w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-accent shadow-lg group-hover:bg-accent group-hover:text-white transition-colors">
+                                <i class="ph-fill ph-map-pin text-lg"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <p class="text-xs font-bold text-white">India</p>
+                                <p class="text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">Global</p>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <a href="mailto:himangshu.inbox@gmail.com" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
+                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:text-black group-hover:border-white transition-colors">
+                                <i class="ph ph-envelope-simple text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">Email</p>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Inbox</p>
+                            </div>
+                        </a>
+
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
+                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-[#25D366] group-hover:text-white group-hover:border-[#25D366] transition-colors">
+                                <i class="ph ph-whatsapp-logo text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">WhatsApp</p>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Chat</p>
+                            </div>
+                        </a>
+
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
+                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-[#0077b5] group-hover:text-white group-hover:border-[#0077b5] transition-colors">
+                                <i class="ph ph-linkedin-logo text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">LinkedIn</p>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Network</p>
+                            </div>
+                        </a>
+
+                        <!-- GitHub -->
+                        <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
+                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:text-black group-hover:border-white transition-colors">
+                                <i class="ph ph-github-logo text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">GitHub</p>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Code</p>
+                            </div>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
+                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-[#E1306C] group-hover:text-white group-hover:border-[#E1306C] transition-colors">
+                                <i class="ph ph-instagram-logo text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">Instagram</p>
+                                <p class="text-[9px] text-gray-500 mt-0.5">Life</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wander often, wonder always -->
+            <section class="flex flex-col gap-8 gs-reveal">
+                <div class="max-w-2xl">
+                    <span class="text-xs font-semibold tracking-[0.35em] text-gray-500 uppercase mb-3 block blur-text-scroll">Life Outside Code</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4 blur-text-scroll">Wander often, wonder always.</h2>
+                    <p class="text-sm md:text-base text-gray-400 leading-relaxed blur-text-scroll">
+                        When I step away from the keyboard, you will probably find me on my bike heading for the mountains. I have a huge appetite for nature and high-altitude rides. If I am not out on a dirt trail, I am likely playing video games or hunting for great food. A solid bike ride, a good gaming session, and some tasty food are the best ways to keep my mind fresh for the next project.
+                    </p>
+                </div>
+                
+                <!-- Dynamic Masonry Gallery with Load More -->
+                <div class="flex flex-col gap-6">
+                    <div id="life-gallery-container" class="gallery-masonry w-full">
+                        <!-- Javascript will inject the masonry responsive grid here -->
+                    </div>
+                    
+                    <div id="load-more-container" class="flex justify-center mt-4 w-full gs-reveal">
+                        <button id="load-more-btn" class="px-6 py-3 bg-[#111] border border-white/10 rounded-xl text-sm font-semibold text-white hover:bg-accent hover:border-accent hover:shadow-[0_0_20px_rgba(255,107,0,0.3)] transition-all interactive-element flex items-center gap-2 group">
+                            Load More Media <i class="ph ph-caret-down text-lg group-hover:translate-y-0.5 transition-transform"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Charcoal Footer -->
+    <footer class="w-full py-8 md:py-12 px-4 md:px-8 lg:px-16 bg-[#111111] border-t border-[#222] relative z-10 mt-auto">
+        <div class="max-w-6xl mx-auto flex flex-col gap-8 md:gap-10">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+                <!-- Brand Info & Socials -->
+                <div class="flex flex-col gap-3 max-w-xs">
+                    <h3 class="text-lg md:text-xl font-bold text-white tracking-tight">Himangshu Paul</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Building reliable web applications. Let's discuss your project.
+                    </p>
+                    <div class="flex items-center gap-3 mt-1">
+                        <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="GitHub">
+                            <i class="ph ph-github-logo text-sm"></i>
+                        </a>
+                        <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="Instagram">
+                            <i class="ph ph-instagram-logo text-sm"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="LinkedIn">
+                            <i class="ph ph-linkedin-logo text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation -->
+                <div class="flex flex-col md:items-end gap-2">
+                    <span class="text-[9px] font-bold tracking-widest text-gray-600 uppercase mb-1">Menu</span>
+                    <nav class="flex flex-col md:items-end gap-2 text-xs font-medium text-gray-300">
+                        <a href="/" class="hover:text-accent transition-colors interactive-element w-max">Home</a>
+                        <a href="/#services" class="hover:text-accent transition-colors interactive-element w-max">Services</a>
+                        <a href="/#work" class="hover:text-accent transition-colors interactive-element w-max">Work</a>
+                        <a href="/#contact" class="hover:text-accent transition-colors interactive-element w-max">Contact</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Bottom Details: Payments & Copyright -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-[#222]">
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" class="h-2.5 w-2.5 opacity-80"> PayPal</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise" class="h-2.5 w-2.5 opacity-80"> Wise</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay" class="h-2.5 w-2.5 opacity-80"> Razorpay</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><i class="ph-fill ph-currency-inr text-gray-400 text-xs"></i> UPI</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa" class="h-2.5 w-2.5 opacity-80"> Visa</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard" class="h-2.5 w-2.5 opacity-80"> MC</span>
+                </div>
+                <p class="text-gray-500 text-[10px] font-medium text-center md:text-right">
+                    © <span id="year-footer"></span> Himangshu Paul. All rights reserved.
+                </p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // Set dynamic year
+        document.getElementById('year-footer').textContent = new Date().getFullYear();
+
+        // Optimized Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
+
+        const lerp = (start, end, factor) => start + (end - start) * factor;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function renderCursor() {
+            cursorX = lerp(cursorX, mouseX, 0.3);
+            cursorY = lerp(cursorY, mouseY, 0.3);
+            cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
+
+        // Cursor Hover States
+        document.body.addEventListener('mouseover', (e) => {
+            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                cursor.classList.add('hovering');
+            }
+        }, true);
+        
+        document.body.addEventListener('mouseout', (e) => {
+            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                cursor.classList.remove('hovering');
+            }
+        }, true);
+
+        // Full JSON Data for Life Gallery (39 Items: Mixed Photos & Videos)
+        const lifeGalleryData = [
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i1.jpg", alt: "Gallery Image" },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v1.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i2.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i3.jpg", alt: "Gallery Image" },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v2.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i4.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i5.jpg", alt: "Gallery Image" },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v3.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i6.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i7.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i8.jpg", alt: "Gallery Image" },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v4.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i9.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i10.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i11.jpeg", alt: "Gallery Image" },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v5.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i12.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i12.jpg", alt: "Gallery Image" }, 
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v6.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i13.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i14.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i15.jpeg", alt: "Gallery Image" },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v7.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i16.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i17.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i18.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i19.jpeg", alt: "Gallery Image" },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v8.mp4", alt: "Gallery Video" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i20.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i21.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i22.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i23.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i24.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i25.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i26.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i27.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i28.jpeg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i29.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i30.jpg", alt: "Gallery Image" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i31.jpg", alt: "Gallery Image" }
+        ];
+
+        let currentGalleryPage = 0;
+        const itemsPerPage = 9;
+
+        function renderLifeGallery(append = false) {
+            const container = document.getElementById('life-gallery-container');
+            const btnContainer = document.getElementById('load-more-container');
+            if (!container) return;
+            
+            const start = currentGalleryPage * itemsPerPage;
+            const end = start + itemsPerPage;
+            const items = lifeGalleryData.slice(start, end);
+            
+            const newElements = [];
+            
+            items.forEach(item => {
+                const wrapper = document.createElement('div');
+                wrapper.className = "bento-card gallery-item image-zoom rounded-xl overflow-hidden opacity-0 translate-y-8"; // Start hidden for smooth entry animation
+                
+                // Original color filters used, no blend-mode or opacity overlays 
+                const mediaHTML = item.type === 'video' 
+                    ? `<video src="${item.src}" autoplay loop muted playsinline class="w-full h-auto object-cover"></video>`
+                    : `<img src="${item.src}" alt="${item.alt}" class="w-full h-auto object-cover" loading="lazy">`;
+                
+                wrapper.innerHTML = mediaHTML;
+                container.appendChild(wrapper);
+                newElements.push(wrapper);
+            });
+            
+            // Animate new items entering the masonry layout
+            gsap.to(newElements, {
+                y: 0, opacity: 1, duration: 0.6, ease: "power3.out", stagger: 0.1,
+                onComplete: () => ScrollTrigger.refresh()
+            });
+
+            // Hide the load more button if we reached the end
+            if (end >= lifeGalleryData.length && btnContainer) {
+                btnContainer.style.display = 'none';
+            }
+        }
+
+        // Attach Load More Button Logic
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                currentGalleryPage++;
+                renderLifeGallery(true);
+            });
+        }
+
+        // Optimized Cover Media Sequence JSON and Logic (Includes specific requested elements)
+        const coverMediaData = [
+            { type: "video", src: "https://himangshu.site/gallery/cover%20video.mp4" },
+            { type: "image", src: "https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=2000&auto=format&fit=crop", duration: 5000 },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v5.mp4" },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i27.jpeg", duration: 5000 },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i21.jpeg", duration: 5000 },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i19.jpeg", duration: 5000 },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i14.jpeg", duration: 5000 },
+            { type: "image", src: "https://himangshu.site/gallery/gallery%20i13.jpeg", duration: 5000 },
+            { type: "video", src: "https://himangshu.site/gallery/gallery%20v3.mp4" }
+        ];
+
+        let currentCoverIndex = 0;
+
+        function playCoverMedia() {
+            const container = document.getElementById('cover-media-container');
+            if (!container || coverMediaData.length === 0) return;
+
+            const item = coverMediaData[currentCoverIndex];
+            let newMedia;
+
+            if (item.type === 'video') {
+                newMedia = document.createElement('video');
+                newMedia.src = item.src;
+                newMedia.muted = true;
+                newMedia.playsInline = true;
+                newMedia.autoplay = true;
+                newMedia.crossOrigin = "anonymous";
+                newMedia.className = "absolute inset-0 w-full h-full object-cover opacity-0";
+                
+                newMedia.onended = () => {
+                    currentCoverIndex = (currentCoverIndex + 1) % coverMediaData.length;
+                    playCoverMedia();
+                };
+            } else {
+                newMedia = document.createElement('img');
+                newMedia.src = item.src;
+                newMedia.className = "absolute inset-0 w-full h-full object-cover opacity-0";
+                
+                setTimeout(() => {
+                    currentCoverIndex = (currentCoverIndex + 1) % coverMediaData.length;
+                    playCoverMedia();
+                }, item.duration || 5000);
+            }
+
+            container.appendChild(newMedia);
+
+            // Crossfade new media in naturally
+            gsap.to(newMedia, { opacity: 1, duration: 1.5, ease: "power2.inOut" });
+            
+            // Fade out and remove old media elements smoothly
+            const oldMediaElements = container.children;
+            if (oldMediaElements.length > 1) {
+                const oldMedia = oldMediaElements[0];
+                gsap.to(oldMedia, { 
+                    opacity: 0, 
+                    duration: 1.5, 
+                    ease: "power2.inOut", 
+                    onComplete: () => {
+                        if (oldMedia.parentNode === container) {
+                            container.removeChild(oldMedia);
+                        }
+                    }
+                });
+            }
+
+            if (item.type === 'video') {
+                const playPromise = newMedia.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Video auto-play prevented:", error);
+                        // Fallback to image duration timing if video is blocked
+                        setTimeout(() => {
+                            currentCoverIndex = (currentCoverIndex + 1) % coverMediaData.length;
+                            playCoverMedia();
+                        }, 5000);
+                    });
+                }
+            }
+        }
+
+        // Optimized Text Reveal Logic
+        function prepareTextBlur() {
+            document.querySelectorAll('.blur-text-scroll').forEach(el => {
+                const text = el.textContent.trim().replace(/\s+/g, ' ');
+                el.textContent = '';
+                const words = text.split(' ');
+                const fragment = document.createDocumentFragment();
+                
+                words.forEach((word, index) => {
+                    const span = document.createElement('span');
+                    span.textContent = word + (index < words.length - 1 ? ' ' : '');
+                    span.className = 'char-anim';
+                    fragment.appendChild(span);
+                });
+                el.appendChild(fragment);
+            });
+        }
+
+        function triggerTextBlur(element) {
+            if (element.dataset.animated === 'true') return; 
+            element.dataset.animated = 'true';
+            
+            const words = element.querySelectorAll('.char-anim');
+            words.forEach((word, index) => {
+                setTimeout(() => {
+                    word.classList.add('visible');
+                }, index * 40);
+            });
+        }
+
+        // Initialize Page Animations & Dynamic Sections
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLifeGallery(false); // Initial load of 9 items
+            playCoverMedia(); // Start dynamic cover media loop
+            prepareTextBlur();
+            
+            gsap.utils.toArray('.gs-reveal').forEach(section => {
+                gsap.from(section, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 85%",
+                        onEnter: () => {
+                            if (section.classList.contains('blur-text-scroll')) triggerTextBlur(section);
+                            section.querySelectorAll('.blur-text-scroll').forEach(triggerTextBlur);
+                        }
+                    },
+                    y: 30, opacity: 0, duration: 0.8, ease: "power3.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>
