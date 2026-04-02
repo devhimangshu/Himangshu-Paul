@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-[#050505]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
+    <title>10-Minute Portfolio Guide | Himangshu Paul</title>
+    <meta name="description" content="A complete step-by-step guide to creating a premium personal website with animated visuals using AI-powered tools.">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="https://himangshu.site/asstets/himangshudp.webp">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+                    },
+                    colors: {
+                        accent: '#ff6b00',
+                        bgBase: '#050505'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        body {
+            color: #ffffff; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #050505;
+        }
+        
+        @media (pointer: fine) {
+            body { cursor: none; }
+            a, button, .interactive-element, .step-card { cursor: none; }
+        }
+
+        ::selection {
+            background-color: rgba(255, 107, 0, 0.4);
+            color: #ffffff;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff6b00; }
+
+        /* Premium Dark Bento Box for Steps */
+        .step-card {
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            transform: translateZ(0); 
+        }
+        
+        .step-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.03), transparent);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .step-card:hover {
+            border-color: rgba(255, 107, 0, 0.3);
+            box-shadow: 0 10px 40px -10px rgba(255, 107, 0, 0.1);
+            transform: translateZ(0) translateY(-2px);
+        }
+
+        .step-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Code Block Styling */
+        .code-block {
+            background-color: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .code-header {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 12px; height: 12px; border-radius: 50%; background-color: #ff6b00;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1), height 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, border 0.2s;
+            will-change: transform, width, height;
+        }
+        .custom-cursor.hovering { width: 50px; height: 50px; background-color: rgba(255, 107, 0, 0.15); border: 1px solid #ff6b00; backdrop-filter: blur(2px); }
+
+        .bg-grid-pattern-dark {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="font-sans relative bg-[#050505] bg-grid-pattern-dark min-h-screen flex flex-col">
+
+    <div id="cursor" class="custom-cursor hidden md:block"></div>
+
+    <!-- Custom Notifications Toast -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 bg-[#111] border border-white/10 text-white px-6 py-3 rounded-full text-sm font-medium shadow-2xl opacity-0 pointer-events-none -translate-y-4 transition-all duration-300 z-[100] flex items-center gap-2">
+        <i class="ph-fill ph-check-circle text-accent text-lg"></i> <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <!-- Top Navigation -->
+    <nav class="w-full px-6 py-6 fixed top-0 z-50 pointer-events-none">
+        <div class="max-w-4xl mx-auto flex justify-start items-center pointer-events-auto">
+            <a href="/" class="interactive-element flex items-center gap-3 bg-[#111]/90 backdrop-blur-xl border border-white/10 p-1.5 pr-4 rounded-full hover:bg-white/10 hover:border-white/20 transition-all shadow-lg group gs-header" aria-label="Back to Home">
+                <i class="ph ph-arrow-left text-white text-xl ml-2 group-hover:-translate-x-1 transition-transform"></i>
+                <div class="w-9 h-9 rounded-full bg-black overflow-hidden border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.05)] group-hover:scale-105 transition-transform duration-300">
+                    <img src="https://himangshu.site/asstets/himangshudp.webp" alt="Himangshu Paul" class="w-full h-full object-cover">
+                </div>
+                <span class="text-sm font-semibold text-white hidden sm:block">Home</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="relative w-full flex-grow flex flex-col pt-32 pb-20 px-6">
+        
+        <!-- Ambient Glow -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] bg-accent/5 blur-[120px] pointer-events-none rounded-full z-0"></div>
+
+        <!-- Hero Section -->
+        <div class="max-w-3xl mx-auto w-full text-center relative z-10 mb-20 gs-reveal">
+            <span class="text-xs font-semibold tracking-[0.35em] text-accent uppercase mb-4 block">Developer Guide</span>
+            <h1 class="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6 leading-tight">
+                Build a Modern Personal Portfolio in 10 Minutes.
+            </h1>
+            <p class="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+                A complete step-by-step guide to creating a premium personal website with animated visuals using AI-powered tools. Follow the exact prompts and workflow below.
+            </p>
+        </div>
+
+        <!-- Timeline / Guide Content -->
+        <div class="max-w-3xl mx-auto w-full relative z-10">
+            
+            <!-- Center Line for Timeline -->
+            <div class="absolute left-8 md:left-12 top-0 bottom-0 w-px bg-white/10 hidden md:block"></div>
+
+            <!-- PHASE 1 -->
+            <div class="mb-16 gs-reveal">
+                <div class="flex items-center gap-4 mb-8 relative">
+                    <div class="w-16 h-16 rounded-2xl bg-[#111] border border-white/10 shadow-lg flex items-center justify-center text-xl font-bold text-white shrink-0 relative z-10 md:ml-4">
+                        P1
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Generating Visual Assets</h2>
+                </div>
+
+                <div class="pl-0 md:pl-24 flex flex-col gap-8">
+                    <!-- Step 1 -->
+                    <div class="step-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="text-accent text-sm font-mono bg-accent/10 px-2 py-1 rounded">Step 1</span> Generate Static Frames
+                            </h3>
+                        </div>
+                        <ol class="list-decimal list-inside text-gray-400 text-sm md:text-base space-y-3 mb-6 marker:text-gray-500">
+                            <li>Navigate to <strong class="text-white">Google Whisk</strong> on your browser.</li>
+                            <li>Upload a photo of yourself or your product to use as the subject.</li>
+                            <li>Copy and paste the following prompt to generate your frames:</li>
+                        </ol>
+
+                        <div class="code-block interactive-element group">
+                            <div class="code-header">
+                                <span class="text-[10px] text-gray-500 uppercase tracking-widest font-mono">Prompt</span>
+                                <button class="copy-btn text-xs text-gray-400 hover:text-accent transition-colors flex items-center gap-1" data-target="prompt-1">
+                                    <i class="ph ph-copy"></i> Copy
+                                </button>
+                            </div>
+                            <pre id="prompt-1" class="p-5 text-xs md:text-sm text-gray-300 font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed">Cinematic portrait with high-contrast dual-tone lighting, combining deep blues and fiery oranges. The mood feels premium and modern — like a movie poster or high-end branding website hero section.
+
+Lighting & Color:
+- Key lighting: Strong overhead/front key light in warm orange/red tones.
+- Fill lighting: Cool blue gradient shadows on the opposite side of the face.
+- Color palette: Deep navy blue background fading into warm orange near the subject.
+- Contrast: Very high contrast, with sharp separation between warm + cool tones.
+
+Subject Look:
+- Close-up portrait facing upward, looking upward, giving an inspiring vibe.
+- Low-angle camera perspective for a powerful feeling.
+- Soft, subtle rim light around the edges to separate the subject from the background.
+
+Composition:
+- Subject centered, but text area is intentionally left/right clear.
+- Smooth vignette effect around edges to focus attention on the face.
+- Clean fade between colors (no harsh transitions).
+
+Texture & Finish:
+- Smooth, professional, glossy finish — similar to premium ad photography.
+- Subtle film-like grain for realism (optional).
+- Skin smoothness maintained but not overly retouched.
+
+Background:
+- Gradient blend from dark blue at the top to warm orange/red at the bottom.
+- No distractions; fully blurred or minimal texture.
+
+Mood / Branding Feel:
+- Bold, confident, modern.
+- Feels like a brand designer or creative professional’s hero banner.
+- Strong cinematic atmosphere with directional lighting.</pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="text-accent text-sm font-mono bg-accent/10 px-2 py-1 rounded">Step 2</span> Animate the Images
+                            </h3>
+                        </div>
+                        <ol class="list-decimal list-inside text-gray-400 text-sm md:text-base space-y-3 mb-6 marker:text-gray-500">
+                            <li>Select a frame you like from the generated options.</li>
+                            <li>Click the animate button.</li>
+                            <li>Type this prompt in the field and click create:</li>
+                        </ol>
+
+                        <div class="code-block interactive-element group">
+                            <div class="code-header">
+                                <span class="text-[10px] text-gray-500 uppercase tracking-widest font-mono">Prompt</span>
+                                <button class="copy-btn text-xs text-gray-400 hover:text-accent transition-colors flex items-center gap-1" data-target="prompt-2">
+                                    <i class="ph ph-copy"></i> Copy
+                                </button>
+                            </div>
+                            <pre id="prompt-2" class="p-5 text-xs md:text-sm text-gray-300 font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed">A smooth cinematic 3D transition. Create a clean, fluid animation that gives the site a premium look.</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 2 -->
+            <div class="mb-16 gs-reveal">
+                <div class="flex items-center gap-4 mb-8 relative">
+                    <div class="w-16 h-16 rounded-2xl bg-[#111] border border-white/10 shadow-lg flex items-center justify-center text-xl font-bold text-white shrink-0 relative z-10 md:ml-4">
+                        P2
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Converting Animation for Web</h2>
+                </div>
+
+                <div class="pl-0 md:pl-24 flex flex-col gap-8">
+                    <!-- Step 3 -->
+                    <div class="step-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="text-accent text-sm font-mono bg-accent/10 px-2 py-1 rounded">Step 3</span> Convert to WebP Format
+                            </h3>
+                        </div>
+                        <ol class="list-decimal list-inside text-gray-400 text-sm md:text-base space-y-3 marker:text-gray-500">
+                            <li>Search for "video to webp" and open <strong class="text-white">ezgif</strong>.</li>
+                            <li>Upload your animation.</li>
+                            <li>Apply the following settings:
+                                <ul class="list-disc list-inside pl-6 mt-2 space-y-1 text-gray-400">
+                                    <li><strong>Resolution:</strong> Original</li>
+                                    <li><strong>FPS:</strong> 15 (or the closest native FPS)</li>
+                                    <li><strong>Quality:</strong> 85</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="text-accent text-sm font-mono bg-accent/10 px-2 py-1 rounded">Step 4</span> Extract Frames
+                            </h3>
+                        </div>
+                        <ol class="list-decimal list-inside text-gray-400 text-sm md:text-base space-y-3 marker:text-gray-500">
+                            <li>Click the split button to break the WebP video into individual image frames.</li>
+                            <li>Download the generated zip file.</li>
+                            <li>Unzip the file on your computer.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PHASE 3 -->
+            <div class="mb-16 gs-reveal">
+                <div class="flex items-center gap-4 mb-8 relative">
+                    <div class="w-16 h-16 rounded-2xl bg-[#111] border border-white/10 shadow-lg flex items-center justify-center text-xl font-bold text-white shrink-0 relative z-10 md:ml-4">
+                        P3
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">Engineering with Google Antigravity</h2>
+                </div>
+
+                <div class="pl-0 md:pl-24 flex flex-col gap-8">
+                    <!-- Step 5 -->
+                    <div class="step-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="text-accent text-sm font-mono bg-accent/10 px-2 py-1 rounded">Step 5</span> Setup the Project
+                            </h3>
+                        </div>
+                        <ol class="list-decimal list-inside text-gray-400 text-sm md:text-base space-y-3 marker:text-gray-500">
+                            <li>Open <strong class="text-white">Google Antigravity</strong> (available as a free download).</li>
+                            <li>Drag and drop the unzipped folder of images directly into the tool.</li>
+                            <li>Rename the folder to <code class="bg-white/10 px-1.5 py-0.5 rounded text-white font-mono text-sm">sequence</code> so the code can correctly locate the animation frames.</li>
+                        </ol>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="step-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="text-accent text-sm font-mono bg-accent/10 px-2 py-1 rounded">Step 6</span> Generate Code via AI
+                            </h3>
+                        </div>
+                        <ol class="list-decimal list-inside text-gray-400 text-sm md:text-base space-y-3 mb-6 marker:text-gray-500">
+                            <li>Open the Agent Chat on the right side.</li>
+                            <li>Select the <strong class="text-white">Gemini 3 Pro</strong> high model.</li>
+                            <li>Copy and paste this system prompt:</li>
+                        </ol>
+
+                        <div class="code-block interactive-element group">
+                            <div class="code-header">
+                                <span class="text-[10px] text-gray-500 uppercase tracking-widest font-mono">Prompt</span>
+                                <button class="copy-btn text-xs text-gray-400 hover:text-accent transition-colors flex items-center gap-1" data-target="prompt-3">
+                                    <i class="ph ph-copy"></i> Copy
+                                </button>
+                            </div>
+                            <pre id="prompt-3" class="p-5 text-xs md:text-sm text-gray-300 font-mono overflow-x-auto whitespace-pre-wrap leading-relaxed">**ACT AS:**
+A Senior Creative Developer (Awwwards-level) specializing in Next.js, Framer Motion, and high-performance scroll interactions.
+
+**THE TASK:**
+Build a high-end "Scrollytelling" Personal Portfolio Website.
+The core mechanic is a scroll-linked animation that scrubs through an image sequence as the user scrolls down the page.
+
+**TECH STACK:**
+- Framework: Next.js 14 (App Router)
+- Language: TypeScript
+- Styling: Tailwind CSS
+- Animation: Framer Motion
+- Rendering Strategy: HTML5 Canvas (for performance)
+
+**ASSETS LOCATION:**
+- I have placed a sequence of WebP images in the folder: `/sequence/`
+- The files are named sequentially (e.g., `frame_00_delay-0.067s.webp`, `frame_01_delay-0.067s.webp`... up to roughly 89 frames).
+
+**IMPLEMENTATION BLUEPRINT:**
+1. **Global Styles & Reset:** - Set the global background color to a specific hex code (e.g., #121212) to match the background of the video frames. This is CRITICAL for seamless blending. 
+   - Use a clean sans-serif font (Inter or San Francisco).
+
+2. **Component 1: The Sticky Scroller (`ScrollyCanvas.tsx`):** - Create a parent container with a height of `500vh` (to allow for a long scroll). 
+   - Inside, create a `sticky` container (`top-0 h-screen w-full`). 
+   - Use an HTML5 `<canvas>` element to render the images. 
+   - Logic: Use Framer Motion's `useScroll` to map the scroll progress (0 to 1) to the image frame index. 
+   - **Optimization:** You MUST preload the images in a `useEffect` hook to prevent flickering/white flashes during scroll.
+
+3. **Component 2: The Parallax Overlay (`Overlay.tsx`):** - Create text sections that sit *on top* of the canvas (z-index 10). 
+   - As the user scrolls, these text elements should fade in/out using `motion.div` with parallax speed (move slightly faster or slower than scroll). 
+   - **Section 1 (0% scroll):** "My Name. Creative Developer." (Center) 
+   - **Section 2 (30% scroll):** "I build digital experiences." (Left aligned) 
+   - **Section 3 (60% scroll):** "Bridging design and engineering." (Right aligned)
+
+4. **Component 3: The Work Grid (`Projects.tsx`):** - Placed *after* the scroll animation finishes (below the 500vh container). 
+   - A modern grid layout showcasing 3-4 project case studies. 
+   - Style: Glass-morphism cards (backdrop-blur, thin borders, subtle hover glow).
+
+**EXECUTION RULES:**
+- Do not use a `<video>` tag; use Canvas.
+- Ensure the canvas uses `object-fit: cover` logic so it looks good on Mobile and Desktop.
+- Write clean, modular code.
+
+**START:**
+Begin by scaffolding the directory structure and writing the `ScrollyCanvas` component. Need modern looking, darkish, website. Use nano banana if need more UI components or buttons or anything. Hit run to scaffold the entire application automatically.</pre>
+                        </div>
+                    </div>
+
+                    <!-- Step 7 -->
+                    <div class="step-card p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <span class="text-accent text-sm font-mono bg-accent/10 px-2 py-1 rounded">Step 7</span> Preview and Personalize
+                            </h3>
+                        </div>
+                        <ol class="list-decimal list-inside text-gray-400 text-sm md:text-base space-y-3 marker:text-gray-500">
+                            <li>Run the command <code class="bg-white/10 px-1.5 py-0.5 rounded text-white font-mono text-sm">npm run dev</code> to preview the site.</li>
+                            <li>Check if the scroll interactions are smooth.</li>
+                            <li>Provide the AI with your personal information:
+                                <ul class="list-disc list-inside pl-6 mt-2 space-y-1 text-gray-400">
+                                    <li>Portfolio details</li>
+                                    <li>Work experience</li>
+                                    <li>Skills and achievements</li>
+                                </ul>
+                            </li>
+                            <li>Let the AI populate the content of your website.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="mt-20 text-center gs-reveal bg-[#111]/50 border border-white/5 rounded-3xl p-10 backdrop-blur-md">
+                <h2 class="text-2xl font-bold text-white mb-4">Thank you for following this guide! 🎉</h2>
+                <p class="text-gray-400 text-sm md:text-base mb-8 max-w-lg mx-auto">
+                    If you found this helpful and want to see more tutorials like this, follow me on Instagram for more creative development tips, AI workflows, and web design inspiration.
+                </p>
+                <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-bold rounded-xl hover:bg-accent hover:text-white hover:shadow-[0_0_25px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element">
+                    <i class="ph ph-instagram-logo text-xl"></i> Follow on Instagram
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full py-8 text-center border-t border-white/5 relative z-10">
+        <p class="text-[10px] text-gray-600 font-bold tracking-widest uppercase">
+            © <span id="year"></span> Himangshu Paul. All rights reserved.
+        </p>
+    </footer>
+
+    <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Custom Cursor Logic (Hardware accelerated & optimized)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursor = document.getElementById('cursor');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let cursorX = window.innerWidth / 2;
+            let cursorY = window.innerHeight / 2;
+
+            const lerp = (start, end, factor) => start + (end - start) * factor;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function renderCursor() {
+                cursorX = lerp(cursorX, mouseX, 0.3);
+                cursorY = lerp(cursorY, mouseY, 0.3);
+                cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
+                requestAnimationFrame(renderCursor);
+            }
+            requestAnimationFrame(renderCursor);
+
+            // Cursor Hover States for links and interactive elements
+            document.body.addEventListener('mouseover', (e) => {
+                if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                    cursor.classList.add('hovering');
+                }
+            }, true);
+            
+            document.body.addEventListener('mouseout', (e) => {
+                if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.closest('button') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                    cursor.classList.remove('hovering');
+                }
+            }, true);
+        }
+
+        // Toast Notification System
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+            
+            toast.style.opacity = '1';
+            toast.style.transform = 'translate(-50%, 0)';
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translate(-50%, -16px)';
+            }, 3000);
+        }
+
+        // Copy to Clipboard Logic
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                const textToCopy = document.getElementById(targetId).innerText;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i class="ph ph-check"></i> Copied';
+                    btn.classList.add('text-accent');
+                    showToast('Prompt copied to clipboard!');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        btn.classList.remove('text-accent');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy: ', err);
+                    // Fallback for older browsers
+                    const textArea = document.createElement("textarea");
+                    textArea.value = textToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('Prompt copied to clipboard!');
+                    } catch (err) {
+                        showToast('Failed to copy text.');
+                    }
+                    document.body.removeChild(textArea);
+                });
+            });
+        });
+
+        // Initialize GSAP Entrance & Scroll Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial load animations
+            gsap.from('.gs-header', {
+                y: -20, 
+                opacity: 0, 
+                duration: 0.8, 
+                ease: "power2.out",
+                stagger: 0.1
+            });
+
+            // Scroll reveal animations for sections
+            gsap.utils.toArray('.gs-reveal').forEach(section => {
+                gsap.from(section, {
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top 85%",
+                    },
+                    y: 30, 
+                    opacity: 0, 
+                    duration: 0.8, 
+                    ease: "power3.out"
+                });
+            });
+        });
+    </script>
+</body>
+</html>
