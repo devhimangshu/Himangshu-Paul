@@ -1,368 +1,319 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth bg-[#050505]">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- === UPDATED: Title for error page === -->
-    <title>Page Not Found (404) - Himangshu Paul</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
+    <title>404 Page Not Found | Himangshu Paul</title>
+    <meta name="description" content="The requested page could not be found. Return to Himangshu Paul's web developer portfolio.">
+    <meta name="robots" content="noindex, follow">
     
-    <!-- === NEW: Inline SVG Favicon === -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='15' fill='%237C3AED' /%3E%3Ctext x='50' y='55' font-size='50' font-weight='bold' fill='%23F5F5F5' text-anchor='middle' font-family='sans-serif'%3EHP%3C/text%3E%3C/svg%3E">
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="https://himangshu.site/asstets/himangshudp.webp">
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- lucide-react is for React, we just need lucide for HTML --><script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" rel="stylesheet">
-    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        accent: '#ff6b00',
+                        bgBase: '#050505'
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        /* === CHANGED: CSS Variables for NEW Dark Theme === */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800&display=swap');
+
         :root {
-            --bg-color: #121212; /* Dark background */
-            --bg-secondary: #1E1E1E; /* Slightly lighter dark */
-            --text-color: #F5F5F5; /* Off-white text */
-            --text-color-light: #A0A0A0; /* Light gray */
-            --accent-color: #7C3AED; /* Vibrant Purple (Stays the same) */
-            --border-color: #333333; /* Dark border */
-            --bg-contact: #2C2A4A; /* Dark purple */
-            --btn-dark: #FFFFFF; /* Was dark, now light */
+            --lg-bg-color: rgba(255, 255, 255, 0.03);
+            --lg-highlight: rgba(255, 255, 255, 0.3);
+            --lg-shadow: rgba(0, 0, 0, 0.25);
         }
 
-        /* Apply custom fonts */
         body {
-            font-family: 'Satoshi', sans-serif;
-            font-weight: 400;
-            background-color: var(--bg-color);
-            color: var(--text-color); /* Default text color is now light */
-            letter-spacing: 0.025em;
-        }
-
-        /* Grain overlay */
-        body::after {
-          content: '';
-          position: fixed;
-          inset: 0;
-          background-image: url('https://born2earn.in/himanghu/grain.png');
-          background-repeat: repeat;
-          opacity: 0.07;
-          pointer-events: none;
-          z-index: 0; 
+            color: #ffffff; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #050505;
         }
         
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Satoshi', sans-serif;
-            font-weight: 700;
-            color: var(--text-color); /* Headings are light */
+        @media (min-width: 768px) {
+            body { cursor: none; }
+            a, button, .interactive-element { cursor: none; }
         }
 
-        .hero-heading-heavy {
-            font-weight: 900;
-            color: var(--text-color);
+        ::selection {
+            background-color: rgba(255, 107, 0, 0.4);
+            color: #ffffff;
         }
+
+        /* Navbar Glass Switch */
+        #main-nav {
+            --nav-text: #ffffff;
+            --nav-glass-bg: rgba(255, 255, 255, 0.03);
+            --nav-highlight: rgba(255, 255, 255, 0.3);
+            --nav-shadow: rgba(0, 0, 0, 0.25);
+        }
+
+        .glass-container {
+            position: relative; display: flex; background: transparent; border-radius: 2rem; overflow: hidden;
+            box-shadow: 0 10px 30px var(--lg-shadow), 0 0 20px rgba(0, 0, 0, 0.1); transform: translateZ(0); 
+        }
+        .glass-container--rounded { border-radius: 5rem; }
+        .glass-container--nav { --lg-bg-color: var(--nav-glass-bg); --lg-highlight: var(--nav-highlight); --lg-shadow: var(--nav-shadow); transition: background-color 0.4s ease; }
+        .nav-link { color: var(--nav-text); transition: color 0.4s ease; opacity: 0.8; }
         
-        /* Shimmer Effect */
-        .shimmer-text {
-            background: linear-gradient(
-                90deg, 
-                var(--accent-color) 30%, 
-                #F5F5F5 50%, /* Using --text-color for shine */
-                var(--accent-color) 70%
-            );
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: shimmer-animation 4s linear infinite;
+        .glass-filter { position: absolute; inset: -20px; z-index: 0; backdrop-filter: blur(20px); isolation: isolate; }
+        .glass-overlay { position: absolute; inset: 0; z-index: 1; background: var(--lg-bg-color); transition: background 0.4s ease; }
+        .glass-specular {
+            position: absolute; inset: 0; z-index: 3; border-radius: inherit; overflow: hidden; pointer-events: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.1) 100%);
+            box-shadow: inset 1px 1px 2px var(--lg-highlight), inset -1px -1px 3px rgba(0, 0, 0, 0.05); 
         }
+        .glass-content { position: relative; z-index: 4; width: 100%; height: 100%; }
 
-        @keyframes shimmer-animation {
-            0% {
-                background-position: 200% 0;
-            }
-            100% {
-                background-position: -200% 0;
-            }
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed; top: 0; left: 0; width: 12px; height: 12px; border-radius: 50%; background-color: #ff6b00;
+            pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, border 0.3s;
+            will-change: transform, width, height;
         }
+        .custom-cursor.hovering { width: 60px; height: 60px; background-color: rgba(255, 107, 0, 0.15); border: 1px solid #ff6b00; backdrop-filter: blur(2px); }
 
-        /* Section Glow Effect */
-        .section-glow {
-            position: relative;
-            overflow: hidden; /* Contain the glows */
-        }
-        .section-glow::before {
-            content: '';
-            position: absolute;
-            z-index: 0; /* Behind the content */
-            left: 0;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px; 
-            height: 800px;
-            background-image: radial-gradient(ellipse at center, 
-                rgba(124, 58, 237, 0.25) 0%,
-                transparent 70%
-            );
-            pointer-events: none;
-        }
-        .section-glow::after {
-            content: '';
-            position: absolute;
-            z-index: 0; /* Behind the content */
-            right: 0;
-            top: 50%;
-            transform: translate(50%, -50%);
-            width: 800px; 
-            height: 800px;
-            background-image: radial-gradient(ellipse at center, 
-                rgba(124, 58, 237, 0.25) 0%,
-                transparent 70%
-            );
-            pointer-events: none;
-        }
-        .section-glow > div {
-            position: relative;
-            z-index: 2; 
-        }
-        
-        /* Ensure the main error content takes up the full viewport height minus header/footer */
-        main {
-            display: flex;
-            flex-direction: column;
-            min-height: calc(100vh - 5rem); /* 100vh minus header height */
-        }
-        #error-section {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* Text Animation */
+        .char-anim { display: inline-block; opacity: 0; filter: blur(8px); transform: translateY(15px); transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, filter, transform; }
+        .char-anim.visible { opacity: 1; filter: blur(0); transform: translateY(0); }
+        .char-space { display: inline-block; width: 0.25em; }
 
+        .bg-grid-pattern-dark {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
     </style>
 </head>
-<body class="antialiased">
+<body class="font-sans relative bg-[#050505] bg-grid-pattern-dark min-h-screen flex flex-col overflow-x-hidden">
 
-    <!-- === Header (Consistent with other pages) === -->
-    <header class="bg-[var(--bg-color)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[var(--border-color)]">
-        <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex-shrink-0">
-                    <!-- === UPDATED: Logo links to root === -->
-                    <a href="/" class="text-2xl font-bold text-[var(--text-color)] tracking-wide">Himangshu Paul</a>
-                </div>
-                
-                <!-- Desktop Nav -->
-                <div class="hidden md:flex md:items-center md:space-x-8">
-                    <a href="/#introduction" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Introduction</a>
-                    <a href="/projects" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Projects</a>
-                    
-                    <!-- Services Dropdown -->
-                    <div class="relative group">
-                        <button class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium flex items-center gap-1 focus:outline-none">
-                            <span>Services</span>
-                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"></i>
-                        </button>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <a href="/services" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-t-lg">All Services</a>
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Web Development</a>
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">App Development</a>
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">SEO</a>
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Ads</a>
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)]">Google Play Console</a>
-                            <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E" target="_blank" rel="noopener noreferrer" class="block px-4 py-3 text-sm text-[var(--text-color-light)] hover:bg-[var(--bg-color)] hover:text-[var(--accent-color)] rounded-b-lg">Performance Marketing</a>
-                        </div>
-                    </div>
+    <div id="cursor" class="custom-cursor hidden md:block"></div>
 
-                    <a href="/#clients" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Clients</a>
-                    <a href="/#testimonials" class="text-[var(--text-color-light)] hover:text-[var(--accent-color)] text-sm font-medium transition-colors">Testimonials</a>
-                    <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 px-5 py-2.5 rounded-full text-sm font-medium transition-colors">
-                        Contact Me
-                    </a>
+    <!-- Top Navigation -->
+    <nav id="main-nav" class="fixed top-0 w-full z-[100] px-6 py-6 pointer-events-none">
+        <div class="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
+            <a href="/" class="interactive-element shrink-0" aria-label="Home">
+                <img src="https://himangshu.site/asstets/himangshudp.webp" alt="Himangshu Paul" class="w-11 h-11 rounded-full object-cover border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-transform duration-300 hover:scale-105 bg-black">
+            </a>
+            
+            <div class="glass-container glass-container--rounded glass-container--nav px-4 py-1.5">
+                <div class="glass-filter"></div>
+                <div class="glass-overlay"></div>
+                <div class="glass-specular"></div>
+                <div class="glass-content flex items-center gap-2">
+                    <a href="/" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">Home</a>
+                    <a href="/about" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">About</a>
                 </div>
-                
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button id="menu-btn" type="button" class="text-[var(--text-color-light)] hover:text-[var(--text-color)] focus:outline-none focus:text-[var(--text-color)]" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <i data-lucide="menu" class="h-6 w-6" id="menu-icon-open"></i>
-                        <i data-lucide="x" class="h-6 w-6 hidden" id="menu-icon-close"></i>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Mobile Menu -->
-        <div class="md:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[var(--bg-color)]">
-                <a href="/#introduction" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Introduction</a>
-                <a href="/projects" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Projects</a>
-                
-                <!-- Mobile Services Dropdown -->
-                <div class="px-3 py-2">
-                    <button id="services-toggle-mobile" class="w-full flex justify-between items-center text-[var(--text-color-light)] text-base font-medium focus:outline-none">
-                        <span>Services</span>
-                        <i data-lucide="chevron-down" id="services-chevron-mobile" class="w-5 h-5 transition-transform duration-200"></i>
-                    </button>
-                    <div id="services-submenu-mobile" class="pl-4 mt-2 space-y-1 hidden">
-                         <a href="/services" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">All Services</a>
-                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Web%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Web Development</a>
-                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20App%20Development%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">App Development</a>
-                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20SEO%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">SEO</a>
-                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Ads%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Ads</a>
-                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Google%20Play%20Console%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Google Play Console</a>
-                         <a href="https://wa.me/919564604956?text=Hi%20Himangshu%2C%20I%27m%20interested%20in%20your%20Performance%20Marketing%20service%2E" target="_blank" rel="noopener noreferrer" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Performance Marketing</a>
-                    </div>
-                </div>
-
-                <a href="/#clients" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Clients</a>
-                <a href="/#testimonials" class="text-[var(--text-color-light)] hover:bg-[var(--bg-secondary)] hover:text-[var(--text-color)] block px-3 py-2 rounded-md text-base font-medium">Testimonials</a>
-                <a href="mailto:himangshu.inbox@gmail.com" class="text-white bg-[var(--accent-color)] hover:opacity-90 block px-3 py-2 rounded-md text-base font-medium">Contact Me</a>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- Main Content -->
-    <main>
+    <!-- Main 404 Content -->
+    <main class="relative w-full flex-grow flex flex-col items-center justify-center px-6 py-32">
+        
+        <!-- Ambient Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl h-[400px] bg-gradient-to-r from-accent to-[#ff984d] opacity-10 blur-[120px] pointer-events-none rounded-full"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.8)_100%)] pointer-events-none z-0"></div>
 
-        <!-- === NEW: Error Page Content === -->
-        <section id="error-section" class="py-24 md:py-32 section-glow">
-            <!-- This div gets z-index: 2 -->
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto">
-                    <h1 class="text-8xl md:text-9xl font-bold mb-4">
-                        <span class="hero-heading-heavy shimmer-text">404</span>
-                    </h1>
-                    <h2 class="text-4xl md:text-5xl font-semibold text-[var(--text-color)] mb-6">
-                        Page Not Found
-                    </h2>
-                    <p class="text-xl md:text-2xl font-light text-[var(--text-color-light)] mb-12">
-                        Oops! The page you're looking for doesn't exist. It might have been moved or deleted.
-                    </p>
-                    <a href="/" class="group inline-flex items-center gap-2 bg-[var(--accent-color)] text-white px-6 py-3 rounded-full text-base font-medium hover:opacity-90 transition-opacity">
-                        <i data-lucide="home" class="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1"></i>
-                        <span>Go Back Home</span>
-                    </a>
-                </div>
+        <div class="relative z-10 flex flex-col items-center text-center gs-reveal max-w-xl mx-auto mt-10">
+            <div class="animate-float">
+                <h1 class="text-[8rem] md:text-[12rem] font-black text-transparent bg-clip-text bg-gradient-to-br from-white via-gray-200 to-accent leading-none tracking-tighter drop-shadow-2xl">
+                    404
+                </h1>
             </div>
-        </section>
-
+            
+            <h2 class="text-2xl md:text-4xl font-bold text-white mt-4 mb-4 blur-text">
+                Page Not Found
+            </h2>
+            
+            <p class="text-sm md:text-base text-gray-400 mb-10 blur-text leading-relaxed">
+                The page you are looking for does not exist or has been moved. Check the URL or return to the homepage to continue browsing.
+            </p>
+            
+            <div class="gs-reveal-delay">
+                <a href="/" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black text-sm font-bold rounded-xl hover:bg-accent hover:text-white hover:shadow-[0_0_30px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element">
+                    Return to Home <i class="ph ph-arrow-right text-lg"></i>
+                </a>
+            </div>
+        </div>
     </main>
 
-    <!-- === Footer (Consistent with other pages) === -->
-    <footer class="bg-[var(--bg-color)] text-white relative z-50 mt-auto">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold">Himangshu Paul</h3>
-                    <p class="text-gray-400 mt-2">Full Stack & Android Developer</p>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold text-lg mb-4">Contact</h4>
-                    <ul class="space-y-2 text-gray-300">
-                        <li><a href="mailto:himangshu.inbox@gmail.com" class="hover:text-[var(--accent-color)] transition-colors">himangshu.inbox@gmail.com</a></li>
-                        <li><a href="tel:+919564604956" class="hover:text-[var(--accent-color)] transition-colors">+91 9564604956</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-semibold text-lg mb-4">Follow</h4>
-                    <div class="flex space-x-6">
-                        <a href="https://linkedin.com/in/himangshupaul" target="_blank" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="LinkedIn">
-                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+    <!-- Charcoal Footer -->
+    <footer class="w-full py-8 md:py-12 px-4 md:px-8 lg:px-16 bg-[#111111] border-t border-[#222] relative z-10 mt-auto">
+        <div class="max-w-6xl mx-auto flex flex-col gap-8 md:gap-10">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+                <!-- Brand Info & Socials -->
+                <div class="flex flex-col gap-3 max-w-xs">
+                    <h3 class="text-lg md:text-xl font-bold text-white tracking-tight">Himangshu Paul</h3>
+                    <p class="text-gray-400 text-xs leading-relaxed">
+                        Building reliable web applications. Let's discuss your project.
+                    </p>
+                    <div class="flex items-center gap-3 mt-1">
+                        <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="GitHub">
+                            <i class="ph ph-github-logo text-sm"></i>
                         </a>
-                        <a href="mailto:himangshu.inbox@gmail.com" class="text-gray-400 hover:text-[var(--accent-color)] transition-colors" title="Email">
-                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="Instagram">
+                            <i class="ph ph-instagram-logo text-sm"></i>
                         </a>
-                        <a href="tel:+919564604956" class="text-gray-400 hover:text-[var(--accent-colof)] transition-colors" title="Phone">
-                            <i data-lucide="phone" class="w-6 h-6"></i>
+                        <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="LinkedIn">
+                            <i class="ph ph-linkedin-logo text-sm"></i>
                         </a>
                     </div>
                 </div>
+
+                <!-- Quick Navigation -->
+                <div class="flex flex-col md:items-end gap-2">
+                    <span class="text-[9px] font-bold tracking-widest text-gray-600 uppercase mb-1">Menu</span>
+                    <nav class="flex flex-col md:items-end gap-2 text-xs font-medium text-gray-300">
+                        <a href="/about" class="hover:text-accent transition-colors interactive-element w-max">About</a>
+                        <a href="/#services" class="hover:text-accent transition-colors interactive-element w-max">Services</a>
+                        <a href="/#work" class="hover:text-accent transition-colors interactive-element w-max">Work</a>
+                        <a href="/#contact" class="hover:text-accent transition-colors interactive-element w-max">Contact</a>
+                    </nav>
+                </div>
             </div>
 
-            <div class="border-t border-[var(--border-color)] mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-                <p class="text-gray-400 text-sm">
-                    &copy; <span id="current-year"></span> Himangshu Paul
-                </P>
-                <p class="text-gray-500 text-sm mt-2 sm:mt-0">
-                    Designed with ❤️
+            <!-- Bottom Details: Payments & Copyright -->
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-[#222]">
+                <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" class="h-2.5 w-2.5 opacity-80"> PayPal</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise" class="h-2.5 w-2.5 opacity-80"> Wise</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay" class="h-2.5 w-2.5 opacity-80"> Razorpay</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><i class="ph-fill ph-currency-inr text-gray-400 text-xs"></i> UPI</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa" class="h-2.5 w-2.5 opacity-80"> Visa</span>
+                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard" class="h-2.5 w-2.5 opacity-80"> MC</span>
+                </div>
+                <p class="text-gray-500 text-[10px] font-medium text-center md:text-right">
+                    © <span id="year-footer"></span> Himangshu Paul. All rights reserved.
                 </p>
             </div>
+
         </div>
     </footer>
 
     <script>
-        window.addEventListener("load", () => {
+        // Set dynamic year
+        document.getElementById('year-footer').textContent = new Date().getFullYear();
+
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let cursorX = window.innerWidth / 2;
+        let cursorY = window.innerHeight / 2;
+
+        const lerp = (start, end, factor) => start + (end - start) * factor;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function renderCursor() {
+            cursorX = lerp(cursorX, mouseX, 0.25);
+            cursorY = lerp(cursorY, mouseY, 0.25);
+            cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
+            requestAnimationFrame(renderCursor);
+        }
+        requestAnimationFrame(renderCursor);
+
+        document.body.addEventListener('mouseenter', (e) => {
+            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                cursor.classList.add('hovering');
+            }
+        }, true);
         
-            // Initialize Lucide Icons
-            lucide.createIcons();
-            
-            /* * ===========================================
-             * Re-usable Menu/Footer Logic
-             * ===========================================
-             */
-            
-            // Mobile Menu Toggle
-            const menuBtn = document.getElementById('menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIconOpen = document.getElementById('menu-icon-open');
-            const menuIconClose = document.getElementById('menu-icon-close');
-
-            if (menuBtn) {
-                menuBtn.addEventListener('click', () => {
-                    const isHidden = mobileMenu.classList.toggle('hidden');
-                    menuIconOpen.classList.toggle('hidden', !isHidden);
-                    menuIconClose.classList.toggle('hidden', isHidden);
-                });
+        document.body.addEventListener('mouseleave', (e) => {
+            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+                cursor.classList.remove('hovering');
             }
-            
-            // Mobile Submenu Toggle for Services
-            const servicesToggleMobile = document.getElementById('services-toggle-mobile');
-            const servicesSubmenuMobile = document.getElementById('services-submenu-mobile');
-            const servicesChevronMobile = document.getElementById('services-chevron-mobile');
+        }, true);
 
-            if (servicesToggleMobile) {
-                servicesToggleMobile.addEventListener('click', () => {
-                    const isHidden = servicesSubmenuMobile.classList.toggle('hidden');
-                    servicesChevronMobile.classList.toggle('rotate-180', !isHidden);
-                });
-            }
-            
-            // Close mobile menu when a main link is clicked
-            const mobileLinks = document.querySelectorAll('#mobile-menu a:not([id="services-toggle-mobile"] a)');
-            if (mobileLinks) {
-                mobileLinks.forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        // Check if it's NOT a child of the submenu button
-                        if(!e.target.closest('#services-submenu-mobile') && !e.target.closest('#services-toggle-mobile')) {
-                            mobileMenu.classList.add('hidden');
-                            menuIconOpen.classList.remove('hidden');
-                            menuIconClose.classList.add('hidden');
-                        }
-                    });
-                });
-            }
-            
-             // Close mobile menu when a link inside the submenu is clicked
-            const mobileSubmenuLinks = document.querySelectorAll('#services-submenu-mobile a');
-            if (mobileSubmenuLinks) {
-                mobileSubmenuLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileMenu.classList.add('hidden');
-                        menuIconOpen.classList.remove('hidden');
-                        menuIconClose.classList.add('hidden');
-                        // Also reset the submenu state
-                        servicesSubmenuMobile.classList.add('hidden');
-                        servicesChevronMobile.classList.remove('rotate-180');
-                    });
-                });
-            }
+        // Text Blur Animation Logic
+        function prepareTextBlur() {
+            document.querySelectorAll('.blur-text').forEach(el => {
+                const text = el.textContent.trim().replace(/\s+/g, ' ');
+                el.textContent = '';
+                const fragment = document.createDocumentFragment();
+                
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
+                    const span = document.createElement('span');
+                    if (char === ' ') {
+                        span.className = 'char-space';
+                        span.innerHTML = '&nbsp;';
+                    } else {
+                        span.textContent = char;
+                        span.className = 'char-anim';
+                    }
+                    fragment.appendChild(span);
+                }
+                el.appendChild(fragment);
+            });
+        }
 
-            // Set current year in footer
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+        function triggerTextBlur(element) {
+            if (element.dataset.animated === 'true') return; 
+            element.dataset.animated = 'true';
+            
+            const chars = element.querySelectorAll('.char-anim');
+            chars.forEach((char, index) => {
+                setTimeout(() => {
+                    char.classList.add('visible');
+                }, index * 20); // slightly slower stagger for 404 page
+            });
+        }
 
-        }); // <-- This closes the "load" event listener
+        // Initialize Page Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            prepareTextBlur();
+            
+            // Simple entrance animation
+            gsap.from('.gs-reveal', {
+                y: 30, opacity: 0, duration: 1, ease: "power3.out", delay: 0.2,
+                onComplete: () => {
+                    document.querySelectorAll('.gs-reveal .blur-text').forEach(triggerTextBlur);
+                }
+            });
+
+            gsap.from('.gs-reveal-delay', {
+                y: 20, opacity: 0, duration: 1, ease: "power3.out", delay: 0.8
+            });
+        });
     </script>
-
 </body>
 </html>
