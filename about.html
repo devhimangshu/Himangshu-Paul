@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth bg-[#050505]">
+<html lang="en" class="scroll-smooth bg-[#f8f9fa]">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,7 +8,13 @@
     <title>About Himangshu Paul | Web Developer</title>
     <meta name="description" content="Learn more about Himangshu Paul. I am a web developer focused on writing clean code, building fast websites, and solving user problems.">
     <meta name="robots" content="index, follow">
-    
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <!-- Favicon -->
     <link rel="icon" type="image/webp" href="https://himangshu.site/asstets/himangshudp.webp">
     
@@ -47,13 +54,7 @@
             --lg-shadow: rgba(0, 0, 0, 0.25);
         }
 
-        body {
-            color: #ffffff; 
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            background-color: #050505;
-        }
+        body { color: #111827; overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background-color: #f8f9fa; }
         
         @media (min-width: 768px) {
             body { cursor: none; }
@@ -103,20 +104,21 @@
 
         /* Premium Dark Bento Box */
         .bento-card {
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 1.5rem;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+    }
         .bento-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom right, rgba(255,255,255,0.05), transparent);
+            background: linear-gradient(to bottom right, rgba(0,0,0,0.02), transparent);
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.4s ease;
@@ -140,11 +142,27 @@
         .custom-cursor.hovering { width: 60px; height: 60px; background-color: rgba(255, 107, 0, 0.15); border: 1px solid #ff6b00; backdrop-filter: blur(2px); }
 
         /* Text Animation */
-        .char-anim { display: inline-block; opacity: 0; transform: translateY(15px); transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: opacity, transform; white-space: pre-wrap; }
-        .char-anim.visible { opacity: 1; transform: translateY(0); }
+        .char-anim {
+            display: inline-block;
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(15px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, filter, transform;
+            white-space: pre-wrap;
+        }
+        .char-anim.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+        .char-space {
+            display: inline-block;
+            width: 0.25em;
+        }
 
-        .bg-grid-pattern-dark {
-            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px);
             background-size: 24px 24px;
         }
         
@@ -180,7 +198,7 @@
         }
     </style>
 </head>
-<body class="font-sans relative bg-[#050505] bg-grid-pattern-dark min-h-screen flex flex-col">
+<body class="font-sans relative bg-[#f8f9fa] bg-grid-pattern min-h-screen flex flex-col">
 
     <div id="cursor" class="custom-cursor hidden md:block"></div>
 
@@ -199,21 +217,21 @@
     <main class="relative w-full flex-grow flex flex-col pt-0">
         
         <!-- Header / Cover Section with Dynamic Media Sequence -->
-        <section class="relative w-full h-[40vh] md:h-[50vh] min-h-[300px] md:min-h-[400px] gs-reveal flex flex-col justify-end pb-0 bg-black">
+        <section class="relative w-full h-[50vh] md:h-[80vh] min-h-[400px] md:min-h-[650px] gs-reveal flex flex-col justify-end pb-0 bg-black">
             <div class="absolute inset-0 w-full h-full overflow-hidden" id="cover-media-container">
                 <!-- Dynamic Videos and Images will be injected here -->
             </div>
-            <!-- Natural Dark Gradient Overlay (No orange fade) -->
-            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent z-10 pointer-events-none"></div>
+            <!-- Gentle bottom fade smoothly blending media without sharp drop-offs -->
+            <div class="absolute inset-x-0 bottom-0 h-48 md:h-[400px] bg-gradient-to-t from-[#f8f9fa] via-[#f8f9fa]/30 via-40% to-transparent z-10 pointer-events-none"></div>
         </section>
 
         <!-- Centered Profile Info -->
-        <div class="relative z-20 w-full px-6 -mt-16 md:-mt-20 flex flex-col items-center text-center gs-reveal">
-            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#050505] overflow-hidden shadow-2xl bg-[#111] mb-5">
+        <div class="relative z-20 w-full px-6 -mt-20 md:-mt-[250px] md:mb-[120px] flex flex-col items-center text-center gs-reveal">
+            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-[#f8f9fa] overflow-hidden shadow-2xl bg-white mb-5">
                 <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul" class="w-full h-full object-cover">
             </div>
-            <h1 class="text-3xl md:text-5xl font-bold text-white tracking-tight mb-2 blur-text-scroll">Himangshu Paul</h1>
-            <p class="text-sm md:text-base text-gray-400 font-medium mb-6 blur-text-scroll">Web Developer & System Architect</p>
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-900 tracking-tight mb-2 blur-text-scroll">Himangshu Paul</h1>
+            <p class="text-sm md:text-base text-gray-600 font-medium mb-6 blur-text-scroll">Web Developer & System Architect</p>
         </div>
 
         <!-- Main Content Area -->
@@ -228,20 +246,20 @@
                 <!-- What I'm About -->
                 <div class="lg:col-span-7 flex flex-col justify-center gs-reveal">
                     <span class="text-xs font-semibold tracking-[0.35em] text-accent uppercase mb-3 blur-text-scroll">Profile</span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-6 blur-text-scroll">What I'm about.</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-6 blur-text-scroll">What I'm about.</h2>
                     <div class="bento-card p-6 md:p-8 flex flex-col gap-5">
-                        <div class="text-sm md:text-base text-gray-400 leading-relaxed block">
+                        <div class="text-sm md:text-base text-gray-600 leading-relaxed block">
                             <span class="blur-text-scroll">Hi, I am Himangshu Paul. Currently, I run</span> 
                             
                             <!-- Inline Clickable Badge -->
-                            <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-white hover:text-accent font-semibold transition-all align-baseline mx-1 bg-[#111] px-2.5 py-1 rounded-md border border-white/10 hover:border-accent hover:shadow-[0_0_10px_rgba(255,107,0,0.3)] relative z-50">
+                            <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-gray-900 hover:text-accent font-semibold transition-all align-baseline mx-1 bg-white px-2.5 py-1 rounded-md border border-black/10 hover:border-accent hover:shadow-[0_0_10px_rgba(255,107,0,0.3)] relative z-50">
                                 <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc" alt="Kognito Logo" class="w-3.5 h-3.5 md:w-4 md:h-4 rounded-[3px] bg-white p-[1px] object-contain">
                                 Kognito
                             </a>
                             
                             <span class="blur-text-scroll">as its founder. My background covers a lot of ground. I have worked as an Android app developer, brand manager, social media manager, and content writer.</span>
                         </div>
-                        <p class="text-sm md:text-base text-gray-400 leading-relaxed blur-text-scroll">
+                        <p class="text-sm md:text-base text-gray-600 leading-relaxed blur-text-scroll">
                             I also handle technical SEO and performance marketing, and sometimes I jump into graphic design. Simply put, if it involves building or growing a digital brand, I have experience doing it.
                         </p>
                     </div>
@@ -250,72 +268,72 @@
                 <!-- Where can you find me (3x2 Grid) -->
                 <div class="lg:col-span-5 flex flex-col gs-reveal">
                     <span class="text-xs font-semibold tracking-[0.35em] text-gray-500 uppercase mb-3 blur-text-scroll text-right">Connect</span>
-                    <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight mb-6 text-right blur-text-scroll">Where to find me.</h2>
+                    <h2 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight mb-6 text-right blur-text-scroll">Where to find me.</h2>
                     
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 h-full relative z-40">
                         <!-- Location Map Pin -->
                         <div class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 relative overflow-hidden group col-span-2 md:col-span-1">
                             <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1000&auto=format&fit=crop')] opacity-10 bg-cover bg-center grayscale group-hover:scale-110 transition-transform duration-700"></div>
-                            <div class="relative z-10 w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-accent shadow-lg group-hover:bg-accent group-hover:text-white transition-colors">
+                            <div class="relative z-10 w-10 h-10 rounded-full bg-white border border-black/10 flex items-center justify-center text-accent shadow-lg group-hover:bg-accent group-hover:text-gray-900 transition-colors">
                                 <i class="ph-fill ph-map-pin text-lg"></i>
                             </div>
                             <div class="relative z-10">
-                                <p class="text-xs font-bold text-white">India</p>
+                                <p class="text-xs font-bold text-gray-900">India</p>
                                 <p class="text-[9px] text-gray-500 uppercase tracking-widest mt-0.5">Global</p>
                             </div>
                         </div>
 
                         <!-- Email -->
                         <a href="mailto:himangshu.inbox@gmail.com" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
-                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:text-black group-hover:border-white transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-white border border-black/10 flex items-center justify-center text-gray-600 group-hover:bg-white group-hover:text-black group-hover:border-gray-900 transition-colors">
                                 <i class="ph ph-envelope-simple text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-xs font-bold text-white">Email</p>
+                                <p class="text-xs font-bold text-gray-900">Email</p>
                                 <p class="text-[9px] text-gray-500 mt-0.5">Inbox</p>
                             </div>
                         </a>
 
                         <!-- WhatsApp -->
                         <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
-                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-[#25D366] group-hover:text-white group-hover:border-[#25D366] transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-white border border-black/10 flex items-center justify-center text-gray-600 group-hover:bg-[#25D366] group-hover:text-gray-900 group-hover:border-[#25D366] transition-colors">
                                 <i class="ph ph-whatsapp-logo text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-xs font-bold text-white">WhatsApp</p>
+                                <p class="text-xs font-bold text-gray-900">WhatsApp</p>
                                 <p class="text-[9px] text-gray-500 mt-0.5">Chat</p>
                             </div>
                         </a>
 
                         <!-- LinkedIn -->
                         <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
-                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-[#0077b5] group-hover:text-white group-hover:border-[#0077b5] transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-white border border-black/10 flex items-center justify-center text-gray-600 group-hover:bg-[#0077b5] group-hover:text-gray-900 group-hover:border-[#0077b5] transition-colors">
                                 <i class="ph ph-linkedin-logo text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-xs font-bold text-white">LinkedIn</p>
+                                <p class="text-xs font-bold text-gray-900">LinkedIn</p>
                                 <p class="text-[9px] text-gray-500 mt-0.5">Network</p>
                             </div>
                         </a>
 
                         <!-- GitHub -->
                         <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
-                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:text-black group-hover:border-white transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-white border border-black/10 flex items-center justify-center text-gray-600 group-hover:bg-white group-hover:text-black group-hover:border-gray-900 transition-colors">
                                 <i class="ph ph-github-logo text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-xs font-bold text-white">GitHub</p>
+                                <p class="text-xs font-bold text-gray-900">GitHub</p>
                                 <p class="text-[9px] text-gray-500 mt-0.5">Code</p>
                             </div>
                         </a>
 
                         <!-- Instagram -->
                         <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="bento-card p-4 flex flex-col items-center justify-center text-center gap-2 interactive-element group cursor-pointer">
-                            <div class="w-10 h-10 rounded-full bg-[#111] border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-[#E1306C] group-hover:text-white group-hover:border-[#E1306C] transition-colors">
+                            <div class="w-10 h-10 rounded-full bg-white border border-black/10 flex items-center justify-center text-gray-600 group-hover:bg-[#E1306C] group-hover:text-gray-900 group-hover:border-[#E1306C] transition-colors">
                                 <i class="ph ph-instagram-logo text-xl"></i>
                             </div>
                             <div>
-                                <p class="text-xs font-bold text-white">Instagram</p>
+                                <p class="text-xs font-bold text-gray-900">Instagram</p>
                                 <p class="text-[9px] text-gray-500 mt-0.5">Life</p>
                             </div>
                         </a>
@@ -327,8 +345,8 @@
             <section class="flex flex-col gap-8 gs-reveal">
                 <div class="max-w-2xl">
                     <span class="text-xs font-semibold tracking-[0.35em] text-gray-500 uppercase mb-3 block blur-text-scroll">Life Outside Code</span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white tracking-tight mb-4 blur-text-scroll">Wander often, wonder always.</h2>
-                    <p class="text-sm md:text-base text-gray-400 leading-relaxed blur-text-scroll">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4 blur-text-scroll">Wander often, wonder always.</h2>
+                    <p class="text-sm md:text-base text-gray-600 leading-relaxed blur-text-scroll">
                         When I step away from the keyboard, you will probably find me on my bike heading for the mountains. I have a huge appetite for nature and high-altitude rides. If I am not out on a dirt trail, I am likely playing video games or hunting for great food. A solid bike ride, a good gaming session, and some tasty food are the best ways to keep my mind fresh for the next project.
                     </p>
                 </div>
@@ -340,7 +358,7 @@
                     </div>
                     
                     <div id="load-more-container" class="flex justify-center mt-4 w-full gs-reveal">
-                        <button id="load-more-btn" class="px-6 py-3 bg-[#111] border border-white/10 rounded-xl text-sm font-semibold text-white hover:bg-accent hover:border-accent hover:shadow-[0_0_20px_rgba(255,107,0,0.3)] transition-all interactive-element flex items-center gap-2 group">
+                        <button id="load-more-btn" class="px-6 py-3 bg-white border border-black/10 rounded-xl text-sm font-semibold text-gray-900 hover:text-white hover:bg-accent hover:border-accent hover:shadow-[0_0_20px_rgba(255,107,0,0.3)] transition-all interactive-element flex items-center gap-2 group">
                             Load More Media <i class="ph ph-caret-down text-lg group-hover:translate-y-0.5 transition-transform"></i>
                         </button>
                     </div>
@@ -350,63 +368,101 @@
         </div>
     </main>
 
-    <!-- Charcoal Footer -->
-    <footer class="w-full py-8 md:py-12 px-4 md:px-8 lg:px-16 bg-[#111111] border-t border-[#222] relative z-10 mt-auto">
-        <div class="max-w-6xl mx-auto flex flex-col gap-8 md:gap-10">
-            
-            <div class="flex flex-col md:flex-row justify-between items-start gap-8">
-                <!-- Brand Info & Socials -->
-                <div class="flex flex-col gap-3 max-w-xs">
-                    <h3 class="text-lg md:text-xl font-bold text-white tracking-tight">Himangshu Paul</h3>
-                    <p class="text-gray-400 text-xs leading-relaxed">
-                        Building reliable web applications. Let's discuss your project.
-                    </p>
-                    <div class="flex items-center gap-3 mt-1">
-                        <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="GitHub">
-                            <i class="ph ph-github-logo text-sm"></i>
-                        </a>
-                        <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="Instagram">
-                            <i class="ph ph-instagram-logo text-sm"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="w-8 h-8 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white transition-all interactive-element" aria-label="LinkedIn">
-                            <i class="ph ph-linkedin-logo text-sm"></i>
-                        </a>
+    <!-- Reorganized Charcoal Footer -->
+            <footer class="w-full py-10 md:py-16 px-6 bg-[#111111] border-t border-[#222]">
+                <div class="max-w-7xl mx-auto flex flex-col gap-10 md:gap-16">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start justify-between">
+                        <!-- Brand Info & Socials -->
+                        <div class="flex flex-col gap-4 md:gap-6">
+                            <h3 class="text-xl md:text-2xl font-bold text-white tracking-tight">Himangshu Paul</h3>
+                            <p class="text-gray-400 text-xs md:text-sm max-w-sm leading-relaxed">
+                                I build fast, clean, and scalable web applications. Let's discuss your next project.
+                            </p>
+                            <div class="flex items-center gap-3 md:gap-4 mt-1 md:mt-2">
+                                <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer"
+                                    class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element"
+                                    aria-label="GitHub">
+                                    <i class="ph ph-github-logo text-base md:text-lg"></i>
+                                </a>
+                                <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element"
+                                    aria-label="Instagram">
+                                    <i class="ph ph-instagram-logo text-base md:text-lg"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/in/himangshupaul" target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element"
+                                    aria-label="LinkedIn">
+                                    <i class="ph ph-linkedin-logo text-base md:text-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Quick Navigation -->
+                        <div class="flex flex-col md:items-end gap-3 md:gap-5">
+                            <span
+                                class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Navigation</span>
+                            <nav
+                                class="flex flex-col md:items-end gap-2 md:gap-3 text-xs md:text-sm font-medium text-gray-300">
+                                <a href="/about" class="hover:text-accent transition-colors interactive-element">About
+                                    Me</a>
+                                <a href="#services"
+                                    class="hover:text-accent transition-colors interactive-element">Services</a>
+                                <a href="#work" class="hover:text-accent transition-colors interactive-element">Featured
+                                    Work</a>
+                                <a href="#contact"
+                                    class="hover:text-accent transition-colors interactive-element">Contact</a>
+                            </nav>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Quick Navigation -->
-                <div class="flex flex-col md:items-end gap-2">
-                    <span class="text-[9px] font-bold tracking-widest text-gray-600 uppercase mb-1">Menu</span>
-                    <nav class="flex flex-col md:items-end gap-2 text-xs font-medium text-gray-300">
-                        <a href="/" class="hover:text-accent transition-colors interactive-element w-max">Home</a>
-                        <a href="/#services" class="hover:text-accent transition-colors interactive-element w-max">Services</a>
-                        <a href="/#work" class="hover:text-accent transition-colors interactive-element w-max">Work</a>
-                        <a href="/#contact" class="hover:text-accent transition-colors interactive-element w-max">Contact</a>
-                    </nav>
-                </div>
-            </div>
+                    <!-- Bottom Details: Payments & Copyright -->
+                    <div
+                        class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 pt-6 md:pt-8 border-t border-[#222]">
+                        <div class="flex flex-col gap-2 md:gap-3 items-center md:items-start">
+                            <span class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Global Payment
+                                Options</span>
+                            <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> PayPal</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Wise</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Razorpay</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><i
+                                        class="ph-fill ph-currency-inr text-gray-400 text-xs md:text-sm"></i> UPI</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Visa</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Mastercard</span>
+                            </div>
+                        </div>
 
-            <!-- Bottom Details: Payments & Copyright -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-[#222]">
-                <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" class="h-2.5 w-2.5 opacity-80"> PayPal</span>
-                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise" class="h-2.5 w-2.5 opacity-80"> Wise</span>
-                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay" class="h-2.5 w-2.5 opacity-80"> Razorpay</span>
-                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><i class="ph-fill ph-currency-inr text-gray-400 text-xs"></i> UPI</span>
-                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa" class="h-2.5 w-2.5 opacity-80"> Visa</span>
-                    <span class="px-2 py-1 text-[9px] font-bold uppercase rounded bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1"><img src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard" class="h-2.5 w-2.5 opacity-80"> MC</span>
-                </div>
-                <p class="text-gray-500 text-[10px] font-medium text-center md:text-right">
-                    © <span id="year-footer"></span> Himangshu Paul. All rights reserved.
-                </p>
-            </div>
+                        <p class="text-gray-500 text-[10px] md:text-xs font-medium text-center md:text-left">
+                            © <span id="year"></span> Himangshu Paul. All rights reserved.
+                        </p>
+                    </div>
 
-        </div>
-    </footer>
+                </div>
+            </footer>
 
     <script>
         // Set dynamic year
-        document.getElementById('year-footer').textContent = new Date().getFullYear();
+        const yearEl = document.getElementById('year') || document.getElementById('year-footer');
+        if(yearEl) yearEl.textContent = new Date().getFullYear();
 
         // Optimized Custom Cursor Logic
         const cursor = document.getElementById('cursor');
@@ -425,23 +481,25 @@
         function renderCursor() {
             cursorX = lerp(cursorX, mouseX, 0.3);
             cursorY = lerp(cursorY, mouseY, 0.3);
-            cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
+            cursor.style.transform = `translate3d(calc(${Math.round(cursorX)}px - 50%), calc(${Math.round(cursorY)}px - 50%), 0)`;
             requestAnimationFrame(renderCursor);
         }
         requestAnimationFrame(renderCursor);
 
-        // Cursor Hover States
+        // Cursor Hover States with proper event delegation
         document.body.addEventListener('mouseover', (e) => {
-            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+            const t = e.target;
+            if(t && t.closest && (t.closest('a') || t.closest('button') || t.closest('.interactive-element'))) {
                 cursor.classList.add('hovering');
             }
-        }, true);
+        });
         
         document.body.addEventListener('mouseout', (e) => {
-            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('a') || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element'))) {
+            const t = e.target;
+            if(t && t.closest && (t.closest('a') || t.closest('button') || t.closest('.interactive-element'))) {
                 cursor.classList.remove('hovering');
             }
-        }, true);
+        });
 
         // Full JSON Data for Life Gallery (39 Items: Mixed Photos & Videos)
         const lifeGalleryData = [
@@ -618,20 +676,25 @@
             }
         }
 
-        // Optimized Text Reveal Logic
+        // Optimized Text Reveal Logic matching index.html character animations
         function prepareTextBlur() {
             document.querySelectorAll('.blur-text-scroll').forEach(el => {
                 const text = el.textContent.trim().replace(/\s+/g, ' ');
                 el.textContent = '';
-                const words = text.split(' ');
                 const fragment = document.createDocumentFragment();
                 
-                words.forEach((word, index) => {
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
                     const span = document.createElement('span');
-                    span.textContent = word + (index < words.length - 1 ? ' ' : '');
-                    span.className = 'char-anim';
+                    if (char === ' ') {
+                        span.className = 'char-space';
+                        span.innerHTML = '&nbsp;';
+                    } else {
+                        span.textContent = char;
+                        span.className = 'char-anim';
+                    }
                     fragment.appendChild(span);
-                });
+                }
                 el.appendChild(fragment);
             });
         }
@@ -640,11 +703,11 @@
             if (element.dataset.animated === 'true') return; 
             element.dataset.animated = 'true';
             
-            const words = element.querySelectorAll('.char-anim');
-            words.forEach((word, index) => {
+            const chars = element.querySelectorAll('.char-anim');
+            chars.forEach((char, index) => {
                 setTimeout(() => {
-                    word.classList.add('visible');
-                }, index * 40);
+                    char.classList.add('visible');
+                }, index * 15); 
             });
         }
 
