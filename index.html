@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth bg-[#050505]">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#050505">
     <title>Himangshu Paul | Web Developer</title>
-    <meta name="description" content="Himangshu Paul is a web developer building fast, scalable applications and custom digital interfaces. View my portfolio and recent projects.">
+    <meta name="description"
+        content="Himangshu Paul is a web developer building fast, scalable applications and custom digital interfaces. View my portfolio and recent projects.">
     <meta name="robots" content="index, follow">
-    
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <!-- Favicon -->
     <link rel="icon" type="image/webp" href="https://himangshu.site/asstets/himangshudp.webp">
-    
+
     <!-- Open Graph for SEO -->
     <meta property="og:title" content="Himangshu Paul | Web Developer">
-    <meta property="og:description" content="Himangshu Paul is a web developer building fast, scalable applications and custom digital interfaces. View my portfolio and recent projects.">
+    <meta property="og:description"
+        content="Himangshu Paul is a web developer building fast, scalable applications and custom digital interfaces. View my portfolio and recent projects.">
     <meta property="og:type" content="website">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <!-- GSAP & ScrollTrigger -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
+
     <!-- Three.js for Custom Interactive Globe -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -69,20 +78,41 @@
         }
 
         body {
-            color: #ffffff; 
+            color: #ffffff;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             background-color: #050505;
         }
-        
+
         @media (min-width: 768px) {
-            body { cursor: none; }
-            a, button, .interactive-element, .glass-container, .mac-dock-item, .project-card, .tooltip-trigger, figure { cursor: none; }
+            body {
+                cursor: none;
+            }
+
+            a,
+            button,
+            .interactive-element,
+            .glass-container,
+            .mac-dock-item,
+            .project-card,
+            .tooltip-trigger,
+            figure {
+                cursor: none;
+            }
+
             /* Globe interactive cursors */
-            #three-globe-container { cursor: grab; }
-            #three-globe-container.grabbing { cursor: grabbing !important; }
-            #three-globe-container.pointer { cursor: pointer !important; }
+            #three-globe-container {
+                cursor: grab;
+            }
+
+            #three-globe-container.grabbing {
+                cursor: grabbing !important;
+            }
+
+            #three-globe-container.pointer {
+                cursor: pointer !important;
+            }
         }
 
         ::selection {
@@ -102,13 +132,16 @@
         ::-webkit-scrollbar {
             width: 8px;
         }
+
         ::-webkit-scrollbar-track {
             background: #000000;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #1a1a1a;
             border-radius: 4px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #ff6b00;
         }
@@ -118,6 +151,7 @@
             background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
             background-size: 24px 24px;
         }
+
         .bg-grid-pattern-dark {
             background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 24px 24px;
@@ -125,16 +159,21 @@
 
         /* ========== MAGIC UI BORDER BEAM ANIMATION ========== */
         @keyframes border-beam {
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
         }
+
         .border-beam-container {
             position: relative;
             border-radius: 1.5rem;
             overflow: hidden;
-            padding: 2px; /* Border thickness */
+            padding: 2px;
+            /* Border thickness */
             z-index: 1;
             background: #111111;
         }
+
         .border-beam-container::before {
             content: "";
             position: absolute;
@@ -147,6 +186,7 @@
             animation: border-beam 4s linear infinite;
             z-index: -1;
         }
+
         .border-beam-inner {
             position: relative;
             background: #111111;
@@ -165,7 +205,7 @@
             overflow: hidden;
             box-shadow: 0 10px 30px var(--lg-shadow), 0 0 20px rgba(0, 0, 0, 0.1);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2), filter 0.4s ease, box-shadow 0.4s ease;
-            transform: translateZ(0); 
+            transform: translateZ(0);
         }
 
         .glass-container--rounded {
@@ -182,7 +222,7 @@
 
         #main-nav.nav-scrolled {
             --nav-text: #050505;
-            --nav-glass-bg: rgba(255, 255, 255, 0.85); 
+            --nav-glass-bg: rgba(255, 255, 255, 0.85);
             --nav-highlight: rgba(255, 255, 255, 1);
             --nav-shadow: rgba(0, 0, 0, 0.08);
         }
@@ -201,20 +241,20 @@
         }
 
         .nav-scrolled .glass-container--nav {
-            box-shadow: 0 10px 30px var(--nav-shadow), 0 0 0 1px rgba(0,0,0,0.05); 
+            box-shadow: 0 10px 30px var(--nav-shadow), 0 0 0 1px rgba(0, 0, 0, 0.05);
         }
 
         .nav-scrolled .glass-container--nav .glass-specular {
-            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 65%, rgba(255,255,255,0.4) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 35%, rgba(255, 255, 255, 0) 65%, rgba(255, 255, 255, 0.4) 100%);
         }
 
         .glass-filter {
             position: absolute;
-            inset: -20px; 
+            inset: -20px;
             z-index: 0;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            filter: url(#lg-dist); 
+            filter: url(#lg-dist);
             isolation: isolate;
         }
 
@@ -233,8 +273,8 @@
             border-radius: inherit;
             overflow: hidden;
             pointer-events: none;
-            background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgba(255,255,255,0.1) 100%);
-            box-shadow: inset 1px 1px 2px var(--lg-highlight), inset -1px -1px 3px rgba(0, 0, 0, 0.05); 
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0.1) 100%);
+            box-shadow: inset 1px 1px 2px var(--lg-highlight), inset -1px -1px 3px rgba(0, 0, 0, 0.05);
             transition: box-shadow 0.4s ease, background 0.4s ease;
         }
 
@@ -252,16 +292,16 @@
             justify-content: center;
             gap: 10px;
             padding: 0 20px;
-            height: 72px; 
+            height: 72px;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-top: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 28px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 
-                        inset 0 1px 1px rgba(255,255,255,0.1),
-                        inset 0 -1px 2px rgba(0,0,0,0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                inset 0 -1px 2px rgba(0, 0, 0, 0.4);
             position: relative;
             z-index: 50;
         }
@@ -271,13 +311,13 @@
             width: 48px;
             height: 48px;
             border-radius: 12px;
-            margin-bottom: 12px; 
+            margin-bottom: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
             background: #ffffff;
             border: 1px solid #f0f0f0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1), inset 0 -2px 5px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), inset 0 -2px 5px rgba(0, 0, 0, 0.03);
             z-index: 1;
             transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), margin 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
             transform-origin: bottom center;
@@ -288,7 +328,7 @@
             width: 60%;
             height: 60%;
             object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
             position: relative;
             z-index: 2;
             transition: filter 0.2s ease;
@@ -309,7 +349,7 @@
             transition: opacity 0.2s ease, transform 0.2s ease;
             transform: translateY(10px) scale(0.9);
             white-space: nowrap;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             z-index: 20;
         }
@@ -319,46 +359,57 @@
                 transform: scale(1.6) translateY(-8px);
                 margin: 0 16px 12px 16px;
                 z-index: 10;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2), inset 0 -2px 5px rgba(0,0,0,0.03);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2), inset 0 -2px 5px rgba(0, 0, 0, 0.03);
             }
+
             .mac-dock-item:hover img {
-                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+                filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
             }
+
             .mac-dock-item:has(+ .mac-dock-item:hover),
-            .mac-dock-item:hover + .mac-dock-item {
+            .mac-dock-item:hover+.mac-dock-item {
                 transform: scale(1.3) translateY(-4px);
                 margin: 0 8px 12px 8px;
                 z-index: 5;
             }
+
             .mac-dock-item:hover .mac-dock-label {
                 opacity: 1;
-                transform: translateY(0) scale(0.625); 
+                transform: translateY(0) scale(0.625);
             }
         }
 
         @media (max-width: 768px) {
-            .mac-dock { 
-                height: 60px; 
-                padding: 0 12px; 
-                gap: 8px; 
-                max-width: 90vw; 
-                overflow-x: auto; 
+            .mac-dock {
+                height: 60px;
+                padding: 0 12px;
+                gap: 8px;
+                max-width: 90vw;
+                overflow-x: auto;
                 justify-content: flex-start;
-                -ms-overflow-style: none; 
-                scrollbar-width: none; 
+                -ms-overflow-style: none;
+                scrollbar-width: none;
             }
-            .mac-dock::-webkit-scrollbar { display: none; }
-            .mac-dock-item { 
-                width: 36px; 
-                height: 36px; 
-                border-radius: 10px; 
-                margin-bottom: 10px; 
+
+            .mac-dock::-webkit-scrollbar {
+                display: none;
             }
-            .mac-dock-item:hover { 
-                transform: scale(1.1) translateY(-4px); 
-                margin: 0 4px 10px 4px; 
+
+            .mac-dock-item {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                margin-bottom: 10px;
             }
-            .mac-dock-label { display: none; }
+
+            .mac-dock-item:hover {
+                transform: scale(1.1) translateY(-4px);
+                margin: 0 4px 10px 4px;
+            }
+
+            .mac-dock-label {
+                display: none;
+            }
         }
 
         /* Tooltip Styles */
@@ -372,6 +423,7 @@
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             z-index: 50;
         }
+
         .tooltip-trigger:hover .tooltip-card {
             opacity: 1;
             transform: translateX(-50%) translateY(-10px);
@@ -402,6 +454,7 @@
             transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s, border 0.3s;
             will-change: transform, width, height;
         }
+
         .custom-cursor.hovering {
             width: 60px;
             height: 60px;
@@ -419,41 +472,46 @@
             transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: opacity, filter, transform;
         }
+
         .char-anim.visible {
             opacity: 1;
             filter: blur(0);
             transform: translateY(0);
         }
+
         .char-space {
             display: inline-block;
-            width: 0.25em; 
+            width: 0.25em;
         }
 
         /* Premium Input Glasses */
         .input-glass {
-            background: rgba(255,255,255,0.7);
-            border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
         }
+
         .input-glass:focus {
-            background: rgba(255,255,255,1);
+            background: rgba(255, 255, 255, 1);
             border-color: #ff6b00;
             outline: none;
         }
-        
+
         .input-dark-glass {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
             color: #ffffff;
         }
+
         .input-dark-glass:focus {
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             border-color: #ff6b00;
             outline: none;
         }
     </style>
 </head>
+
 <body class="no-scroll font-sans relative">
 
     <div id="cursor" class="custom-cursor hidden md:block"></div>
@@ -462,38 +520,45 @@
     <nav id="main-nav" class="fixed top-0 w-full z-[100] px-6 py-6 pointer-events-none transition-colors duration-500">
         <div class="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
             <a href="/" class="interactive-element shrink-0" aria-label="Home">
-                <img src="https://himangshu.site/asstets/himangshudp.webp" alt="Himangshu Paul" class="w-11 h-11 rounded-full object-cover border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-transform duration-300 hover:scale-105 bg-black">
+                <img src="https://himangshu.site/asstets/himangshudp.webp" alt="Himangshu Paul"
+                    class="w-11 h-11 rounded-full object-cover border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-transform duration-300 hover:scale-105 bg-black">
             </a>
-            
+
             <div class="glass-container glass-container--rounded glass-container--nav px-4 py-1.5">
                 <div class="glass-filter"></div>
                 <div class="glass-overlay"></div>
                 <div class="glass-specular"></div>
                 <div class="glass-content flex items-center gap-2">
-                    <a href="/" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">Home</a>
-                    <a href="/about" class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">About</a>
+                    <a href="/"
+                        class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">Home</a>
+                    <a href="/about"
+                        class="nav-link hover:opacity-100 px-4 py-1.5 text-sm font-medium transition-opacity interactive-element">About</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <!-- Loading Screen -->
-    <div id="loader" class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/90 backdrop-blur-3xl transition-all duration-700 ease-in-out">
+    <div id="loader"
+        class="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-black/90 backdrop-blur-3xl transition-all duration-700 ease-in-out">
         <div class="relative flex flex-col items-center">
             <i class="ph ph-circle-notch text-4xl text-accent animate-spin mb-8"></i>
-            
+
             <div class="glass-container glass-container--rounded w-64 h-1.5 mb-4">
                 <div class="glass-filter"></div>
                 <div class="glass-overlay"></div>
                 <div class="glass-specular"></div>
                 <div class="glass-content overflow-hidden rounded-full">
-                    <div id="loader-bar" class="h-full bg-gradient-to-r from-accent to-[#ff984d] transition-none" style="width: 0%"></div>
+                    <div id="loader-bar" class="h-full bg-gradient-to-r from-accent to-[#ff984d] transition-none"
+                        style="width: 0%"></div>
                 </div>
             </div>
-            
+
             <div class="flex items-center gap-2">
-                <span id="loader-status" class="text-xs text-white/50 uppercase tracking-[0.2em] font-semibold">Loading Assets</span>
-                <span id="loader-text" class="text-xs text-white uppercase tracking-[0.2em] font-bold w-12 text-right">0%</span>
+                <span id="loader-status" class="text-xs text-white/50 uppercase tracking-[0.2em] font-semibold">Loading
+                    Assets</span>
+                <span id="loader-text"
+                    class="text-xs text-white uppercase tracking-[0.2em] font-bold w-12 text-right">0%</span>
             </div>
         </div>
     </div>
@@ -503,12 +568,16 @@
         <!-- Hero Sequence Section -->
         <section id="scrolly-container" class="relative w-full" style="height: 400vh;">
             <div class="sticky top-0 h-screen w-full overflow-hidden bg-bgBase">
-                
-                <canvas id="hero-canvas" class="absolute inset-0 h-full w-full object-cover opacity-100" style="filter: brightness(1.2) contrast(1.1) saturate(1.2);"></canvas>
 
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.15)_100%)] pointer-events-none z-0"></div>
+                <canvas id="hero-canvas" class="absolute inset-0 h-full w-full object-cover opacity-100"
+                    style="filter: brightness(1.2) contrast(1.1) saturate(1.2);"></canvas>
 
-                <div id="overlay-1" class="parallax-layer absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10 pointer-events-none">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.15)_100%)] pointer-events-none z-0">
+                </div>
+
+                <div id="overlay-1"
+                    class="parallax-layer absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10 pointer-events-none">
                     <div class="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
                         <span class="text-xs font-semibold tracking-[0.35em] text-white/60 uppercase blur-text">
                             Portfolio
@@ -522,7 +591,8 @@
                     </div>
                 </div>
 
-                <div id="overlay-2" class="parallax-layer absolute inset-0 flex flex-col items-start justify-center px-6 md:px-24 z-10 pointer-events-none opacity-0">
+                <div id="overlay-2"
+                    class="parallax-layer absolute inset-0 flex flex-col items-start justify-center px-6 md:px-24 z-10 pointer-events-none opacity-0">
                     <div class="glass-container max-w-xl mb-24">
                         <div class="glass-filter"></div>
                         <div class="glass-overlay"></div>
@@ -541,7 +611,8 @@
                     </div>
                 </div>
 
-                <div id="overlay-3" class="parallax-layer absolute inset-0 flex flex-col items-end justify-center text-right px-6 md:px-24 z-10 pointer-events-none opacity-0">
+                <div id="overlay-3"
+                    class="parallax-layer absolute inset-0 flex flex-col items-end justify-center text-right px-6 md:px-24 z-10 pointer-events-none opacity-0">
                     <div class="glass-container max-w-xl text-right mb-24">
                         <div class="glass-filter"></div>
                         <div class="glass-overlay"></div>
@@ -561,7 +632,8 @@
                 </div>
 
                 <!-- Continuous macOS Style Taskbar / Dock -->
-                <div id="overlay-dock" class="parallax-layer absolute inset-0 flex flex-col items-center justify-end pb-12 z-20 pointer-events-none opacity-0">
+                <div id="overlay-dock"
+                    class="parallax-layer absolute inset-0 flex flex-col items-center justify-end pb-12 z-20 pointer-events-none opacity-0">
                     <div class="pointer-events-auto w-full flex justify-center px-4">
                         <div class="mac-dock">
                             <div class="mac-dock-item interactive-element">
@@ -609,11 +681,14 @@
                 </div>
 
                 <!-- Thin Spinning Text Scroll Indicator -->
-                <div id="scroll-indicator" class="parallax-layer absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-20">
+                <div id="scroll-indicator"
+                    class="parallax-layer absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-20">
                     <svg class="animate-spin-slow w-[110px] h-[110px] text-white/80" viewBox="0 0 100 100">
-                        <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent"/>
+                        <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"
+                            fill="transparent" />
                         <text class="text-[11px] font-thin tracking-[0.1em]" fill="currentColor">
-                            <textPath href="#circlePath" startOffset="0" textLength="215">scroll down • scroll down • scroll down • </textPath>
+                            <textPath href="#circlePath" startOffset="0" textLength="215">scroll down • scroll down •
+                                scroll down • </textPath>
                         </text>
                     </svg>
                     <i class="ph ph-arrow-down absolute text-accent text-xl animate-bounce"></i>
@@ -623,99 +698,148 @@
         </section>
 
         <!-- Continuous Premium Section Wrapper replacing flat whites and simple borders -->
-        <div class="relative z-20 w-full flex flex-col shadow-[0_-10px_30px_rgba(0,0,0,0.5)] bg-[#f8f9fa] bg-grid-pattern">
-            
+        <div
+            class="relative z-20 w-full flex flex-col shadow-[0_-10px_30px_rgba(0,0,0,0.5)] bg-[#f8f9fa] bg-grid-pattern">
+
             <!-- Quick Stats Overlay Section (Compact & Creative) -->
             <div class="max-w-4xl mx-auto w-full px-6 relative z-30 -mt-8 md:-mt-12 gs-reveal">
-                <div class="bg-white/90 backdrop-blur-xl border border-gray-200/50 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-4 md:p-6 flex flex-row items-center justify-around divide-x divide-gray-200">
-                    <div class="flex flex-col items-center justify-center text-center w-full group hover:scale-105 transition-transform duration-300">
-                        <span class="text-2xl md:text-4xl font-black text-black group-hover:text-accent transition-colors">4+</span>
-                        <span class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Years Exp</span>
+                <div
+                    class="bg-white/90 backdrop-blur-xl border border-gray-200/50 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-4 md:p-6 flex flex-row items-center justify-around divide-x divide-gray-200">
+                    <div
+                        class="flex flex-col items-center justify-center text-center w-full group hover:scale-105 transition-transform duration-300">
+                        <span
+                            class="text-2xl md:text-4xl font-black text-black group-hover:text-accent transition-colors">4+</span>
+                        <span
+                            class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Years
+                            Exp</span>
                     </div>
-                    <div class="flex flex-col items-center justify-center text-center w-full group hover:scale-105 transition-transform duration-300">
-                        <span class="text-2xl md:text-4xl font-black text-black group-hover:text-accent transition-colors">30+</span>
-                        <span class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Projects</span>
+                    <div
+                        class="flex flex-col items-center justify-center text-center w-full group hover:scale-105 transition-transform duration-300">
+                        <span
+                            class="text-2xl md:text-4xl font-black text-black group-hover:text-accent transition-colors">30+</span>
+                        <span
+                            class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Projects</span>
                     </div>
-                    <div class="flex flex-col items-center justify-center text-center w-full group hover:scale-105 transition-transform duration-300">
-                        <span class="text-2xl md:text-4xl font-black text-black group-hover:text-accent transition-colors">15+</span>
-                        <span class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Clients</span>
+                    <div
+                        class="flex flex-col items-center justify-center text-center w-full group hover:scale-105 transition-transform duration-300">
+                        <span
+                            class="text-2xl md:text-4xl font-black text-black group-hover:text-accent transition-colors">15+</span>
+                        <span
+                            class="text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">Clients</span>
                     </div>
                 </div>
             </div>
 
             <!-- ABOUT ME SECTION (Premium Light Grid with Shiny Shadows) -->
-            <section id="about" class="w-full pb-16 md:pb-32 pt-16 px-6 md:px-12 lg:px-24 overflow-hidden text-gray-900 relative">
+            <section id="about"
+                class="w-full pb-16 md:pb-32 pt-16 px-6 md:px-12 lg:px-24 overflow-hidden text-gray-900 relative">
                 <!-- Subtle Ambient Background Glow -->
-                <div class="absolute top-20 left-0 w-full max-w-lg h-[400px] bg-gradient-to-r from-accent to-[#ff984d] opacity-[0.08] blur-[100px] pointer-events-none rounded-full mix-blend-multiply"></div>
+                <div
+                    class="absolute top-20 left-0 w-full max-w-lg h-[400px] bg-gradient-to-r from-accent to-[#ff984d] opacity-[0.08] blur-[100px] pointer-events-none rounded-full mix-blend-multiply">
+                </div>
 
-                <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
-                    
+                <div
+                    class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+
                     <div class="relative gs-reveal flex justify-center lg:justify-start group">
                         <!-- Premium Animated Blob Shadow behind the image -->
-                        <div class="absolute -inset-2 bg-gradient-to-r from-accent via-[#ff984d] to-yellow-400 opacity-30 blur-2xl rounded-full animate-blob z-0 group-hover:opacity-50 transition-opacity duration-500"></div>
-                        
-                        <div class="relative z-10 w-full max-w-[260px] sm:max-w-xs md:max-w-md aspect-[4/5] rounded-[2rem] overflow-hidden bg-white shadow-xl border border-white">
-                            <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul" class="object-cover w-full h-full transition-transform duration-700 hover:scale-105" loading="lazy">
+                        <div
+                            class="absolute -inset-2 bg-gradient-to-r from-accent via-[#ff984d] to-yellow-400 opacity-30 blur-2xl rounded-full animate-blob z-0 group-hover:opacity-50 transition-opacity duration-500">
+                        </div>
+
+                        <div
+                            class="relative z-10 w-full max-w-[260px] sm:max-w-xs md:max-w-md aspect-[4/5] rounded-[2rem] overflow-hidden bg-white shadow-xl border border-white">
+                            <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul"
+                                class="object-cover w-full h-full transition-transform duration-700 hover:scale-105"
+                                loading="lazy">
                         </div>
                     </div>
 
                     <div class="flex flex-col gap-8 md:gap-10 gs-reveal">
                         <div>
-                            <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
+                            <span
+                                class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
                                 About Me
                             </span>
-                            <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 mb-4 md:mb-6 blur-text-scroll">
+                            <h2
+                                class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 mb-4 md:mb-6 blur-text-scroll">
                                 Building Reliable Systems
                             </h2>
                             <p class="text-sm md:text-base text-gray-600 leading-relaxed max-w-xl blur-text-scroll">
-                                I am a web developer focused on fast, clean, and reliable applications. I write high-quality code to create modern, responsive interfaces that solve real problems.
+                                I am a web developer focused on fast, clean, and reliable applications. I write
+                                high-quality code to create modern, responsive interfaces that solve real problems.
                             </p>
                         </div>
 
-                        <div class="flex flex-col gap-4 md:gap-5 p-5 md:p-6 bg-white/80 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[1.5rem]">
+                        <div
+                            class="flex flex-col gap-4 md:gap-5 p-5 md:p-6 bg-white/80 backdrop-blur-md border border-white/40 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[1.5rem]">
                             <div class="flex items-center gap-4 md:gap-6">
-                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-20 md:w-24 shrink-0">Experience</span>
+                                <span
+                                    class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-20 md:w-24 shrink-0">Experience</span>
                                 <div class="flex flex-wrap gap-3 md:gap-4 items-center">
-                                    
+
                                     <div class="tooltip-trigger relative interactive-element">
-                                        <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer" class="block relative">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
-                                                <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc" alt="Kognito" class="w-full h-full object-contain rounded-xl">
+                                        <a href="https://hirekognito.in" target="_blank" rel="noopener noreferrer"
+                                            class="block relative">
+                                            <div
+                                                class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/D560BAQFDzXL_5CX_lw/company-logo_100_100/B56Zzd4Pa9HcAU-/0/1773249034511/hirekognito_logo?e=1776902400&v=beta&t=NtSu7vWpMRIQILCYc00E_47fVh8zJCmz_T_DmSfxTyc"
+                                                    alt="Kognito" class="w-full h-full object-contain rounded-xl">
                                             </div>
-                                            <div class="absolute -bottom-1 -right-1 w-3 h-3 md:w-3.5 md:h-3.5 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
+                                            <div
+                                                class="absolute -bottom-1 -right-1 w-3 h-3 md:w-3.5 md:h-3.5 bg-green-500 border-2 border-white rounded-full shadow-sm">
+                                            </div>
                                         </a>
-                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                        <div
+                                            class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
                                             <div class="font-bold text-sm">Kognito</div>
                                             <div class="text-xs text-gray-300 mt-1">Founder</div>
-                                            <div class="text-[10px] text-green-400 font-semibold mt-1 uppercase tracking-wider">Current Position</div>
-                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                            <div
+                                                class="text-[10px] text-green-400 font-semibold mt-1 uppercase tracking-wider">
+                                                Current Position</div>
+                                            <div
+                                                class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900">
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="tooltip-trigger relative interactive-element">
-                                        <a href="https://blueminch.com" target="_blank" rel="noopener noreferrer" class="block relative">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
-                                                <img src="https://media.licdn.com/dms/image/v2/C560BAQG7HCJ5aPX0gg/company-logo_200_200/company-logo_200_200/0/1642504044619/your_replica_logo?e=1776902400&v=beta&t=0LtsSOhuw7u85OWz39gnp8HKyoyS0go8eUzBnq-EmME" alt="Blue Minch" class="w-full h-full object-contain rounded-xl">
+                                        <a href="https://blueminch.com" target="_blank" rel="noopener noreferrer"
+                                            class="block relative">
+                                            <div
+                                                class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/C560BAQG7HCJ5aPX0gg/company-logo_200_200/company-logo_200_200/0/1642504044619/your_replica_logo?e=1776902400&v=beta&t=0LtsSOhuw7u85OWz39gnp8HKyoyS0go8eUzBnq-EmME"
+                                                    alt="Blue Minch" class="w-full h-full object-contain rounded-xl">
                                             </div>
                                         </a>
-                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                        <div
+                                            class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
                                             <div class="font-bold text-sm">Blue Minch</div>
                                             <div class="text-xs text-gray-300 mt-1">Web Developer</div>
-                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
-                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">
+                                                Siliguri</div>
+                                            <div
+                                                class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900">
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="tooltip-trigger relative interactive-element">
-                                        <a href="https://amazon.in" target="_blank" rel="noopener noreferrer" class="block relative">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
-                                                <img src="https://media.licdn.com/dms/image/v2/D560BAQGDLy4STCnHbg/company-logo_200_200/B56ZnZxDipI0AI-/0/1760295142304/amazon_logo?e=1776902400&v=beta&t=Pkt-34tlkuFgo_d6O--s7BFOke10xwNIu23VHSfAC1Q" alt="Amazon" class="w-full h-full object-contain rounded-xl">
+                                        <a href="https://amazon.in" target="_blank" rel="noopener noreferrer"
+                                            class="block relative">
+                                            <div
+                                                class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/D560BAQGDLy4STCnHbg/company-logo_200_200/B56ZnZxDipI0AI-/0/1760295142304/amazon_logo?e=1776902400&v=beta&t=Pkt-34tlkuFgo_d6O--s7BFOke10xwNIu23VHSfAC1Q"
+                                                    alt="Amazon" class="w-full h-full object-contain rounded-xl">
                                             </div>
                                         </a>
-                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                        <div
+                                            class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
                                             <div class="font-bold text-sm">Amazon</div>
                                             <div class="text-xs text-gray-300 mt-1">Affiliate Marketing</div>
-                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                            <div
+                                                class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -725,48 +849,71 @@
                             <div class="w-full h-px bg-gray-100"></div>
 
                             <div class="flex items-center gap-4 md:gap-6">
-                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-20 md:w-24 shrink-0">Education</span>
+                                <span
+                                    class="text-[10px] font-bold text-gray-400 uppercase tracking-widest w-20 md:w-24 shrink-0">Education</span>
                                 <div class="flex flex-wrap gap-3 md:gap-4 items-center">
-                                    
+
                                     <div class="tooltip-trigger relative interactive-element">
-                                        <a href="https://inspiria.edu.in" target="_blank" rel="noopener noreferrer" class="block relative">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
-                                                <img src="https://media.licdn.com/dms/image/v2/C4D0BAQE_vIeWPZUeDw/company-logo_100_100/company-logo_100_100/0/1631344769191?e=1776902400&v=beta&t=V2h4SDFu3m5DOi7eoVZTpvMfxXlypSqJ3ekcX8ZB2r4" alt="Inspiria Knowledge Campus" class="w-full h-full object-contain rounded-xl">
+                                        <a href="https://inspiria.edu.in" target="_blank" rel="noopener noreferrer"
+                                            class="block relative">
+                                            <div
+                                                class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://media.licdn.com/dms/image/v2/C4D0BAQE_vIeWPZUeDw/company-logo_100_100/company-logo_100_100/0/1631344769191?e=1776902400&v=beta&t=V2h4SDFu3m5DOi7eoVZTpvMfxXlypSqJ3ekcX8ZB2r4"
+                                                    alt="Inspiria Knowledge Campus"
+                                                    class="w-full h-full object-contain rounded-xl">
                                             </div>
                                         </a>
-                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                        <div
+                                            class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
                                             <div class="font-bold text-sm">Inspiria Knowledge Campus</div>
                                             <div class="text-xs text-gray-300 mt-1">Makaut, BCA 2022-25</div>
-                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Siliguri</div>
-                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">
+                                                Siliguri</div>
+                                            <div
+                                                class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900">
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="tooltip-trigger relative interactive-element">
                                         <div class="block relative">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
-                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvxrDET6Y2KnzaUqfuipDu_oWOMtWiFW08w&s" alt="Trinity High School" class="w-full h-full object-contain rounded-xl">
+                                            <div
+                                                class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDvxrDET6Y2KnzaUqfuipDu_oWOMtWiFW08w&s"
+                                                    alt="Trinity High School"
+                                                    class="w-full h-full object-contain rounded-xl">
                                             </div>
                                         </div>
-                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                        <div
+                                            class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
                                             <div class="font-bold text-sm">Trinity High School</div>
                                             <div class="text-xs text-gray-300 mt-1">12th, ISC</div>
-                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Banarhat</div>
-                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">
+                                                Banarhat</div>
+                                            <div
+                                                class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900">
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="tooltip-trigger relative interactive-element">
                                         <div class="block relative">
-                                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
-                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRi0iYeamsJN_Vt3ld4JcVVaAGsxAKHfWxpA&s" alt="New Light Academy" class="w-full h-full object-contain rounded-xl">
+                                            <div
+                                                class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-md hover:border-accent/30 p-1.5">
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRi0iYeamsJN_Vt3ld4JcVVaAGsxAKHfWxpA&s"
+                                                    alt="New Light Academy"
+                                                    class="w-full h-full object-contain rounded-xl">
                                             </div>
                                         </div>
-                                        <div class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
+                                        <div
+                                            class="tooltip-card w-max max-w-[200px] p-3 bg-gray-900 text-white rounded-xl shadow-xl text-center border border-gray-700">
                                             <div class="font-bold text-sm">New Light Academy</div>
                                             <div class="text-xs text-gray-300 mt-1">10th, CBSE</div>
-                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Sikkim</div>
-                                            <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                                            <div class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Sikkim
+                                            </div>
+                                            <div
+                                                class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -775,7 +922,8 @@
                         </div>
 
                         <div class="pt-2">
-                            <a href="/about" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-white text-sm font-semibold rounded-xl hover:bg-accent hover:shadow-[0_0_20px_rgba(255,107,0,0.4)] transition-all duration-300 w-max interactive-element shadow-md">
+                            <a href="/about"
+                                class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-black text-white text-sm font-semibold rounded-xl hover:bg-accent hover:shadow-[0_0_20px_rgba(255,107,0,0.4)] transition-all duration-300 w-max interactive-element shadow-md">
                                 More about me <i class="ph ph-arrow-right text-lg"></i>
                             </a>
                         </div>
@@ -785,70 +933,95 @@
             </section>
 
             <!-- SERVICES & CUSTOM 3D GLOBE SECTION -->
-            <section id="services" class="w-full py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden relative text-gray-900">
+            <section id="services"
+                class="w-full py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden relative text-gray-900">
                 <div class="max-w-7xl mx-auto relative z-10">
                     <div class="mb-12 md:mb-16 gs-reveal text-center md:text-left">
-                        <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Services</span>
-                        <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">Web & App Solutions</h2>
+                        <span
+                            class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Services</span>
+                        <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">Web &
+                            App Solutions</h2>
                     </div>
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-                        
-                        <!-- Custom Interactive 3D Globe Visualization -->
-                        <div class="relative flex w-full h-[280px] md:h-[500px] items-center justify-center overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-gray-200/50 gs-reveal interactive-element group">
-                            
-                            <!-- Ambient Globe Glow -->
-                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-accent/5 rounded-full blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors duration-700"></div>
 
-                            <div id="three-globe-container" class="absolute inset-0 w-full h-full z-30 touch-none"></div>
-                            
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+
+                        <!-- Custom Interactive 3D Globe Visualization -->
+                        <div
+                            class="relative flex w-full h-[280px] md:h-[500px] items-center justify-center overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl shadow-gray-200/50 gs-reveal interactive-element group">
+
+                            <!-- Ambient Globe Glow -->
+                            <div
+                                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-accent/5 rounded-full blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors duration-700">
+                            </div>
+
+                            <div id="three-globe-container" class="absolute inset-0 w-full h-full z-30 touch-none">
+                            </div>
+
                             <!-- Flawless HTML DP Marker Overlay -->
-                            <div id="globe-dp-marker" class="absolute z-40 w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-accent overflow-hidden transition-all duration-300 pointer-events-none opacity-0 shadow-[0_0_15px_rgba(255,107,0,0.3)]" style="transform: translate(-50%, -50%); top: 50%; left: 50%; will-change: top, left, transform, opacity;">
-                                <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul" class="w-full h-full object-cover bg-black">
+                            <div id="globe-dp-marker"
+                                class="absolute z-40 w-10 h-10 md:w-12 md:h-12 rounded-full border-2 border-accent overflow-hidden transition-all duration-300 pointer-events-none opacity-0 shadow-[0_0_15px_rgba(255,107,0,0.3)]"
+                                style="transform: translate(-50%, -50%); top: 50%; left: 50%; will-change: top, left, transform, opacity;">
+                                <img src="https://himangshu.site/asstets/himangshu.webp" alt="Himangshu Paul"
+                                    class="w-full h-full object-cover bg-black">
                             </div>
 
                             <!-- HTML Tooltip for Globe Toggle -->
-                            <div id="globe-tooltip" class="absolute bg-gray-900 text-white p-3 rounded-xl border border-gray-700 shadow-xl z-50 flex items-center gap-3 pointer-events-none opacity-0 transition-opacity duration-200">
+                            <div id="globe-tooltip"
+                                class="absolute bg-gray-900 text-white p-3 rounded-xl border border-gray-700 shadow-xl z-50 flex items-center gap-3 pointer-events-none opacity-0 transition-opacity duration-200">
                                 <div class="flex flex-col text-left">
                                     <span class="text-sm font-bold block">Himangshu Paul</span>
                                     <span class="text-xs text-accent">Working with clients globally</span>
                                 </div>
                             </div>
 
-                            <div class="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.05),rgba(255,255,255,0))] z-20"></div>
+                            <div
+                                class="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.05),rgba(255,255,255,0))] z-20">
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
-                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                            <div
+                                class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                                     <i class="ph ph-code text-xl md:text-2xl text-accent"></i>
                                 </div>
                                 <h3 class="text-lg font-bold text-black tracking-tight">Website Development</h3>
-                                <p class="text-sm text-gray-500 leading-relaxed">I build fast, responsive websites designed for business growth.</p>
+                                <p class="text-sm text-gray-500 leading-relaxed">I build fast, responsive websites
+                                    designed for business growth.</p>
                             </div>
-                            
-                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
-                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+
+                            <div
+                                class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                                     <i class="ph ph-device-mobile text-xl md:text-2xl text-accent"></i>
                                 </div>
                                 <h3 class="text-lg font-bold text-black tracking-tight">App Deployment</h3>
-                                <p class="text-sm text-gray-500 leading-relaxed">I publish mobile applications to app stores and manage server setups.</p>
+                                <p class="text-sm text-gray-500 leading-relaxed">I publish mobile applications to app
+                                    stores and manage server setups.</p>
                             </div>
 
-                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
-                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                            <div
+                                class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                                     <i class="ph ph-trend-up text-xl md:text-2xl text-accent"></i>
                                 </div>
                                 <h3 class="text-lg font-bold text-black tracking-tight">Performance Marketing</h3>
-                                <p class="text-sm text-gray-500 leading-relaxed">I run data-driven ad campaigns to improve user acquisition and ROI.</p>
+                                <p class="text-sm text-gray-500 leading-relaxed">I run data-driven ad campaigns to
+                                    improve user acquisition and ROI.</p>
                             </div>
 
-                            <div class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
-                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
+                            <div
+                                class="p-5 md:p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-[0_10px_40px_-10px_rgba(255,107,0,0.15)] hover:border-accent/20 hover:-translate-y-1 transition-all duration-300 gs-reveal interactive-element flex flex-col gap-4 group">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-accent/10 transition-colors">
                                     <i class="ph ph-magnifying-glass text-xl md:text-2xl text-accent"></i>
                                 </div>
                                 <h3 class="text-lg font-bold text-black tracking-tight">SEO Strategy</h3>
-                                <p class="text-sm text-gray-500 leading-relaxed">I optimize websites to improve rankings, increase reach, and drive traffic.</p>
+                                <p class="text-sm text-gray-500 leading-relaxed">I optimize websites to improve
+                                    rankings, increase reach, and drive traffic.</p>
                             </div>
                         </div>
                     </div>
@@ -860,7 +1033,8 @@
                 <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
                     <div class="mb-10 md:mb-12 md:flex justify-between items-end gap-8 pb-8 gs-reveal">
                         <div class="max-w-2xl flex flex-col gap-4">
-                            <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
+                            <span
+                                class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">
                                 Recent Projects
                             </span>
                             <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight blur-text-scroll">
@@ -873,7 +1047,8 @@
                     </div>
                 </div>
 
-                <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container">
+                <div
+                    class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container">
                     <div class="w-full overflow-hidden py-2 md:py-4">
                         <div id="marquee-row-a" class="flex w-max"></div>
                     </div>
@@ -881,8 +1056,12 @@
                         <div id="marquee-row-b" class="flex w-max"></div>
                     </div>
                     <!-- Premium Gradient Fades for light background -->
-                    <div class="pointer-events-none absolute inset-y-0 left-0 w-[10%] lg:w-[20%] bg-gradient-to-r from-[#f8f9fa] to-transparent z-10"></div>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 w-[10%] lg:w-[20%] bg-gradient-to-l from-[#f8f9fa] to-transparent z-10"></div>
+                    <div
+                        class="pointer-events-none absolute inset-y-0 left-0 w-[10%] lg:w-[20%] bg-gradient-to-r from-[#f8f9fa] to-transparent z-10">
+                    </div>
+                    <div
+                        class="pointer-events-none absolute inset-y-0 right-0 w-[10%] lg:w-[20%] bg-gradient-to-l from-[#f8f9fa] to-transparent z-10">
+                    </div>
                 </div>
             </section>
 
@@ -890,12 +1069,16 @@
             <section id="testimonials" class="w-full py-16 md:py-24 overflow-hidden text-gray-900">
                 <div class="max-w-7xl mx-auto relative z-10 px-6 md:px-12 lg:px-24">
                     <div class="mb-10 md:mb-12 gs-reveal text-center md:text-left">
-                        <span class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Client Feedback</span>
-                        <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">What People Say</h2>
+                        <span
+                            class="text-xs font-semibold tracking-[0.35em] text-gray-400 uppercase blur-text-scroll">Client
+                            Feedback</span>
+                        <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight mt-4 blur-text-scroll">What
+                            People Say</h2>
                     </div>
                 </div>
 
-                <div class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container-test">
+                <div
+                    class="relative flex w-full flex-col items-center justify-center overflow-hidden py-4 marquee-container-test">
                     <div class="w-full overflow-hidden py-2 md:py-4">
                         <div id="test-row-a" class="flex w-max"></div>
                     </div>
@@ -903,45 +1086,68 @@
                         <div id="test-row-b" class="flex w-max"></div>
                     </div>
                     <!-- Premium Gradient Fades for light background -->
-                    <div class="pointer-events-none absolute inset-y-0 left-0 w-[10%] lg:w-[20%] bg-gradient-to-r from-[#f8f9fa] to-transparent z-10"></div>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 w-[10%] lg:w-[20%] bg-gradient-to-l from-[#f8f9fa] to-transparent z-10"></div>
+                    <div
+                        class="pointer-events-none absolute inset-y-0 left-0 w-[10%] lg:w-[20%] bg-gradient-to-r from-[#f8f9fa] to-transparent z-10">
+                    </div>
+                    <div
+                        class="pointer-events-none absolute inset-y-0 right-0 w-[10%] lg:w-[20%] bg-gradient-to-l from-[#f8f9fa] to-transparent z-10">
+                    </div>
                 </div>
             </section>
 
             <!-- CONTACT SECTION (Dark Glass Pattern Transition with Magic UI Border Beam) -->
-            <section id="contact" class="w-full py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden bg-[#0a0a0a] bg-grid-pattern-dark text-white relative">
+            <section id="contact"
+                class="w-full py-16 md:py-24 px-6 md:px-12 lg:px-24 overflow-hidden bg-[#0a0a0a] bg-grid-pattern-dark text-white relative">
                 <!-- Subtle ambient glow for premium dark mode feel -->
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,107,0,0.08),transparent_50%)] pointer-events-none"></div>
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,107,0,0.08),transparent_50%)] pointer-events-none">
+                </div>
 
                 <div class="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16">
-                    
+
                     <div class="flex flex-col gap-6 md:gap-8 gs-reveal">
                         <div>
-                            <span class="text-xs font-semibold tracking-[0.35em] text-gray-500 uppercase blur-text-scroll">Let's Talk</span>
-                            <h2 class="text-4xl md:text-5xl font-bold text-white tracking-tight mt-4 mb-4 md:mb-6 blur-text-scroll">Get in Touch</h2>
+                            <span
+                                class="text-xs font-semibold tracking-[0.35em] text-gray-500 uppercase blur-text-scroll">Let's
+                                Talk</span>
+                            <h2
+                                class="text-4xl md:text-5xl font-bold text-white tracking-tight mt-4 mb-4 md:mb-6 blur-text-scroll">
+                                Get in Touch</h2>
                             <p class="text-sm md:text-base text-gray-400 leading-relaxed max-w-md blur-text-scroll">
                                 Ready to start your next project? Send a message to discuss how we can work together.
                             </p>
                         </div>
-                        
+
                         <div class="flex flex-col gap-4 md:gap-6 mt-2 md:mt-4">
-                            <a href="mailto:himangshu.inbox@gmail.com" class="flex items-center gap-4 group w-max interactive-element">
-                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#111111] border border-[#333] flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:shadow-[0_0_15px_rgba(255,107,0,0.5)] text-white transition-all duration-300">
+                            <a href="mailto:himangshu.inbox@gmail.com"
+                                class="flex items-center gap-4 group w-max interactive-element">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#111111] border border-[#333] flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:shadow-[0_0_15px_rgba(255,107,0,0.5)] text-white transition-all duration-300">
                                     <i class="ph ph-envelope-simple text-lg md:text-xl"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">Email</p>
-                                    <p class="text-sm md:text-base text-white font-medium group-hover:text-accent transition-colors">himangshu.inbox@gmail.com</p>
+                                    <p
+                                        class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                                        Email</p>
+                                    <p
+                                        class="text-sm md:text-base text-white font-medium group-hover:text-accent transition-colors">
+                                        himangshu.inbox@gmail.com</p>
                                 </div>
                             </a>
-                            
-                            <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 group w-max interactive-element">
-                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#111111] border border-[#333] flex items-center justify-center group-hover:bg-[#25D366] group-hover:border-[#25D366] group-hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] text-white transition-all duration-300">
+
+                            <a href="https://wa.me/919564604956" target="_blank" rel="noopener noreferrer"
+                                class="flex items-center gap-4 group w-max interactive-element">
+                                <div
+                                    class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#111111] border border-[#333] flex items-center justify-center group-hover:bg-[#25D366] group-hover:border-[#25D366] group-hover:shadow-[0_0_15px_rgba(37,211,102,0.4)] text-white transition-all duration-300">
                                     <i class="ph ph-whatsapp-logo text-lg md:text-xl"></i>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">WhatsApp</p>
-                                    <p class="text-sm md:text-base text-white font-medium group-hover:text-[#25D366] transition-colors">+91 9564604956</p>
+                                    <p
+                                        class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider">
+                                        WhatsApp</p>
+                                    <p
+                                        class="text-sm md:text-base text-white font-medium group-hover:text-[#25D366] transition-colors">
+                                        +91 9564604956</p>
                                 </div>
                             </a>
                         </div>
@@ -949,21 +1155,31 @@
 
                     <div class="relative gs-reveal group">
                         <!-- Premium Shiny Shadow behind the form -->
-                        <div class="absolute -inset-2 bg-gradient-to-r from-accent to-[#ff984d] opacity-20 blur-xl rounded-[2rem] group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"></div>
-                        
+                        <div
+                            class="absolute -inset-2 bg-gradient-to-r from-accent to-[#ff984d] opacity-20 blur-xl rounded-[2rem] group-hover:opacity-40 transition-opacity duration-700 pointer-events-none">
+                        </div>
+
                         <!-- Magic UI Border Beam Container -->
                         <div class="border-beam-container shadow-2xl">
                             <form id="whatsapp-form" class="border-beam-inner flex flex-col gap-4 md:gap-5 p-6 md:p-8">
-                                <div class="absolute inset-0 bg-white/5 pointer-events-none rounded-[calc(1.5rem-2px)]"></div>
-                                <div class="relative flex flex-col gap-2 z-10">
-                                    <label for="wa-name" class="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">Your Name</label>
-                                    <input type="text" id="wa-name" required placeholder="John Doe" class="input-dark-glass p-3 md:p-4 rounded-xl text-sm md:text-base transition-all">
+                                <div class="absolute inset-0 bg-white/5 pointer-events-none rounded-[calc(1.5rem-2px)]">
                                 </div>
                                 <div class="relative flex flex-col gap-2 z-10">
-                                    <label for="wa-message" class="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">Message</label>
-                                    <textarea id="wa-message" required placeholder="Tell me about your project..." rows="4" class="input-dark-glass p-3 md:p-4 rounded-xl text-sm md:text-base transition-all resize-none"></textarea>
+                                    <label for="wa-name"
+                                        class="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">Your
+                                        Name</label>
+                                    <input type="text" id="wa-name" required placeholder="John Doe"
+                                        class="input-dark-glass p-3 md:p-4 rounded-xl text-sm md:text-base transition-all">
                                 </div>
-                                <button type="submit" class="mt-2 md:mt-4 bg-white text-black py-3.5 md:py-4 rounded-xl font-bold hover:bg-accent hover:text-white hover:shadow-[0_0_20px_rgba(255,107,0,0.5)] transition-all flex items-center justify-center gap-2 interactive-element z-10 text-sm md:text-base">
+                                <div class="relative flex flex-col gap-2 z-10">
+                                    <label for="wa-message"
+                                        class="text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider px-1">Message</label>
+                                    <textarea id="wa-message" required placeholder="Tell me about your project..."
+                                        rows="4"
+                                        class="input-dark-glass p-3 md:p-4 rounded-xl text-sm md:text-base transition-all resize-none"></textarea>
+                                </div>
+                                <button type="submit"
+                                    class="mt-2 md:mt-4 bg-white text-black py-3.5 md:py-4 rounded-xl font-bold hover:bg-accent hover:text-white hover:shadow-[0_0_20px_rgba(255,107,0,0.5)] transition-all flex items-center justify-center gap-2 interactive-element z-10 text-sm md:text-base">
                                     Send via WhatsApp <i class="ph ph-paper-plane-tilt text-lg"></i>
                                 </button>
                             </form>
@@ -976,7 +1192,7 @@
             <!-- Reorganized Charcoal Footer -->
             <footer class="w-full py-10 md:py-16 px-6 bg-[#111111] border-t border-[#222]">
                 <div class="max-w-7xl mx-auto flex flex-col gap-10 md:gap-16">
-                    
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start justify-between">
                         <!-- Brand Info & Socials -->
                         <div class="flex flex-col gap-4 md:gap-6">
@@ -985,13 +1201,21 @@
                                 I build fast, clean, and scalable web applications. Let's discuss your next project.
                             </p>
                             <div class="flex items-center gap-3 md:gap-4 mt-1 md:mt-2">
-                                <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element" aria-label="GitHub">
+                                <a href="https://github.com/devhimangshu" target="_blank" rel="noopener noreferrer"
+                                    class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element"
+                                    aria-label="GitHub">
                                     <i class="ph ph-github-logo text-base md:text-lg"></i>
                                 </a>
-                                <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank" rel="noopener noreferrer" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element" aria-label="Instagram">
+                                <a href="https://www.instagram.com/hrishi.keshp/?hl=en" target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element"
+                                    aria-label="Instagram">
                                     <i class="ph ph-instagram-logo text-base md:text-lg"></i>
                                 </a>
-                                <a href="https://www.linkedin.com/in/himangshupaul" target="_blank" rel="noopener noreferrer" class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element" aria-label="LinkedIn">
+                                <a href="https://www.linkedin.com/in/himangshupaul" target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full bg-[#1a1a1a] border border-[#333] text-gray-400 hover:bg-accent hover:text-white hover:border-accent hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all duration-300 interactive-element"
+                                    aria-label="LinkedIn">
                                     <i class="ph ph-linkedin-logo text-base md:text-lg"></i>
                                 </a>
                             </div>
@@ -999,30 +1223,55 @@
 
                         <!-- Quick Navigation -->
                         <div class="flex flex-col md:items-end gap-3 md:gap-5">
-                            <span class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Navigation</span>
-                            <nav class="flex flex-col md:items-end gap-2 md:gap-3 text-xs md:text-sm font-medium text-gray-300">
-                                <a href="/about" class="hover:text-accent transition-colors interactive-element">About Me</a>
-                                <a href="#services" class="hover:text-accent transition-colors interactive-element">Services</a>
-                                <a href="#work" class="hover:text-accent transition-colors interactive-element">Featured Work</a>
-                                <a href="#contact" class="hover:text-accent transition-colors interactive-element">Contact</a>
+                            <span
+                                class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Navigation</span>
+                            <nav
+                                class="flex flex-col md:items-end gap-2 md:gap-3 text-xs md:text-sm font-medium text-gray-300">
+                                <a href="/about" class="hover:text-accent transition-colors interactive-element">About
+                                    Me</a>
+                                <a href="#services"
+                                    class="hover:text-accent transition-colors interactive-element">Services</a>
+                                <a href="#work" class="hover:text-accent transition-colors interactive-element">Featured
+                                    Work</a>
+                                <a href="#contact"
+                                    class="hover:text-accent transition-colors interactive-element">Contact</a>
                             </nav>
                         </div>
                     </div>
 
                     <!-- Bottom Details: Payments & Copyright -->
-                    <div class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 pt-6 md:pt-8 border-t border-[#222]">
+                    <div
+                        class="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 pt-6 md:pt-8 border-t border-[#222]">
                         <div class="flex flex-col gap-2 md:gap-3 items-center md:items-start">
-                            <span class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Global Payment Options</span>
+                            <span class="text-[10px] font-bold tracking-widest text-gray-600 uppercase">Global Payment
+                                Options</span>
                             <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> PayPal</span>
-                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Wise</span>
-                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Razorpay</span>
-                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><i class="ph-fill ph-currency-inr text-gray-400 text-xs md:text-sm"></i> UPI</span>
-                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Visa</span>
-                                <span class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard" class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Mastercard</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/paypal/00457C" alt="PayPal"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> PayPal</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/wise/9FE870" alt="Wise"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Wise</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/razorpay/02042B" alt="Razorpay"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Razorpay</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><i
+                                        class="ph-fill ph-currency-inr text-gray-400 text-xs md:text-sm"></i> UPI</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/visa/1434CB" alt="Visa"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Visa</span>
+                                <span
+                                    class="px-2 md:px-3 py-1.5 text-[9px] md:text-[10px] font-bold tracking-wider uppercase rounded-md bg-[#1a1a1a] text-gray-400 border border-[#333] flex items-center gap-1.5"><img
+                                        src="https://cdn.simpleicons.org/mastercard/EB001B" alt="Mastercard"
+                                        class="h-2.5 w-2.5 md:h-3 md:w-3 opacity-80"> Mastercard</span>
                             </div>
                         </div>
-                        
+
                         <p class="text-gray-500 text-[10px] md:text-xs font-medium text-center md:text-left">
                             © <span id="year"></span> Himangshu Paul. All rights reserved.
                         </p>
@@ -1053,7 +1302,7 @@
             const globeGroup = new THREE.Group();
             scene.add(globeGroup);
 
-            const R = 4.8; 
+            const R = 4.8;
 
             // Base Sphere
             const baseGeo = new THREE.SphereGeometry(R, 64, 64);
@@ -1068,10 +1317,10 @@
             // Map Overlay
             const textureLoader = new THREE.TextureLoader();
             const earthTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg');
-            
+
             const mapGeo = new THREE.SphereGeometry(R + 0.02, 64, 64);
             const mapMat = new THREE.MeshBasicMaterial({
-                color: 0xcccccc, 
+                color: 0xcccccc,
                 transparent: true,
                 alphaMap: earthTexture,
                 opacity: 0.9
@@ -1104,8 +1353,8 @@
             const pinMat = new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.1, roughness: 0.2 });
             const pinConeGeo = new THREE.ConeGeometry(0.12, 0.5, 32);
             const pinCone = new THREE.Mesh(pinConeGeo, pinMat);
-            pinCone.position.y = 0.25; 
-            pinCone.rotation.x = Math.PI; 
+            pinCone.position.y = 0.25;
+            pinCone.rotation.x = Math.PI;
             pinAnchor.add(pinCone);
 
             // Invisible Hit Mesh for precise raycasting of the HTML marker
@@ -1114,7 +1363,7 @@
             const hitMesh = new THREE.Mesh(hitGeo, hitMat);
             hitMesh.position.y = 0.7; // Base height of where the marker appears
             pinAnchor.add(hitMesh);
-            
+
             globeGroup.add(pinAnchor);
 
             // Pulse GSAP for the Pin
@@ -1174,7 +1423,7 @@
 
             // Interactivity & Physics Setup
             let targetRotationX = 0;
-            let targetRotationY = -1.2; 
+            let targetRotationY = -1.2;
             let isDragging = false;
             let previousMousePosition = { x: 0, y: 0 };
             const raycaster = new THREE.Raycaster();
@@ -1197,7 +1446,7 @@
                 const rect = container.getBoundingClientRect();
                 mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
                 mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-                
+
                 raycaster.setFromCamera(mouse, camera);
                 const intersects = raycaster.intersectObjects([hitMesh, pinCone]);
 
@@ -1270,6 +1519,13 @@
             });
 
             const autoRotateSpeed = 0.0015;
+            
+            // Allocate vectors once to avoid garbage collection lag inside the loop
+            const pinWorldPos = new THREE.Vector3();
+            const projectedVector = new THREE.Vector3();
+            const normalMatrix = new THREE.Matrix3();
+            const worldNormal = new THREE.Vector3();
+            const cameraDir = new THREE.Vector3();
 
             function animateGlobe() {
                 requestAnimationFrame(animateGlobe);
@@ -1278,27 +1534,26 @@
 
                 globeGroup.rotation.y += (targetRotationY - globeGroup.rotation.y) * 0.05;
                 globeGroup.rotation.x += (targetRotationX - globeGroup.rotation.x) * 0.05;
-                globeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.15; 
+                globeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.15;
 
                 // Sync Flawless HTML DP Marker
                 if (dpMarker) {
-                    const pinWorldPos = new THREE.Vector3();
                     hitMesh.getWorldPosition(pinWorldPos);
 
-                    const vector = pinWorldPos.clone().project(camera);
-                    
+                    projectedVector.copy(pinWorldPos).project(camera);
+
                     // Check if the pin is on the front side of the globe
-                    const normalMatrix = new THREE.Matrix3().getNormalMatrix(globeGroup.matrixWorld);
-                    const worldNormal = normal.clone().applyMatrix3(normalMatrix).normalize();
-                    const cameraDir = new THREE.Vector3().subVectors(camera.position, pinWorldPos).normalize();
-                    
+                    normalMatrix.getNormalMatrix(globeGroup.matrixWorld);
+                    worldNormal.copy(normal).applyMatrix3(normalMatrix).normalize();
+                    cameraDir.subVectors(camera.position, pinWorldPos).normalize();
+
                     // Dot product > 0.15 ensures it hides smoothly as it approaches the horizon edge
-                    if (worldNormal.dot(cameraDir) > 0.15) { 
-                        const x = (vector.x * 0.5 + 0.5) * container.clientWidth;
-                        const y = (vector.y * -0.5 + 0.5) * container.clientHeight;
-                        dpMarker.style.left = `${x}px`;
-                        dpMarker.style.top = `${y}px`;
-                        
+                    if (worldNormal.dot(cameraDir) > 0.15) {
+                        const x = (projectedVector.x * 0.5 + 0.5) * container.clientWidth;
+                        const y = (projectedVector.y * -0.5 + 0.5) * container.clientHeight;
+                        dpMarker.style.left = `${Math.round(x)}px`;
+                        dpMarker.style.top = `${Math.round(y)}px`;
+
                         // Show the marker if not already fading in
                         if (dpMarker.style.opacity === '0') {
                             dpMarker.style.opacity = '1';
@@ -1311,14 +1566,14 @@
 
                 const time = Date.now() * 0.0005;
                 particles.forEach(p => {
-                    const t = (time + p.userData.offset) % 1; 
+                    const t = (time + p.userData.offset) % 1;
                     const position = p.userData.curve.getPoint(t);
                     p.position.copy(position);
                 });
 
                 renderer.render(scene, camera);
             }
-            
+
             globeGroup.scale.set(0, 0, 0);
             gsap.to(globeGroup.scale, {
                 x: 1, y: 1, z: 1,
@@ -1343,49 +1598,49 @@
 
         // --- JSON Data for Projects ---
         const projectsData = [
-    {
-        title: "Arya Game Shop",
-        description: "A complete digital platform for gaming services. The system includes a full website setup, backend logic, and scalable architecture for handling users and transactions. Built for performance, security, and smooth user flow.",
-        image: "https://himangshu.site/work/arya.webp",
-        link: "https://aryagameshop.in/"
-    },
-    {
-        title: "Born2Earn",
-        description: "A full-scale platform developed across web and Android. It includes a complete website, mobile app, and Google Play Console management. The system is built for user engagement, transactions, and long-term scalability.",
-        image: "https://himangshu.site/work/bon2earn.webp",
-        link: "https://born2earn.in/"
-    },
-    {
-        title: "Kognito",
-        description: "A complete business website built for a digital growth agency. The project includes UI design, development, performance optimization, and structured service presentation for lead conversion.",
-        image: "https://himangshu.site/work/kognito.webp",
-        link: "https://hirekognito.in/"
-    },
-    {
-        title: "Lavate Media",
-        description: "A complete website with an integrated leads management system and custom admin panel. Built to track, manage, and convert incoming leads efficiently with a clean and responsive interface.",
-        image: "https://himangshu.site/work/lavate.webp",
-        link: "https://lavatemedia.in/"
-    },
-    {
-        title: "Nook Pools",
-        description: "A complete website for an Australia based luxury swimming pool brand. The platform focuses on premium visuals, service showcasing, and strong brand positioning with a clean and modern UI.",
-        image: "https://himangshu.site/work/nookpools.webp",
-        link: ""
-    },
-    {
-        title: "Shape Of You",
-        description: "A multi-role web application built for trainers and users. The platform supports upline coaches, coaches, and users with subscription and commission-based earning. Trainers from nutrition, fitness, and mental wellness fields can register, sell services, and manage their income.",
-        image: "https://himangshu.site/work/shapeofyou.webp",
-        link: "https://shapeofu3.world/"
-    },
-    {
-        title: "Tatiana Hair",
-        description: "A complete website for a luxury hair salon in Toronto. The platform includes an online booking system, service management, and an admin panel to handle appointments, clients, and operations efficiently.",
-        image: "https://himangshu.site/work/tatiana.webp",
-        link: ""
-    }
-];
+            {
+                title: "Arya Game Shop",
+                description: "A complete digital platform for gaming services. The system includes a full website setup, backend logic, and scalable architecture for handling users and transactions. Built for performance, security, and smooth user flow.",
+                image: "https://himangshu.site/work/arya.webp",
+                link: "https://aryagameshop.in/"
+            },
+            {
+                title: "Born2Earn",
+                description: "A full-scale platform developed across web and Android. It includes a complete website, mobile app, and Google Play Console management. The system is built for user engagement, transactions, and long-term scalability.",
+                image: "https://himangshu.site/work/bon2earn.webp",
+                link: "https://born2earn.in/"
+            },
+            {
+                title: "Kognito",
+                description: "A complete business website built for a digital growth agency. The project includes UI design, development, performance optimization, and structured service presentation for lead conversion.",
+                image: "https://himangshu.site/work/kognito.webp",
+                link: "https://hirekognito.in/"
+            },
+            {
+                title: "Lavate Media",
+                description: "A complete website with an integrated leads management system and custom admin panel. Built to track, manage, and convert incoming leads efficiently with a clean and responsive interface.",
+                image: "https://himangshu.site/work/lavate.webp",
+                link: "https://lavatemedia.in/"
+            },
+            {
+                title: "Nook Pools",
+                description: "A complete website for an Australia based luxury swimming pool brand. The platform focuses on premium visuals, service showcasing, and strong brand positioning with a clean and modern UI.",
+                image: "https://himangshu.site/work/nookpools.webp",
+                link: ""
+            },
+            {
+                title: "Shape Of You",
+                description: "A multi-role web application built for trainers and users. The platform supports upline coaches, coaches, and users with subscription and commission-based earning. Trainers from nutrition, fitness, and mental wellness fields can register, sell services, and manage their income.",
+                image: "https://himangshu.site/work/shapeofyou.webp",
+                link: "https://shapeofu3.world/"
+            },
+            {
+                title: "Tatiana Hair",
+                description: "A complete website for a luxury hair salon in Toronto. The platform includes an online booking system, service management, and an admin panel to handle appointments, clients, and operations efficiently.",
+                image: "https://himangshu.site/work/tatiana.webp",
+                link: ""
+            }
+        ];
 
         // --- JSON Data for Reviews ---
         const reviewsData = [
@@ -1488,11 +1743,11 @@
             const num = i.toString().padStart(3, '0');
             return `https://hirekognito.in/sequence/frame_${num}_delay-0.066s.webp`;
         });
-        
+
         const images = new Array(FRAME_COUNT);
         const heroCanvas = document.getElementById('hero-canvas');
         const heroCtx = heroCanvas.getContext('2d', { alpha: false, desynchronized: true });
-        
+
         let loadedCount = 0;
         let isReady = false;
         let forceLoadTimeout;
@@ -1515,6 +1770,11 @@
         const overlayDock = document.getElementById('overlay-dock');
         const scrollIndicator = document.getElementById('scroll-indicator');
         const cursor = document.getElementById('cursor');
+        
+        // Cache DOM lists to avoid costly lookups during requestAnimationFrame
+        const blurTextElements1 = overlay1.querySelectorAll('.blur-text');
+        const blurTextElements2 = overlay2.querySelectorAll('.blur-text');
+        const blurTextElements3 = overlay3.querySelectorAll('.blur-text');
 
         const lerp = (start, end, factor) => start + (end - start) * factor;
 
@@ -1523,7 +1783,7 @@
                 const text = el.textContent.trim().replace(/\s+/g, ' ');
                 el.textContent = '';
                 const fragment = document.createDocumentFragment();
-                
+
                 for (let i = 0; i < text.length; i++) {
                     const char = text[i];
                     const span = document.createElement('span');
@@ -1541,19 +1801,19 @@
         }
 
         function triggerTextBlur(element) {
-            if (element.dataset.animated === 'true') return; 
+            if (element.dataset.animated === 'true') return;
             element.dataset.animated = 'true';
-            
+
             const chars = element.querySelectorAll('.char-anim');
             chars.forEach((char, index) => {
                 setTimeout(() => {
                     char.classList.add('visible');
-                }, index * 15); 
+                }, index * 15);
             });
         }
 
         function initPortfolio() {
-            renderMarquees(); 
+            renderMarquees();
             prepareTextBlur();
             preloadImages();
         }
@@ -1566,7 +1826,7 @@
 
             forceLoadTimeout = setTimeout(() => {
                 if (!isReady) finalizeLoading();
-            }, 6000); 
+            }, 6000);
 
             if (FRAME_COUNT === 0) return;
 
@@ -1580,13 +1840,13 @@
             function registerFrameLoad() {
                 loadedCount++;
                 actualPercentage = (loadedCount / FRAME_COUNT) * 100;
-                if (loadedCount === FRAME_COUNT) setTimeout(finalizeLoading, 200); 
+                if (loadedCount === FRAME_COUNT) setTimeout(finalizeLoading, 200);
             }
 
             function animateLoaderProgress() {
                 if (isReady) return;
                 displayPercentage = lerp(displayPercentage, actualPercentage, 0.1);
-                
+
                 if (displayPercentage > 0.1) {
                     loaderText.innerText = `${Math.round(displayPercentage)}%`;
                     loaderBar.style.width = `${displayPercentage}%`;
@@ -1600,43 +1860,43 @@
             if (isReady) return;
             isReady = true;
             clearTimeout(forceLoadTimeout);
-            
-            resizeHeroCanvas(); 
-            
+
+            resizeHeroCanvas();
+
             const loader = document.getElementById('loader');
             loader.style.opacity = '0';
             loader.style.pointerEvents = 'none';
-            
+
             setTimeout(() => {
                 loader.style.display = 'none';
                 document.body.classList.remove('no-scroll');
-                initGSAPAnimations(); 
-                requestAnimationFrame(renderLoop); 
+                initGSAPAnimations();
+                requestAnimationFrame(renderLoop);
             }, 700);
         }
 
         function drawImage(index) {
             if (!isReady || FRAME_COUNT === 0 || state.lastDrawnFrame === index) return;
             state.lastDrawnFrame = index;
-            
+
             let img = images[index];
             if (!img) {
                 for (let i = index - 1; i >= 0; i--) {
                     if (images[i]) { img = images[i]; break; }
                 }
             }
-            if (!img) return; 
-            
+            if (!img) return;
+
             const logicalW = window.innerWidth;
             const logicalH = window.innerHeight;
-            
-            heroCtx.fillStyle = '#050505'; 
+
+            heroCtx.fillStyle = '#050505';
             heroCtx.fillRect(0, 0, logicalW, logicalH);
-            
+
             const hRatio = logicalW / img.width;
             const vRatio = logicalH / img.height;
             const ratio = Math.max(hRatio, vRatio);
-            
+
             const drawW = img.width * ratio;
             const drawH = img.height * ratio;
             const drawX = (logicalW - drawW) / 2;
@@ -1651,16 +1911,16 @@
             const dpr = window.devicePixelRatio || 1;
             const w = window.innerWidth;
             const h = window.innerHeight;
-            
+
             heroCanvas.width = w * dpr;
             heroCanvas.height = h * dpr;
-            
+
             heroCanvas.style.width = `${w}px`;
             heroCanvas.style.height = `${h}px`;
-            
+
             heroCtx.scale(dpr, dpr);
-            
-            state.lastDrawnFrame = -1; 
+
+            state.lastDrawnFrame = -1;
             drawImage(state.currentFrame);
         }
 
@@ -1672,13 +1932,13 @@
         });
 
         function mapRange(value, inMin, inMax, outMin, outMax) {
-            value = Math.max(inMin, Math.min(value, inMax)); 
+            value = Math.max(inMin, Math.min(value, inMax));
             return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
         }
 
         function calculateState(progress, startIn, endIn, startOut, endOut) {
             let opacity = 0;
-            let translateY = 30; 
+            let translateY = 30;
 
             if (progress >= startIn && progress <= endIn) {
                 opacity = mapRange(progress, startIn, endIn, 0, 1);
@@ -1692,8 +1952,8 @@
             } else if (progress > endOut) {
                 translateY = -30;
             } else if (progress < startIn && startIn <= 0) {
-                 opacity = 1;
-                 translateY = 0;
+                opacity = 1;
+                translateY = 0;
             }
             return { opacity, translateY };
         }
@@ -1704,26 +1964,26 @@
             let frame = Math.floor(state.currentScrollProgress * (FRAME_COUNT - 1));
             frame = Math.max(0, Math.min(FRAME_COUNT - 1, frame));
             state.currentFrame = frame;
-            
+
             drawImage(state.currentFrame);
 
             const p = state.currentScrollProgress;
-            
+
             const o1 = calculateState(p, -0.1, 0.0, 0.20, 0.25);
-            overlay1.style.opacity = o1.opacity;
-            overlay1.style.transform = `translate3d(0, ${o1.translateY}px, 0)`;
-            scrollIndicator.style.opacity = o1.opacity;
-            if (o1.opacity > 0.1) overlay1.querySelectorAll('.blur-text').forEach(triggerTextBlur);
+            overlay1.style.opacity = o1.opacity.toFixed(2);
+            overlay1.style.transform = `translate3d(0, ${Math.round(o1.translateY)}px, 0)`;
+            scrollIndicator.style.opacity = o1.opacity.toFixed(2);
+            if (o1.opacity > 0.1) blurTextElements1.forEach(triggerTextBlur);
 
             const o2 = calculateState(p, 0.35, 0.45, 0.60, 0.65);
-            overlay2.style.opacity = o2.opacity;
-            overlay2.style.transform = `translate3d(0, ${o2.translateY}px, 0)`;
-            if (o2.opacity > 0.1) overlay2.querySelectorAll('.blur-text').forEach(triggerTextBlur);
+            overlay2.style.opacity = o2.opacity.toFixed(2);
+            overlay2.style.transform = `translate3d(0, ${Math.round(o2.translateY)}px, 0)`;
+            if (o2.opacity > 0.1) blurTextElements2.forEach(triggerTextBlur);
 
             const o3 = calculateState(p, 0.70, 0.80, 0.95, 1.0);
-            overlay3.style.opacity = o3.opacity;
-            overlay3.style.transform = `translate3d(0, ${o3.translateY}px, 0)`;
-            if (o3.opacity > 0.1) overlay3.querySelectorAll('.blur-text').forEach(triggerTextBlur);
+            overlay3.style.opacity = o3.opacity.toFixed(2);
+            overlay3.style.transform = `translate3d(0, ${Math.round(o3.translateY)}px, 0)`;
+            if (o3.opacity > 0.1) blurTextElements3.forEach(triggerTextBlur);
 
             // Dock Visibility logic
             let dockOpacity = 0;
@@ -1740,13 +2000,13 @@
             } else if (p > 1.0) {
                 dockTranslateY = -30;
             }
-            
-            overlayDock.style.opacity = dockOpacity;
-            overlayDock.style.transform = `translate3d(0, ${dockTranslateY}px, 0)`;
+
+            overlayDock.style.opacity = dockOpacity.toFixed(2);
+            overlayDock.style.transform = `translate3d(0, ${Math.round(dockTranslateY)}px, 0)`;
 
             state.cursorX = lerp(state.cursorX, state.mouseX, 0.25);
             state.cursorY = lerp(state.cursorY, state.mouseY, 0.25);
-            cursor.style.transform = `translate3d(calc(${state.cursorX}px - 50%), calc(${state.cursorY}px - 50%), 0)`;
+            cursor.style.transform = `translate3d(calc(${Math.round(state.cursorX)}px - 50%), calc(${Math.round(state.cursorY)}px - 50%), 0)`;
 
             requestAnimationFrame(renderLoop);
         }
@@ -1766,17 +2026,20 @@
             state.mouseY = e.clientY;
         });
 
-        document.body.addEventListener('mouseenter', (e) => {
-            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.id === 'three-globe-container' || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element') || e.target.tagName === 'FIGURE')) {
+        // Optimize mouseover events with event delegation
+        document.body.addEventListener('mouseover', (e) => {
+            const t = e.target;
+            if (t && t.closest && (t.closest('a') || t.closest('button') || t.closest('#three-globe-container') || t.closest('.interactive-element') || t.closest('figure'))) {
                 cursor.classList.add('hovering');
             }
-        }, true);
-        
-        document.body.addEventListener('mouseleave', (e) => {
-            if(e.target && (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.id === 'three-globe-container' || e.target.classList?.contains('interactive-element') || e.target.closest('.interactive-element') || e.target.tagName === 'FIGURE')) {
+        });
+
+        document.body.addEventListener('mouseout', (e) => {
+            const t = e.target;
+            if (t && t.closest && (t.closest('a') || t.closest('button') || t.closest('#three-globe-container') || t.closest('.interactive-element') || t.closest('figure'))) {
                 cursor.classList.remove('hovering');
             }
-        }, true);
+        });
 
         function setupVelocityMarquee(rowA, rowB) {
             if (!rowA || !rowB) return null;
@@ -1788,9 +2051,9 @@
 
         function initGSAPAnimations() {
             ScrollTrigger.create({
-                trigger: "#about", 
-                start: "top 80px", 
-                endTrigger: "footer", 
+                trigger: "#about",
+                start: "top 80px",
+                endTrigger: "footer",
                 end: "bottom top",
                 onEnter: () => document.getElementById('main-nav').classList.add('nav-scrolled'),
                 onLeaveBack: () => document.getElementById('main-nav').classList.remove('nav-scrolled'),
@@ -1798,16 +2061,16 @@
 
             // Initialize all marquees (Projects & Testimonials)
             let allTweens = [];
-            if(projectsData.length > 0) {
+            if (projectsData.length > 0) {
                 const projTweens = setupVelocityMarquee(document.getElementById('marquee-row-a'), document.getElementById('marquee-row-b'));
-                if(projTweens) allTweens.push(...projTweens);
+                if (projTweens) allTweens.push(...projTweens);
             }
-            if(reviewsData.length > 0) {
+            if (reviewsData.length > 0) {
                 const testTweens = setupVelocityMarquee(document.getElementById('test-row-a'), document.getElementById('test-row-b'));
-                if(testTweens) allTweens.push(...testTweens);
+                if (testTweens) allTweens.push(...testTweens);
             }
 
-            if(allTweens.length > 0) {
+            if (allTweens.length > 0) {
                 let currentDirection = 1;
                 ScrollTrigger.create({
                     trigger: document.body,
@@ -1815,10 +2078,10 @@
                     end: "bottom bottom",
                     onUpdate: (self) => {
                         let velocity = Math.abs(self.getVelocity());
-                        currentDirection = self.direction || 1; 
-                        
+                        currentDirection = self.direction || 1;
+
                         if (velocity > 0) {
-                            let boost = 1 + (velocity / 200); 
+                            let boost = 1 + (velocity / 200);
                             gsap.to(allTweens, {
                                 timeScale: currentDirection * boost,
                                 duration: 0.2,
@@ -1857,4 +2120,5 @@
         initPortfolio();
     </script>
 </body>
+
 </html>
